@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Send feedback — Pressroot</title>
+<meta name="description" content="Tell us what was confusing, ugly, or wrong. Feedback goes straight to Matt's inbox and onto the GitHub tracker.">
+<meta property="og:image" content="https://matthummel-pa.github.io/pressroot/assets/og-share.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;700;800&family=Fraunces:ital,wght@1,400&family=JetBrains+Mono:wght@400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/pressroot.css">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%236C4CF1'/><text x='50' y='70' font-size='55' font-weight='800' font-family='sans-serif' fill='white' text-anchor='middle'>P</text></svg>">
+<style>
+  .fb-form label { display:block; font-weight:700; color:var(--ink); margin:22px 0 6px; font-size:15.5px; }
+  .fb-form label span.opt { font-weight:400; color:var(--body); font-size:13px; }
+  .fb-form input[type=text], .fb-form input[type=email], .fb-form select, .fb-form textarea {
+    width:100%; padding:12px 14px; border:1.5px solid var(--hairline); border-radius:12px;
+    font-family:var(--font-display); font-size:15.5px; background:#fff; color:var(--ink);
+  }
+  .fb-form textarea { min-height:110px; resize:vertical; }
+  .fb-form input:focus, .fb-form select:focus, .fb-form textarea:focus { outline:2px solid var(--iris); border-color:var(--iris); }
+  .fb-rating { display:flex; gap:8px; flex-wrap:wrap; }
+  .fb-rating label { flex:1; min-width:52px; margin:0; text-align:center; border:1.5px solid var(--hairline); border-radius:12px; padding:10px 6px; cursor:pointer; background:#fff; font-weight:700; }
+  .fb-rating input { display:none; }
+  .fb-rating input:checked + span { color:var(--iris); }
+  .fb-rating label:has(input:checked) { border-color:var(--iris); outline:2px solid var(--iris); }
+  #fb-done { display:none; }
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="wrap nav-in">
+    <a class="brand" href="./"><span class="brand-mark">P</span> Pressroot <span class="beta-badge">Beta</span></a>
+    <div class="nav-links">
+      <a href="./#features">Features</a>
+      <a href="documentation.html">Docs</a>
+      <a href="testers.html">Become a tester</a>
+      <a class="active" href="feedback.html">Feedback</a>
+      <a href="https://github.com/matthummel-pa/pressroot" target="_blank" rel="noopener">GitHub</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero hero-page">
+  <div class="wrap">
+    <div class="eyebrow"><span class="dot"></span> Tester feedback</div>
+    <h1>Tell it <span class="serif-it">straight.</span></h1>
+    <p class="lead">Confusing, ugly, broken, or brilliant — plain reactions are exactly what improves the generator. This goes straight to Matt's inbox, and you can post it to the public tracker in one extra click.</p>
+  </div>
+</header>
+
+<div class="wrap section" style="padding-top:48px;max-width:820px">
+
+  <form id="fb-form" class="fb-form card" style="padding:34px 34px 30px">
+    <label for="fb-name">Your name</label>
+    <input type="text" id="fb-name" name="name" required placeholder="So Matt knows who to thank">
+
+    <label for="fb-email">Your email <span class="opt">— so Matt can follow up (and sort out your free domain)</span></label>
+    <input type="email" id="fb-email" name="email" required placeholder="you@example.com">
+
+    <label for="fb-site">What did you test with?</label>
+    <input type="text" id="fb-site" name="business_tested" required placeholder="e.g. my food truck — restaurant site type">
+
+    <label>Overall, how was it?</label>
+    <div class="fb-rating" role="radiogroup" aria-label="Overall rating">
+      <label><input type="radio" name="rating" value="1 — rough" required><span>😖 1</span></label>
+      <label><input type="radio" name="rating" value="2 — meh"><span>😕 2</span></label>
+      <label><input type="radio" name="rating" value="3 — okay"><span>🙂 3</span></label>
+      <label><input type="radio" name="rating" value="4 — good"><span>😃 4</span></label>
+      <label><input type="radio" name="rating" value="5 — loved it"><span>🤩 5</span></label>
+    </div>
+
+    <label for="fb-wrong">What felt confusing, ugly, or wrong?</label>
+    <textarea id="fb-wrong" name="what_was_wrong" required placeholder="&quot;The menu page didn't sound like my restaurant&quot;, &quot;couldn't find where to change my hours&quot;, &quot;second design was way better than the first&quot;…"></textarea>
+
+    <label for="fb-right">What worked or surprised you? <span class="opt">— optional</span></label>
+    <textarea id="fb-right" name="what_worked"></textarea>
+
+    <label for="fb-use">Would you use the site for real? <span class="opt">— optional</span></label>
+    <select id="fb-use" name="would_use">
+      <option value="">— pick one —</option>
+      <option>Yes — as soon as it's on my domain</option>
+      <option>Yes, with some fixes first</option>
+      <option>Maybe — still deciding</option>
+      <option>No (tell us why above!)</option>
+    </select>
+
+    <div style="margin-top:28px;display:flex;gap:12px;flex-wrap:wrap;align-items:center">
+      <button type="submit" class="btn btn-grad" id="fb-send">Send feedback →</button>
+      <span class="opt" style="font-size:13px;color:var(--body)">Emails Matt directly. No account needed.</span>
+    </div>
+    <p id="fb-error" style="display:none;color:#d63638;font-weight:600;margin:14px 0 0"></p>
+  </form>
+
+  <div id="fb-done" class="card" style="padding:34px">
+    <span class="big">🎉</span>
+    <h3>Sent — thank you!</h3>
+    <p>Your feedback is on its way to Matt's inbox. One more click helps a lot: post it to the public tracker so it gets a number and you can watch it get fixed.</p>
+    <div style="margin-top:20px;display:flex;gap:12px;flex-wrap:wrap">
+      <a id="fb-gh-link" class="btn btn-grad" href="#" target="_blank" rel="noopener">Post to GitHub tracker →</a>
+      <a class="btn btn-ghost" href="testers.html">Back to the tester page</a>
+    </div>
+    <p class="opt" style="font-size:13px;color:var(--body);margin-top:14px">The GitHub step is optional and needs a (free) GitHub account — your feedback opens pre-filled, you just press "Create".</p>
+  </div>
+
+  <div class="note" style="margin-top:26px">Prefer email? Just write to <a href="mailto:matthew.r.hummel@gmail.com?subject=Pressroot%20feedback">matthew.r.hummel@gmail.com</a> — or file directly on the <a href="https://github.com/matthummel-pa/pressroot/issues" target="_blank" rel="noopener">GitHub tracker</a>.</div>
+</div>
+
+<script>
+(function () {
+  var form = document.getElementById('fb-form');
+  var err  = document.getElementById('fb-error');
+
+  function ghIssueUrl(d) {
+    var title = '[Feedback] ' + (d.business_tested || 'tester feedback') + ' — ' + (d.rating || 'unrated');
+    var body =
+      '**Tested with:** ' + (d.business_tested || '') + '\n' +
+      '**Rating:** ' + (d.rating || '') + '\n' +
+      '**Would use for real:** ' + (d.would_use || '—') + '\n\n' +
+      '### What felt confusing, ugly, or wrong\n' + (d.what_was_wrong || '') + '\n\n' +
+      '### What worked\n' + (d.what_worked || '—') + '\n\n' +
+      '_Submitted via the feedback form (also emailed)._';
+    return 'https://github.com/matthummel-pa/pressroot/issues/new?labels=tester,feedback&title='
+      + encodeURIComponent(title) + '&body=' + encodeURIComponent(body);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    err.style.display = 'none';
+    var btn = document.getElementById('fb-send');
+    btn.disabled = true; btn.textContent = 'Sending…';
+
+    var d = {};
+    new FormData(form).forEach(function (v, k) { d[k] = v; });
+    d._subject = '🧪 Pressroot feedback: ' + (d.business_tested || d.name) + ' (' + (d.rating || 'unrated') + ')';
+    d._template = 'table';
+    d._captcha = 'false';
+
+    fetch('https://formsubmit.co/ajax/matthew.r.hummel@gmail.com', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify(d)
+    }).then(function (r) { return r.json(); }).then(function (res) {
+      if (res.success === 'true' || res.success === true) {
+        document.getElementById('fb-gh-link').href = ghIssueUrl(d);
+        form.style.display = 'none';
+        document.getElementById('fb-done').style.display = 'block';
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+      } else { throw new Error(res.message || 'send failed'); }
+    }).catch(function () {
+      btn.disabled = false; btn.textContent = 'Send feedback →';
+      err.style.display = 'block';
+      var mail = 'mailto:matthew.r.hummel@gmail.com?subject=' + encodeURIComponent('Pressroot feedback') +
+        '&body=' + encodeURIComponent('Tested with: ' + (d.business_tested||'') + '\nRating: ' + (d.rating||'') + '\n\nWhat felt wrong:\n' + (d.what_was_wrong||'') + '\n\nWhat worked:\n' + (d.what_worked||''));
+      err.innerHTML = 'Hmm, sending failed. <a href="' + mail + '">Click here to send it by email instead</a> — everything you typed is included.';
+    });
+  });
+})();
+</script>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-legal">
+      <span>© 2024–2026 Matt Hummel. Pressroot theme by <a href="https://github.com/matthummel-pa" rel="author noopener" target="_blank">matthummel</a>.</span>
+      <span><a href="./">Home</a> · <a href="documentation.html">Docs</a> · <a href="testers.html">Testers</a> · <a href="https://github.com/matthummel-pa/pressroot" target="_blank" rel="noopener">GitHub</a></span>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>

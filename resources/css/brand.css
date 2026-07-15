@@ -1,0 +1,74 @@
+/* ----------------------------------------------------------------------
+   brand.css — Paper + Space design system
+   Self-hosted fonts, keyframes and helper classes used by the homepage
+   partials (partials/home/*) and the restyled page templates.
+   Imported from app.css. CSS variables live in the @theme block there.
+---------------------------------------------------------------------- */
+
+/* --- Self-hosted fonts (woff2 in resources/fonts) --- */
+@font-face {
+  font-family: "Outfit";
+  font-style: normal;
+  font-weight: 400 900;
+  font-display: swap;
+  src: url("../fonts/Outfit-Variable.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/InstrumentSerif-Regular.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Instrument Serif";
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/InstrumentSerif-Italic.woff2") format("woff2");
+}
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 400 600;
+  font-display: swap;
+  src: url("../fonts/JetBrainsMono-Variable.woff2") format("woff2");
+}
+
+/* --- Keyframes used by the partials --- */
+@keyframes prt-blob   { 0%,100% { border-radius:42% 58% 63% 37% / 42% 45% 55% 58%; } 50% { border-radius:58% 42% 40% 60% / 60% 55% 45% 40%; } }
+@keyframes prt-floatA { 0%,100% { transform:translateY(0) rotate(0); } 50% { transform:translateY(-20px) rotate(6deg); } }
+@keyframes prt-floatB { 0%,100% { transform:translateY(0) rotate(0); } 50% { transform:translateY(16px) rotate(-7deg); } }
+@keyframes prt-marq   { from { transform:translateX(0); } to { transform:translateX(-50%); } }
+@keyframes prt-drift  { 0% { transform:translate(0,0) scale(1); } 33% { transform:translate(40px,-30px) scale(1.1); } 66% { transform:translate(-30px,20px) scale(.95); } 100% { transform:translate(0,0) scale(1); } }
+@keyframes prt-bob    { 0%,100% { transform:translateY(0); } 50% { transform:translateY(8px); } }
+@keyframes prt-fadeUp { from { opacity:0; transform:translateY(28px); } to { opacity:1; transform:translateY(0); } }
+
+/* --- Helper classes the partials reference --- */
+.prt-wrap { max-width:var(--prt-content-width, 1240px); margin:0 auto; padding-left:32px; padding-right:32px; }
+.prt-lift { transition:transform .25s, box-shadow .25s; }
+.prt-lift:hover { transform:translateY(-6px); box-shadow:0 18px 40px rgba(23,21,31,0.14); }
+.prt-gradient-text {
+  /* Repofolio primary gradient (iris -> pink -> coral, docs/BRAND.md) */
+  background:linear-gradient(135deg,#6C4CF1 0%,#FF4D9D 55%,#FF7A3D 100%);
+  -webkit-background-clip:text; background-clip:text;
+  -webkit-text-fill-color:transparent; color:transparent;
+}
+.prt-serif { font-family:var(--font-serif); font-style:italic; font-weight:400; }
+.prt-mono  { font-family:var(--font-mono); }
+
+/* --- Responsive: collapse the multi-column grids on small screens --- */
+@media (max-width: 900px) {
+  .prt-grid-2, .prt-grid-3, .prt-grid-4 { grid-template-columns:1fr !important; }
+  .prt-hero-grid { grid-template-columns:1fr !important; }
+  .prt-hero-art  { height:340px !important; }
+  .prt-bento     { grid-template-columns:1fr !important; grid-auto-rows:auto !important; }
+  .prt-bento > a { grid-column:auto !important; grid-row:auto !important; min-height:200px; }
+  .prt-services-row { grid-template-columns:1fr !important; }
+  .prt-services-row > div:first-child { font-size:40px !important; }
+}
+
+/* --- Respect reduced motion --- */
+@media (prefers-reduced-motion: reduce) {
+  [style*="animation"], .prt-lift { animation:none !important; transition:none !important; }
+}

@@ -1,0 +1,66 @@
+<svg width="880" height="200" viewBox="0 0 880 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Pressroot brand palette">
+  <defs>
+    <linearGradient id="gBrand" x1="0" y1="0" x2="1" y2="1">
+      <stop stop-color="#6C4CF1"/><stop offset=".55" stop-color="#FF4D9D"/><stop offset="1" stop-color="#FF7A3D"/>
+    </linearGradient>
+    <linearGradient id="gSpec" x1="0" y1="0" x2="1" y2="0">
+      <stop stop-color="#6C4CF1"/><stop offset=".2" stop-color="#FF4D9D"/><stop offset=".4" stop-color="#FF7A3D"/>
+      <stop offset=".6" stop-color="#FFC53D"/><stop offset=".8" stop-color="#37E29A"/><stop offset="1" stop-color="#22CFEE"/>
+    </linearGradient>
+    <style>
+      text { font-family: 'JetBrains Mono','SFMono-Regular',Consolas,monospace; font-size: 12px; font-weight: 600; }
+      .name { fill: #17151F; }
+      .hex  { fill: #6E6787; font-weight: 400; }
+      .chipline { stroke: #ECE6FB; }
+      @media (prefers-color-scheme: dark) {
+        .name { fill: #FFF9F5; }
+        .hex  { fill: #B9A7FF; }
+        .chipline { stroke: #3a3352; }
+      }
+    </style>
+  </defs>
+
+  <!-- row 1: core colors -->
+  <g>
+    <rect x="0"   y="0" width="100" height="72" rx="14" fill="#6C4CF1"/>
+    <rect x="110" y="0" width="100" height="72" rx="14" fill="#FF4D9D"/>
+    <rect x="220" y="0" width="100" height="72" rx="14" fill="#FF7A3D"/>
+    <rect x="330" y="0" width="100" height="72" rx="14" fill="#FFC53D"/>
+    <rect x="440" y="0" width="100" height="72" rx="14" fill="#37E29A"/>
+    <rect x="550" y="0" width="100" height="72" rx="14" fill="#22CFEE"/>
+    <rect x="660" y="0" width="100" height="72" rx="14" fill="#17151F"/>
+    <rect x="770" y="0" width="100" height="72" rx="14" fill="#FFF9F5" class="chipline" stroke-width="1.5"/>
+  </g>
+  <g class="name">
+    <text x="0"   y="92">Iris</text>
+    <text x="110" y="92">Pink</text>
+    <text x="220" y="92">Coral</text>
+    <text x="330" y="92">Amber</text>
+    <text x="440" y="92">Lime</text>
+    <text x="550" y="92">Cyan</text>
+    <text x="660" y="92">Ink</text>
+    <text x="770" y="92">Paper</text>
+  </g>
+  <g class="hex">
+    <text x="0"   y="108">#6C4CF1</text>
+    <text x="110" y="108">#FF4D9D</text>
+    <text x="220" y="108">#FF7A3D</text>
+    <text x="330" y="108">#FFC53D</text>
+    <text x="440" y="108">#37E29A</text>
+    <text x="550" y="108">#22CFEE</text>
+    <text x="660" y="108">#17151F</text>
+    <text x="770" y="108">#FFF9F5</text>
+  </g>
+
+  <!-- row 2: gradients -->
+  <rect x="0"   y="128" width="430" height="34" rx="12" fill="url(#gBrand)"/>
+  <rect x="440" y="128" width="430" height="34" rx="12" fill="url(#gSpec)"/>
+  <g class="name">
+    <text x="0"   y="182">Brand gradient</text>
+    <text x="440" y="182">Spectrum</text>
+  </g>
+  <g class="hex">
+    <text x="118" y="182">135° iris → pink → coral</text>
+    <text x="518" y="182">6-stop, cards + bars + progress</text>
+  </g>
+</svg>

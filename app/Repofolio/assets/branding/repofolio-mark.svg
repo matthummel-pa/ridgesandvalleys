@@ -1,0 +1,32 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Repofolio">
+  <defs>
+    <linearGradient id="rf-bg" x1="0" y1="0" x2="512" y2="512" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#17151F"/>
+      <stop offset="1" stop-color="#0E0C1A"/>
+    </linearGradient>
+    <linearGradient id="rf-spectrum" x1="96" y1="0" x2="416" y2="0" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6C4CF1"/>
+      <stop offset="0.28" stop-color="#FF4D9D"/>
+      <stop offset="0.52" stop-color="#FF7A3D"/>
+      <stop offset="0.72" stop-color="#FFC53D"/>
+      <stop offset="0.88" stop-color="#37E29A"/>
+      <stop offset="1" stop-color="#22CFEE"/>
+    </linearGradient>
+  </defs>
+
+  <!-- App tile -->
+  <rect width="512" height="512" rx="120" fill="url(#rf-bg)"/>
+
+  <!-- Repo cards stacked (the "folio") -->
+  <g>
+    <rect x="120" y="150" width="272" height="150" rx="26" fill="#FFFFFF" opacity="0.10"/>
+    <rect x="104" y="196" width="304" height="170" rx="30" fill="#FFFFFF"/>
+    <!-- language / spectrum bar -->
+    <rect x="132" y="228" width="248" height="18" rx="9" fill="url(#rf-spectrum)"/>
+    <!-- repo lines -->
+    <rect x="132" y="268" width="196" height="14" rx="7" fill="#CFC9E6"/>
+    <rect x="132" y="296" width="150" height="14" rx="7" fill="#E4E0F1"/>
+    <!-- stars dot -->
+    <circle cx="360" cy="290" r="14" fill="#FFC53D"/>
+  </g>
+</svg>

@@ -1,0 +1,21 @@
+/node_modules
+/vendor
+/public/*
+!/public/.gitkeep
+.env
+.env.*
+*.log
+npm-debug.log
+*.bak
+.DS_Store
+Thumbs.db
+.idea
+.vscode
+
+# Playground CLI dev site data
+.playground/database/
+.playground/uploads/
+.playground/site-db/
+.playground/site-uploads/
+.playground/site-seed.wxr
+.playground/site-seed-slim.wxr

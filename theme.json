@@ -1,0 +1,134 @@
+{
+  "$schema": "https://schemas.wp.org/trunk/theme.json",
+  "version": 3,
+  "settings": {
+    "appearanceTools": true,
+    "useRootPaddingAwareAlignments": true,
+    "layout": { "contentSize": "760px", "wideSize": "1180px" },
+    "color": {
+      "defaultPalette": false,
+      "defaultGradients": false,
+      "defaultDuotone": false,
+      "custom": true,
+      "customGradient": true,
+      "customDuotone": true,
+      "link": true,
+      "heading": true,
+      "button": true,
+      "caption": true,
+      "background": true,
+      "text": true,
+      "palette": [
+        { "slug": "paper", "color": "#F7F1E6", "name": "Cream Paper" },
+        { "slug": "surface", "color": "#FCF8F0", "name": "Surface" },
+        { "slug": "cream", "color": "#EFE7D8", "name": "Fieldstone tint" },
+        { "slug": "ink", "color": "#23201B", "name": "Bark Ink" },
+        { "slug": "body", "color": "#45413A", "name": "Body" },
+        { "slug": "muted", "color": "#6E6558", "name": "Muted" },
+        { "slug": "faint", "color": "#8A8476", "name": "Faint" },
+        { "slug": "green", "color": "#2E5245", "name": "Ridge Pine" },
+        { "slug": "green-ink", "color": "#213D33", "name": "Ridge Pine (deep)" },
+        { "slug": "green-tint", "color": "#E7EDE6", "name": "Pine tint" },
+        { "slug": "purple", "color": "#2E5245", "name": "Ridge Pine" },
+        { "slug": "violet", "color": "#97A88E", "name": "Valley Sage" },
+        { "slug": "orange", "color": "#B0553A", "name": "Gettysburg Clay" },
+        { "slug": "amber", "color": "#E0A73C", "name": "Harvest Wheat" },
+        { "slug": "lime", "color": "#97A88E", "name": "Valley Sage" },
+        { "slug": "sky", "color": "#3C4A4E", "name": "Dusk Slate" },
+        { "slug": "pink", "color": "#B0553A", "name": "Gettysburg Clay" },
+        { "slug": "line", "color": "#E7DCC8", "name": "Fieldstone line" }
+      ],
+      "gradients": [
+        { "slug": "green", "name": "Ridgeline", "gradient": "linear-gradient(135deg,#2E5245 0%,#B0553A 60%,#E0A73C 100%)" },
+        { "slug": "purple-sky", "name": "Pine to Sage", "gradient": "linear-gradient(135deg,#2E5245,#97A88E)" },
+        { "slug": "orange-pink", "name": "Clay to Harvest", "gradient": "linear-gradient(135deg,#B0553A,#E0A73C)" },
+        { "slug": "headline", "name": "Headline Accent", "gradient": "linear-gradient(135deg,#2E5245 0%,#B0553A 60%,#E0A73C 100%)" },
+        { "slug": "spectrum", "name": "Ridgeline Stripe", "gradient": "linear-gradient(90deg,#2E5245 0%,#97A88E 33%,#B0553A 66%,#E0A73C 100%)" },
+        { "slug": "ink", "name": "Ink", "gradient": "linear-gradient(135deg,#23201B,#3C4A4E)" },
+        { "slug": "paper-fade", "name": "Paper fade", "gradient": "linear-gradient(180deg,#F7F1E6,#EFE7D8)" }
+      ],
+      "duotone": [
+        { "slug": "green-ink", "name": "Pine / Ink", "colors": ["#23201B", "#2E5245"] },
+        { "slug": "paper-green", "name": "Pine / Paper", "colors": ["#2E5245", "#F7F1E6"] }
+      ]
+    },
+    "typography": {
+      "fluid": true,
+      "customFontSize": true,
+      "lineHeight": true,
+      "letterSpacing": true,
+      "textTransform": true,
+      "textDecoration": true,
+      "fontStyle": true,
+      "fontWeight": true,
+      "dropCap": true,
+      "writingMode": false,
+      "fontFamilies": [
+        {
+          "slug": "display",
+          "name": "Outfit",
+          "fontFamily": "Outfit, ui-sans-serif, system-ui, sans-serif",
+          "fontFace": [
+            { "fontFamily": "Outfit", "fontWeight": "400 900", "fontStyle": "normal", "fontStretch": "normal", "src": ["file:./resources/fonts/Outfit-Variable.woff2"] }
+          ]
+        },
+        {
+          "slug": "body",
+          "name": "Outfit (Body)",
+          "fontFamily": "Outfit, ui-sans-serif, system-ui, sans-serif"
+        },
+        {
+          "slug": "serif",
+          "name": "Instrument Serif",
+          "fontFamily": "\"Instrument Serif\", Georgia, serif",
+          "fontFace": [
+            { "fontFamily": "Instrument Serif", "fontWeight": "400", "fontStyle": "normal", "src": ["file:./resources/fonts/InstrumentSerif-Regular.woff2"] },
+            { "fontFamily": "Instrument Serif", "fontWeight": "400", "fontStyle": "italic", "src": ["file:./resources/fonts/InstrumentSerif-Italic.woff2"] }
+          ]
+        },
+        {
+          "slug": "mono",
+          "name": "JetBrains Mono",
+          "fontFamily": "\"JetBrains Mono\", ui-monospace, SFMono-Regular, Menlo, Consolas, monospace",
+          "fontFace": [
+            { "fontFamily": "JetBrains Mono", "fontWeight": "400 600", "fontStyle": "normal", "src": ["file:./resources/fonts/JetBrainsMono-Variable.woff2"] }
+          ]
+        }
+      ],
+      "fontSizes": [
+        { "slug": "small", "size": "15px", "name": "Small" },
+        { "slug": "medium", "size": "17px", "name": "Medium" },
+        { "slug": "large", "size": "22px", "name": "Large" },
+        { "slug": "x-large", "size": "clamp(28px, 3vw, 34px)", "name": "X-Large" },
+        { "slug": "huge", "size": "clamp(48px, 7vw, 88px)", "name": "Huge" }
+      ]
+    },
+    "spacing": {
+      "units": ["px", "em", "rem", "%", "vw", "vh"],
+      "padding": true,
+      "margin": true,
+      "blockGap": true,
+      "customSpacingSize": true,
+      "spacingSizes": [
+        { "slug": "20", "size": "0.5rem", "name": "XS" },
+        { "slug": "30", "size": "1rem", "name": "S" },
+        { "slug": "40", "size": "1.5rem", "name": "M" },
+        { "slug": "50", "size": "2.5rem", "name": "L" },
+        { "slug": "60", "size": "4rem", "name": "XL" },
+        { "slug": "70", "size": "6rem", "name": "XXL" }
+      ]
+    },
+    "border": { "color": true, "radius": true, "style": true, "width": true },
+    "shadow": {
+      "defaultPresets": false,
+      "presets": [
+        { "slug": "soft", "name": "Soft", "shadow": "0 6px 20px rgba(23,25,30,.08)" },
+        { "slug": "lift", "name": "Lift", "shadow": "0 12px 30px rgba(23,25,30,.12)" },
+        { "slug": "ring", "name": "Ring", "shadow": "0 0 0 1px #E7DCC8" }
+      ]
+    },
+    "dimensions": { "minHeight": true, "aspectRatio": true },
+    "position": { "sticky": true },
+    "background": { "backgroundImage": true, "backgroundSize": true }
+  }
+}

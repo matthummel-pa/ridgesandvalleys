@@ -1,0 +1,37 @@
+# Files/folders excluded from the distributable theme zip.
+# Build a release with:  npm run build && composer install --no-dev  then zip
+# respecting this list (e.g. `wp dist-archive .` from WP-CLI, which reads
+# .distignore natively). The release zip MUST include vendor/ (Acorn is a
+# runtime dependency) and public/build (compiled assets) — neither is
+# rebuildable by a typical marketplace buyer.
+
+# VCS / CI
+.git
+.github
+.gitignore
+.gitattributes
+
+# Dev environments & tooling
+node_modules
+.playground
+.editorconfig
+eslint.config.js
+pint.json
+vite.config.js
+package-lock.json
+composer.lock
+.distignore
+
+# The docs/ folder is the GitHub Pages marketing site + internal build logs,
+# not buyer documentation. Buyer docs ship separately (or curate a subset).
+docs
+
+# OS junk
+.DS_Store
+**/.DS_Store
+Thumbs.db
+
+# Internal / repo-only files
+CODE_OF_CONDUCT.md
+SECURITY.md
+DEV-LOCAL.md

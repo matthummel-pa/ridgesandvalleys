@@ -1,0 +1,39 @@
+<svg width="1120" height="320" viewBox="0 0 1120 320" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Repofolio">
+  <defs>
+    <linearGradient id="rfl-bg" x1="40" y1="40" x2="280" y2="280" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#17151F"/>
+      <stop offset="1" stop-color="#0E0C1A"/>
+    </linearGradient>
+    <linearGradient id="rfl-spectrum" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6C4CF1"/>
+      <stop offset="0.28" stop-color="#FF4D9D"/>
+      <stop offset="0.52" stop-color="#FF7A3D"/>
+      <stop offset="0.72" stop-color="#FFC53D"/>
+      <stop offset="0.88" stop-color="#37E29A"/>
+      <stop offset="1" stop-color="#22CFEE"/>
+    </linearGradient>
+    <linearGradient id="rfl-word" x1="360" y1="120" x2="1080" y2="200" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#6C4CF1"/>
+      <stop offset="0.45" stop-color="#FF4D9D"/>
+      <stop offset="0.75" stop-color="#FF7A3D"/>
+      <stop offset="1" stop-color="#FFB020"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Mark -->
+  <g transform="translate(40,40) scale(0.46)">
+    <rect width="512" height="512" rx="120" fill="url(#rfl-bg)"/>
+    <rect x="120" y="150" width="272" height="150" rx="26" fill="#FFFFFF" opacity="0.10"/>
+    <rect x="104" y="196" width="304" height="170" rx="30" fill="#FFFFFF"/>
+    <rect x="132" y="228" width="248" height="18" rx="9" fill="url(#rfl-spectrum)"/>
+    <rect x="132" y="268" width="196" height="14" rx="7" fill="#CFC9E6"/>
+    <rect x="132" y="296" width="150" height="14" rx="7" fill="#E4E0F1"/>
+    <circle cx="360" cy="290" r="14" fill="#FFC53D"/>
+  </g>
+
+  <!-- Wordmark -->
+  <text x="330" y="192" font-family="'Outfit','Poppins','Segoe UI',system-ui,-apple-system,sans-serif" font-size="118" font-weight="800" letter-spacing="-3" fill="url(#rfl-word)">Repofolio</text>
+  <!-- spectrum underline -->
+  <rect x="334" y="214" width="470" height="10" rx="5" fill="url(#rfl-spectrum)"/>
+  <text x="336" y="266" font-family="'JetBrains Mono','SFMono-Regular',ui-monospace,monospace" font-size="30" letter-spacing="1" fill="#8A85A6">Repos in. Portfolio out.</text>
+</svg>

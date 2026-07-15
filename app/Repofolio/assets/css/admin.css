@@ -1,0 +1,56 @@
+/**
+ * Repofolio settings-screen styles.
+ */
+.repofolio-settings .repofolio-card {
+	background: #fff;
+	border: 1px solid #dcdce4;
+	border-radius: 10px;
+	padding: 20px 24px;
+	margin: 18px 0;
+	max-width: 860px;
+	box-shadow: 0 1px 2px rgba(0, 0, 0, .04);
+}
+.repofolio-settings .repofolio-card h2 {
+	margin-top: 0;
+	font-size: 1.05rem;
+}
+.repofolio-connected {
+	display: flex;
+	align-items: center;
+	gap: 14px;
+}
+.repofolio-connected img {
+	border-radius: 50%;
+}
+.repofolio-connected form {
+	margin-left: auto;
+}
+.repofolio-callback code {
+	display: inline-block;
+	margin-top: 4px;
+	padding: 6px 10px;
+	background: #f0f0f5;
+	border-radius: 6px;
+	user-select: all;
+}
+.repofolio-callback label {
+	display: block;
+	font-weight: 600;
+	margin-bottom: 2px;
+}
+.repofolio-connect .dashicons {
+	vertical-align: middle;
+	margin-top: -2px;
+}
+.repofolio-features {
+	display: grid;
+	grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+	gap: 8px 20px;
+}
+.repofolio-feature {
+	display: flex;
+	align-items: center;
+	gap: 8px;
+	padding: 6px 0;
+}
+.repofolio-feature input { margin: 0; }

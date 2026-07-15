@@ -1,0 +1,86 @@
+/**
+ * Pressroots Reserve — front-end widget styles.
+ * Uses the theme's CSS custom properties where present (--wp--preset--color--*)
+ * and falls back to the Repofolio brand palette. Accent overridable per block
+ * via the --prt-bk-accent variable set inline on the container.
+ */
+.prt-booking {
+	--prt-bk-accent: var(--wp--preset--color--primary, #6C4CF1);
+	--prt-bk-ink: #17151F;
+	--prt-bk-muted: #57536B;
+	--prt-bk-line: #E7E4EE;
+	--prt-bk-paper: #FFFFFF;
+	--prt-bk-soft: #F7F5FB;
+	--prt-bk-radius: 12px;
+	max-width: 640px;
+	margin-inline: auto;
+	color: var(--prt-bk-ink);
+	font-size: 15px;
+	line-height: 1.5;
+}
+.prt-booking * { box-sizing: border-box; }
+.prt-booking--empty p { padding: 16px; background: var(--prt-bk-soft); border-radius: var(--prt-bk-radius); color: var(--prt-bk-muted); }
+
+/* Breadcrumbs */
+.prt-bk-crumbs { display: flex; gap: 8px; list-style: none; margin: 0 0 18px; padding: 0; flex-wrap: wrap; }
+.prt-bk-crumb { font-size: 12px; letter-spacing: .02em; color: var(--prt-bk-muted); padding: 4px 10px; border-radius: 999px; background: var(--prt-bk-soft); }
+.prt-bk-crumb.is-active { color: #fff; background: var(--prt-bk-accent); }
+.prt-bk-crumb.is-done { color: var(--prt-bk-accent); }
+
+/* Header row with back button */
+.prt-bk-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+.prt-bk-head__title { font-weight: 600; }
+.prt-bk-back, .prt-bk-again { background: none; border: 1px solid var(--prt-bk-line); border-radius: 8px; padding: 6px 12px; cursor: pointer; color: var(--prt-bk-muted); font: inherit; }
+.prt-bk-back:hover { border-color: var(--prt-bk-accent); color: var(--prt-bk-accent); }
+
+/* Service list */
+.prt-bk-services { display: grid; gap: 10px; }
+.prt-bk-service { text-align: left; background: var(--prt-bk-paper); border: 1px solid var(--prt-bk-line); border-radius: var(--prt-bk-radius); padding: 16px; cursor: pointer; display: grid; gap: 6px; transition: border-color .12s, box-shadow .12s, transform .12s; font: inherit; }
+.prt-bk-service:hover { border-color: var(--prt-bk-accent); box-shadow: 0 6px 20px rgba(108,76,241,.12); transform: translateY(-1px); }
+.prt-bk-service__title { font-weight: 650; font-size: 16px; }
+.prt-bk-service__desc { color: var(--prt-bk-muted); font-size: 13.5px; }
+.prt-bk-service__meta { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 2px; }
+.prt-bk-chip { font-size: 12px; padding: 3px 9px; border-radius: 999px; background: var(--prt-bk-soft); color: var(--prt-bk-muted); }
+.prt-bk-chip--price { background: color-mix(in srgb, var(--prt-bk-accent) 12%, #fff); color: var(--prt-bk-accent); font-weight: 600; }
+
+/* Date strip */
+.prt-bk-dates { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 6px; margin-bottom: 14px; scrollbar-width: thin; }
+.prt-bk-date { flex: 0 0 auto; width: 64px; border: 1px solid var(--prt-bk-line); background: var(--prt-bk-paper); border-radius: 10px; padding: 8px 4px; cursor: pointer; display: grid; gap: 2px; text-align: center; font: inherit; }
+.prt-bk-date:hover { border-color: var(--prt-bk-accent); }
+.prt-bk-date.is-active { background: var(--prt-bk-accent); border-color: var(--prt-bk-accent); color: #fff; }
+.prt-bk-date__dow { font-size: 11px; text-transform: uppercase; letter-spacing: .04em; opacity: .8; }
+.prt-bk-date__num { font-size: 20px; font-weight: 700; line-height: 1; }
+.prt-bk-date__mon { font-size: 11px; opacity: .8; }
+
+/* Slot grid */
+.prt-bk-slotgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(96px, 1fr)); gap: 8px; }
+.prt-bk-slot { border: 1px solid var(--prt-bk-line); background: var(--prt-bk-paper); border-radius: 10px; padding: 10px 6px; cursor: pointer; display: grid; gap: 2px; text-align: center; font: inherit; }
+.prt-bk-slot:hover { border-color: var(--prt-bk-accent); color: var(--prt-bk-accent); }
+.prt-bk-slot__time { font-weight: 600; }
+.prt-bk-slot__left { font-size: 11px; color: var(--prt-bk-muted); }
+
+/* Details form */
+.prt-bk-form { display: grid; gap: 12px; }
+.prt-bk-field { display: grid; gap: 4px; }
+.prt-bk-field__label { font-size: 13px; font-weight: 600; color: var(--prt-bk-muted); }
+.prt-bk-field input, .prt-bk-field select, .prt-bk-field textarea { width: 100%; border: 1px solid var(--prt-bk-line); border-radius: 9px; padding: 10px 12px; font: inherit; background: var(--prt-bk-paper); color: var(--prt-bk-ink); }
+.prt-bk-field input:focus, .prt-bk-field select:focus, .prt-bk-field textarea:focus { outline: 2px solid color-mix(in srgb, var(--prt-bk-accent) 45%, transparent); border-color: var(--prt-bk-accent); }
+.prt-bk-submit { background: var(--prt-bk-accent); color: #fff; border: 0; border-radius: 10px; padding: 13px 18px; font: inherit; font-weight: 650; cursor: pointer; margin-top: 4px; }
+.prt-bk-submit:disabled { opacity: .6; cursor: default; }
+.prt-bk-formerror { color: #E5484D; background: #FDECEC; border-radius: 8px; padding: 8px 12px; margin: 0; font-size: 14px; }
+
+/* States */
+.prt-bk-loading, .prt-bk-empty { color: var(--prt-bk-muted); padding: 14px; text-align: center; background: var(--prt-bk-soft); border-radius: var(--prt-bk-radius); }
+
+/* Confirmation */
+.prt-bk-done { text-align: center; padding: 26px 18px; background: var(--prt-bk-soft); border-radius: 16px; display: grid; gap: 8px; justify-items: center; }
+.prt-bk-done__mark { width: 56px; height: 56px; border-radius: 50%; background: var(--prt-bk-accent); color: #fff; font-size: 28px; display: grid; place-items: center; }
+.prt-bk-done.is-pending .prt-bk-done__mark { background: #F5A524; }
+.prt-bk-done__title { margin: 4px 0 0; font-size: 20px; }
+.prt-bk-done__when { font-weight: 600; margin: 0; }
+.prt-bk-done__msg, .prt-bk-done__note { color: var(--prt-bk-muted); margin: 0; max-width: 40ch; }
+.prt-bk-again { margin-top: 10px; }
+
+@media (max-width: 480px) {
+	.prt-bk-date { width: 56px; }
+}

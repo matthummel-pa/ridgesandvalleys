@@ -1,0 +1,195 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 620" font-family="Outfit, 'Segoe UI', system-ui, sans-serif">
+  <defs>
+    <linearGradient id="p-spectrum" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#6C4CF1"/><stop offset=".28" stop-color="#FF4D9D"/><stop offset=".52" stop-color="#FF7A3D"/>
+      <stop offset=".72" stop-color="#FFC53D"/><stop offset=".88" stop-color="#37E29A"/><stop offset="1" stop-color="#22CFEE"/>
+    </linearGradient>
+    <linearGradient id="p-brand" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6C4CF1"/><stop offset=".55" stop-color="#FF4D9D"/><stop offset="1" stop-color="#FF7A3D"/>
+    </linearGradient>
+    <linearGradient id="p-night" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#241E42"/><stop offset="1" stop-color="#15122A"/>
+    </linearGradient>
+    <linearGradient id="p-softlight" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#C9B8FF"/><stop offset=".5" stop-color="#FF9DC4"/><stop offset="1" stop-color="#FFC08A"/>
+    </linearGradient>
+    <radialGradient id="p-glow" cx=".8" cy="0" r="1">
+      <stop offset="0" stop-color="#6C4CF1" stop-opacity=".55"/><stop offset="1" stop-color="#6C4CF1" stop-opacity="0"/>
+    </radialGradient>
+    <clipPath id="clip-a"><rect x="24" y="52" width="440" height="540" rx="14"/></clipPath>
+    <clipPath id="clip-b"><rect x="500" y="52" width="440" height="540" rx="14"/></clipPath>
+    <clipPath id="clip-c"><rect x="976" y="52" width="440" height="540" rx="14"/></clipPath>
+  </defs>
+
+  <rect width="1440" height="620" fill="#F4EFEA"/>
+  <text x="24" y="34" font-size="16" font-weight="800" fill="#17151F">Theme previews</text>
+  <text x="1416" y="34" font-size="11" font-family="'JetBrains Mono', monospace" fill="#5A5676" text-anchor="end">MARKETING · GENERATED SITE · SETUP WIZARD</text>
+
+  <!-- ═══ A · Marketing homepage (dark hero) ═══ -->
+  <g clip-path="url(#clip-a)">
+    <rect x="24" y="52" width="440" height="540" fill="#FFF9F5"/>
+    <rect x="24" y="52" width="440" height="6" fill="url(#p-spectrum)"/>
+    <!-- dark hero -->
+    <rect x="24" y="58" width="440" height="250" fill="url(#p-night)"/>
+    <rect x="24" y="58" width="440" height="250" fill="url(#p-glow)"/>
+    <!-- nav -->
+    <rect x="44" y="76" width="26" height="26" rx="7" fill="url(#p-brand)"/>
+    <text x="53" y="94" font-size="14" font-weight="800" fill="#fff">P</text>
+    <text x="78" y="94" font-size="14" font-weight="700" fill="#fff">Pressroot</text>
+    <text x="330" y="94" font-size="11" fill="#C9C3E0">Docs   Testers   GitHub</text>
+    <!-- eyebrow + headline -->
+    <circle cx="50" cy="136" r="3" fill="#37E29A"/>
+    <text x="60" y="140" font-size="10" font-family="'JetBrains Mono', monospace" letter-spacing="1.5" fill="#C9B8FF">WORDPRESS THEME · AI SITE BUILDER</text>
+    <text x="44" y="182" font-size="34" font-weight="800" letter-spacing="-1" fill="#fff">Your brand in.</text>
+    <text x="44" y="220" font-size="34" font-weight="800" letter-spacing="-1" fill="url(#p-softlight)">Your site <tspan font-family="'Instrument Serif', Georgia, serif" font-style="italic" font-weight="400">out.</tspan></text>
+    <rect x="44" y="244" width="150" height="36" rx="18" fill="url(#p-brand)"/>
+    <text x="64" y="267" font-size="13" font-weight="700" fill="#fff">Get started →</text>
+    <rect x="206" y="244" width="120" height="36" rx="18" fill="none" stroke="#fff" stroke-opacity=".5" stroke-width="1.5"/>
+    <text x="230" y="267" font-size="13" font-weight="700" fill="#fff">★ Star</text>
+    <!-- stats strip -->
+    <g font-family="'JetBrains Mono', monospace">
+      <text x="64" y="348" font-size="24" font-weight="800" fill="#17151F" font-family="Outfit, sans-serif">6</text>
+      <text x="64" y="366" font-size="9" letter-spacing="1" fill="#5A5676">SETUP STEPS</text>
+      <text x="184" y="348" font-size="24" font-weight="800" fill="#17151F" font-family="Outfit, sans-serif">13</text>
+      <text x="184" y="366" font-size="9" letter-spacing="1" fill="#5A5676">STYLE KITS</text>
+      <text x="304" y="348" font-size="24" font-weight="800" fill="#17151F" font-family="Outfit, sans-serif">$0</text>
+      <text x="304" y="366" font-size="9" letter-spacing="1" fill="#5A5676">AI BY DEFAULT</text>
+    </g>
+    <!-- feature cards -->
+    <g>
+      <rect x="44" y="392" width="190" height="86" rx="14" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+      <rect x="44" y="392" width="190" height="4" rx="2" fill="url(#p-spectrum)"/>
+      <text x="58" y="424" font-size="14">✨</text>
+      <text x="58" y="446" font-size="13" font-weight="700" fill="#17151F">AI is the page builder</text>
+      <text x="58" y="464" font-size="10" fill="#5A5676">Writes copy &amp; images — never markup</text>
+      <rect x="252" y="392" width="190" height="86" rx="14" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+      <rect x="252" y="392" width="190" height="4" rx="2" fill="url(#p-spectrum)"/>
+      <text x="266" y="424" font-size="14">🎨</text>
+      <text x="266" y="446" font-size="13" font-weight="700" fill="#17151F">Design generator</text>
+      <text x="266" y="464" font-size="10" fill="#5A5676">13 kits × 6 trends × variants</text>
+    </g>
+    <!-- CTA band -->
+    <rect x="44" y="500" width="398" height="70" rx="16" fill="url(#p-night)"/>
+    <text x="64" y="532" font-size="15" font-weight="800" fill="#fff">Help shape Pressroot.</text>
+    <rect x="64" y="542" width="110" height="20" rx="10" fill="url(#p-brand)"/>
+    <text x="80" y="556" font-size="10" font-weight="700" fill="#fff">Become a tester</text>
+  </g>
+  <rect x="24" y="52" width="440" height="540" rx="14" fill="none" stroke="#D8D2C8" stroke-width="1.5"/>
+  <text x="24" y="612" font-size="12" font-weight="600" fill="#4B4560">A · Marketing site — dark hero, spectrum cards, CTA band</text>
+
+  <!-- ═══ B · Generated business site (light) ═══ -->
+  <g clip-path="url(#clip-b)">
+    <rect x="500" y="52" width="440" height="540" fill="#FFF9F5"/>
+    <rect x="500" y="52" width="440" height="6" fill="url(#p-spectrum)"/>
+    <!-- header -->
+    <rect x="500" y="58" width="440" height="48" fill="#FFF9F5"/>
+    <line x1="500" y1="106" x2="940" y2="106" stroke="#ECE6FB" stroke-width="1.5"/>
+    <text x="522" y="88" font-size="15" font-weight="800" fill="#17151F">Keystone Plumbing</text>
+    <text x="700" y="88" font-size="11" fill="#4B4560">Services   Pricing   Contact</text>
+    <rect x="836" y="70" width="86" height="28" rx="14" fill="url(#p-brand)"/>
+    <text x="850" y="89" font-size="11" font-weight="700" fill="#fff">Get a quote</text>
+    <!-- hero -->
+    <circle cx="527" cy="146" r="3" fill="#37E29A"/>
+    <text x="537" y="150" font-size="10" font-family="'JetBrains Mono', monospace" letter-spacing="1.5" fill="#6C4CF1">SERVING ADAMS COUNTY</text>
+    <text x="522" y="192" font-size="30" font-weight="800" letter-spacing="-0.8" fill="#17151F">Plumbing done <tspan font-family="'Instrument Serif', Georgia, serif" font-style="italic" font-weight="400" fill="#6C4CF1">right.</tspan></text>
+    <text x="522" y="218" font-size="12" fill="#4B4560">Licensed, on time, and honest about the bill. Same-day</text>
+    <text x="522" y="234" font-size="12" fill="#4B4560">service for the emergencies that never wait.</text>
+    <rect x="522" y="252" width="122" height="34" rx="17" fill="url(#p-brand)"/>
+    <text x="540" y="274" font-size="12" font-weight="700" fill="#fff">Book now →</text>
+    <rect x="656" y="252" width="96" height="34" rx="17" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+    <text x="674" y="274" font-size="12" font-weight="700" fill="#6C4CF1">Services</text>
+    <!-- hero image card -->
+    <rect x="778" y="140" width="144" height="150" rx="14" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+    <rect x="778" y="140" width="144" height="4" rx="2" fill="url(#p-spectrum)"/>
+    <rect x="790" y="156" width="120" height="90" rx="8" fill="#EFEAFD"/>
+    <text x="828" y="208" font-size="22">🔧</text>
+    <text x="790" y="270" font-size="10" font-family="'JetBrains Mono', monospace" fill="#5A5676">AI HERO IMAGE</text>
+    <!-- service cards -->
+    <g>
+      <rect x="522" y="322" width="126" height="108" rx="14" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+      <rect x="522" y="322" width="126" height="4" rx="2" fill="url(#p-spectrum)"/>
+      <text x="536" y="354" font-size="13">🚿</text>
+      <text x="536" y="376" font-size="12" font-weight="700" fill="#17151F">Repairs</text>
+      <text x="536" y="394" font-size="9.5" fill="#5A5676">Leaks, clogs, fixtures —</text>
+      <text x="536" y="407" font-size="9.5" fill="#5A5676">fixed the first visit.</text>
+      <rect x="660" y="322" width="126" height="108" rx="14" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+      <rect x="660" y="322" width="126" height="4" rx="2" fill="url(#p-spectrum)"/>
+      <text x="674" y="354" font-size="13">🔥</text>
+      <text x="674" y="376" font-size="12" font-weight="700" fill="#17151F">Water heaters</text>
+      <text x="674" y="394" font-size="9.5" fill="#5A5676">Install &amp; service, tank</text>
+      <text x="674" y="407" font-size="9.5" fill="#5A5676">or tankless.</text>
+      <rect x="798" y="322" width="124" height="108" rx="14" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+      <rect x="798" y="322" width="124" height="4" rx="2" fill="url(#p-spectrum)"/>
+      <text x="812" y="354" font-size="13">🏗</text>
+      <text x="812" y="376" font-size="12" font-weight="700" fill="#17151F">Remodels</text>
+      <text x="812" y="394" font-size="9.5" fill="#5A5676">Kitchen &amp; bath rough-in</text>
+      <text x="812" y="407" font-size="9.5" fill="#5A5676">to finish.</text>
+    </g>
+    <!-- footer -->
+    <rect x="500" y="462" width="440" height="130" fill="#17151F"/>
+    <text x="522" y="496" font-size="13" font-weight="700" fill="#fff">Keystone Plumbing</text>
+    <text x="522" y="514" font-size="10" fill="#C9C3E0">Honest plumbing for busy families.</text>
+    <text x="522" y="546" font-size="10" font-family="'JetBrains Mono', monospace" fill="#8F88AD">MON–FRI 8–5 · (717) 555-0142</text>
+    <rect x="522" y="560" width="120" height="3" rx="1.5" fill="url(#p-spectrum)"/>
+  </g>
+  <rect x="500" y="52" width="440" height="540" rx="14" fill="none" stroke="#D8D2C8" stroke-width="1.5"/>
+  <text x="500" y="612" font-size="12" font-weight="600" fill="#4B4560">B · A generated business site — goal-driven CTA, spectrum cards, business facts</text>
+
+  <!-- ═══ C · Setup wizard (admin) ═══ -->
+  <g clip-path="url(#clip-c)">
+    <rect x="976" y="52" width="440" height="540" fill="#F6F4FD"/>
+    <!-- rf hero -->
+    <rect x="976" y="52" width="440" height="88" fill="url(#p-night)"/>
+    <rect x="976" y="52" width="440" height="6" fill="url(#p-spectrum)"/>
+    <rect x="996" y="76" width="22" height="22" rx="6" fill="#fff"/>
+    <rect x="1000" y="83" width="14" height="3" rx="1.5" fill="url(#p-spectrum)"/>
+    <text x="1026" y="93" font-size="13" font-weight="700" fill="#fff">Pressroot</text>
+    <text x="996" y="126" font-size="10" font-family="'JetBrains Mono', monospace" letter-spacing="1.5" fill="#C9B8FF">SET UP YOUR WEBSITE</text>
+    <!-- stepper -->
+    <g font-size="10" font-weight="600">
+      <rect x="996" y="156" width="92" height="26" rx="13" fill="url(#p-brand)"/>
+      <circle cx="1012" cy="169" r="8" fill="#fff" fill-opacity=".25"/><text x="1009" y="173" fill="#fff">✓</text>
+      <text x="1026" y="173" fill="#fff">Business</text>
+      <rect x="1094" y="156" width="104" height="26" rx="13" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+      <circle cx="1110" cy="169" r="8" fill="#E7F8EE"/><text x="1107" y="173" fill="#1E7A34">✓</text>
+      <text x="1124" y="173" fill="#17151F">Connections</text>
+      <rect x="1204" y="156" width="60" height="26" rx="13" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+      <circle cx="1220" cy="169" r="8" fill="#EFEAFD"/><text x="1217" y="173" fill="#6C4CF1">3</text>
+      <text x="1234" y="173" fill="#5A5676">WP</text>
+      <rect x="1270" y="156" width="86" height="26" rx="13" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+      <circle cx="1286" cy="169" r="8" fill="#EFEAFD"/><text x="1283" y="173" fill="#6C4CF1">4</text>
+      <text x="1300" y="173" fill="#5A5676">Generate</text>
+      <rect x="1362" y="156" width="40" height="26" rx="13" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+      <circle cx="1378" cy="169" r="8" fill="#EFEAFD"/><text x="1375" y="173" fill="#6C4CF1">5</text>
+    </g>
+    <!-- progress -->
+    <rect x="996" y="196" width="360" height="8" rx="4" fill="#ECE6FB"/>
+    <rect x="996" y="196" width="120" height="8" rx="4" fill="url(#p-spectrum)"/>
+    <text x="1366" y="204" font-size="9" font-family="'JetBrains Mono', monospace" fill="#5A5676">2/6 · 33%</text>
+    <!-- form card -->
+    <rect x="996" y="222" width="400" height="284" rx="16" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+    <rect x="996" y="222" width="400" height="4" rx="2" fill="url(#p-spectrum)"/>
+    <text x="1016" y="256" font-size="15" font-weight="700" fill="#17151F">1 · Tell us about your business</text>
+    <text x="1016" y="276" font-size="10" fill="#5A5676">Everything here feeds the design generator and the AI writer.</text>
+    <text x="1016" y="304" font-size="10" font-weight="600" fill="#17151F">Business name *</text>
+    <rect x="1016" y="312" width="360" height="30" rx="8" fill="#FBFAFF" stroke="#ECE6FB" stroke-width="1.5"/>
+    <text x="1028" y="332" font-size="11" fill="#17151F">Keystone Plumbing</text>
+    <text x="1016" y="366" font-size="10" font-weight="600" fill="#17151F">Business / website type</text>
+    <rect x="1016" y="374" width="360" height="30" rx="8" fill="#FBFAFF" stroke="#ECE6FB" stroke-width="1.5"/>
+    <text x="1028" y="394" font-size="11" fill="#17151F">Agency / Studio — multi-service shop ▾</text>
+    <text x="1016" y="428" font-size="10" font-weight="600" fill="#17151F">Business hours</text>
+    <rect x="1016" y="436" width="174" height="26" rx="7" fill="#FBFAFF" stroke="#ECE6FB" stroke-width="1.5"/>
+    <text x="1026" y="453" font-size="9.5" fill="#5A5676">Mon · 9:00 AM – 5:00 PM</text>
+    <rect x="1202" y="436" width="174" height="26" rx="7" fill="#FBFAFF" stroke="#ECE6FB" stroke-width="1.5"/>
+    <text x="1212" y="453" font-size="9.5" fill="#5A5676">Tue · 9:00 AM – 5:00 PM</text>
+    <rect x="1016" y="472" width="220" height="30" rx="15" fill="url(#p-brand)"/>
+    <text x="1034" y="492" font-size="11" font-weight="700" fill="#fff">Save &amp; continue to Connections →</text>
+    <!-- status bar -->
+    <rect x="996" y="518" width="400" height="58" rx="12" fill="#fff" stroke="#ECE6FB" stroke-width="1.5"/>
+    <text x="1012" y="542" font-size="11" font-weight="700" fill="#17151F">🏗 Building your site…</text>
+    <rect x="1012" y="552" width="368" height="8" rx="4" fill="#ECE6FB"/>
+    <rect x="1012" y="552" width="240" height="8" rx="4" fill="url(#p-spectrum)"/>
+  </g>
+  <rect x="976" y="52" width="440" height="540" rx="14" fill="none" stroke="#D8D2C8" stroke-width="1.5"/>
+  <text x="976" y="612" font-size="12" font-weight="600" fill="#4B4560">C · Setup wizard — pill stepper, progress bars, live build status</text>
+</svg>

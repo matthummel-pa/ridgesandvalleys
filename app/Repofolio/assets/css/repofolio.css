@@ -1,0 +1,194 @@
+/**
+ * Repofolio front-end styles.
+ * Neutral, theme-friendly defaults driven by CSS variables you can override
+ * from your theme (e.g. --repofolio-accent).
+ */
+.repofolio-grid {
+	--repofolio-accent: #6c4cf1;
+	--repofolio-card-bg: #ffffff;
+	--repofolio-border: #e6e6ef;
+	--repofolio-fg: #17151F;
+	--repofolio-muted: #5a5676;
+	--repofolio-radius: 16px;
+	/* Brand spectrum (language-bar motif) */
+	--repofolio-spectrum: linear-gradient(90deg, #6c4cf1 0%, #ff4d9d 28%, #ff7a3d 52%, #ffc53d 72%, #37e29a 88%, #22cfee 100%);
+	display: grid;
+	gap: 20px;
+	grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.repofolio-grid.cols-1 { grid-template-columns: 1fr; }
+.repofolio-grid.cols-2 { grid-template-columns: repeat(2, 1fr); }
+.repofolio-grid.cols-3 { grid-template-columns: repeat(3, 1fr); }
+.repofolio-grid.cols-4 { grid-template-columns: repeat(4, 1fr); }
+
+@media (max-width: 900px) {
+	.repofolio-grid.cols-3,
+	.repofolio-grid.cols-4 { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+	.repofolio-grid[class*="cols-"] { grid-template-columns: 1fr; }
+}
+
+.repofolio-card {
+	position: relative;
+	background: var(--repofolio-card-bg);
+	border: 1.5px solid var(--repofolio-border);
+	border-radius: var(--repofolio-radius);
+	padding: 22px;
+	display: flex;
+	flex-direction: column;
+	gap: 12px;
+	overflow: hidden;
+	transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+/* Colorful brand spectrum accent along the top of each card */
+.repofolio-card::before {
+	content: "";
+	position: absolute;
+	inset: 0 0 auto 0;
+	height: 4px;
+	background: var(--repofolio-spectrum);
+	opacity: 0;
+	transition: opacity .18s ease;
+}
+.repofolio-card:hover::before { opacity: 1; }
+.repofolio-card:hover {
+	transform: translateY(-3px);
+	box-shadow: 0 14px 40px -18px rgba(23, 21, 31, .35);
+	border-color: var(--repofolio-accent);
+}
+
+.repofolio-card__head {
+	display: flex;
+	align-items: center;
+	gap: 10px;
+}
+.repofolio-avatar {
+	border-radius: 50%;
+	flex: 0 0 auto;
+}
+.repofolio-card__title {
+	margin: 0;
+	font-size: 1.15rem;
+	line-height: 1.2;
+	font-weight: 700;
+}
+.repofolio-card__title a {
+	color: var(--repofolio-fg);
+	text-decoration: none;
+}
+.repofolio-card__title a:hover { color: var(--repofolio-accent); }
+
+.repofolio-badge {
+	margin-left: auto;
+	font-size: .68rem;
+	text-transform: uppercase;
+	letter-spacing: .06em;
+	padding: 2px 8px;
+	border-radius: 999px;
+	background: rgba(124, 92, 255, .12);
+	color: var(--repofolio-accent);
+}
+
+.repofolio-card__desc {
+	margin: 0;
+	color: var(--repofolio-muted);
+	font-size: .95rem;
+	line-height: 1.5;
+}
+
+.repofolio-topics {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 6px;
+}
+.repofolio-topic {
+	font-size: .72rem;
+	padding: 3px 9px;
+	border-radius: 999px;
+	background: rgba(124, 92, 255, .08);
+	color: var(--repofolio-accent);
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.repofolio-langbar {
+	display: flex;
+	height: 7px;
+	border-radius: 999px;
+	overflow: hidden;
+	background: var(--repofolio-border);
+}
+.repofolio-langseg { display: block; height: 100%; }
+
+.repofolio-meta {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 14px;
+	font-size: .85rem;
+	color: var(--repofolio-muted);
+	align-items: center;
+}
+.repofolio-metaitem { display: inline-flex; align-items: center; gap: 5px; }
+.repofolio-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+.repofolio-branch {
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-size: .78rem;
+	background: var(--repofolio-border);
+	padding: 1px 7px;
+	border-radius: 6px;
+}
+
+.repofolio-sub {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px;
+	align-items: center;
+	font-size: .8rem;
+	color: var(--repofolio-muted);
+}
+.repofolio-tag {
+	font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+	font-weight: 600;
+	color: var(--repofolio-fg);
+	background: rgba(124, 92, 255, .1);
+	padding: 2px 8px;
+	border-radius: 6px;
+}
+.repofolio-license {
+	border: 1px solid var(--repofolio-border);
+	padding: 1px 7px;
+	border-radius: 6px;
+}
+
+.repofolio-links {
+	margin-top: auto;
+	display: flex;
+	gap: 14px;
+	padding-top: 4px;
+}
+.repofolio-link {
+	font-weight: 600;
+	font-size: .9rem;
+	text-decoration: none;
+	color: var(--repofolio-accent);
+}
+.repofolio-link:hover { text-decoration: underline; }
+.repofolio-link--demo { color: var(--repofolio-fg); }
+
+.repofolio-empty {
+	color: var(--repofolio-muted);
+	font-style: italic;
+}
+
+/* Dark-scheme friendliness. */
+@media (prefers-color-scheme: dark) {
+	.repofolio-grid {
+		--repofolio-card-bg: #17151f;
+		--repofolio-border: #2a2740;
+		--repofolio-fg: #f3f0ff;
+		--repofolio-muted: #a29ec2;
+	}
+}
