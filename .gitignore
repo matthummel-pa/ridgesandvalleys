@@ -1,11 +1,28 @@
-/node_modules
-/vendor
-/public/build
-/public/hot
-/.dev-wp
-.env
-npm-debug.log
+# Env / secrets
+/.env
+/.env.*
+!/.env.example
+
+# Composer-managed (not committed)
+/vendor/
+/web/wp/
+/web/app/plugins/*
+!/web/app/plugins/.gitkeep
+/web/app/mu-plugins/*
+!/web/app/mu-plugins/bedrock-autoloader.php
+
+# Runtime content
+/web/app/uploads/
+/web/app/upgrade/
+/web/app/cache/
+
+# Sage theme build artifacts
+/web/app/themes/ridgesandvalleys/node_modules/
+/web/app/themes/ridgesandvalleys/vendor/
+/web/app/themes/ridgesandvalleys/public/build/
+/web/app/themes/ridgesandvalleys/public/hot/
+/web/app/themes/ridgesandvalleys/.dev-wp/
+
+# Misc
 .DS_Store
-/_to_delete/
-/zinnO3dA
-/rv-build-src.zip
+npm-debug.log
