@@ -1,16 +1,9 @@
 {
-    "preset": "laravel",
-    "exclude": [
-        "vendor",
-        "node_modules",
-        "public/build",
-        "resources/lang"
-    ],
-    "rules": {
-        "concat_space": {
-            "spacing": "one"
-        },
-        "no_unused_imports": true,
-        "single_quote": true
-    }
+  "preset": "per",
+  "exclude": [
+    "web/wp",
+    "web/app/mu-plugins/bedrock-disallow-indexing",
+    "web/app/plugins",
+    "web/app/themes/twentytwentyfive"
+  ]
 }

@@ -1,0 +1,358 @@
+/*!
+ * Ridges & Valleys Studio — bundled enhancement styles.
+ *
+ * Authored during design and baked into the theme so the full design ships with
+ * the theme files (independent of the Customizer/database). Enqueued from
+ * app/setup.php. All surfaces/borders/text use the theme's color tokens so every
+ * component adapts correctly in BOTH light and dark mode.
+ */
+
+/* ============================================================
+   Dynamic contact form (editor-built form builder)
+   ============================================================ */
+/* 6-column grid so fields can be full / half / third width. */
+/* .rv-form.rv-form--dynamic (0,2,0) so display:grid reliably beats app.css's
+   .rv-form{display:flex} regardless of stylesheet load order (Vite injects
+   app.css late in dev, which otherwise forces flex and collapses the columns). */
+.rv-form.rv-form--dynamic{display:grid;grid-template-columns:repeat(6,1fr);gap:1.15rem 1rem;align-items:start}
+.rv-form--dynamic .rv-ff{display:flex;flex-direction:column;gap:.4rem;margin:0;min-width:0;grid-column:span 6}
+.rv-form--dynamic .rv-ff--half{grid-column:span 3}
+.rv-form--dynamic .rv-ff--third{grid-column:span 2}
+@media(max-width:480px){
+  .rv-form--dynamic .rv-ff,
+  .rv-form--dynamic .rv-ff--half,
+  .rv-form--dynamic .rv-ff--third{grid-column:span 6}
+}
+.rv-form--dynamic label{font-family:var(--font-display);font-weight:600;color:var(--color-ink);font-size:.95rem}
+.rv-form--dynamic input,
+.rv-form--dynamic textarea,
+.rv-form--dynamic select{font-family:var(--font-body);font-size:1rem;color:var(--color-ink);background:var(--color-surface);border:1.5px solid var(--color-line);border-radius:14px;padding:.8rem .95rem;width:100%}
+.rv-form--dynamic textarea{min-height:8rem;resize:vertical}
+.rv-form--dynamic input:focus,
+.rv-form--dynamic textarea:focus,
+.rv-form--dynamic select:focus{outline:none;border-color:var(--color-pine)}
+/* Checkbox rows sit inline with their caption. */
+.rv-form--dynamic .rv-ff-check{flex-direction:row;align-items:center}
+.rv-form--dynamic .rv-ff-checkline{display:flex;align-items:flex-start;gap:.6rem;font-weight:500;cursor:pointer}
+.rv-form--dynamic .rv-ff-check input[type=checkbox]{width:1.15rem;height:1.15rem;flex:none;margin-top:.15rem;accent-color:var(--color-pine)}
+/* Submit row + optional full-width button. */
+/* Submit row is a flex column; align-items:flex-start stops the button from
+   stretching, so by default it's auto-width and left-aligned. The --full modifier
+   opts into a full-width, centered button. */
+.rv-form--dynamic .rv-ff-actions{margin-top:.25rem;align-items:flex-start}
+.rv-form--dynamic .rv-ff-actions--center{align-items:center}
+.rv-form--dynamic .rv-ff-actions--right{align-items:flex-end}
+.rv-form--dynamic .rv-ff-btn--full{width:100%;justify-content:center}
+/* Field-style variants (design option). */
+.rv-form--soft input,
+.rv-form--soft textarea,
+.rv-form--soft select{background:color-mix(in srgb,var(--color-pine) 5%,var(--color-surface));border-color:transparent}
+.rv-form--soft input:focus,
+.rv-form--soft textarea:focus,
+.rv-form--soft select:focus{border-color:var(--color-pine)}
+.rv-form--underline input,
+.rv-form--underline textarea,
+.rv-form--underline select{border-radius:0;border-width:0 0 1.5px;background:transparent;padding-left:0;padding-right:0}
+/* Hidden-label design option: keep labels for screen readers, hide visually. */
+.rv-form--nolabels .rv-ff > label{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.rv-form--nolabels .rv-ff-checkline{font-weight:500}
+
+/* ============================================================
+   Brand logo (header) — light/dark lockup swap
+   ============================================================ */
+.rv-brand-logo-link{display:inline-flex;align-items:center;text-decoration:none;line-height:0}
+.rv-brand-logo-link .rv-logo{display:block;height:44px;width:auto}
+.rv-brand-logo-link .rv-logo-dark{display:none}
+html[data-theme="dark"] .rv-brand-logo-link .rv-logo-light{display:none}
+html[data-theme="dark"] .rv-brand-logo-link .rv-logo-dark{display:block}
+@media(max-width:600px){.rv-brand-logo-link .rv-logo{height:38px}}
+/* Text-only wordmark fallback (no Media Library logo set) */
+.rv-brand-text-link{display:inline-flex;align-items:center;text-decoration:none}
+/* Footer logo (dark band): use a purpose-made dark logo as-is; invert a
+   light-only logo to white so it still reads on the dark footer. */
+.rv-footer .rv-footer-logo{filter:none;opacity:1}
+.rv-footer .rv-footer-logo--invert{filter:brightness(0) invert(1);opacity:.95}
+
+/* Hide top bar on scroll (Header → Hide top bar on scroll). Collapses the strip
+   by height only, keeping its background color fully solid throughout so there's
+   no translucent flash / color glitch as it opens and closes. */
+.rv-topbar-hide .rv-topbar{overflow:hidden;max-height:80px;transition:max-height .32s ease,padding .32s ease}
+.rv-topbar-hide.rv-scrolled .rv-topbar{max-height:0;padding-block:0;border-bottom-width:0}
+
+/* ---- Single-post hero: always left-aligned (editorial reading context) ----
+   The marketing hero (.rv-hero) alignment is controlled from
+   Customizer > Theme Options > Layout > "Hero content alignment". */
+.rv-single-hero, .rv-single-hero .rv-reading, .rv-single-title,
+.rv-single-hero .rv-post-meta, .rv-single-hero .rv-eyebrow { text-align: left; }
+.rv-single-hero .rv-post-meta { justify-content: flex-start; }
+
+/* ============================================================
+   In-article summary + table of contents box (single posts)
+   ============================================================ */
+.rv-tldr{margin:1.75rem 0 2.5rem;padding:1.5rem 1.6rem;background:var(--color-surface);border:1px solid var(--color-line);border-left:4px solid var(--color-pine);border-radius:12px;box-shadow:var(--shadow-soft)}
+.rv-tldr-eyebrow{display:block;font-family:var(--font-mono,ui-monospace,monospace);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--color-clay);margin-bottom:.5rem}
+.rv-tldr-summary p{margin:0;font-size:1.02rem;line-height:1.62;color:var(--color-ink)}
+.rv-tldr-toc{margin-top:1.3rem;padding-top:1.2rem;border-top:1px solid var(--color-line)}
+.rv-tldr-list{margin:.5rem 0 0;padding:0;list-style:none;counter-reset:rvtoc;display:grid;gap:.5rem}
+.rv-tldr-list li{counter-increment:rvtoc;display:flex;gap:.65rem;align-items:baseline;line-height:1.4}
+.rv-tldr-list li::before{content:counter(rvtoc,decimal-leading-zero);font-family:var(--font-mono,ui-monospace,monospace);font-size:.74rem;font-weight:600;color:var(--color-clay);min-width:1.5rem}
+.rv-tldr-list a{color:var(--color-ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s,color .15s}
+.rv-tldr-list a:hover,.rv-tldr-list a:focus{color:var(--color-pine);border-bottom-color:var(--color-pine)}
+.rv-prose h2{scroll-margin-top:5.5rem}
+@media(min-width:720px){.rv-tldr{padding:1.75rem 1.9rem}}
+
+/* ============================================================
+   Comment section (single posts) — see comments.php
+   ============================================================ */
+.rv-comments{margin-top:3.5rem}
+.rv-comments-head{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.rv-comments-title{font-size:clamp(1.35rem,3vw,1.8rem);margin:0}
+.rv-comments-count{color:var(--color-clay)}
+.rv-comments-sort{display:inline-flex;gap:.15rem;background:color-mix(in srgb,var(--color-ink) 6%,transparent);border-radius:999px;padding:.2rem}
+.rv-sort-btn{font:600 .8rem/1 var(--font-sans,inherit);border:0;background:transparent;color:var(--color-muted);padding:.4rem .85rem;border-radius:999px;cursor:pointer;transition:background .15s,color .15s}
+.rv-sort-btn.is-active{background:var(--color-surface);color:var(--color-ink);box-shadow:var(--shadow-soft)}
+.rv-comment-list{list-style:none;margin:0;padding:0}
+.rv-comment-list .comment{margin:0 0 1rem}
+.rv-comment-list .comment-body{position:relative;background:var(--color-surface);border:1px solid var(--color-line);border-radius:14px;padding:1.15rem 1.3rem;box-shadow:var(--shadow-soft)}
+.rv-comment-list .comment-meta{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap;margin:0 0 .65rem}
+.rv-comment-list .comment-author{display:flex;align-items:center;gap:.65rem;min-width:0}
+.rv-comment-list .comment-author .avatar{width:44px;height:44px;border-radius:50%;flex:none}
+.rv-comment-list .comment-author .fn{font-style:normal;font-weight:700;color:var(--color-ink)}
+.rv-comment-list .comment-author .fn a{color:inherit;text-decoration:none}
+.rv-comment-list .says{display:none}
+.rv-comment-list .comment-metadata{font-family:var(--font-mono,ui-monospace,monospace);font-size:.68rem;letter-spacing:.04em;text-transform:uppercase;color:var(--color-muted)}
+.rv-comment-list .comment-metadata a{color:inherit;text-decoration:none}
+.rv-comment-list .comment-metadata a:hover{color:var(--color-pine)}
+.rv-comment-list .comment-metadata .edit-link a{color:var(--color-clay)}
+.rv-comment-list .comment-content{line-height:1.62;color:var(--color-ink)}
+.rv-comment-list .comment-content p{margin:0 0 .7rem}
+.rv-comment-list .comment-content p:last-child{margin-bottom:0}
+.rv-comment-list .comment-awaiting-moderation{display:inline-block;font-family:var(--font-mono,monospace);font-size:.66rem;text-transform:uppercase;letter-spacing:.05em;color:var(--color-clay);margin-bottom:.4rem}
+.rv-comment-list .reply{margin-top:.6rem}
+.rv-comment-list .comment-reply-link{display:inline-flex;align-items:center;gap:.3rem;font:600 .8rem/1 var(--font-sans,inherit);color:var(--color-pine);text-decoration:none;border:1px solid color-mix(in srgb,var(--color-pine) 30%,transparent);padding:.35rem .7rem;border-radius:999px;transition:background .15s,color .15s}
+.rv-comment-list .comment-reply-link::before{content:"\21A9";font-size:.9em}
+.rv-comment-list .comment-reply-link:hover{background:var(--color-pine);color:#fff;border-color:var(--color-pine)}
+.rv-comment-list .comment.bypostauthor>.comment-body{border-color:color-mix(in srgb,var(--color-pine) 45%,var(--color-line));background:color-mix(in srgb,var(--color-pine) 7%,var(--color-surface))}
+.rv-comment-list .comment.bypostauthor>.comment-body .fn::after{content:"Author";margin-left:.5rem;font-family:var(--font-mono,monospace);font-size:.6rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#fff;background:var(--color-pine);padding:.14rem .42rem;border-radius:5px;vertical-align:middle}
+.rv-comment-list .children{list-style:none;margin:.75rem 0 0;padding:0 0 0 1.5rem;border-left:2px solid color-mix(in srgb,var(--color-pine) 25%,transparent)}
+.rv-comment-list .children .comment{margin-bottom:.75rem}
+@media(max-width:600px){.rv-comment-list .children{padding-left:.85rem}}
+.rv-comments-pagination{margin:1.5rem 0}
+.rv-comments-closed{font-size:.92rem;color:var(--color-muted);background:color-mix(in srgb,var(--color-ink) 5%,transparent);border-radius:10px;padding:.85rem 1rem}
+.rv-comment-form,.comment-respond{margin-top:1.75rem}
+.rv-form-title{font-size:clamp(1.2rem,2.6vw,1.5rem);margin:0 0 .35rem}
+.rv-cancel-reply{font-size:.8rem;font-weight:500}
+.rv-cancel-reply a{color:var(--color-clay)}
+.rv-form-note{font-size:.88rem;color:var(--color-muted);margin:0 0 1.2rem}
+.rv-comment-form{display:grid;grid-template-columns:1fr 1fr;gap:0 1.1rem;background:var(--color-surface);border:1px solid var(--color-line);border-radius:16px;padding:1.5rem}
+.rv-comment-form>*{grid-column:1 / -1}
+.rv-comment-form .rvc-field-half{grid-column:auto}
+@media(max-width:560px){.rv-comment-form .rvc-field-half{grid-column:1 / -1}}
+.rvc-field{display:flex;flex-direction:column;gap:.35rem;margin:0 0 1rem}
+.rvc-field label{font-size:.82rem;font-weight:600;color:var(--color-ink)}
+.rvc-field .rvc-req{color:var(--color-clay)}
+.rvc-field .rvc-optional{font-weight:400;color:var(--color-muted);text-transform:lowercase;font-size:.78rem}
+.rvc-field input,.rvc-field textarea{width:100%;padding:.7rem .85rem;border:1px solid var(--color-line);border-radius:10px;background:var(--color-paper);font:inherit;color:var(--color-ink);transition:border-color .15s,box-shadow .15s}
+.rvc-field textarea{resize:vertical;min-height:8rem}
+.rvc-field input:focus,.rvc-field textarea:focus{outline:none;border-color:var(--color-pine);box-shadow:0 0 0 3px color-mix(in srgb,var(--color-pine) 22%,transparent)}
+.rvc-field-hint{font-size:.74rem;color:var(--color-muted)}
+.rvc-charcount{font-size:.72rem;color:var(--color-muted);min-height:1em;text-align:right}
+.rvc-field-check{flex-direction:row;align-items:center;gap:.55rem}
+.rvc-field-check input{width:auto}
+.rvc-field-check label{font-weight:400;font-size:.85rem;color:var(--color-muted)}
+.rv-comment-submit{margin-top:.25rem;justify-self:start;cursor:pointer}
+.form-submit{margin:0}
+.rvc-hp{position:absolute!important;left:-9999px!important;width:1px;height:1px;overflow:hidden}
+
+/* ============================================================
+   Single-post enhancements: progress bar, share, helpful,
+   inline CTA, floating CTA  (see content-single.blade.php)
+   ============================================================ */
+.rv-progress{position:fixed;top:0;left:0;right:0;height:3px;background:transparent;z-index:1000;pointer-events:none}
+.rv-progress-bar{display:block;height:100%;width:0;background:var(--color-clay);transition:width .1s linear}
+.rv-single-actions{display:flex;align-items:center;justify-content:space-between;gap:1rem 1.5rem;flex-wrap:wrap;margin-top:2.25rem;padding-top:1.5rem;border-top:1px solid var(--color-line)}
+.rv-share{display:flex;align-items:center;gap:.7rem}
+.rv-share-label{font-family:var(--font-mono,ui-monospace,monospace);font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted)}
+.rv-share-btns{display:flex;gap:.4rem}
+.rv-share-btn{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:50%;border:1px solid var(--color-line);background:var(--color-surface);color:var(--color-ink);cursor:pointer;transition:background .15s,color .15s,border-color .15s;position:relative;text-decoration:none}
+.rv-share-btn:hover{background:var(--color-pine);color:#fff;border-color:var(--color-pine)}
+.rv-share-btn svg,.rv-share-btn .rv-icon{width:18px;height:18px}
+.rv-share-copied{position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:var(--color-pine);color:#fff;font-size:.64rem;padding:.2rem .45rem;border-radius:5px;opacity:0;pointer-events:none;transition:opacity .15s;white-space:nowrap}
+.rv-share-copy.is-copied .rv-share-copied{opacity:1}
+.rv-helpful{display:flex;align-items:center;gap:.7rem;flex-wrap:wrap}
+.rv-helpful-q{font-weight:600;font-size:.9rem;color:var(--color-ink)}
+.rv-helpful-btns{display:flex;gap:.4rem}
+.rv-helpful-btn{font:600 .82rem/1 var(--font-sans,inherit);border:1px solid color-mix(in srgb,var(--color-pine) 30%,transparent);background:var(--color-surface);color:var(--color-pine);padding:.5rem .95rem;border-radius:999px;cursor:pointer;transition:background .15s,color .15s}
+.rv-helpful-btn:hover{background:var(--color-pine);color:#fff}
+.rv-helpful-thanks{margin:0;font-size:.88rem;color:var(--color-muted)}
+.rv-helpful-thanks a{color:var(--color-pine)}
+.rv-inline-cta{display:flex;align-items:center;justify-content:space-between;gap:1.2rem;flex-wrap:wrap;margin:2.25rem 0;padding:1.35rem 1.55rem;background:var(--color-pine);border-radius:14px;color:#fff}
+.rv-inline-cta-body{display:flex;flex-direction:column;gap:.25rem;max-width:40ch}
+.rv-inline-cta-body strong{font-size:1.06rem;line-height:1.3;color:#fff}
+.rv-inline-cta-body span{font-size:.9rem;opacity:.92;line-height:1.45}
+.rv-inline-cta .rv-btn{white-space:nowrap;flex:none;text-decoration:none}
+.rv-inline-cta .rv-btn-primary{background:#fff;color:var(--color-pine)}
+.rv-inline-cta .rv-btn-primary:hover{background:var(--color-paper);color:var(--color-pine)}
+.rv-floating-cta{position:fixed;bottom:1.25rem;right:1.25rem;z-index:900;width:300px;max-width:calc(100vw - 2rem);background:var(--color-surface);border:1px solid var(--color-line);border-radius:14px;box-shadow:var(--shadow-lift);padding:1.15rem 1.2rem 1.2rem;animation:rvFloatIn .25s ease}
+.rv-floating-cta[hidden]{display:none}
+@keyframes rvFloatIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+.rv-floating-close{position:absolute;top:.35rem;right:.55rem;border:0;background:transparent;font-size:1.25rem;line-height:1;color:var(--color-muted);cursor:pointer;padding:.2rem}
+.rv-floating-close:hover{color:var(--color-ink)}
+.rv-floating-title{margin:.15rem 0 .75rem;font-weight:600;font-size:.95rem;padding-right:1.1rem;color:var(--color-ink)}
+.rv-floating-btn{width:100%;justify-content:center}
+@media(max-width:600px){.rv-floating-cta{left:1rem;right:1rem;bottom:1rem;width:auto}}
+
+/* ============================================================
+   Performance / Core Web Vitals
+   ============================================================ */
+/* Reserve the single-post hero's space so it never shifts layout (CLS),
+   and cover-fit the image instead of distorting it (object-fit was "fill"). */
+.rv-single-figure{aspect-ratio:16/9}
+.rv-single-image{aspect-ratio:16/9;width:100%;height:auto;object-fit:cover;display:block}
+
+/* ============================================================
+   Dark-mode accent corrections
+   The theme's global `[data-theme=dark] a{color:sage}` and low-contrast pine/
+   clay-on-dark need shifting to the dark accents (wheat/sage), matching the
+   theme's own dark treatment. Surfaces already adapt via the tokens above.
+   ============================================================ */
+html[data-theme="dark"] .rv-tldr-eyebrow,
+html[data-theme="dark"] .rv-tldr-list li::before,
+html[data-theme="dark"] .rv-comments-count,
+html[data-theme="dark"] .rv-comment-awaiting-moderation,
+html[data-theme="dark"] .rvc-field .rvc-req,
+html[data-theme="dark"] .rv-cancel-reply a,
+html[data-theme="dark"] .rv-comment-list .comment-metadata .edit-link a { color: var(--color-wheat); }
+
+html[data-theme="dark"] .rv-tldr-list a:hover,
+html[data-theme="dark"] .rv-tldr-list a:focus,
+html[data-theme="dark"] .rv-comment-list .comment-metadata a:hover,
+html[data-theme="dark"] .rv-comment-list .comment-reply-link,
+html[data-theme="dark"] .rv-helpful-btn,
+html[data-theme="dark"] .rv-helpful-thanks a { color: var(--color-sage); }
+
+html[data-theme="dark"] .rv-tldr-list a:hover,
+html[data-theme="dark"] .rv-tldr-list a:focus { border-bottom-color: var(--color-sage); }
+html[data-theme="dark"] .rv-comment-list .comment-reply-link,
+html[data-theme="dark"] .rv-helpful-btn { border-color: color-mix(in srgb,var(--color-sage) 40%,transparent); }
+/* Keep the hover fills legible (pine bg, light text) in dark too. */
+html[data-theme="dark"] .rv-comment-list .comment-reply-link:hover,
+html[data-theme="dark"] .rv-helpful-btn:hover,
+html[data-theme="dark"] .rv-share-btn:hover { color: #fff; }
+/* Share icons: keep them ink-toned (not the global sage) for crisp glyphs. */
+html[data-theme="dark"] .rv-share-btn { color: var(--color-ink); }
+
+/* ============================================================
+   Social icon designs (Customizer > Social Links > Icon design)
+   currentColor-based so they adapt to the top bar, footer, and menu.
+   ============================================================ */
+.rv-social--circle .rv-social-link,
+.rv-social--square .rv-social-link,
+.rv-social--soft .rv-social-link { width: 36px; height: 36px; }
+.rv-social--circle .rv-social-link { border: 1.5px solid currentColor; border-radius: 50%; }
+.rv-social--square .rv-social-link { border: 1.5px solid currentColor; border-radius: 9px; }
+.rv-social--soft .rv-social-link { background: color-mix(in srgb, currentColor 14%, transparent); border-radius: 50%; }
+.rv-social--soft .rv-social-link:hover { background: color-mix(in srgb, currentColor 22%, transparent); }
+
+/* ============================================================
+   Light/dark toggle button styles (Customizer > Header > Toggle button style)
+   Double-class selectors out-specify app.css so the chosen style wins.
+   ============================================================ */
+.rv-theme-toggle.rv-theme-toggle--pill { border-radius: 999px; }
+.rv-theme-toggle.rv-theme-toggle--soft { border-color: transparent; background: color-mix(in srgb, currentColor 12%, transparent); border-radius: 50%; }
+.rv-theme-toggle.rv-theme-toggle--soft:hover { border-color: transparent; background: color-mix(in srgb, currentColor 20%, transparent); }
+.rv-theme-toggle.rv-theme-toggle--plain { border-color: transparent; background: transparent; }
+.rv-theme-toggle.rv-theme-toggle--plain:hover { border-color: transparent; background: transparent; }
+
+/* ============================================================
+   Footer call-to-action band (Customizer > Footer)
+   Four brand designs: green, orange, green→orange gradient, light.
+   ============================================================ */
+.rv-fcta { position: relative; z-index: 1; padding: clamp(2.5rem, 6vw, 4rem) 0; }
+.rv-fcta-inner { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem 2.5rem; flex-wrap: wrap; }
+.rv-fcta-text { max-width: 46ch; }
+.rv-fcta-title { font-family: var(--font-display, inherit); font-weight: 800; font-size: clamp(1.5rem, 3.4vw, 2.2rem); line-height: 1.15; margin: .35rem 0 0; }
+.rv-fcta-sub { margin: .8rem 0 0; font-size: 1.02rem; line-height: 1.55; }
+.rv-fcta-btn { flex: none; white-space: nowrap; font-size: 1.02rem; padding: .9rem 1.7rem; border-radius: 999px; text-decoration: none; }
+@media (max-width: 640px) { .rv-fcta-inner { flex-direction: column; align-items: flex-start; } }
+
+/* Green (Pine) */
+.rv-fcta--pine { background: var(--color-pine); color: #fff; }
+.rv-fcta--pine .rv-fcta-title { color: #fff; }
+.rv-fcta--pine .rv-fcta-sub { color: rgba(255, 255, 255, .9); }
+.rv-fcta--pine .rv-eyebrow { color: var(--color-wheat); }
+.rv-fcta--pine .rv-fcta-btn { background: var(--color-wheat); color: #23201b; }
+.rv-fcta--pine .rv-fcta-btn:hover { background: #fff; color: #23201b; }
+
+/* Orange (Clay) */
+.rv-fcta--clay { background: var(--color-clay); color: #fff; }
+.rv-fcta--clay .rv-fcta-title { color: #fff; }
+.rv-fcta--clay .rv-fcta-sub { color: rgba(255, 255, 255, .92); }
+.rv-fcta--clay .rv-eyebrow { color: #fff; }
+.rv-fcta--clay .rv-fcta-btn { background: #fff; color: var(--color-clay); }
+.rv-fcta--clay .rv-fcta-btn:hover { background: var(--color-pine); color: #fff; }
+
+/* Green → Orange gradient */
+.rv-fcta--split { background: linear-gradient(110deg, var(--color-pine) 0%, var(--color-pine) 42%, var(--color-clay) 100%); color: #fff; }
+.rv-fcta--split .rv-fcta-title { color: #fff; }
+.rv-fcta--split .rv-fcta-sub { color: rgba(255, 255, 255, .92); }
+.rv-fcta--split .rv-eyebrow { color: var(--color-wheat); }
+.rv-fcta--split .rv-fcta-btn { background: #fff; color: var(--color-pine); }
+.rv-fcta--split .rv-fcta-btn:hover { background: var(--color-wheat); color: #23201b; }
+
+/* Light with green & orange accents */
+.rv-fcta--outline { background: var(--color-surface); border-top: 1px solid var(--color-line); border-bottom: 1px solid var(--color-line); }
+.rv-fcta--outline .rv-fcta-title { color: var(--color-ink); }
+.rv-fcta--outline .rv-fcta-sub { color: var(--color-muted); }
+.rv-fcta--outline .rv-eyebrow { color: var(--color-clay); }
+.rv-fcta--outline .rv-fcta-btn { background: var(--color-pine); color: #fff; }
+.rv-fcta--outline .rv-fcta-btn:hover { background: var(--color-clay); color: #fff; }
+
+/* Win over the footer's default button colors (higher specificity). */
+.rv-fcta.rv-fcta--pine .rv-fcta-btn { background: var(--color-wheat); color: #23201b; }
+.rv-fcta.rv-fcta--pine .rv-fcta-btn:hover { background: #fff; color: #23201b; }
+.rv-fcta.rv-fcta--clay .rv-fcta-btn { background: #fff; color: var(--color-clay); }
+.rv-fcta.rv-fcta--clay .rv-fcta-btn:hover { background: var(--color-pine); color: #fff; }
+.rv-fcta.rv-fcta--split .rv-fcta-btn { background: #fff; color: var(--color-pine); }
+.rv-fcta.rv-fcta--split .rv-fcta-btn:hover { background: var(--color-wheat); color: #23201b; }
+.rv-fcta.rv-fcta--outline .rv-fcta-btn { background: var(--color-pine); color: #fff; }
+.rv-fcta.rv-fcta--outline .rv-fcta-btn:hover { background: var(--color-clay); color: #fff; }
+
+/* ============================================================
+   Header layout options (Customizer > Header)
+   Fixed/sticky toggle + transparent-over-hero.
+   ============================================================ */
+/* Non-sticky header */
+.rv-nav-static .rv-header { position: static; }
+
+/* Transparent header overlaying the hero (rv-nav-transparent added on hero pages).
+   Fixed when sticky is on (transparent → solid on scroll); absolute (scrolls away)
+   when the Fixed navigation option is off. */
+.rv-nav-transparent .rv-banner { position: fixed; top: 0; left: 0; right: 0; z-index: 50; }
+.rv-nav-transparent.rv-nav-static .rv-banner { position: absolute; }
+.rv-nav-transparent .rv-topbar { background: transparent; border-bottom: 0; }
+.rv-nav-transparent .rv-header { background: transparent; border-bottom-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
+.rv-nav-transparent .rv-hero { padding-top: clamp(6.5rem, 13vw, 9.5rem); }
+/* Light text/icons over the (dark) hero */
+.rv-nav-transparent .rv-nav-list a,
+.rv-nav-transparent .rv-brand-name,
+.rv-nav-transparent .rv-topbar-note,
+.rv-nav-transparent .rv-theme-toggle,
+.rv-nav-transparent .rv-menu-toggle { color: #fff; }
+.rv-nav-transparent .rv-theme-toggle,
+.rv-nav-transparent .rv-menu-toggle { border-color: rgba(255, 255, 255, .5); background: transparent; }
+.rv-nav-transparent .rv-topbar-social { --social-color: rgba(255, 255, 255, .85); }
+/* Use the cream (dark-bg) logo while over the hero */
+.rv-nav-transparent:not(.rv-scrolled) .rv-brand-logo-link .rv-logo-light { display: none; }
+.rv-nav-transparent:not(.rv-scrolled) .rv-brand-logo-link .rv-logo-dark { display: block; }
+
+/* Solidify once scrolled past the hero top (banner position is already set above:
+   fixed when Fixed navigation is on, absolute when it's off). */
+.rv-nav-transparent.rv-scrolled .rv-header { background: color-mix(in srgb, var(--color-paper) 92%, transparent); border-bottom-color: var(--color-line); -webkit-backdrop-filter: saturate(1.3) blur(12px); backdrop-filter: saturate(1.3) blur(12px); box-shadow: 0 2px 14px rgba(35, 32, 27, .1); }
+.rv-nav-transparent.rv-scrolled .rv-topbar { background: transparent; }
+.rv-nav-transparent.rv-scrolled .rv-nav-list a,
+.rv-nav-transparent.rv-scrolled .rv-brand-name,
+.rv-nav-transparent.rv-scrolled .rv-theme-toggle,
+.rv-nav-transparent.rv-scrolled .rv-menu-toggle { color: var(--color-ink); }
+.rv-nav-transparent.rv-scrolled .rv-theme-toggle,
+.rv-nav-transparent.rv-scrolled .rv-menu-toggle { border-color: var(--color-line); }

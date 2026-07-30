@@ -1,21 +1,28 @@
-/node_modules
-/vendor
-/public/*
-!/public/.gitkeep
-.env
-.env.*
-*.log
-npm-debug.log
-*.bak
-.DS_Store
-Thumbs.db
-.idea
-.vscode
+# Env / secrets
+/.env
+/.env.*
+!/.env.example
 
-# Playground CLI dev site data
-.playground/database/
-.playground/uploads/
-.playground/site-db/
-.playground/site-uploads/
-.playground/site-seed.wxr
-.playground/site-seed-slim.wxr
+# Composer-managed (not committed)
+/vendor/
+/web/wp/
+/web/app/plugins/*
+!/web/app/plugins/.gitkeep
+/web/app/mu-plugins/*
+!/web/app/mu-plugins/bedrock-autoloader.php
+
+# Runtime content
+/web/app/uploads/
+/web/app/upgrade/
+/web/app/cache/
+
+# Sage theme build artifacts
+/web/app/themes/ridgesandvalleys-theme/node_modules/
+/web/app/themes/ridgesandvalleys-theme/vendor/
+/web/app/themes/ridgesandvalleys-theme/public/build/
+/web/app/themes/ridgesandvalleys-theme/public/hot/
+/web/app/themes/ridgesandvalleys-theme/.dev-wp/
+
+# Misc
+.DS_Store
+npm-debug.log

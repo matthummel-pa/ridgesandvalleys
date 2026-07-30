@@ -1,69 +1,45 @@
 {
-  "name": "matthummel/theme",
-  "type": "wordpress-theme",
+  "name": "matthummel-pa/ridgesandvalleys",
+  "type": "project",
   "license": "MIT",
-  "description": "Custom Sage theme for matthummel.com",
-  "homepage": "https://roots.io/sage/",
-  "authors": [
-    {
-      "name": "Ben Word",
-      "email": "ben@benword.com",
-      "homepage": "https://github.com/retlehs"
-    },
-    {
-      "name": "Scott Walkinshaw",
-      "email": "scott.walkinshaw@gmail.com",
-      "homepage": "https://github.com/swalkinshaw"
-    },
-    {
-      "name": "QWp6t",
-      "email": "hi@qwp6t.me",
-      "homepage": "https://github.com/qwp6t"
-    },
-    {
-      "name": "Brandon Nifong",
-      "email": "brandon@tendency.me",
-      "homepage": "https://github.com/log1x"
-    }
+  "description": "Ridges & Valleys Studio — WordPress site (Bedrock). Sage theme in web/app/themes/ridgesandvalleys.",
+  "repositories": [
+    { "type": "composer", "url": "https://repo.wp-packages.org" },
+    { "type": "composer", "url": "https://wpackagist.org", "only": ["wpackagist-plugin/*", "wpackagist-theme/*"] }
   ],
-  "keywords": [
-    "wordpress"
-  ],
-  "support": {
-    "issues": "https://github.com/roots/sage/issues",
-    "forum": "https://discourse.roots.io/"
-  },
-  "autoload": {
-    "psr-4": {
-      "App\\": "app/"
-    }
-  },
   "require": {
     "php": ">=8.3",
-    "blade-ui-kit/blade-heroicons": "^2.7",
-    "blade-ui-kit/blade-icons": "^1.10",
-    "codeat3/blade-simple-icons": "^8.12",
-    "mallardduck/blade-lucide-icons": "^1.26",
-    "roots/acorn": "^6.0"
+    "composer/installers": "^2.0",
+    "oscarotero/env": "^2.0",
+    "roots/bedrock-autoloader": "^1.0",
+    "roots/bedrock-disallow-indexing": "^2.0",
+    "roots/wordpress": "7.0.2",
+    "roots/wp-config": "^1.0",
+    "vlucas/phpdotenv": "^5.0",
+    "wpackagist-plugin/seo-by-rank-math": "*",
+    "wpackagist-plugin/ai-provider-for-openai": "*",
+    "wpackagist-plugin/sg-security": "*"
   },
   "require-dev": {
-    "laravel/pint": "^1.20"
-  },
-  "suggest": {
-    "log1x/sage-directives": "A collection of useful Blade directives for WordPress and Sage (^1.0)."
+    "laravel/pint": "^1.0"
   },
   "config": {
     "optimize-autoloader": true,
     "preferred-install": "dist",
+    "allow-plugins": {
+      "composer/installers": true,
+      "roots/wordpress-core-installer": true
+    },
     "sort-packages": true
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
-  "scripts": {
-    "post-autoload-dump": [
-      "Roots\\Acorn\\ComposerScripts::postAutoloadDump"
-    ],
-    "lint": "pint --test",
-    "format": "pint"
+  "extra": {
+    "installer-paths": {
+      "web/app/mu-plugins/{$name}/": ["type:wordpress-muplugin"],
+      "web/app/plugins/{$name}/": ["type:wordpress-plugin"],
+      "web/app/themes/{$name}/": ["type:wordpress-theme"]
+    },
+    "wordpress-install-dir": "web/wp"
   }
 }
