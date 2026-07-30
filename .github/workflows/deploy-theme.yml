@@ -71,4 +71,4 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
-            "wp --path=~/www/ridgesandvalleys.com/public_html cache flush" || true
+            "cd ~/www/ridgesandvalleys.com/public_html && wp cache flush" || true
