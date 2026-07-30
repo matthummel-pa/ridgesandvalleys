@@ -1,0 +1,23 @@
+build:
+  - changed-files:
+      - any-glob-to-any-file:
+          - vite.config.js
+dependencies:
+  - changed-files:
+      - any-glob-to-any-file:
+          - package-lock.json
+javascript:
+  - changed-files:
+      - any-glob-to-any-file:
+          - resources/js/**/*.js
+php:
+  - changed-files:
+      - any-glob-to-any-file:
+          - functions.php
+          - app/**/*.php
+          - resources/views/**/*.php
+views:
+  - changed-files:
+      - any-glob-to-any-file:
+          - index.php
+          - resources/views/**/*.php

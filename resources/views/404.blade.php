@@ -1,13 +1,12 @@
 @extends('layouts.app')
 
 @section('content')
-  <section class="error-404 container">
-    <p class="eyebrow">{{ __('Error 404', 'sage') }}</p>
-    <h1 class="display-title is-hero">{{ __('Page not found', 'sage') }}</h1>
-    <p class="lead">{{ __("That page doesn't exist or may have moved. Try a search, or head back home.", 'sage') }}</p>
-    <div class="search-wrap">{!! get_search_form(false) !!}</div>
-    <div class="btn-row">
-      <a class="btn" href="{{ home_url('/') }}">{{ __('Back home', 'sage') }}</a>
-    </div>
-  </section>
+  <div class="rv-shell rv-404">
+    <span class="rv-stripe rv-stripe-block" aria-hidden="true"></span>
+    {!! \App\eyebrow(__('Off the map', 'sage')) !!}
+    <h1 class="rv-404-title">{{ __('That page took a wrong turn', 'sage') }}</h1>
+    <p class="rv-404-text">{{ __('The page you were after isn\'t here. Try a search, or head back to solid ground.', 'sage') }}</p>
+    <div class="rv-404-search">@php(get_search_form())</div>
+    <p><a class="rv-btn rv-btn-primary" href="{{ home_url('/') }}">{{ __('Back to home', 'sage') }}</a></p>
+  </div>
 @endsection

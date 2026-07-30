@@ -1,12 +1,33 @@
-/*
- * Block editor canvas styles.
- *
- * Mirror the full front-end design system so blocks AND patterns render with
- * the real Paper + Space look while editing — design tokens (@theme vars from
- * app.css), self-hosted fonts + keyframes + helpers (brand.css), component
- * styles (blocks.css, design-language.css) and the page refresh layer.
- *
- * Importing app.css already pulls in Tailwind, so we do NOT import tailwindcss
- * again here (that would double-load the base layer).
- */
-@import "./app.css";
+@import "tailwindcss" theme(static);
+@source "../../app/**/*.php";
+@source "../**/*.blade.php";
+@source "../**/*.ts";
+
+@theme {
+	--color-paper: #F7F1E6;
+	--color-ink: #23201B;
+	--color-body: #45413A;
+	--color-pine: #2E5245;
+	--color-clay: #B0553A;
+	--font-display: "Outfit", ui-sans-serif, system-ui, sans-serif;
+	--font-serif: "Instrument Serif", Georgia, serif;
+	--font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+.editor-styles-wrapper {
+	background: var(--color-paper);
+	color: var(--color-body);
+	font-family: var(--font-display);
+}
+.editor-styles-wrapper h1,
+.editor-styles-wrapper h2,
+.editor-styles-wrapper h3 {
+	font-family: var(--font-display);
+	color: var(--color-ink);
+	font-weight: 800;
+	letter-spacing: -0.02em;
+}
+.editor-styles-wrapper blockquote {
+	border-left: 3px solid var(--color-clay);
+	font-family: var(--font-serif);
+}

@@ -2,29 +2,35 @@
 
 /**
  * Theme filters.
- *
- * Small, unrelated WordPress filter/shortcode tweaks that don't warrant their
- * own file. Keep additions here narrow and self-contained — anything that
- * grows its own settings UI or multiple hooks (e.g. GitHub data, layout)
- * should get its own app/*.php file instead.
  */
 
 namespace App;
 
 /**
- * Replace the default "[…]" excerpt suffix with a real "… Continued" link
- * back to the post, since the stock ellipsis gives readers no way to click
- * through from an excerpt-only listing.
- *
- * @return string
+ * Editorial excerpt length + ellipsis.
  */
-add_filter('excerpt_more', function () {
-    return sprintf(' &hellip; <a href="%s">%s</a>', get_permalink(), __('Continued', 'pressroot'));
-});
+add_filter('excerpt_length', fn () => 28);
+add_filter('excerpt_more', fn () => '&hellip;');
 
 /**
- * NOTE: the [prt_github] shortcode that lived here (live cached repo data via
- * app/Github.php) was removed with the rest of the GitHub subsystem — use the
- * Repofolio plugin's repofolio/repo-profile or repofolio/repo-grid blocks
- * instead. See the note in app/setup.php.
+ * Zero-friction comment spam trap.
+ *
+ * The comment form renders a visually-hidden honeypot field named `rvc_hp`
+ * (see comments.php). Real people never see or fill it; automated spam bots
+ * fill every field they find. A non-empty value here is therefore spam, so we
+ * stop it before it is stored — no CAPTCHA, no puzzle for real readers.
+ *
+ * Registered here (an always-loaded file) because comment submissions post to
+ * wp-comments-post.php, which never loads the theme's comments.php template.
  */
+add_filter('preprocess_comment', function ($commentdata) {
+    if (! empty($_POST['rvc_hp'])) {
+        wp_die(
+            esc_html__('Your comment looks automated and was not posted. If you are a real person, please go back and submit again without filling the hidden field.', 'sage'),
+            esc_html__('Comment blocked', 'sage'),
+            ['response' => 403, 'back_link' => true]
+        );
+    }
+
+    return $commentdata;
+}, 1);

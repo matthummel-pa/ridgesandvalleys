@@ -1,13 +1,7 @@
-@php
-  $cta_heading = apply_filters('pressroot/cta_heading', __('Have a project in mind?', 'pressroot'));
-  $cta_text    = apply_filters('pressroot/cta_text', __('Whether it’s a new website, a redesign, or a custom WordPress build, I’d love to help bring it to life.', 'pressroot'));
-  $cta_url     = apply_filters('pressroot/cta_url', home_url('/contact/'));
-  $cta_label   = apply_filters('pressroot/cta_label', __('Start a conversation', 'pressroot'));
-@endphp
-<aside class="prt-project-cta">
-  <div class="cta-card">
-    <h2>{{ $cta_heading }}</h2>
-    <p>{{ $cta_text }}</p>
-    <a class="btn" href="{{ esc_url($cta_url) }}">{{ $cta_label }}</a>
+<section class="rv-cta-band">
+  <div class="rv-shell rv-cta-inner">
+    <h2 class="rv-cta-title">{{ __('Ready to be easy to find?', 'sage') }}</h2>
+    <p class="rv-cta-sub">{{ __('Tell me about your business. I\'ll tell you exactly what I\'d do — no jargon, no pressure.', 'sage') }}</p>
+    <a class="rv-btn rv-btn-on-dark" href="{{ \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')) }}">{{ get_theme_mod('rv_cta_text', __('Get a quote', 'sage')) }}</a>
   </div>
-</aside>
+</section>

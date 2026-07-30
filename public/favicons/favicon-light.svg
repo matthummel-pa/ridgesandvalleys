@@ -1,0 +1,11 @@
+<svg width="120" height="120" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" role="img" aria-labelledby="fvlTitle">
+  <title id="fvlTitle">Ridges &amp; Valleys Studio</title>
+  <defs><clipPath id="flc"><rect width="120" height="120" rx="26"/></clipPath></defs>
+  <rect width="120" height="120" rx="26" fill="#EFE7D8"/>
+  <g clip-path="url(#flc)">
+    <circle cx="90" cy="36" r="12" fill="#E0A73C"/>
+    <path d="M-4 124 V64 L30 44 L58 60 L88 40 L124 62 V124 Z" fill="#97A88E"/>
+    <path d="M-4 124 V74 L26 50 L50 70 L74 46 L100 68 L124 76 V124 Z" fill="#B0553A"/>
+    <path d="M-4 124 V88 L24 58 L44 84 L64 50 L86 80 L108 62 L124 86 V124 Z" fill="#2E5245"/>
+  </g>
+</svg>

@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Theme setup.
+ * Theme setup — Ridges & Valleys Studio (Sage 11 base).
  */
 
 namespace App;
@@ -9,88 +9,120 @@ namespace App;
 use Illuminate\Support\Facades\Vite;
 
 /**
- * Inject styles into the block editor.
+ * Self-hosted brand fonts (Outfit, Instrument Serif, JetBrains Mono).
+ * Files live in public/fonts/ and are referenced via the theme URI, so the URLs
+ * are correct under both Bedrock (/app/themes/…) and vanilla WP (/wp-content/…).
+ */
+function rv_font_face_css(): string
+{
+    $u = get_theme_file_uri('public/fonts');
+
+    return "@font-face{font-family:'Outfit';font-style:normal;font-weight:100 900;font-display:swap;src:url('{$u}/Outfit-Variable.woff2') format('woff2');}"
+        . "@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:swap;src:url('{$u}/InstrumentSerif-Regular.woff2') format('woff2');}"
+        . "@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:swap;src:url('{$u}/InstrumentSerif-Italic.woff2') format('woff2');}"
+        . "@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 600;font-display:swap;src:url('{$u}/JetBrainsMono-Variable.woff2') format('woff2');}";
+}
+
+add_action('wp_enqueue_scripts', function () {
+    if (is_singular() && comments_open() && get_option('thread_comments')) {
+        wp_enqueue_script('comment-reply');
+    }
+}, 100);
+
+/**
+ * Bundled enhancement styles.
  *
- * @return array
+ * These rules were authored in the Customizer during design and are shipped as a
+ * static theme file (assets/rv-enhancements.css) so the full design travels with
+ * the theme — independent of the Vite build and of the site database. Loaded
+ * after the compiled stylesheet so its component styles apply as intended.
+ */
+add_action('wp_enqueue_scripts', function () {
+    $rel  = 'assets/rv-enhancements.css';
+    $path = get_theme_file_path($rel);
+
+    wp_enqueue_style(
+        'rv-enhancements',
+        get_theme_file_uri($rel),
+        [],
+        file_exists($path) ? (string) filemtime($path) : '1.0.0'
+    );
+}, 20);
+
+/**
+ * Emit @font-face + preload the primary font, before the stylesheet.
+ */
+add_action('wp_head', function () {
+    printf(
+        '<link rel="preload" as="font" type="font/woff2" crossorigin href="%s/Outfit-Variable.woff2">' . "\n",
+        esc_url(get_theme_file_uri('public/fonts'))
+    );
+    echo '<style id="rv-fonts">' . rv_font_face_css() . "</style>\n"; // phpcs:ignore
+}, 1);
+
+/**
+ * Performance: preconnect to the image CDNs used by hotlinked hero imagery, and
+ * preload the page's Largest Contentful Paint (LCP) image so it starts loading
+ * immediately instead of being discovered late. This is the main lever for a
+ * top PageSpeed / Core Web Vitals score on image-led pages.
+ */
+add_action('wp_head', function () {
+    echo '<link rel="preconnect" href="https://images.pexels.com">' . "\n";
+    echo '<link rel="preconnect" href="https://upload.wikimedia.org">' . "\n";
+    echo '<link rel="dns-prefetch" href="https://commons.wikimedia.org">' . "\n";
+
+    $lcp = '';
+    if (is_singular('post')) {
+        $lcp = has_post_thumbnail() ? (string) get_the_post_thumbnail_url(null, 'rv-hero') : blog_post_image();
+    } elseif (is_front_page()) {
+        $lcp = hero_bg_url(stock_image('hero-home'));
+    } elseif (is_home()) {
+        $lcp = hero_bg_url(stock_image('process'), (int) get_option('page_for_posts'));
+    } elseif (is_page()) {
+        // Page heroes are Featured-Image-driven; preload it when one is set.
+        $lcp = hero_bg_url();
+    }
+
+    if ($lcp) {
+        printf('<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n", esc_url($lcp));
+    }
+}, 2);
+
+/**
+ * Site icons / favicons.
+ *
+ * Bundled in public/favicons and emitted here as a complete set (scalable SVG,
+ * Apple + Android/PWA icons, .ico fallback, web manifest, brand theme-color).
+ * If a Site Icon is set in Appearance > Customize > Site Identity, WordPress's
+ * own output is used instead (and this bundled set steps aside), so the favicon
+ * stays editable without touching theme files.
+ */
+add_action('wp_head', function () {
+    if (has_site_icon()) {
+        return;
+    }
+    $u = get_theme_file_uri('public/favicons');
+    printf('<link rel="icon" href="%s/favicon.ico" sizes="any">' . "\n", esc_url($u));
+    printf('<link rel="icon" type="image/svg+xml" href="%s/favicon.svg">' . "\n", esc_url($u));
+    printf('<link rel="icon" type="image/png" sizes="32x32" href="%s/favicon-32.png">' . "\n", esc_url($u));
+    printf('<link rel="icon" type="image/png" sizes="16x16" href="%s/favicon-16.png">' . "\n", esc_url($u));
+    printf('<link rel="apple-touch-icon" href="%s/apple-touch-icon.png">' . "\n", esc_url($u));
+    printf('<link rel="manifest" href="%s/site.webmanifest">' . "\n", esc_url($u));
+    echo '<meta name="theme-color" content="#2E5245">' . "\n";
+}, 3);
+
+/**
+ * Load the same self-hosted fonts inside the block editor.
  */
 add_filter('block_editor_settings_all', function ($settings) {
     $style = Vite::asset('resources/css/editor.css');
-
-    $settings['styles'][] = [
-        'css' => "@import url('{$style}')",
-    ];
-
+    $settings['styles'][] = ['css' => rv_font_face_css()];
+    $settings['styles'][] = ['css' => "@import url('{$style}')"];
     return $settings;
 });
 
 /**
- * Delete every compiled Acorn/Blade view file. Shared by the admin
- * ?prt_view_clear=1 shortcut below and `wp pressroot views clear` (app/cli.php)
- * so there's exactly one place that knows where compiled views live.
- */
-function prt_clear_compiled_views(): int
-{
-    $dirs = [
-        WP_CONTENT_DIR . '/uploads/acorn-views',
-        WP_CONTENT_DIR . '/cache/acorn/views',
-    ];
-    if (function_exists('config')) {
-        $cfg = config('view.compiled');
-        if (is_string($cfg) && $cfg !== '') {
-            $dirs[] = $cfg;
-        }
-    }
-    $count = 0;
-    foreach (array_unique($dirs) as $dir) {
-        foreach ((array) glob(rtrim($dir, '/') . '/*.php') as $file) {
-            if (@unlink($file)) {
-                $count++;
-            }
-        }
-    }
-    return $count;
-}
-
-/**
- * Clear Acorn's compiled Blade views on demand: visit any admin URL with
- * ?prt_view_clear=1. Useful when template edits don't show because the compiled
- * views were cached (e.g. `wp acorn view:cache` / production mode).
- */
-add_action('admin_init', function () {
-    if (empty($_GET['prt_view_clear']) || ! current_user_can('edit_theme_options')) {
-        return;
-    }
-    $count = prt_clear_compiled_views();
-    wp_safe_redirect(add_query_arg('prt_views_cleared', $count, admin_url()));
-    exit;
-});
-
-/**
- * Load the compiled design stylesheet INTO the editor as a real <link>.
- *
- * `enqueue_block_assets` runs inside the iframed editor canvas AND inside the
- * inserter's pattern/block preview iframes, so this is what makes patterns and
- * blocks preview with the full Paper + Space design (CSS variables, fonts,
- * .prt-* helpers, keyframes). The @import editor style above gets scoped to
- * `.editor-styles-wrapper` and mangled, which is why previews looked unstyled.
- * Editor-only: the front end already loads app.css via @vite.
- */
-add_action('enqueue_block_assets', function () {
-    if (! is_admin()) {
-        return;
-    }
-    wp_enqueue_style(
-        'matthummel-editor-design',
-        Vite::asset('resources/css/editor.css'),
-        [],
-        null
-    );
-});
-
-/**
- * Inject scripts into the block editor.
- *
- * @return void
+ * Inject the built editor script (registers custom blocks) into the editor.
  */
 add_action('admin_head', function () {
     if (! get_current_screen()?->is_block_editor()) {
@@ -106,15 +138,12 @@ add_action('admin_head', function () {
             }
         }
     }
-    echo Vite::withEntryPoints([
-        'resources/js/editor.js',
-    ])->toHtml();
+
+    echo Vite::withEntryPoints(['resources/js/editor.ts'])->toHtml();
 });
 
 /**
- * Use the generated theme.json file.
- *
- * @return string
+ * Use the generated theme.json (Tailwind tokens merged into the base).
  */
 add_filter('theme_file_path', function ($path, $file) {
     return $file === 'theme.json'
@@ -123,142 +152,87 @@ add_filter('theme_file_path', function ($path, $file) {
 }, 10, 2);
 
 /**
- * NOTE: `should_load_separate_core_block_assets` is intentionally NOT filtered
- * here. It's controlled from one place only — the Customizer-driven filter in
- * app/critical-css.php (setting: prt_split_block_css) — so there's a single
- * source of truth. A hardcoded '__return_false' used to live here too, but
- * since both filters run at the default priority and critical-css.php's
- * callback loads later and ignores the incoming value, this one always won
- * silently and the Customizer toggle never actually took effect. Removed.
- *
- * @link https://core.trac.wordpress.org/ticket/61965
- * @see app/critical-css.php
+ * Load all core block assets (we style them globally).
  */
+add_filter('should_load_separate_core_block_assets', '__return_false');
 
 /**
- * Register the initial theme setup.
- *
- * @return void
+ * Theme supports, menus, image sizes.
  */
 add_action('after_setup_theme', function () {
-    /**
-     * Load the translation catalog. Ships as resources/lang/pressroot.pot
-     * (generate/update via `npm run translate:pot`); .mo files for each
-     * locale live alongside it.
-     */
-    load_theme_textdomain('pressroot', get_template_directory() . '/resources/lang');
-
-    /**
-     * Disable full-site editing support.
-     *
-     * @link https://wptavern.com/gutenberg-10-5-embeds-pdfs-adds-verse-block-color-options-and-introduces-new-patterns
-     */
     remove_theme_support('block-templates');
 
-    /**
-     * Register the navigation menus.
-     *
-     * @link https://developer.wordpress.org/reference/functions/register_nav_menus/
-     */
     register_nav_menus([
-        'primary_navigation' => __('Primary Navigation', 'pressroot'),
+        'primary' => __('Primary Navigation', 'sage'),
+        'footer'  => __('Footer Navigation', 'sage'),
+        'tools'   => __('Tools Menu (footer)', 'sage'),
     ]);
 
-    /**
-     * Disable the default block patterns.
-     *
-     * @link https://developer.wordpress.org/block-editor/developers/themes/theme-support/#disabling-the-default-block-patterns
-     */
-    remove_theme_support('core-block-patterns');
-
-    /**
-     * Enable plugins to manage the document title.
-     *
-     * @link https://developer.wordpress.org/reference/functions/add_theme_support/#title-tag
-     */
     add_theme_support('title-tag');
-
-    /**
-     * Enable post thumbnail support.
-     *
-     * @link https://developer.wordpress.org/themes/functionality/featured-images-post-thumbnails/
-     */
     add_theme_support('post-thumbnails');
-
-    /**
-     * Enable responsive embed support.
-     *
-     * @link https://developer.wordpress.org/block-editor/how-to-guides/themes/theme-support/#responsive-embedded-content
-     */
     add_theme_support('responsive-embeds');
-
-    /**
-     * Enable HTML5 markup support.
-     *
-     * @link https://developer.wordpress.org/reference/functions/add_theme_support/#html5
-     */
+    add_theme_support('align-wide');
+    add_theme_support('wp-block-styles');
+    add_theme_support('customize-selective-refresh-widgets');
+    add_theme_support('custom-logo', [
+        'height'      => 96,
+        'width'       => 96,
+        'flex-height' => true,
+        'flex-width'  => true,
+    ]);
     add_theme_support('html5', [
-        'caption',
-        'comment-form',
-        'comment-list',
-        'gallery',
-        'search-form',
-        'script',
-        'style',
+        'caption', 'comment-form', 'comment-list', 'gallery', 'search-form', 'script', 'style', 'navigation-widgets',
     ]);
 
-    /**
-     * Enable selective refresh for widgets in customizer.
-     *
-     * @link https://developer.wordpress.org/reference/functions/add_theme_support/#customize-selective-refresh-widgets
-     */
-    add_theme_support('customize-selective-refresh-widgets');
+    add_image_size('rv-card', 720, 480, true);
+    add_image_size('rv-hero', 1600, 900, true);
 }, 20);
 
 /**
- * Register the theme sidebars.
- *
- * @return void
+ * Content width.
+ */
+add_action('after_setup_theme', function () {
+    $GLOBALS['content_width'] = 760;
+}, 0);
+
+/**
+ * Widget areas.
  */
 add_action('widgets_init', function () {
     $config = [
         'before_widget' => '<section class="widget %1$s %2$s">',
-        'after_widget' => '</section>',
-        'before_title' => '<h3>',
-        'after_title' => '</h3>',
+        'after_widget'  => '</section>',
+        'before_title'  => '<h3 class="widget-title">',
+        'after_title'   => '</h3>',
     ];
 
     register_sidebar([
-        'name' => __('Primary', 'pressroot'),
-        'id' => 'sidebar-primary',
+        'name' => __('Blog Sidebar', 'sage'),
+        'id'   => 'sidebar-primary',
     ] + $config);
 
     register_sidebar([
-        'name' => __('Footer', 'pressroot'),
-        'id' => 'sidebar-footer',
+        'name' => __('Footer', 'sage'),
+        'id'   => 'sidebar-footer',
     ] + $config);
 });
 
 /**
- * NOTE: Google Fonts used to also be enqueued here as a hardcoded
- * 'matthummel-fonts' stylesheet (Outfit/Instrument Serif/JetBrains Mono,
- * both on wp_enqueue_scripts and admin_enqueue_scripts), completely ignoring
- * the Customizer's font pickers. That duplicated — and silently fought with —
- * the real, Customizer-driven enqueue in app/customizer.php
- * ('matthummel-fonts-custom', built from prt_font_heading/prt_font_body +
- * prt_fonts()), which is the single source of truth for Google Fonts loading
- * now. Removed here to stop double-loading overlapping font families on
- * every front-end page load. See also app/typography.php's 'prt-fonts-extra'
- * (nav/button font mods) and app/fonts-local.php (self-hosted opt-out).
+ * Body classes for layout state.
  */
-
-/**
- * NOTE: the "projects" CPT + "project_categories" taxonomy that used to be
- * registered here (with the whole GitHub subsystem: app/Github.php, the
- * GitHub settings tab, OAuth connect, the prt/* GitHub blocks, and the
- * Project Details meta box) moved to the Repofolio plugin as of v1.5.0 —
- * post type `repofolio_project`, taxonomy `repofolio_project_type`, meta
- * `_repofolio_*`. Content belongs in a plugin so it survives theme switches;
- * the theme keeps only the presentation layer (Blade templates for the
- * plugin's post type, which no-op gracefully when the plugin is inactive).
- */
+add_filter('body_class', function ($classes) {
+    if (! is_active_sidebar('sidebar-primary')) {
+        $classes[] = 'no-sidebar';
+    }
+    if (! get_theme_mod('rv_header_sticky', true)) {
+        $classes[] = 'rv-nav-static';
+    }
+    // Transparent header only where a full-bleed hero exists at the top.
+    if (get_theme_mod('rv_header_transparent', false) && (is_front_page() || is_page() || is_home())) {
+        $classes[] = 'rv-nav-transparent';
+    }
+    if (get_theme_mod('rv_topbar_hide_on_scroll', false)) {
+        $classes[] = 'rv-topbar-hide';
+    }
+    return $classes;
+});

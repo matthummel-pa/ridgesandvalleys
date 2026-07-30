@@ -1,24 +1,26 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="page-header container">
-    <h1 class="display-title is-hero">{{ __('Search results', 'sage') }}</h1>
-    <p class="lead">{{ sprintf(__('Showing results for “%s”', 'sage'), get_search_query()) }}</p>
-  </div>
+  <div class="rv-shell rv-layout">
+    <div class="rv-content">
+      <header class="rv-page-head">
+        {!! \App\eyebrow(__('Search', 'sage')) !!}
+        <h1 class="rv-page-title">{!! sprintf(__('Results for &ldquo;%s&rdquo;', 'sage'), '<span>' . esc_html(get_search_query()) . '</span>') !!}</h1>
+        <div class="rv-page-intro">@php(get_search_form())</div>
+      </header>
 
-  <div class="container">
-    @if (! have_posts())
-      <p class="archive-desc">{{ __('Nothing matched. Try another search.', 'sage') }}</p>
-      <div class="search-wrap">{!! get_search_form(false) !!}</div>
-    @else
-      <div class="post-list">
-        @while(have_posts()) @php(the_post())
-          @includeFirst(['partials.content-' . get_post_type(), 'partials.content'])
-        @endwhile
-      </div>
-      <nav class="posts-nav" aria-label="{{ __('Posts', 'sage') }}">
-        {!! get_the_posts_navigation() !!}
-      </nav>
-    @endif
+      @if (have_posts())
+        <div class="rv-post-list">
+          @while(have_posts()) @php(the_post())
+            @include('partials.content-search')
+          @endwhile
+        </div>
+        <nav class="rv-pagination" aria-label="{{ __('Posts navigation', 'sage') }}">{!! \App\pagination() !!}</nav>
+      @else
+        @include('partials.content-none')
+      @endif
+    </div>
+
+    @include('sections.sidebar')
   </div>
 @endsection

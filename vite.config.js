@@ -1,33 +1,33 @@
 import { defineConfig } from 'vite'
-import tailwindcss from '@tailwindcss/vite';
+import tailwindcss from '@tailwindcss/vite'
 import laravel from 'laravel-vite-plugin'
-import { wordpressPlugin, wordpressThemeJson } from '@roots/vite-plugin';
+import { wordpressPlugin, wordpressThemeJson } from '@roots/vite-plugin'
 
-// Set APP_URL if it doesn't exist for Laravel Vite plugin
 if (! process.env.APP_URL) {
-  process.env.APP_URL = 'http://example.test';
+  process.env.APP_URL = 'http://example.test'
 }
 
+// Theme public path. Defaults to Bedrock (web/app/themes/…) — the main DDEV dev
+// site. The no-Docker native server exports VITE_BASE for a vanilla WP install
+// (/wp-content/themes/…). Build-mode asset URLs are resolved from the WordPress
+// theme URI at runtime, so this only needs to match for Vite hot-reload.
+const base = process.env.VITE_BASE || '/app/themes/ridgesandvalleys-theme/public/build/'
+
 export default defineConfig({
-  server: { host: 'localhost', port: 3000, strictPort: true, cors: true },
-  base: '/wp-content/themes/pressroot/public/build/',
+  base,
   plugins: [
     tailwindcss(),
     laravel({
       input: [
         'resources/css/app.css',
-        'resources/js/app.js',
+        'resources/js/app.ts',
         'resources/css/editor.css',
-        'resources/js/editor.js',
+        'resources/js/editor.ts',
       ],
       refresh: true,
       assets: ['resources/images/**', 'resources/fonts/**'],
     }),
-
     wordpressPlugin(),
-
-    // Generate the theme.json file in the public/build/assets directory
-    // based on the Tailwind config and the theme.json file from base theme folder
     wordpressThemeJson({
       disableTailwindColors: false,
       disableTailwindFonts: false,

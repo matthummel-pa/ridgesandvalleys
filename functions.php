@@ -15,7 +15,7 @@ use Roots\Acorn\Application;
 */
 
 if (! file_exists($composer = __DIR__.'/vendor/autoload.php')) {
-    wp_die(__('Error locating autoloader. Please run <code>composer install</code>.', 'pressroot'));
+    wp_die(__('Error locating autoloader. Please run <code>composer install</code>.', 'sage'));
 }
 
 require $composer;
@@ -50,12 +50,12 @@ Application::configure()
 |
 */
 
-collect(['setup', 'filters', 'theme-supports', 'icons', 'customizer', 'contact', 'theme-options', 'menu', 'footer-content', 'dark-mode', 'blocks', 'reading', 'nav-options', 'header-layout', 'extras', 'social-block', 'settings-io', 'performance', 'patterns-extra', 'blocks-dynamic', 'announcement', 'header-behaviors', 'menu-icons', 'typography', 'seo', 'integrations', 'whitelabel', 'fonts-local', 'google-fonts-collection', 'code-highlight', 'sections-library', 'critical-css', 'header-elements', 'bar-blocks', 'hero', 'hero-image', 'customizer-cleanup', 'social-links', 'social-icon-style', 'quick-setup', 'theme-addons', 'ai-assistant', 'ai-connectors', 'ai-content-block', 'ai-builder', 'site-type-agency', 'site-type-freelance', 'site-type-saas', 'site-type-blog', 'site-type-marketing', 'site-type-affiliate', 'site-type-restaurant', 'site-type-realty', 'site-type-remix', 'blocks-bespoke', 'block-section', 'block-patterns', 'home-patterns', 'page-patterns', 'seed-pages', 'pattern-library', 'hooks-registry', 'cli', 'dev-mode', 'repofolio-addon', 'bookings-addon', 'design-presets', 'setup-wizard', 'theme-settings-tab', 'support-settings', 'pressroot-settings'])
+collect(['setup', 'filters', 'helpers', 'projects', 'contact', 'customizer', 'integrations', 'blocks', 'tools', 'grader', 'seo-checker', 'security-checker', 'email-checker', 'local-checker', 'page-fields', 'post-fields', 'ai-edit', 'live-preview', 'seo', 'performance', 'github', 'starter'])
     ->each(function ($file) {
         if (! locate_template($file = "app/{$file}.php", true, true)) {
             wp_die(
                 /* translators: %s is replaced with the relative file path */
-                sprintf(__('Error locating <code>%s</code> for inclusion.', 'pressroot'), $file)
+                sprintf(__('Error locating <code>%s</code> for inclusion.', 'sage'), $file)
             );
         }
     });

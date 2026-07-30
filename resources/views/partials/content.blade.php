@@ -1,20 +1,16 @@
-@php(do_action('prt_before_post_card', get_the_ID()))
-<article @php(post_class('post-card'))>
-  <p class="post-meta">
-    <time datetime="{{ get_post_time('c', true) }}">{{ get_the_date() }}</time>
-    <span aria-hidden="true"> &middot; </span>{{ get_the_author() }}
-  </p>
-
-  <h2 class="post-card-title">
-    <a href="{{ get_permalink() }}">{!! $title !!}</a>
-  </h2>
-
-  <div class="post-card-excerpt">
-    @php(the_excerpt())
+<article @php(post_class('rv-post-card'))>
+  @if (has_post_thumbnail())
+    <a class="rv-post-thumb" href="{{ get_permalink() }}" tabindex="-1" aria-hidden="true">
+      @php(the_post_thumbnail('rv-card', ['loading' => 'lazy']))
+    </a>
+  @endif
+  <div class="rv-post-body">
+    {!! \App\post_meta() !!}
+    <h2 class="rv-post-title"><a href="{{ get_permalink() }}">{!! get_the_title() !!}</a></h2>
+    <div class="rv-post-excerpt">@php(the_excerpt())</div>
+    <a class="rv-readmore" href="{{ get_permalink() }}">
+      {{ __('Read more', 'sage') }} {!! \App\icon('arrow') !!}
+      <span class="screen-reader-text">{!! get_the_title() !!}</span>
+    </a>
   </div>
-
-  <a class="post-card-more" href="{{ get_permalink() }}">
-    {{ __('Read more', 'sage') }} <span aria-hidden="true">&rarr;</span>
-  </a>
 </article>
-@php(do_action('prt_after_post_card', get_the_ID()))

@@ -1,95 +1,84 @@
-@php
-  $mhSoc    = \App\prt_social_links();
-  $socIcons = get_theme_mod('prt_social_style', 'icons') === 'icons';
-@endphp
+@php($topbar = get_theme_mod('rv_topbar_text', __('Gettysburg &amp; South Central PA', 'sage')))
+@php($ctaText = get_theme_mod('rv_cta_text', __('Get a quote', 'sage')))
+@php($ctaUrl = get_theme_mod('rv_cta_url', '/contact/'))
 
-<header class="site-header" id="site-header">
-  <div class="site-header-inner">
+<header class="rv-banner" role="banner">
+  <a class="rv-skip-link" href="#main">{{ __('Skip to content', 'sage') }}</a>
+@php($topbarSocial = get_theme_mod('rv_topbar_social', true) ? \App\social_links('rv-social rv-topbar-social') : '')
+@if ($topbar || $topbarSocial)
+  <div class="rv-topbar">
+    <div class="rv-shell rv-topbar-inner">
+      @if ($topbar)<p class="rv-topbar-note">{!! wp_kses_post($topbar) !!}</p>@else<span aria-hidden="true"></span>@endif
+      {!! $topbarSocial !!}
+    </div>
+  </div>
+@endif
 
-    {{-- Brand --}}
-    <a class="brand" href="{{ home_url('/') }}" rel="home" aria-label="{{ $siteName }} — home">
-      <span class="brand-mark" aria-hidden="true">
-        <svg viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg">
-          <rect width="120" height="120" rx="22"/>
-          <text x="60" y="82" text-anchor="middle">MH</text>
-        </svg>
-      </span>
-      <span class="brand-name">{{ $siteName }}</span>
-    </a>
+<div class="rv-header">
+  <div class="rv-shell rv-header-inner">
+    <div class="rv-brand">
+      {!! \App\brand_logo('header') !!}
+    </div>
 
-    {{-- Primary navigation --}}
-    @if (has_nav_menu('primary_navigation'))
-      <nav class="header-nav" aria-label="Primary navigation">
-        {!! wp_nav_menu([
-          'theme_location' => 'primary_navigation',
-          'menu_class'     => 'header-nav-list',
-          'echo'           => false,
-          'container'      => false,
-          'depth'          => 1,
-        ]) !!}
-      </nav>
-    @endif
-
-    {{-- Right cluster --}}
-    <div class="header-actions">
-      @if ($mhSoc)
-        <ul class="header-social" aria-label="Social links">
-          @foreach ($mhSoc as $s)
-            <li>
-              <a href="{{ esc_url($s['url']) }}" aria-label="{{ $s['label'] }}" rel="me noopener" target="_blank"{!! \App\prt_social_item_style_attr($s['key']) !!}>
-                {!! \App\prt_social_icon($s['key']) !!}
-              </a>
-            </li>
-          @endforeach
-        </ul>
+    <nav class="rv-nav" aria-label="{{ __('Primary', 'sage') }}">
+      @if (has_nav_menu('primary'))
+        {!! wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'rv-nav-list', 'echo' => false, 'depth' => 2]) !!}
       @endif
+    </nav>
 
-      @if (get_theme_mod('prt_dark_enable', true))
-        <button class="prt-theme-toggle" type="button" aria-label="{{ __('Toggle dark mode', 'pressroot') }}" aria-pressed="false">
-          {!! \App\prt_icon('heroicon-o-moon', 'prt-icon-dark') !!}
-          {!! \App\prt_icon('heroicon-o-sun', 'prt-icon-light') !!}
-        </button>
+    <div class="rv-header-actions">
+      @if (get_theme_mod('rv_dark_toggle_enable', true))
+      <button type="button" class="rv-theme-toggle rv-theme-toggle--{{ get_theme_mod('rv_toggle_style', 'button') }}" aria-pressed="false" aria-label="{{ __('Toggle dark mode', 'sage') }}" title="{{ __('Toggle dark mode', 'sage') }}">
+        {!! \App\theme_toggle_icons(get_theme_mod('rv_dark_toggle_icon', 'sun-moon')) !!}
+        <span class="screen-reader-text">{{ __('Toggle dark mode', 'sage') }}</span>
+      </button>
       @endif
-
-      @php($prtCta = function_exists('App\prt_header_cta') ? \App\prt_header_cta() : ['text' => __('Get a quote', 'pressroot'), 'url' => home_url('/contact')])
-      <a class="btn btn-hire" href="{{ esc_url($prtCta['url']) }}">
-        {{ $prtCta['text'] }}
-      </a>
-
-      <button class="menu-toggle" aria-expanded="false" aria-controls="prt-popout" aria-label="{{ __('Open menu', 'pressroot') }}">
-        <span class="bars" aria-hidden="true"></span>
+      @if ($ctaText)
+        <a class="rv-btn rv-btn-primary rv-btn-cta" href="{{ \App\cta_href($ctaUrl) }}">{{ $ctaText }}</a>
+      @endif
+      <button type="button" class="rv-menu-toggle" aria-expanded="false" aria-controls="rv-offcanvas">
+        {!! \App\icon('menu') !!}
+        <span class="screen-reader-text">{{ __('Menu', 'sage') }}</span>
       </button>
     </div>
   </div>
+  </div>{{-- .rv-header (sticky) --}}
 </header>
 
-<div class="prt-popout-overlay" tabindex="-1"></div>
-<aside id="prt-popout" class="prt-popout" aria-label="{{ __('Menu', 'pressroot') }}">
-  <button class="prt-popout-close" aria-label="{{ __('Close menu', 'pressroot') }}">&times;</button>
+<div id="rv-offcanvas" class="rv-offcanvas" hidden>
+  <div class="rv-offcanvas-panel" role="dialog" aria-modal="true" aria-label="{{ __('Site menu', 'sage') }}">
+    <button type="button" class="rv-offcanvas-close" aria-label="{{ __('Close menu', 'sage') }}">{!! \App\oc_close_svg() !!}</button>
+    @if (has_nav_menu('primary'))
+      {!! wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'rv-offcanvas-list', 'echo' => false, 'depth' => 2]) !!}
+    @endif
+    {!! \App\social_links('rv-social rv-offcanvas-social') !!}
+  </div>
+</div>
 
-  @php($prtCta2 = function_exists('App\prt_header_cta') ? \App\prt_header_cta() : ['text' => __('Get a quote', 'pressroot'), 'url' => home_url('/contact')])
-  <a class="btn btn-hire prt-popout-cta" href="{{ esc_url($prtCta2['url']) }}">
-    {{ $prtCta2['text'] }}
-  </a>
-
-  @if (has_nav_menu('primary_navigation'))
-    <nav aria-label="{{ __('Popout menu', 'pressroot') }}">
-      {!! wp_nav_menu([
-        'theme_location' => 'primary_navigation',
-        'menu_class'     => 'prt-popout-menu',
-        'echo'           => false,
-        'container'      => false,
-      ]) !!}
-    </nav>
-  @endif
-
-  @if ($mhSoc)
-    <div class="prt-popout-socials">
-      @foreach ($mhSoc as $s)
-        <a href="{{ esc_url($s['url']) }}" aria-label="{{ $s['label'] }}" rel="me noopener" target="_blank"{!! \App\prt_social_item_style_attr($s['key']) !!}>
-          {!! \App\prt_social_icon($s['key']) !!}
-        </a>
-      @endforeach
-    </div>
-  @endif
-</aside>
+@if (get_theme_mod('rv_header_transparent', false) || get_theme_mod('rv_topbar_hide_on_scroll', false))
+<script>
+(function () {
+  document.addEventListener('DOMContentLoaded', function () {
+    var body = document.body;
+    var banner = document.querySelector('.rv-banner');
+    // Transparent header: overlay the hero and pad the content below it.
+    if (body.classList.contains('rv-nav-transparent')) {
+      var hero = document.querySelector('.rv-hero');
+      if (!hero || !banner) {
+        body.classList.remove('rv-nav-transparent'); // no hero — fall back to solid
+      } else {
+        var fit = function () { hero.style.paddingTop = (banner.offsetHeight + 24) + 'px'; };
+        fit();
+        window.addEventListener('resize', fit, { passive: true });
+      }
+    }
+    // Shared scroll flag — drives the transparent solidify + hide-top-bar-on-scroll.
+    var onScroll = function () {
+      body.classList.toggle('rv-scrolled', (window.scrollY || window.pageYOffset) > 30);
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  });
+})();
+</script>
+@endif

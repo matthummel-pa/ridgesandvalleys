@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Concept Projects · Ridges &amp; Valleys Studio</title>
+  <meta name="description" content="A portfolio of website design concepts for Gettysburg &amp; Adams County businesses — hotels, restaurants, retail, tours, and real estate — by Ridges &amp; Valleys Studio.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --paper:#F7F1E6; --surface:#FCF8F0; --cream:#EFE7D8; --ink:#23201B; --body:#45413A;
+      --muted:#6E6558; --faint:#8A8476; --line:#E7DCC8; --pine:#2E5245; --pine-deep:#213D33;
+      --sage:#97A88E; --clay:#B0553A; --wheat:#E0A73C; --slate:#3C4A4E;
+      --ridgeline:linear-gradient(135deg,#2E5245 0%,#B0553A 60%,#E0A73C 100%);
+      --stripe:linear-gradient(90deg,#2E5245 0%,#97A88E 33%,#B0553A 66%,#E0A73C 100%);
+      --font-display:"Outfit",ui-sans-serif,system-ui,sans-serif;
+      --font-serif:"Instrument Serif",Georgia,serif;
+      --font-mono:"JetBrains Mono",ui-monospace,Menlo,monospace;
+      --radius:16px; --shadow:0 6px 20px rgba(23,25,30,.08); --lift:0 16px 40px rgba(23,25,30,.16);
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;background:var(--paper);color:var(--body);font-family:var(--font-display);font-size:1.0625rem;line-height:1.65;-webkit-font-smoothing:antialiased}
+    img{max-width:100%;display:block}
+    a{color:var(--pine);text-underline-offset:3px}
+    h1,h2,h3{font-family:var(--font-display);color:var(--ink);line-height:1.08;letter-spacing:-0.02em;font-weight:800;margin:0 0 .4em;text-wrap:balance}
+    .shell{max-width:1200px;margin:0 auto;padding:0 clamp(1rem,5vw,2rem)}
+    .eyebrow{font-family:var(--font-mono);font-size:.75rem;letter-spacing:.12em;text-transform:uppercase;color:var(--clay);font-weight:500}
+    .accent{font-family:var(--font-serif);font-style:italic;font-weight:400;color:var(--clay)}
+
+    /* Header */
+    header.top{position:sticky;top:0;z-index:20;background:rgba(247,241,230,.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+    header.top .stripe{height:4px;background:var(--stripe)}
+    header.top .bar{display:flex;align-items:center;justify-content:space-between;padding:.9rem 0}
+    .brand{display:flex;align-items:center;gap:.6rem;font-weight:800;color:var(--ink);text-decoration:none;font-size:1.05rem}
+    .brand .mark{width:30px;height:30px;border-radius:9px;background:var(--ridgeline);display:grid;place-items:center}
+    .brand .mark svg{width:18px;height:18px}
+    .brand small{display:block;font-family:var(--font-mono);font-size:.62rem;letter-spacing:.08em;color:var(--muted);font-weight:400;text-transform:uppercase}
+
+    /* Hero */
+    .hero{padding:clamp(3rem,7vw,5.5rem) 0 clamp(2rem,4vw,3rem);position:relative;overflow:hidden}
+    .hero h1{font-size:clamp(2.4rem,6vw,4.2rem);margin-top:.5rem}
+    .hero p{max-width:60ch;font-size:clamp(1.05rem,1.6vw,1.3rem);color:var(--body)}
+    .hero .meta{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:1.5rem}
+    .chip{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;padding:.35rem .7rem;border:1px solid var(--line);border-radius:999px;background:var(--surface);color:var(--muted)}
+
+    .note{background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--wheat);border-radius:12px;padding:1rem 1.25rem;margin:2rem 0 0;max-width:70ch;font-size:.95rem;color:var(--muted)}
+    .note strong{color:var(--ink)}
+
+    /* Category */
+    .cat{padding:clamp(2.5rem,5vw,4rem) 0 0}
+    .cat-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;flex-wrap:wrap;border-bottom:1px solid var(--line);padding-bottom:.9rem;margin-bottom:1.75rem}
+    .cat-head h2{font-size:clamp(1.5rem,3vw,2.1rem);margin:0}
+    .cat-head .count{font-family:var(--font-mono);font-size:.8rem;color:var(--faint)}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+    .card{display:flex;flex-direction:column;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;text-decoration:none;color:inherit;transition:transform .25s ease,box-shadow .25s ease,border-color .25s ease}
+    .card:hover,.card:focus-visible{transform:translateY(-4px);box-shadow:var(--lift);border-color:transparent;outline:none}
+    .card .thumb{height:170px;position:relative;display:grid;place-items:center;color:#fff;overflow:hidden}
+    .card .thumb .name{position:relative;z-index:2;font-family:var(--font-serif);font-style:italic;font-size:1.7rem;text-align:center;padding:0 1rem;text-shadow:0 2px 12px rgba(0,0,0,.35);line-height:1.1}
+    .card .thumb::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.05),rgba(0,0,0,.35))}
+    .card .body{padding:1.15rem 1.3rem 1.4rem;display:flex;flex-direction:column;gap:.5rem;flex:1}
+    .card .kicker{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--faint)}
+    .card h3{font-size:1.2rem;margin:0}
+    .card p{margin:0;font-size:.95rem;color:var(--muted)}
+    .card .tool{margin-top:.35rem;font-size:.82rem;color:var(--pine);font-weight:600;display:flex;align-items:center;gap:.4rem}
+    .card .open{margin-top:auto;padding-top:.9rem;font-weight:700;color:var(--clay);font-size:.9rem;display:flex;align-items:center;gap:.4rem}
+    .card .open svg{width:15px;height:15px}
+
+    /* accent themes per card */
+    .t-hotel1{background:linear-gradient(135deg,#2E5245,#213D33)}
+    .t-hotel2{background:linear-gradient(135deg,#1c2b45,#c99a4e)}
+    .t-rest1{background:linear-gradient(135deg,#2f4a3a,#c67c2c)}
+    .t-rest2{background:linear-gradient(135deg,#8e2f52,#e6a94b)}
+    .t-retail1{background:linear-gradient(135deg,#b0553a,#97a88e)}
+    .t-retail2{background:linear-gradient(135deg,#26463a,#d9622b)}
+    .t-tour1{background:linear-gradient(135deg,#3c4a6e,#c9a24a)}
+    .t-tour2{background:linear-gradient(135deg,#b05236,#2f7d7a)}
+    .t-realtor1{background:linear-gradient(135deg,#123a3f,#c9a24a)}
+    .t-realtor2{background:linear-gradient(135deg,#7a2f26,#d9a441)}
+
+    footer{margin-top:clamp(3rem,7vw,5.5rem);background:var(--night,#191d1a);color:#cdd6cf;padding:2.5rem 0}
+    footer .shell{display:flex;flex-wrap:wrap;gap:1rem;align-items:center;justify-content:space-between}
+    footer a{color:#e8b563}
+    footer .fine{font-family:var(--font-mono);font-size:.72rem;color:#8ea08f;letter-spacing:.03em}
+    @media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important}}
+  </style>
+</head>
+<body>
+  <header class="top">
+    <div class="stripe"></div>
+    <div class="shell bar">
+      <a class="brand" href="#">
+        <span class="mark" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M2 20L9 8l4 6 3-4 6 10z" fill="#fff"/></svg></span>
+        <span>Ridges &amp; Valleys Studio<small>Concept Projects</small></span>
+      </a>
+      <span class="chip">Gettysburg &amp; Adams County, PA</span>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="shell">
+        <span class="eyebrow">Design concepts · Not live businesses</span>
+        <h1>Websites for local businesses, <span class="accent">shown, not told.</span></h1>
+        <p>Ten full website concepts for the kinds of businesses that make Gettysburg what it is — each with its own brand, and each with the working tools that business actually needs: reservations, online ordering, ticketing, property search, and customer support. Click any concept to explore the full mockup.</p>
+        <div class="meta">
+          <span class="chip">10 concepts</span>
+          <span class="chip">5 industries</span>
+          <span class="chip">Interactive tools</span>
+          <span class="chip">Mobile-first &amp; accessible</span>
+        </div>
+        <div class="note"><strong>These are design concepts</strong> — fictional businesses built to demonstrate what a real site could look like and do. Every form, cart, and checkout is a working demo; nothing processes real payments or data. Each is built to convert into a full WordPress theme.</div>
+      </div>
+    </section>
+
+    <div class="shell">
+
+      <section class="cat" id="hotels">
+        <div class="cat-head"><h2>Hotels &amp; Inns</h2><span class="count">Reservation &amp; guest-service tools</span></div>
+        <div class="grid">
+          <a class="card" href="./gettysburg-hotel/index.html">
+            <div class="thumb t-hotel1"><span class="name">The Lantern &amp; Laurel Inn</span></div>
+            <div class="body">
+              <span class="kicker">Boutique historic inn</span>
+              <h3>Lantern &amp; Laurel Inn</h3>
+              <p>A nine-room heritage inn on Baltimore Street with a warm forest-and-brass palette.</p>
+              <span class="tool">◆ Live booking bar &amp; room reservations</span>
+              <span class="open">Open concept <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            </div>
+          </a>
+          <a class="card" href="./hotel-cupola-field/index.html">
+            <div class="thumb t-hotel2"><span class="name">The Cupola &amp; Field Hotel</span></div>
+            <div class="body">
+              <span class="kicker">Modern boutique hotel</span>
+              <h3>Cupola &amp; Field Hotel</h3>
+              <p>A modern navy-and-gold hotel with a full reservation engine and concierge.</p>
+              <span class="tool">◆ Reservation engine + concierge chat &amp; requests</span>
+              <span class="open">Open concept <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section class="cat" id="restaurants">
+        <div class="cat-head"><h2>Restaurants &amp; Cafes</h2><span class="count">Menu designs &amp; ordering tools</span></div>
+        <div class="grid">
+          <a class="card" href="./gettysburg-restaurant/index.html">
+            <div class="thumb t-rest1"><span class="name">Field &amp; Musket</span></div>
+            <div class="body">
+              <span class="kicker">Farm-to-table tavern</span>
+              <h3>Field &amp; Musket Tavern</h3>
+              <p>A seasonal tavern on Steinwehr Avenue with an elegant printed-style menu.</p>
+              <span class="tool">◆ Editorial two-column menu + reservations</span>
+              <span class="open">Open concept <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            </div>
+          </a>
+          <a class="card" href="./restaurant-cannon-and-crumb/index.html">
+            <div class="thumb t-rest2"><span class="name">Cannon &amp; Crumb</span></div>
+            <div class="body">
+              <span class="kicker">All-day cafe &amp; bakery</span>
+              <h3>Cannon &amp; Crumb</h3>
+              <p>A bright brunch-and-bakery spot with a tabbed, filterable menu.</p>
+              <span class="tool">◆ Interactive menu + online ordering cart</span>
+              <span class="open">Open concept <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section class="cat" id="retail">
+        <div class="cat-head"><h2>Retail &amp; E-commerce</h2><span class="count">Shop, cart &amp; checkout tools</span></div>
+        <div class="grid">
+          <a class="card" href="./gettysburg-retail/index.html">
+            <div class="thumb t-retail1"><span class="name">Diamond &amp; Ridge Mercantile</span></div>
+            <div class="body">
+              <span class="kicker">Local goods &amp; gifts</span>
+              <h3>Diamond &amp; Ridge Mercantile</h3>
+              <p>A downtown boutique of locally-made goods with a warm terracotta palette.</p>
+              <span class="tool">◆ Product shop + slide-in cart &amp; checkout</span>
+              <span class="open">Open concept <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            </div>
+          </a>
+          <a class="card" href="./retail-ridgeline-outfitters/index.html">
+            <div class="thumb t-retail2"><span class="name">Ridgeline Outfitters</span></div>
+            <div class="body">
+              <span class="kicker">Outdoor &amp; adventure gear</span>
+              <h3>Ridgeline Outfitters</h3>
+              <p>A pine-and-blaze-orange gear shop for battlefield trails and beyond.</p>
+              <span class="tool">◆ Filters, quick-view, cart &amp; free-ship bar</span>
+              <span class="open">Open concept <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section class="cat" id="tours">
+        <div class="cat-head"><h2>Tour Centers</h2><span class="count">Booking &amp; payment tools</span></div>
+        <div class="grid">
+          <a class="card" href="./tour-hallowed-ground-tours/index.html">
+            <div class="thumb t-tour1"><span class="name">Hallowed Ground Tours</span></div>
+            <div class="body">
+              <span class="kicker">Battlefield guided tours</span>
+              <h3>Hallowed Ground Battlefield Tours</h3>
+              <p>Licensed-guide walking, bus &amp; evening tours in slate blue and gold.</p>
+              <span class="tool">◆ 5-step ticket booking &amp; demo checkout</span>
+              <span class="open">Open concept <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            </div>
+          </a>
+          <a class="card" href="./tour-first-shot-food-tours/index.html">
+            <div class="thumb t-tour2"><span class="name">First Shot Food &amp; History Tours</span></div>
+            <div class="body">
+              <span class="kicker">Food &amp; history walks</span>
+              <h3>First Shot Food &amp; History Tours</h3>
+              <p>Small-group tastings-and-history walks with a calendar booking flow.</p>
+              <span class="tool">◆ Calendar date picker + add-ons &amp; payment</span>
+              <span class="open">Open concept <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+      <section class="cat" id="realtors">
+        <div class="cat-head"><h2>Real Estate</h2><span class="count">Listing search &amp; support tools</span></div>
+        <div class="grid">
+          <a class="card" href="./realtor-ridgeline-realty/index.html">
+            <div class="thumb t-realtor1"><span class="name">Ridgeline Realty</span></div>
+            <div class="body">
+              <span class="kicker">Homes &amp; historic property</span>
+              <h3>Ridgeline Realty</h3>
+              <p>A polished teal-and-gold agency for in-town Gettysburg homes.</p>
+              <span class="tool">◆ Listing filters, mortgage calc &amp; showings</span>
+              <span class="open">Open concept <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            </div>
+          </a>
+          <a class="card" href="./realtor-keystone-homes-and-land/index.html">
+            <div class="thumb t-realtor2"><span class="name">Keystone Homes &amp; Land</span></div>
+            <div class="body">
+              <span class="kicker">Farms, land &amp; acreage</span>
+              <h3>Keystone Homes &amp; Land</h3>
+              <p>A rural barn-red agency with a grid/map listing view for Adams County land.</p>
+              <span class="tool">◆ Map + grid listings, pre-qual &amp; scheduling</span>
+              <span class="open">Open concept <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span>
+            </div>
+          </a>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="shell">
+      <div>
+        <strong style="color:#fff">Ridges &amp; Valleys Studio</strong><br>
+        <span class="fine">Websites that help South Central PA businesses get found and get work.</span>
+      </div>
+      <span class="fine">Concept portfolio · For demonstration only · Built here in Adams County</span>
+    </div>
+  </footer>
+</body>
+</html>
