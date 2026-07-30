@@ -17,11 +17,11 @@
 /web/app/cache/
 
 # Sage theme build artifacts
-/web/app/themes/ridgesandvalleys/node_modules/
-/web/app/themes/ridgesandvalleys/vendor/
-/web/app/themes/ridgesandvalleys/public/build/
-/web/app/themes/ridgesandvalleys/public/hot/
-/web/app/themes/ridgesandvalleys/.dev-wp/
+/web/app/themes/ridgesandvalleys-theme/node_modules/
+/web/app/themes/ridgesandvalleys-theme/vendor/
+/web/app/themes/ridgesandvalleys-theme/public/build/
+/web/app/themes/ridgesandvalleys-theme/public/hot/
+/web/app/themes/ridgesandvalleys-theme/.dev-wp/
 
 # Misc
 .DS_Store
