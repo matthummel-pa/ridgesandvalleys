@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Lightweight SEO + JSON-LD schema (adapted from the Pressroot `seo` module).
+ * Lightweight SEO + JSON-LD schema.
  *
  * Outputs Open Graph + Twitter meta and a linked JSON-LD @graph tuned for a
  * local web-design studio: a ProfessionalService (LocalBusiness) node with the

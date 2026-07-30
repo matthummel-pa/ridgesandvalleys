@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Performance & bloat control (adapted from the Pressroot `performance` module).
+ * Performance & bloat control.
  *
  * Trims common WordPress front-end bloat with safe, opt-out defaults: removes
  * the emoji script/styles, jQuery Migrate, XML-RPC/pingbacks, Dashicons for

@@ -110,7 +110,7 @@
       <div class="rv-grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
         @php($cases = [
           [__('Concept · Professional services', 'sage'), __('A local law office (concept)', 'sage'), __('A self-initiated concept showing a clearer path from visitor to consultation.', 'sage'), 'work-1', __('Wentz farm buildings near Gettysburg', 'sage')],
-          [__('Product · Process', 'sage'), __('Pressroot', 'sage'), __('The delivery engine behind the studio — a productized website workflow I built.', 'sage'), 'work-2', __('Workspace desk with a laptop', 'sage')],
+          [__('Product · Process', 'sage'), __('Groundwork to Launch', 'sage'), __('The delivery engine behind the studio — a productized website workflow I built.', 'sage'), 'work-2', __('Workspace desk with a laptop', 'sage')],
           [__('Concept · Retail', 'sage'), __('A Gettysburg gift shop (concept)', 'sage'), __('A clearly-labeled concept I designed to show my approach for local retail.', 'sage'), 'work-3', __('Historic brick storefront on a downtown Gettysburg street', 'sage')],
           [__('Concept · Food & drink', 'sage'), __('A local restaurant (concept)', 'sage'), __('A concept refresh — menus, hours, and directions made mobile-first and easy to keep current.', 'sage'), 'work-4', __('Rustic table setting', 'sage')],
         ])
