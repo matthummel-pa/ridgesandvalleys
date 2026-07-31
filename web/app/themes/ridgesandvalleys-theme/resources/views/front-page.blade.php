@@ -36,7 +36,7 @@
   <section class="rv-band rv-band-alt">
     <div class="rv-shell">
       {!! \App\eyebrow(\App\field('problems_eyebrow', __('If this sounds familiar', 'sage'))) !!}
-      <h2 class="rv-section-title">{{ \App\field('problems_title', __('Your site should', 'sage')) }} <em class="rv-accent">{{ \App\field('problems_accent', __('help', 'sage')) }}</em> {{ __('people act.', 'sage') }}</h2>
+      <h2 class="rv-section-title">{{ \App\field('problems_title', __('Your site should', 'sage')) }} <em class="rv-accent">{{ \App\field('problems_accent', __('help', 'sage')) }}</em> {{ \App\field('problems_after', __('people act.', 'sage')) }}</h2>
       <div class="rv-grid rv-grid-3" style="margin-top:2.25rem">
         @php($problems = [
           ['01', \App\field('problem1_title', __('Hard to find the basics', 'sage')), \App\field('problem1_text', __('Hours, directions, and prices are buried — or living on Facebook where you don\'t control them.', 'sage'))],

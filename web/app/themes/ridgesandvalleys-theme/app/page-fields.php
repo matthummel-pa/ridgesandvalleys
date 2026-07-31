@@ -206,8 +206,9 @@ function page_field_map(): array
             ]),
             __('Problems section', 'sage') => [
                 ['problems_eyebrow', __('Eyebrow', 'sage'), 'text', __('If this sounds familiar', 'sage')],
-                ['problems_title', __('Heading', 'sage'), 'text', __('Your site should', 'sage')],
+                ['problems_title', __('Heading (before accent)', 'sage'), 'text', __('Your site should', 'sage')],
                 ['problems_accent', __('Accent word', 'sage'), 'text', __('help', 'sage')],
+                ['problems_after', __('Heading (after accent)', 'sage'), 'text', __('people act.', 'sage')],
                 ['problem1_title', __('Card 1 · title', 'sage'), 'text', __('Hard to find the basics', 'sage')],
                 ['problem1_text', __('Card 1 · text', 'sage'), 'textarea', __('Hours, directions, and prices are buried — or living on Facebook where you don\'t control them.', 'sage')],
                 ['problem2_title', __('Card 2 · title', 'sage'), 'text', __('Dated on a phone', 'sage')],
