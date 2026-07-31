@@ -121,6 +121,26 @@ add_action('customize_register', function ($wp_customize) {
         'priority'    => 9,
     ]));
 
+    /* Logo sizing — applies to the inline SVG lockup and any Media Library logo alike. */
+    $wp_customize->add_setting('rv_logo_height', ['default' => 44, 'sanitize_callback' => 'absint']);
+    $wp_customize->add_control('rv_logo_height', [
+        'label'       => __('Logo height — desktop (px)', 'sage'),
+        'description' => __('Height of the header logo on desktop. Width scales automatically.', 'sage'),
+        'section'     => 'title_tagline',
+        'type'        => 'number',
+        'input_attrs' => ['min' => 24, 'max' => 96, 'step' => 1],
+        'priority'    => 10,
+    ]);
+    $wp_customize->add_setting('rv_logo_height_mobile', ['default' => 38, 'sanitize_callback' => 'absint']);
+    $wp_customize->add_control('rv_logo_height_mobile', [
+        'label'       => __('Logo height — mobile (px)', 'sage'),
+        'description' => __('Height of the header logo on small screens (600px and below).', 'sage'),
+        'section'     => 'title_tagline',
+        'type'        => 'number',
+        'input_attrs' => ['min' => 20, 'max' => 72, 'step' => 1],
+        'priority'    => 11,
+    ]);
+
     /* Colors */
     $wp_customize->add_section('rv_colors', ['title' => __('Colors', 'sage'), 'panel' => 'rv_theme_options']);
     $colors = [
@@ -152,18 +172,42 @@ add_action('customize_register', function ($wp_customize) {
     /* Hero positioning (flexbox) */
     $wp_customize->add_setting('rv_hero_align', ['default' => 'left', 'sanitize_callback' => 'sanitize_key']);
     $wp_customize->add_control('rv_hero_align', [
-        'label'       => __('Hero content alignment', 'sage'),
-        'description' => __('Positions the hero eyebrow, heading, text, and buttons with flexbox.', 'sage'),
+        'label'       => __('Hero content block - horizontal placement', 'sage'),
+        'description' => __('Positions the whole hero block (eyebrow, heading, text, buttons) left, center, or right with flexbox.', 'sage'),
         'section'     => 'rv_layout',
         'type'        => 'select',
         'choices'     => ['left' => __('Left', 'sage'), 'center' => __('Center', 'sage'), 'right' => __('Right', 'sage')],
     ]);
+
+    // Text alignment of the hero copy, INDEPENDENT of the block placement above.
+    // 'inherit' follows the block placement (the original coupled behaviour).
+    $wp_customize->add_setting('rv_hero_textalign', ['default' => 'inherit', 'sanitize_callback' => 'sanitize_key']);
+    $wp_customize->add_control('rv_hero_textalign', [
+        'label'       => __('Hero copy text alignment', 'sage'),
+        'description' => __('Aligns the text inside the hero (heading, paragraphs) independently of where the block sits. "Follow block" matches the placement above.', 'sage'),
+        'section'     => 'rv_layout',
+        'type'        => 'select',
+        'choices'     => ['inherit' => __('Follow block', 'sage'), 'left' => __('Left', 'sage'), 'center' => __('Center', 'sage'), 'right' => __('Right', 'sage')],
+    ]);
+
     $wp_customize->add_setting('rv_hero_valign', ['default' => 'center', 'sanitize_callback' => 'sanitize_key']);
     $wp_customize->add_control('rv_hero_valign', [
-        'label'   => __('Hero vertical position', 'sage'),
-        'section' => 'rv_layout',
-        'type'    => 'select',
-        'choices' => ['top' => __('Top', 'sage'), 'center' => __('Center', 'sage'), 'bottom' => __('Bottom', 'sage')],
+        'label'       => __('Hero vertical position', 'sage'),
+        'description' => __('Positions the block top / middle / bottom. Only visible when "Hero minimum height" below is above 0.', 'sage'),
+        'section'     => 'rv_layout',
+        'type'        => 'select',
+        'choices'     => ['top' => __('Top', 'sage'), 'center' => __('Center', 'sage'), 'bottom' => __('Bottom', 'sage')],
+    ]);
+
+    // Minimum hero height (vh). 0 = auto (content height, current behaviour). Any
+    // value > 0 gives the vertical-position control real space to act on.
+    $wp_customize->add_setting('rv_hero_min_vh', ['default' => 0, 'sanitize_callback' => 'absint']);
+    $wp_customize->add_control('rv_hero_min_vh', [
+        'label'       => __('Hero minimum height (% of viewport)', 'sage'),
+        'description' => __('0 = fit the content (default). Try 60-90 for a tall, full-bleed hero; this is what makes the vertical position setting visible.', 'sage'),
+        'section'     => 'rv_layout',
+        'type'        => 'number',
+        'input_attrs' => ['min' => 0, 'max' => 95, 'step' => 5],
     ]);
 
     /* Header */
@@ -1148,13 +1192,15 @@ add_action('wp_head', function () {
 
 /**
  * Emit hero positioning CSS (flexbox) from the Customizer controls. Values are
- * mapped through a whitelist, so the theme_mod can never inject arbitrary CSS.
- * Add more sizing/alignment controls the same way: register a setting above,
- * then map + print its CSS here.
+ * mapped through a whitelist / clamped, so a theme_mod can never inject arbitrary
+ * CSS. Three independent axes now:
+ *   - rv_hero_align     -> horizontal block placement (align-items + actions + margins)
+ *   - rv_hero_textalign -> text alignment of the copy, decoupled ('inherit' = follow block)
+ *   - rv_hero_valign    -> vertical placement, made real by rv_hero_min_vh (min-height)
  */
 add_action('wp_head', function () {
+    // key => [align-items, natural text-align, margin-left, margin-right]
     $amap = [
-        // key => [align-items, text-align, margin-left, margin-right]
         'left'   => ['flex-start', 'left',   '0',    '0'],
         'center' => ['center',     'center', 'auto', 'auto'],
         'right'  => ['flex-end',   'right',  'auto', '0'],
@@ -1164,15 +1210,39 @@ add_action('wp_head', function () {
     $a = $amap[get_theme_mod('rv_hero_align', 'left')] ?? $amap['left'];
     $v = $vmap[get_theme_mod('rv_hero_valign', 'center')] ?? 'center';
 
-    printf(
-        '<style id="rv-hero-align">.rv-hero .rv-hero-inner{display:flex;flex-direction:column;align-items:%1$s;justify-content:%2$s;text-align:%3$s}.rv-hero .rv-hero-title,.rv-hero .rv-hero-sub{margin-left:%4$s;margin-right:%5$s}.rv-hero .rv-hero-actions{justify-content:%1$s}</style>' . "\n",
-        $a[0],
-        $v,
-        $a[1],
-        $a[2],
-        $a[3]
-    );
+    // Copy text-align, decoupled from block placement. 'inherit' follows the block.
+    $talign    = get_theme_mod('rv_hero_textalign', 'inherit');
+    $textAlign = in_array($talign, ['left', 'center', 'right'], true) ? $talign : $a[1];
+
+    // Minimum hero height (vh) is what gives vertical positioning room to act.
+    $minvh = max(0, min(95, (int) get_theme_mod('rv_hero_min_vh', 0)));
+
+    $css  = '.rv-hero .rv-hero-inner{display:flex;flex-direction:column;align-items:' . $a[0] . ';text-align:' . $textAlign . '}';
+    $css .= '.rv-hero .rv-hero-title,.rv-hero .rv-hero-sub{margin-left:' . $a[2] . ';margin-right:' . $a[3] . '}';
+    $css .= '.rv-hero .rv-hero-actions{justify-content:' . $a[0] . '}';
+    if ($minvh > 0) {
+        $css .= '.rv-hero{min-height:' . $minvh . 'vh}';
+        $css .= '.rv-hero>.rv-hero-inner{min-height:' . $minvh . 'vh;justify-content:' . $v . '}';
+    }
+
+    echo '<style id="rv-hero-align">' . $css . "</style>\n";
 }, 21);
+
+/**
+ * Emit logo sizing CSS from the Customizer (Site Identity). Values are clamped to
+ * a sane range so a theme_mod can never blow out the header, and this prints later
+ * in <head> than the enqueued stylesheets, so it overrides the defaults in
+ * assets/rv-enhancements.css.
+ */
+add_action('wp_head', function () {
+    $d = max(24, min(96, (int) get_theme_mod('rv_logo_height', 44)));
+    $m = max(20, min(72, (int) get_theme_mod('rv_logo_height_mobile', 38)));
+    printf(
+        '<style id="rv-logo-size">.rv-brand-logo-link .rv-logo{height:%1$dpx;width:auto}@media(max-width:600px){.rv-brand-logo-link .rv-logo{height:%2$dpx}}</style>' . "\n",
+        $d,
+        $m
+    );
+}, 22);
 
 /**
  * Social icon size (Customizer > Social Links > Icon size). The `.rv-social`

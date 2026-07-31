@@ -1,0 +1,12 @@
+<svg id="logo" width="744" height="120" viewBox="0 0 744 120" xmlns="http://www.w3.org/2000/svg">
+  <title>Ridges &amp; Valleys Studio</title>
+  <defs><clipPath id="rvLogoClipD"><rect x="8" y="10" width="100" height="100" rx="24"/></clipPath></defs>
+  <rect x="8" y="10" width="100" height="100" rx="24" fill="#EFE7D8"/>
+  <g clip-path="url(#rvLogoClipD)">
+    <circle cx="83" cy="35" r="9.5" fill="#E0A73C"/>
+    <path d="M4 112 V58 L34 40 L58 54 L84 36 L114 56 V112 Z" fill="#97A88E"/>
+    <path d="M4 112 V66 L30 46 L52 62 L74 42 L98 60 L114 68 V112 Z" fill="#B0553A"/>
+    <path d="M4 112 V80 L28 52 L46 76 L64 46 L84 74 L104 56 L114 78 V112 Z" fill="#2E5245"/>
+  </g>
+  <text x="132" y="74" font-family="'Outfit',system-ui,sans-serif" font-weight="700" letter-spacing="-0.6" font-size="44" fill="#F7F1E6">Ridges <tspan font-family="'Instrument Serif',Georgia,serif" font-style="italic" font-size="50" fill="#E0A73C">&amp;</tspan> Valleys Studio</text>
+</svg>
