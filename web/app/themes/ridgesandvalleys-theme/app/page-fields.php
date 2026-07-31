@@ -64,6 +64,25 @@ function strip_field_markers(string $s): string
 }
 
 /**
+ * Optional hero side columns (columns 2 and 3). Returns only the columns that
+ * have a heading and/or body set for the current (or given) page, so the hero
+ * renders 1, 2, or 3 columns automatically. Consumed by
+ * partials/hero-asides.blade.php + the .rv-hero-cols CSS in rv-enhancements.css.
+ */
+function hero_asides(?int $post_id = null): array
+{
+    $out = [];
+    foreach (['2', '3'] as $n) {
+        $title = field("hero_col{$n}_title", '', $post_id);
+        $body  = field("hero_col{$n}_body", '', $post_id);
+        if (trim(strip_field_markers($title)) !== '' || trim(strip_field_markers($body)) !== '') {
+            $out[] = ['title' => $title, 'body' => $body];
+        }
+    }
+    return $out;
+}
+
+/**
  * Read a "lines" field — a simple list of strings, one per line in the editor.
  * Falls back to the given default list when empty. Shares the scalar preview
  * override path (rv/field_value) so the live editor preview updates as you type.
@@ -172,12 +191,19 @@ function page_field_map(): array
 
     return [
         'front-page.blade.php' => [
-            __('Hero', 'sage') => $hero(
+            __('Hero', 'sage') => array_merge($hero(
                 __('Gettysburg · Web design · Local growth', 'sage'),
                 __('A better website, without the agency', 'sage'),
                 __('drag.', 'sage'),
                 __('Fast, accessible WordPress websites for Gettysburg, Adams County, and South Central PA businesses — planned with AI, refined by an experienced local developer, and launched without months of meetings.', 'sage')
-            ),
+            ), [
+                // Optional hero side columns. Fill either/both to make the hero 2- or
+                // 3-column; leave blank for the normal single-column hero.
+                ['hero_col2_title', __('Hero column 2 · heading (optional)', 'sage'), 'text', ''],
+                ['hero_col2_body', __('Hero column 2 · content (optional, HTML allowed)', 'sage'), 'html', ''],
+                ['hero_col3_title', __('Hero column 3 · heading (optional)', 'sage'), 'text', ''],
+                ['hero_col3_body', __('Hero column 3 · content (optional, HTML allowed)', 'sage'), 'html', ''],
+            ]),
             __('Problems section', 'sage') => [
                 ['problems_eyebrow', __('Eyebrow', 'sage'), 'text', __('If this sounds familiar', 'sage')],
                 ['problems_title', __('Heading', 'sage'), 'text', __('Your site should', 'sage')],
