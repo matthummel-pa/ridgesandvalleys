@@ -83,6 +83,37 @@ function hero_asides(?int $post_id = null): array
 }
 
 /**
+ * The registered input type ('text' | 'textarea' | 'html' | 'url' | 'lines' |
+ * 'select' | ...) for a scalar field key, scanning page_field_map() across all
+ * templates (first match wins). Defaults to 'text'. The live preview uses this to
+ * sanitize draft values the SAME way saving does, so e.g. a typed "&" in a text
+ * field isn't entity-encoded to "&amp;" (which would then double-escape in Blade).
+ */
+function field_type(string $key): string
+{
+    static $index = null;
+    if ($index === null) {
+        $index = [];
+        foreach (page_field_map() as $groups) {
+            if (! is_array($groups)) {
+                continue;
+            }
+            foreach ($groups as $rows) {
+                if (! is_array($rows)) {
+                    continue;
+                }
+                foreach ($rows as $row) {
+                    if (is_array($row) && isset($row[0], $row[2]) && is_string($row[0]) && ! isset($index[$row[0]])) {
+                        $index[$row[0]] = (string) $row[2];
+                    }
+                }
+            }
+        }
+    }
+    return $index[$key] ?? 'text';
+}
+
+/**
  * Read a "lines" field — a simple list of strings, one per line in the editor.
  * Falls back to the given default list when empty. Shares the scalar preview
  * override path (rv/field_value) so the live editor preview updates as you type.
@@ -233,6 +264,7 @@ function page_field_map(): array
                 ['pkg4_name', __('Package 4 · name', 'sage'), 'text', __('Care & Grow', 'sage')],
                 ['pkg4_price', __('Package 4 · price', 'sage'), 'text', '$179'],
                 ['pkg4_desc', __('Package 4 · description', 'sage'), 'textarea', __('Updates, backups, security, small changes, reporting.', 'sage')],
+                ['pkg_cta', __('“Compare all services” button label', 'sage'), 'text', __('Compare all services', 'sage')],
             ],
             __('Rooted section', 'sage') => [
                 ['rooted_eyebrow', __('Eyebrow', 'sage'), 'text', __('Rooted in the ridges & valleys', 'sage')],
@@ -255,6 +287,7 @@ function page_field_map(): array
                 ['hero_btn1_url', __('Hero button 1 link (“Plan my site”)', 'sage'), 'url', __('e.g. /contact/', 'sage')],
                 ['hero_btn2_url', __('Hero button 2 link (“See the process”)', 'sage'), 'url', __('e.g. /services/', 'sage')],
                 ['cta_button_url', __('Closing CTA button link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
+                ['pkg_cta_url', __('“Compare all services” button link', 'sage'), 'url', __('e.g. /services/', 'sage')],
             ],
             __('Hero trust line', 'sage') => [
                 ['hero_trust', __('Trust line under the buttons', 'sage'), 'text', __('15+ yrs building for the web · Accessibility-first · WordPress · Local support', 'sage')],

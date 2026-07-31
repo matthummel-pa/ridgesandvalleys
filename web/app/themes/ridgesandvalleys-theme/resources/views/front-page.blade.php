@@ -78,7 +78,7 @@
         </article>
       @endforeach
     </div>
-    <div style="margin-top:1.5rem"><a class="rv-btn rv-btn-ghost" href="{{ home_url('/services/') }}">{{ __('Compare all services', 'sage') }} {!! \App\icon('arrow') !!}</a></div>
+    <div style="margin-top:1.5rem"><a class="rv-btn rv-btn-ghost" href="{{ \App\cta_href(\App\field('pkg_cta_url', '/services/')) }}">{{ \App\field('pkg_cta', __('Compare all services', 'sage')) }} {!! \App\icon('arrow') !!}</a></div>
   </section>
 
   {{-- INCLUDED IN EVERY BUILD --}}

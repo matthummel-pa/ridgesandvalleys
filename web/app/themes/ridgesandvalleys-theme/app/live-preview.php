@@ -83,10 +83,20 @@ add_action('wp', function () {
             // A repeater's rows arrive as a nested array under its key.
             $rows[$key] = array_values(preview_sanitize_rows($v));
         } else {
-            // Scalar and "lines" fields share this string path (field_lines splits it).
-            // wp_kses_post (not sanitize_textarea_field) so "html" fields keep their
-            // inline formatting in the preview. This is preview-only and never saved.
-            $values[$key] = wp_kses_post((string) $v);
+            // Scalar + "lines" fields (field_lines splits on newlines). Sanitize by
+            // the field's registered type — the SAME way saving does — so the preview
+            // matches the saved/live output. Using wp_kses_post for everything would
+            // entity-encode a typed "&" to "&amp;", which Blade's {{ }} then escapes
+            // again, showing a literal "&amp;". Only real "html" fields (output raw
+            // with {!! !!}) should keep wp_kses_post.
+            $type = field_type($key);
+            if ($type === 'html') {
+                $values[$key] = wp_kses_post((string) $v);
+            } elseif ($type === 'url') {
+                $values[$key] = esc_url_raw(trim((string) $v));
+            } else {
+                $values[$key] = sanitize_textarea_field((string) $v);
+            }
         }
     }
 
