@@ -25,6 +25,17 @@ const OI_API      = 'https://api.openverse.org/v1/images/';
 const OI_STATS    = 'https://api.openverse.org/v1/images/stats/';
 const OI_PAGESIZE = 30;
 
+/** Request headers — a descriptive User-Agent is required; the default
+ *  WordPress UA is rejected by Openverse's edge, which is why a server-side
+ *  call fails where a browser call (with a normal UA) succeeds. */
+function oi_headers(): array
+{
+    return [
+        'Accept'     => 'application/json',
+        'User-Agent' => 'RidgesAndValleysStudio/1.0 (+' . home_url('/') . ')',
+    ];
+}
+
 /* -------------------------------------------------------------------------
  * Options for the search filters.
  * ---------------------------------------------------------------------- */
@@ -61,7 +72,7 @@ function oi_sources(): array
         return $cached;
     }
     $sources = [];
-    $res = wp_remote_get(OI_STATS, ['timeout' => 12]);
+    $res = wp_remote_get(OI_STATS, ['timeout' => 12, 'headers' => oi_headers()]);
     if (! is_wp_error($res) && (int) wp_remote_retrieve_response_code($res) === 200) {
         $data = json_decode((string) wp_remote_retrieve_body($res), true);
         foreach ((array) $data as $row) {
@@ -102,7 +113,7 @@ function oi_search(string $q, string $license, string $source, int $page): array
 
     $res = wp_remote_get(add_query_arg($args, OI_API), [
         'timeout' => 20,
-        'headers' => ['Accept' => 'application/json'],
+        'headers' => oi_headers(),
     ]);
     if (is_wp_error($res)) {
         return [[], 0, $res->get_error_message()];
@@ -110,10 +121,11 @@ function oi_search(string $q, string $license, string $source, int $page): array
     $code = (int) wp_remote_retrieve_response_code($res);
     $data = json_decode((string) wp_remote_retrieve_body($res), true);
     if ($code === 429) {
-        return [[], 0, __('Openverse is rate-limiting anonymous requests right now — wait a minute and try again.', 'sage')];
+        return [[], 0, __('Openverse is rate-limiting requests right now — wait a minute and try again.', 'sage')];
     }
     if ($code !== 200 || ! is_array($data)) {
-        return [[], 0, __('Search failed. Please try again.', 'sage')];
+        $detail = is_array($data) ? (string) ($data['detail'] ?? '') : '';
+        return [[], 0, sprintf(__('Search failed (HTTP %1$d).%2$s', 'sage'), $code, $detail !== '' ? ' ' . $detail : '')];
     }
     return [(array) ($data['results'] ?? []), (int) ($data['result_count'] ?? 0), ''];
 }
