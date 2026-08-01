@@ -23,7 +23,7 @@ namespace App;
 
 const OI_API      = 'https://api.openverse.org/v1/images/';
 const OI_STATS    = 'https://api.openverse.org/v1/images/stats/';
-const OI_PAGESIZE = 30;
+const OI_PAGESIZE = 20; // Openverse caps anonymous requests at 20 per page.
 
 /** Request headers — a descriptive User-Agent is required; the default
  *  WordPress UA is rejected by Openverse's edge, which is why a server-side
