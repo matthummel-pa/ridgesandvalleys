@@ -147,20 +147,27 @@ add_action('wp_head', function () {
  * Field-map rows (added to a template's hero fields in page-fields.php).
  * ---------------------------------------------------------------------- */
 
-/** The two hero buttons: editable label + style each. */
-function hero_button_rows(): array
+/**
+ * Hero button fields: editable label + fill/ghost style per button. Pass each
+ * button's current on-page label so the editor placeholder matches the page.
+ * A blank $b2 yields a single-button group.
+ */
+function hero_button_rows(string $b1 = 'Plan my site', string $b2 = 'See the process'): array
 {
     $style = [
         ''        => __('Theme default', 'sage'),
         'primary' => __('Primary (filled)', 'sage'),
         'ghost'   => __('Ghost (outline)', 'sage'),
     ];
-    return [
-        ['hero_btn1', __('Button 1 · label', 'sage'), 'text', __('Plan my site', 'sage')],
+    $rows = [
+        ['hero_btn1', __('Button 1 · label', 'sage'), 'text', $b1],
         ['hero_btn1_style', __('Button 1 · style', 'sage'), 'select', '', $style],
-        ['hero_btn2', __('Button 2 · label', 'sage'), 'text', __('See the process', 'sage')],
-        ['hero_btn2_style', __('Button 2 · style', 'sage'), 'select', '', $style],
     ];
+    if ($b2 !== '') {
+        $rows[] = ['hero_btn2', __('Button 2 · label', 'sage'), 'text', $b2];
+        $rows[] = ['hero_btn2_style', __('Button 2 · style', 'sage'), 'select', '', $style];
+    }
+    return $rows;
 }
 
 /** Full per-section typography controls (font, size, weight, spacing, case, color). */

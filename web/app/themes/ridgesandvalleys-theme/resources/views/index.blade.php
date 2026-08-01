@@ -21,8 +21,8 @@
           <p class="rv-hero-sub">{{ __('Practical web design and local SEO tips for Gettysburg, Adams County, and South Central PA business owners — plain-English guidance on turning your website into more calls, bookings, and walk-ins, from a local developer who builds these sites every week.', 'sage') }}</p>
         @endif
         <div class="rv-hero-actions">
-          <a class="rv-btn rv-btn-primary" href="#latest">{{ __('Read the latest', 'sage') }}</a>
-          <a class="rv-btn rv-btn-ghost" href="{{ home_url('/free-tools/') }}">{{ __('Try the free tools', 'sage') }}</a>
+          <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style',''), 'rv-btn-primary') }}" href="#latest">{{ \App\field('hero_btn1', __('Read the latest', 'sage')) }}</a>
+          <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style',''), 'rv-btn-ghost') }}" href="{{ home_url('/free-tools/') }}">{{ \App\field('hero_btn2', __('Try the free tools', 'sage')) }}</a>
         </div>
       </div>
     </section>

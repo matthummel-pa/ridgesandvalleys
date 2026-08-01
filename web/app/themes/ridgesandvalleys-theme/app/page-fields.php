@@ -220,7 +220,7 @@ function page_field_map(): array
         ];
     };
 
-    return [
+    $map = [
         'front-page.blade.php' => [
             __('Hero', 'sage') => array_merge($hero(
                 __('Gettysburg · Web design · Local growth', 'sage'),
@@ -1064,6 +1064,44 @@ function page_field_map(): array
             ),
         ],
     ];
+
+    // Roll the per-page hero styling onto every template that has a hero:
+    // "Hero typography" is added to all of them and rendered globally by the
+    // app/hero-style.php wp_head emitter. front-page also carries "Hero buttons"
+    // (added above); other templates' hero buttons are wired in their own markup.
+    $heroKey = __('Hero', 'sage');
+    $typoKey = __('Hero typography', 'sage');
+    $btnKey  = __('Hero buttons', 'sage');
+
+    // Per-template current hero-button labels, so each template's "Hero buttons"
+    // group placeholders + Blade defaults match what's on the page. These are the
+    // templates whose hero buttons are wired to hero_btn1/hero_btn2 in Blade.
+    $btnLabels = [
+        'index.blade.php'                 => ['Read the latest', 'Try the free tools'],
+        'template-email.blade.php'        => ['Check my domain', 'Talk to me'],
+        'template-faq.blade.php'          => ['Ask your question', 'Jump to the FAQs'],
+        'template-grader.blade.php'       => ['Grade my site', 'Talk to me'],
+        'template-local.blade.php'        => ['Score my page', 'Talk to me'],
+        'template-security.blade.php'     => ['Check my site', 'Talk to me'],
+        'template-seo.blade.php'          => ['Check my SEO', 'Talk to me'],
+        'template-tools.blade.php'        => ['Browse the tools', 'Talk to me'],
+        'template-work.blade.php'         => ['Start your project', 'Explore the concepts'],
+    ];
+
+    foreach ($map as $tpl => &$groups) {
+        if (! is_array($groups) || ! isset($groups[$heroKey])) {
+            continue;
+        }
+        if (! isset($groups[$typoKey])) {
+            $groups[$typoKey] = hero_typography_rows();
+        }
+        if (isset($btnLabels[$tpl]) && ! isset($groups[$btnKey])) {
+            $groups[$btnKey] = hero_button_rows($btnLabels[$tpl][0], $btnLabels[$tpl][1]);
+        }
+    }
+    unset($groups);
+
+    return $map;
 }
 
 /**

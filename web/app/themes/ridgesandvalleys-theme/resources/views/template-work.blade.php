@@ -14,8 +14,8 @@
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Business owners buy', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('confidence.', 'sage')) }}</em></h1>
       <p class="rv-hero-sub">{{ \App\field('hero_sub', __('Most of what\'s here are concept sites I designed and built myself — clearly labeled, fully clickable demos of how I\'d solve a real business problem. As client projects launch, they\'ll appear here the same way: the problem, the approach, and the result.', 'sage')) }}</p>
       <div class="rv-hero-actions">
-        <a class="rv-btn rv-btn-primary" href="{{ \App\cta_href(\App\field('hero_btn1_url', get_theme_mod('rv_cta_url', '/contact/'))) }}">{{ __('Start your project', 'sage') }}</a>
-        <a class="rv-btn rv-btn-ghost" href="#case-studies">{{ __('Explore the concepts', 'sage') }} &darr;</a>
+        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style',''), 'rv-btn-primary') }}" href="{{ \App\cta_href(\App\field('hero_btn1_url', get_theme_mod('rv_cta_url', '/contact/'))) }}">{{ \App\field('hero_btn1', __('Start your project', 'sage')) }}</a>
+        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style',''), 'rv-btn-ghost') }}" href="#case-studies">{{ \App\field('hero_btn2', __('Explore the concepts', 'sage')) }} &darr;</a>
       </div>
     </div>
   </section>

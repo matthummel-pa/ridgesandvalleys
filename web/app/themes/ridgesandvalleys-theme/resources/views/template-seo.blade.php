@@ -14,8 +14,8 @@
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Can Google actually', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('find you?', 'sage')) }}</em></h1>
       <p class="rv-hero-sub">{{ \App\field('hero_sub', __('A deep, plain-English SEO audit of any page — snippet preview, crawlability, keyword usage, structured data, links, and the technical fundamentals. Add a target keyword to see how well the page is built around it.', 'sage')) }}</p>
       <div class="rv-hero-actions">
-        <a class="rv-btn rv-btn-primary" href="#seo">{{ __('Check my SEO', 'sage') }}</a>
-        <a class="rv-btn rv-btn-ghost" href="{{ $ctaHref }}">{{ __('Talk to me', 'sage') }}</a>
+        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style',''), 'rv-btn-primary') }}" href="#seo">{{ \App\field('hero_btn1', __('Check my SEO', 'sage')) }}</a>
+        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style',''), 'rv-btn-ghost') }}" href="{{ $ctaHref }}">{{ \App\field('hero_btn2', __('Talk to me', 'sage')) }}</a>
       </div>
     </div>
   </section>

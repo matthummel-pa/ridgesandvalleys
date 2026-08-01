@@ -14,8 +14,8 @@
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Do nearby customers', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('find you?', 'sage')) }}</em></h1>
       <p class="rv-hero-sub">{{ \App\field('hero_sub', __('A scorecard for the signals that get a local business into Google\'s map pack and turn searchers into calls — your name, address, phone, hours, LocalBusiness schema, maps, and reviews. Built for Gettysburg and South Central PA businesses.', 'sage')) }}</p>
       <div class="rv-hero-actions">
-        <a class="rv-btn rv-btn-primary" href="#local">{{ __('Score my page', 'sage') }}</a>
-        <a class="rv-btn rv-btn-ghost" href="{{ $ctaHref }}">{{ __('Talk to me', 'sage') }}</a>
+        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style',''), 'rv-btn-primary') }}" href="#local">{{ \App\field('hero_btn1', __('Score my page', 'sage')) }}</a>
+        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style',''), 'rv-btn-ghost') }}" href="{{ $ctaHref }}">{{ \App\field('hero_btn2', __('Talk to me', 'sage')) }}</a>
       </div>
     </div>
   </section>

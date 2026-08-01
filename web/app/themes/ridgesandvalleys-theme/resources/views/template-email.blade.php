@@ -14,8 +14,8 @@
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Is your email landing in', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('spam?', 'sage')) }}</em></h1>
       <p class="rv-hero-sub">{{ \App\field('hero_sub', __('Enter your domain to check the DNS records that decide whether your email is trusted — SPF, DKIM, and DMARC — and whether anyone can send phishing emails pretending to be your business. Plain English, no signup.', 'sage')) }}</p>
       <div class="rv-hero-actions">
-        <a class="rv-btn rv-btn-primary" href="#email">{{ __('Check my domain', 'sage') }}</a>
-        <a class="rv-btn rv-btn-ghost" href="{{ $ctaHref }}">{{ __('Talk to me', 'sage') }}</a>
+        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style',''), 'rv-btn-primary') }}" href="#email">{{ \App\field('hero_btn1', __('Check my domain', 'sage')) }}</a>
+        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style',''), 'rv-btn-ghost') }}" href="{{ $ctaHref }}">{{ \App\field('hero_btn2', __('Talk to me', 'sage')) }}</a>
       </div>
     </div>
   </section>

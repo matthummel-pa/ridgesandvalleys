@@ -14,8 +14,8 @@
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('How good is your website,', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('really?', 'sage')) }}</em></h1>
       <p class="rv-hero-sub">{{ \App\field('hero_sub', __('Enter your URL for an instant, plain-English report card across seven areas — SEO, speed, mobile, readability, security, technical health, and social sharing. Every check explains what it found and why it matters for your business.', 'sage')) }}</p>
       <div class="rv-hero-actions">
-        <a class="rv-btn rv-btn-primary" href="#grader">{{ __('Grade my site', 'sage') }}</a>
-        <a class="rv-btn rv-btn-ghost" href="{{ $ctaHref }}">{{ __('Talk to me', 'sage') }}</a>
+        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style',''), 'rv-btn-primary') }}" href="#grader">{{ \App\field('hero_btn1', __('Grade my site', 'sage')) }}</a>
+        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style',''), 'rv-btn-ghost') }}" href="{{ $ctaHref }}">{{ \App\field('hero_btn2', __('Talk to me', 'sage')) }}</a>
       </div>
     </div>
   </section>
