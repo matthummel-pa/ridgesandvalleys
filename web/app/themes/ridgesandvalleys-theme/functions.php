@@ -50,7 +50,7 @@ Application::configure()
 |
 */
 
-collect(['setup', 'filters', 'helpers', 'projects', 'contact', 'customizer', 'integrations', 'blocks', 'tools', 'grader', 'seo-checker', 'security-checker', 'email-checker', 'local-checker', 'page-fields', 'post-fields', 'hero-style', 'hero-size', 'hero-credit', 'ai-edit', 'live-preview', 'seo', 'performance', 'github', 'theme-updater', 'google-photos', 'open-images', 'starter'])
+collect(['setup', 'filters', 'helpers', 'projects', 'contact', 'customizer', 'integrations', 'blocks', 'tools', 'grader', 'seo-checker', 'security-checker', 'email-checker', 'local-checker', 'page-fields', 'post-fields', 'hero-style', 'hero-size', 'hero-credit', 'home-sections', 'ai-edit', 'live-preview', 'seo', 'performance', 'github', 'theme-updater', 'google-photos', 'open-images', 'starter'])
     ->each(function ($file) {
         if (! locate_template($file = "app/{$file}.php", true, true)) {
             wp_die(
