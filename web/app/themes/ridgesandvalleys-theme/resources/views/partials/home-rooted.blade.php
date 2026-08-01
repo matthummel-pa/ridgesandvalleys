@@ -1,8 +1,10 @@
 {{-- ROOTED / LOCAL (split with photo) --}}
 <section class="rv-shell rv-band">
   <div class="rv-split rv-split-reverse">
+    @php($rootedCredit = \App\field('rooted_credit'))
     <div class="rv-split-media rv-media-photo">
       <img src="{{ \App\field('rooted_img') ?: \App\stock_image('rooted') }}" alt="{{ __('1935 aerial photograph of Gettysburg set among the farmland and ridges of Adams County', 'sage') }}" loading="lazy" onerror="this.style.display='none'">
+      @if (trim($rootedCredit) !== '')<div class="rv-img-credit">{!! nl2br(e($rootedCredit)) !!}</div>@endif
     </div>
     <div class="rv-split-body">
       {!! \App\eyebrow(\App\field('rooted_eyebrow', __('Rooted in the ridges & valleys', 'sage'))) !!}

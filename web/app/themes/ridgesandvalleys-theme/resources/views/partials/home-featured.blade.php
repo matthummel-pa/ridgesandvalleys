@@ -1,6 +1,7 @@
 {{-- FEATURED CASE --}}
 @php($featured = new WP_Query(['post_type' => 'project', 'posts_per_page' => 1, 'no_found_rows' => true]))
 @php($featuredImg = \App\field('featured_img'))
+@php($featuredCredit = \App\field('featured_credit'))
 <section class="rv-band rv-band-alt">
   <div class="rv-shell">
     {!! \App\eyebrow(__('Featured work', 'sage')) !!}
@@ -9,6 +10,7 @@
       @if ($featured->have_posts()) @php($featured->the_post())
         <div class="rv-split-media rv-media-photo">
           <img src="{{ $featuredImg ?: (has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'rv-hero') : \App\stock_image('featured')) }}" alt="{{ get_the_title() }}" loading="lazy" onerror="this.style.display='none'">
+          @if (trim($featuredCredit) !== '')<div class="rv-img-credit">{!! nl2br(e($featuredCredit)) !!}</div>@endif
         </div>
         <div class="rv-split-body">
           {!! \App\eyebrow(get_post_meta(get_the_ID(), '_rv_client', true) ?: __('Local Launch', 'sage')) !!}
@@ -20,6 +22,7 @@
       @else
         <div class="rv-split-media rv-media-photo">
           <img src="{{ $featuredImg ?: \App\stock_image('featured') }}" alt="{{ __('Wentz farm buildings near Gettysburg', 'sage') }}" loading="lazy" onerror="this.style.display='none'">
+          @if (trim($featuredCredit) !== '')<div class="rv-img-credit">{!! nl2br(e($featuredCredit)) !!}</div>@endif
         </div>
         <div class="rv-split-body">
           {!! \App\eyebrow(__('Bradley Goldsmith Law · Local Launch', 'sage')) !!}
