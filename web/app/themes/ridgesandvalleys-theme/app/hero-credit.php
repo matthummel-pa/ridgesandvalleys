@@ -224,7 +224,12 @@ add_action('wp_head', function () {
     $css  = '.rv-hero,.rv-split-media{position:relative}';
     $css .= '.rv-hero-credit,.rv-img-credit{position:absolute;z-index:3;text-align:right;line-height:1.3;'
         . 'pointer-events:none;font-family:var(--font-mono);letter-spacing:.03em;'
-        . 'color:rgba(247,241,230,.82);text-shadow:0 1px 3px rgba(0,0,0,.5)}';
+        . 'color:rgba(247,241,230,.88);text-shadow:0 1px 3px rgba(0,0,0,.5);'
+        // Slight transparent gradient scrim so the credit stays legible over
+        // any part of the image (light skies, busy detail). Darkest toward the
+        // bottom-right corner it sits in, fading out toward the top-left.
+        . 'padding:.34em .64em;border-radius:5px;'
+        . 'background:linear-gradient(to top left,rgba(14,19,17,.52),rgba(14,19,17,.24) 65%,rgba(14,19,17,.08))}';
     $css .= '.rv-hero-credit a,.rv-img-credit a{color:inherit;pointer-events:auto}';
     // Hero sits on a big banner: larger insets.
     $css .= '.rv-hero-credit{right:clamp(1rem,3vw,2.25rem);bottom:clamp(.85rem,2.5vw,1.75rem);font-size:.72rem;max-width:60%}';
