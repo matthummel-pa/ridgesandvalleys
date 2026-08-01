@@ -115,8 +115,10 @@ function home_layout_box($post): void
     $labels = home_sections_all();
     $order  = home_section_order();
     $hidden = home_hidden_sections();
-    $featured_img = (string) get_post_meta($post->ID, 'rv_f_featured_img', true);
-    $rooted_img   = (string) get_post_meta($post->ID, 'rv_f_rooted_img', true);
+    $featured_img    = (string) get_post_meta($post->ID, 'rv_f_featured_img', true);
+    $rooted_img      = (string) get_post_meta($post->ID, 'rv_f_rooted_img', true);
+    $featured_credit = (string) get_post_meta($post->ID, 'rv_f_featured_credit', true);
+    $rooted_credit   = (string) get_post_meta($post->ID, 'rv_f_rooted_credit', true);
 
     wp_nonce_field('rv_home_layout', 'rv_home_layout_nonce');
     ?>
@@ -163,19 +165,36 @@ function home_layout_box($post): void
     <div class="rv-hl-images">
       <?php
       $imgs = [
-          'featured_img' => [__('Featured work photo', 'sage'), $featured_img, __('Shown when no Project post has its own image.', 'sage')],
-          'rooted_img'   => [__('Rooted / local photo', 'sage'), $rooted_img, __('The photo in the “Built here. Supported here.” band.', 'sage')],
+          'featured_img' => [
+              'label'      => __('Featured work photo', 'sage'),
+              'value'      => $featured_img,
+              'help'       => __('Shown when no Project post has its own image.', 'sage'),
+              'credit_key' => 'featured_credit',
+              'credit'     => $featured_credit,
+          ],
+          'rooted_img' => [
+              'label'      => __('Rooted / local photo', 'sage'),
+              'value'      => $rooted_img,
+              'help'       => __('The photo in the “Built here. Supported here.” band.', 'sage'),
+              'credit_key' => 'rooted_credit',
+              'credit'     => $rooted_credit,
+          ],
       ];
       foreach ($imgs as $name => $cfg) : ?>
         <div class="rv-hl-img" data-img="<?php echo esc_attr($name); ?>">
-          <h4><?php echo esc_html($cfg[0]); ?></h4>
-          <img class="rv-hl-thumb" src="<?php echo esc_url($cfg[1]); ?>" alt="">
-          <input type="hidden" name="rv_f_<?php echo esc_attr($name); ?>" class="rv-hl-img-input" value="<?php echo esc_url($cfg[1]); ?>">
+          <h4><?php echo esc_html($cfg['label']); ?></h4>
+          <img class="rv-hl-thumb" src="<?php echo esc_url($cfg['value']); ?>" alt="">
+          <input type="hidden" name="rv_f_<?php echo esc_attr($name); ?>" class="rv-hl-img-input" value="<?php echo esc_url($cfg['value']); ?>">
           <p>
             <button type="button" class="button rv-hl-pick"><?php esc_html_e('Choose image', 'sage'); ?></button>
-            <button type="button" class="button-link rv-hl-clear" style="<?php echo $cfg[1] ? '' : 'display:none'; ?>"><?php esc_html_e('Remove', 'sage'); ?></button>
+            <button type="button" class="button-link rv-hl-clear" style="<?php echo $cfg['value'] ? '' : 'display:none'; ?>"><?php esc_html_e('Remove', 'sage'); ?></button>
           </p>
-          <p class="rv-hl-note"><?php echo esc_html($cfg[2]); ?></p>
+          <p class="rv-hl-note"><?php echo esc_html($cfg['help']); ?></p>
+          <p style="margin:.5em 0 .2em">
+            <label for="rv_f_<?php echo esc_attr($cfg['credit_key']); ?>"><strong><?php esc_html_e('Description shown on the photo', 'sage'); ?></strong></label>
+          </p>
+          <input type="text" id="rv_f_<?php echo esc_attr($cfg['credit_key']); ?>" name="rv_f_<?php echo esc_attr($cfg['credit_key']); ?>" class="widefat" value="<?php echo esc_attr($cfg['credit']); ?>" placeholder="<?php esc_attr_e('e.g. 1935 aerial view of Gettysburg', 'sage'); ?>">
+          <p class="rv-hl-note"><?php esc_html_e('Caption over the lower-right of this photo, explaining what it shows. Leave blank to hide it. Font, colour and size: Theme Options → Image credits.', 'sage'); ?></p>
         </div>
       <?php endforeach; ?>
     </div>
@@ -312,6 +331,16 @@ add_action('save_post_page', function ($post_id) {
             delete_post_meta($post_id, 'rv_f_' . $key);
         } else {
             update_post_meta($post_id, 'rv_f_' . $key, $raw);
+        }
+    }
+
+    // On-photo description captions (rendered as .rv-img-credit overlays).
+    foreach (['featured_credit', 'rooted_credit'] as $key) {
+        $val = isset($_POST['rv_f_' . $key]) ? sanitize_text_field(wp_unslash($_POST['rv_f_' . $key])) : '';
+        if ($val === '') {
+            delete_post_meta($post_id, 'rv_f_' . $key);
+        } else {
+            update_post_meta($post_id, 'rv_f_' . $key, $val);
         }
     }
 });
