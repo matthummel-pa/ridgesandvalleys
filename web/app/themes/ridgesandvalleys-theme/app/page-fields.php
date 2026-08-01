@@ -235,6 +235,8 @@ function page_field_map(): array
                 ['hero_col3_title', __('Hero column 3 · heading (optional)', 'sage'), 'text', ''],
                 ['hero_col3_body', __('Hero column 3 · content (optional, HTML allowed)', 'sage'), 'html', ''],
             ]),
+            __('Hero buttons', 'sage') => hero_button_rows(),
+            __('Hero typography', 'sage') => hero_typography_rows(),
             __('Problems section', 'sage') => [
                 ['problems_eyebrow', __('Eyebrow', 'sage'), 'text', __('If this sounds familiar', 'sage')],
                 ['problems_title', __('Heading (before accent)', 'sage'), 'text', __('Your site should', 'sage')],

@@ -16,8 +16,8 @@
           <h1 class="rv-hero-title">{{ \App\field('hero_title', __('A better website, without the agency', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('drag.', 'sage')) }}</em></h1>
           <p class="rv-hero-sub">{{ \App\field('hero_sub', __('Fast, accessible WordPress websites for Gettysburg, Adams County, and South Central PA businesses — planned with AI, refined by an experienced local developer, and launched without months of meetings.', 'sage')) }}</p>
           <div class="rv-hero-actions">
-            <a class="rv-btn rv-btn-primary" href="{{ \App\cta_href(\App\field('hero_btn1_url', get_theme_mod('rv_cta_url', '/contact/'))) }}">{{ __('Plan my site', 'sage') }}</a>
-            <a class="rv-btn rv-btn-ghost" href="{{ \App\cta_href(\App\field('hero_btn2_url', '/services/')) }}">{{ __('See the process', 'sage') }}</a>
+            <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style', ''), 'rv-btn-primary') }}" href="{{ \App\cta_href(\App\field('hero_btn1_url', get_theme_mod('rv_cta_url', '/contact/'))) }}">{{ \App\field('hero_btn1', __('Plan my site', 'sage')) }}</a>
+            <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style', ''), 'rv-btn-ghost') }}" href="{{ \App\cta_href(\App\field('hero_btn2_url', '/services/')) }}">{{ \App\field('hero_btn2', __('See the process', 'sage')) }}</a>
           </div>
           <p class="rv-hero-trust">{{ \App\field('hero_trust', __('15+ yrs building for the web · Accessibility-first · WordPress · Local support', 'sage')) }}</p>
         </div>
