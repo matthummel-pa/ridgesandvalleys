@@ -10,14 +10,14 @@
     @include('partials.hero-bg', ['fallback' => \App\stock_image('hero-home')])
     {{-- Scoped hero polish: wider title wrap (fewer lines → CTA above the fold),
          a true proof-stat strip, and a readable credibility line replacing the
-         old all-caps monospace paragraph. Home page only. --}}
+         old all-caps monospace paragraph. Home page only, fully fluid units. --}}
     <style>
       .home .rv-hero-title{max-width:22ch}
-      .rv-hero-stats{list-style:none;margin:2.1rem 0 0;padding:1.4rem 0 0;border-top:1px solid rgba(255,255,255,.16);display:flex;flex-wrap:wrap;gap:1rem 2.25rem;max-width:640px}
-      .rv-hero-stats li{display:flex;flex-direction:column;gap:.12rem;min-width:0}
+      .rv-hero-stats{list-style:none;margin:clamp(1.5rem,4vw,2.1rem) 0 0;padding:clamp(1rem,2.5vw,1.4rem) 0 0;border-block-start:1px solid rgba(255,255,255,.16);display:flex;flex-wrap:wrap;gap:clamp(.75rem,2vw,1rem) clamp(1.25rem,4vw,2.25rem);max-width:min(100%,40rem)}
+      .rv-hero-stats li{display:flex;flex-direction:column;gap:.15rem;min-width:0}
       .rv-hero-stat-v{font-family:var(--font-display,inherit);font-weight:800;font-size:clamp(1.15rem,2.3vw,1.5rem);line-height:1.05;color:#fff}
-      .rv-hero-stat-l{font-size:.78rem;line-height:1.25;color:#cdd7c6;letter-spacing:.01em}
-      .rv-hero-note{margin:1.1rem 0 0;font-size:.92rem;line-height:1.55;color:rgba(247,241,230,.82);max-width:60ch}
+      .rv-hero-stat-l{font-size:clamp(.72rem,1.4vw,.82rem);line-height:1.25;color:#cdd7c6}
+      .rv-hero-note{margin:clamp(.9rem,2.5vw,1.1rem) 0 0;font-size:clamp(.85rem,1.6vw,.95rem);line-height:1.55;color:rgba(247,241,230,.82);max-width:60ch}
     </style>
     @php($rvAsides = \App\hero_asides())
     <div class="rv-shell rv-hero-inner">
@@ -30,18 +30,19 @@
             <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style', ''), 'rv-btn-primary') }}" href="{{ \App\cta_href(\App\field('hero_btn1_url', get_theme_mod('rv_cta_url', '/contact/'))) }}">{{ \App\field('hero_btn1', __('Plan my site', 'sage')) }}</a>
             <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style', ''), 'rv-btn-ghost') }}" href="{{ \App\cta_href(\App\field('hero_btn2_url', '/services/')) }}">{{ \App\field('hero_btn2', __('See the process', 'sage')) }}</a>
           </div>
-          {{-- Proof strip — quantified, and every claim is true to the studio. --}}
-          @php($rvStats = [
-            [__('15+ yrs', 'sage'), __('building for the web', 'sage')],
-            [__('~7 days', 'sage'), __('to your first draft', 'sage')],
-            [__('WCAG 2.1 AA', 'sage'), __('accessibility, built in', 'sage')],
-            [__('You own it', 'sage'), __('domain, hosting & site', 'sage')],
-          ])
-          <ul class="rv-hero-stats">
-            @foreach ($rvStats as $rvStat)
-              <li><span class="rv-hero-stat-v">{{ $rvStat[0] }}</span><span class="rv-hero-stat-l">{{ $rvStat[1] }}</span></li>
-            @endforeach
-          </ul>
+          {{-- Proof strip — editable from the Home page layout box ("Hero proof
+               stats"); \App\hero_stats() supplies true defaults when unset. --}}
+          @php($rvStats = \App\hero_stats())
+          @if (count($rvStats))
+            <ul class="rv-hero-stats">
+              @foreach ($rvStats as $rvStat)
+                <li>
+                  <span class="rv-hero-stat-v">{{ $rvStat['value'] }}</span>
+                  @if (($rvStat['label'] ?? '') !== '')<span class="rv-hero-stat-l">{{ $rvStat['label'] }}</span>@endif
+                </li>
+              @endforeach
+            </ul>
+          @endif
           <p class="rv-hero-note">{{ \App\field('hero_trust', __('Family-owned in Gettysburg, serving Adams County · Led by Matt Hummel', 'sage')) }}</p>
         </div>
         @include('partials.hero-asides', ['asides' => $rvAsides])
