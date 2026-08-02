@@ -236,3 +236,74 @@ add_filter('body_class', function ($classes) {
     }
     return $classes;
 });
+
+/**
+ * Contour brand system.
+ *
+ * Applies the "Contour" identity site-wide: Young Serif for headings, Geist Mono
+ * for eyebrows/labels, and a subtle topographic contour-line motif behind the
+ * key section bands (homepage intro, footer CTA, footer) so the ridges-&-valleys
+ * theme runs throughout the site. Fonts + topo art self-hosted in public/fonts/.
+ */
+function contour_font_face(): string
+{
+    $u = get_theme_file_uri('public/fonts');
+
+    return "@font-face{font-family:'Young Serif';font-style:normal;font-weight:400;font-display:swap;src:url('{$u}/YoungSerif-Regular.woff2') format('woff2');}"
+        . "@font-face{font-family:'Geist Mono';font-style:normal;font-weight:400;font-display:swap;src:url('{$u}/GeistMono-Regular.woff2') format('woff2');}"
+        . "@font-face{font-family:'Geist Mono';font-style:normal;font-weight:500 700;font-display:swap;src:url('{$u}/GeistMono-Bold.woff2') format('woff2');}";
+}
+
+function contour_css(): string
+{
+    $u     = get_theme_file_uri('public/fonts');
+    $pine  = "{$u}/contour-pine.svg";
+    $cream = "{$u}/contour-cream.svg";
+
+    return contour_font_face() . <<<CSS
+
+:root:root{
+  --font-display:'Young Serif', Georgia, 'Times New Roman', serif;
+  --font-mono:'Geist Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+h1, h2, h3, h4,
+.rv-hero-title, .rv-hero-title em,
+.rv-intro-title, .rv-fcta-title,
+.rv-section-title, .rv-page-title, .rv-post-title,
+.rv-footer-name, .wp-block-heading{
+  font-family:var(--font-display) !important;
+  font-weight:400 !important;
+  letter-spacing:-.005em;
+}
+.rv-eyebrow, .rv-intro-eyebrow, .rv-topbar-note,
+.rv-footer-heading, .rv-hero-note, .rv-copyright,
+.rv-intro-cols h3{
+  font-family:var(--font-mono) !important;
+}
+.rv-home-intro, .rv-fcta, .rv-footer{ position:relative; isolation:isolate; }
+.rv-home-intro::before, .rv-fcta::before, .rv-footer::before{
+  content:""; position:absolute; inset:0; z-index:-1; pointer-events:none;
+  background-repeat:no-repeat; background-position:center; background-size:cover;
+}
+.rv-home-intro::before{ background-image:url('{$pine}'); opacity:.06; }
+.rv-fcta::before{ background-image:url('{$cream}'); opacity:.09; }
+.rv-footer::before{ background-image:url('{$cream}'); opacity:.06; }
+
+CSS;
+}
+
+add_action('wp_head', function () {
+    printf(
+        '<link rel="preload" as="font" type="font/woff2" crossorigin href="%s/YoungSerif-Regular.woff2">' . "\n",
+        esc_url(get_theme_file_uri('public/fonts'))
+    );
+}, 1);
+
+add_action('wp_head', function () {
+    echo '<style id="rv-contour-brand">' . contour_css() . "</style>\n"; // phpcs:ignore
+}, 20);
+
+add_filter('block_editor_settings_all', function ($settings) {
+    $settings['styles'][] = ['css' => contour_font_face()];
+    return $settings;
+});
