@@ -12,7 +12,7 @@
     @include('partials.hero-bg', ['fallback' => \App\stock_image('about')])
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Ridges & Valleys Studio', 'sage'))) !!}
-      <h1 class="rv-hero-title">{{ \App\field('hero_title', __('A family-owned web studio for', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('South Central PA.', 'sage')) }}</em></h1>
+      <h1 class="rv-hero-title">{{ \App\field('hero_title', __('A family-owned web design studio for', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('South Central PA.', 'sage')) }}</em></h1>
       <p class="rv-hero-sub">{{ \App\field('about_intro', __('We\'re a family-owned web studio in Gettysburg, building fast, accessible websites and local SEO for small businesses across Adams County and South Central PA — from Hanover and New Oxford to Littlestown, York, Chambersburg, and every town in between. If you\'re a local business, we\'d love to work with you.', 'sage')) }}</p>
       @php($aboutInvite = \App\field('about_invite', __('We\'re just as happy to team up with other marketing and design studios, freelancers, and photographers on a project. We\'re new to the neighborhood and all in — so come say hello, and let\'s build something good, right here at home.', 'sage')))
       @if ($aboutInvite)<p class="rv-hero-sub rv-hero-invite">{{ $aboutInvite }}</p>@endif

@@ -10,9 +10,13 @@
     <span class="rv-stripe" aria-hidden="true"></span>
     @include('partials.hero-bg', ['fallback' => \App\stock_image('hero-services')])
     <div class="rv-shell rv-hero-inner">
-      {!! \App\eyebrow(\App\field('hero_eyebrow', __('Services', 'sage'))) !!}
-      <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Websites that earn their', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('keep.', 'sage')) }}</em></h1>
-      <p class="rv-hero-sub">{{ \App\field('hero_sub', __('Every package leads with one outcome — more calls, more bookings, easier-to-find hours — not a feature list. Fixed scope, honest pricing, no jargon.', 'sage')) }}</p>
+      {!! \App\eyebrow(\App\field('hero_eyebrow', __('Web design & local SEO · Gettysburg', 'sage'))) !!}
+      <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Gettysburg web design that earns its', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('keep.', 'sage')) }}</em></h1>
+      <p class="rv-hero-sub">{{ \App\field('hero_sub', __('Web design and local SEO packages for Gettysburg and Adams County businesses — each one built around a single outcome: more calls, more bookings, easier-to-find hours. Fixed scope, honest pricing, no jargon.', 'sage')) }}</p>
+      <div class="rv-hero-actions">
+        <a class="rv-btn rv-btn-primary" href="{{ $ctaHref }}">{{ \App\field('hero_btn1', __('Get a quote', 'sage')) }}</a>
+        <a class="rv-btn rv-btn-ghost" href="#packages">{{ \App\field('hero_btn2', __('See the packages', 'sage')) }}</a>
+      </div>
     </div>
   </section>
 
@@ -23,7 +27,7 @@
   </section>
 
   {{-- PACKAGES --}}
-  <section class="rv-shell rv-band">
+  <section id="packages" class="rv-shell rv-band" style="scroll-margin-top:6rem">
     <div class="rv-svc-plans-head">
       {!! \App\eyebrow(\App\field('plans_eyebrow', __('Simple, fixed pricing', 'sage'))) !!}
       <h2 class="rv-section-title">{{ \App\field('plans_title', __('Pick the plan that fits', 'sage')) }} <em class="rv-accent">{{ \App\field('plans_accent', __('where you are.', 'sage')) }}</em></h2>

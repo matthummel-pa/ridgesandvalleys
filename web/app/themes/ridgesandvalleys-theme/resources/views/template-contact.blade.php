@@ -25,7 +25,7 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Get in touch', 'sage'))) !!}
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Let\'s build something', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('local.', 'sage')) }}</em></h1>
-      <p class="rv-hero-sub">{{ \App\field('contact_intro', __('Tell me about your business and I\'ll come back with a clear, fixed-scope idea — usually within a business day. No pressure, no jargon, and a real person (me) on the other end.', 'sage')) }}</p>
+      <p class="rv-hero-sub">{{ \App\field('contact_intro', __('Tell me about your Gettysburg or Adams County business and I\'ll come back with a clear, fixed-scope idea — usually within a business day. No pressure, no jargon, and a real person (me) on the other end.', 'sage')) }}</p>
     </div>
   </section>
 
