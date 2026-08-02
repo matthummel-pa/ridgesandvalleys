@@ -87,6 +87,11 @@
       .rv-shell .rv-hero-sub,
       .rv-shell-full .rv-hero-sub { margin-left: 0; margin-right: 0; text-align: left; }
       .rv-hero-inner { text-align: left; }
+      /* Tighten interior-page heroes: the transparent header already reserves top
+         clearance, so the hero's own large top padding doubled up and pushed the
+         headline, subhead, and CTA low on the page. Pull them up (the home hero
+         keeps its own tuned spacing via the .home scope). */
+      body:not(.home) .rv-hero-inner { padding-block: clamp(2rem, 4.5vw, 3.25rem) clamp(2.75rem, 6vw, 4.5rem); }
       .rv-hero-title { margin-inline: 0; }
       .rv-hero-actions { justify-content: flex-start; }
       .rv-cta-inner { text-align: left; }
