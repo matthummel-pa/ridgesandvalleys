@@ -152,6 +152,7 @@ function home_layout_box($post): void
     $featured_credit = (string) get_post_meta($post->ID, 'rv_f_featured_credit', true);
     $rooted_credit   = (string) get_post_meta($post->ID, 'rv_f_rooted_credit', true);
     $hero_stats      = (string) get_post_meta($post->ID, 'rv_f_hero_stats', true);
+    $hero_credit     = (string) get_post_meta($post->ID, 'rv_f_hero_credit', true);
 
     wp_nonce_field('rv_home_layout', 'rv_home_layout_nonce');
     ?>
@@ -176,6 +177,8 @@ function home_layout_box($post): void
       .rv-hl-thumb:not([src]),.rv-hl-thumb[src=""]{display:none}
       .rv-hl-stats{margin-top:1.4em;padding-top:1.2em;border-top:1px solid #e0e0e0}
       .rv-hl-stats h4{margin:.2em 0 .4em}
+      .rv-hl-hero{margin-top:1.4em;padding-top:1.2em;border-top:1px solid #e0e0e0}
+      .rv-hl-hero h4{margin:.2em 0 .4em}
     </style>
 
     <p class="rv-hl-note"><?php esc_html_e('Drag a section, or use the ↑ / ↓ buttons, to change the order it appears on the home page. Untick a section to hide it. Changes save when you press Update.', 'sage'); ?></p>
@@ -196,6 +199,13 @@ function home_layout_box($post): void
       <?php endforeach; ?>
     </ul>
     <input type="hidden" name="rv_home_order" id="rv-home-order" value="<?php echo esc_attr(implode(',', $order)); ?>">
+
+    <div class="rv-hl-hero">
+      <h4><?php esc_html_e('Hero image (banner)', 'sage'); ?></h4>
+      <label for="rv_f_hero_credit"><strong><?php esc_html_e('Description shown on the photo (lower-right)', 'sage'); ?></strong></label>
+      <input type="text" id="rv_f_hero_credit" name="rv_f_hero_credit" class="widefat" value="<?php echo esc_attr($hero_credit); ?>" placeholder="<?php esc_attr_e('e.g. Cumberland Valley, South Central PA', 'sage'); ?>">
+      <p class="rv-hl-note"><?php esc_html_e('Caption over the lower-right of the hero banner image, explaining what it shows. Leave blank to hide it. Font, colour and size: Theme Options → Image credits.', 'sage'); ?></p>
+    </div>
 
     <div class="rv-hl-images">
       <?php
@@ -392,5 +402,20 @@ add_action('save_post_page', function ($post_id) {
         delete_post_meta($post_id, 'rv_f_hero_stats');
     } else {
         update_post_meta($post_id, 'rv_f_hero_stats', $stats);
+    }
+
+    // Hero banner image caption (lower-right overlay). Drives rv_f_hero_credit,
+    // which app/hero-credit.php renders into .rv-hero-credit. On the front page
+    // this is the single source for the hero caption (hero-credit.php defers).
+    // Blank hides it.
+    if (isset($_POST['rv_f_hero_credit'])) {
+        $hc = sanitize_text_field(wp_unslash($_POST['rv_f_hero_credit']));
+        if ($hc === '') {
+            delete_post_meta($post_id, 'rv_f_hero_credit');
+            delete_post_meta($post_id, 'rv_f_hero_credit_show');
+        } else {
+            update_post_meta($post_id, 'rv_f_hero_credit', $hc);
+            update_post_meta($post_id, 'rv_f_hero_credit_show', '1');
+        }
     }
 });

@@ -5,7 +5,9 @@
  *
  * Adds an "Image credits" box to the page/post editor:
  *   - Hero image credit: a line shown in the LOWER-RIGHT of the hero banner,
- *     with a show/hide toggle.
+ *     with a show/hide toggle. On the static front page this field lives in the
+ *     "Home page layout" box instead (co-located with the hero), so it is
+ *     hidden here to avoid a duplicate input; app/home-sections.php saves it.
  *   - Content photo credits: one credit per line, each captioning the next
  *     content photo down the page (every theme photo sits in .rv-split-media),
  *     shown in the lower-right of that photo. Leave a line blank to skip a photo.
@@ -43,23 +45,34 @@ add_action('add_meta_boxes', function () {
 function hero_credit_meta_box($post): void
 {
     wp_nonce_field('rv_hero_credit_save', 'rv_hero_credit_nonce');
-    $text    = (string) get_post_meta($post->ID, 'rv_f_hero_credit', true);
-    $show    = (string) get_post_meta($post->ID, 'rv_f_hero_credit_show', true);
-    $imgs    = (string) get_post_meta($post->ID, 'rv_f_img_credits', true);
-    $checked = ($show === '' || $show === '1'); // default: show when text is set
-    ?>
-    <p style="margin-top:0"><strong><?php esc_html_e('Hero image', 'sage'); ?></strong></p>
-    <p style="margin-top:.25rem">
-        <label for="rv_f_hero_credit"><?php esc_html_e('Credit / caption shown in the lower-right of the hero banner. Blank shows nothing.', 'sage'); ?></label>
-    </p>
-    <textarea id="rv_f_hero_credit" name="rv_f_hero_credit" rows="2" class="widefat" placeholder="<?php esc_attr_e('e.g. Photo: Cumberland Valley, PA', 'sage'); ?>"><?php echo esc_textarea($text); ?></textarea>
-    <p style="margin-bottom:1rem">
-        <label>
-            <input type="checkbox" name="rv_f_hero_credit_show" value="1" <?php checked($checked); ?>>
-            <?php esc_html_e('Show hero credit', 'sage'); ?>
-        </label>
-    </p>
+    $imgs     = (string) get_post_meta($post->ID, 'rv_f_img_credits', true);
+    $is_front = (function_exists(__NAMESPACE__ . '\\home_page_id') && home_page_id() === (int) $post->ID);
 
+    if (! $is_front) {
+        $text    = (string) get_post_meta($post->ID, 'rv_f_hero_credit', true);
+        $show    = (string) get_post_meta($post->ID, 'rv_f_hero_credit_show', true);
+        $checked = ($show === '' || $show === '1'); // default: show when text is set
+        ?>
+        <input type="hidden" name="rv_hero_credit_hero_present" value="1">
+        <p style="margin-top:0"><strong><?php esc_html_e('Hero image', 'sage'); ?></strong></p>
+        <p style="margin-top:.25rem">
+            <label for="rv_f_hero_credit"><?php esc_html_e('Credit / caption shown in the lower-right of the hero banner. Blank shows nothing.', 'sage'); ?></label>
+        </p>
+        <textarea id="rv_f_hero_credit" name="rv_f_hero_credit" rows="2" class="widefat" placeholder="<?php esc_attr_e('e.g. Photo: Cumberland Valley, PA', 'sage'); ?>"><?php echo esc_textarea($text); ?></textarea>
+        <p style="margin-bottom:1rem">
+            <label>
+                <input type="checkbox" name="rv_f_hero_credit_show" value="1" <?php checked($checked); ?>>
+                <?php esc_html_e('Show hero credit', 'sage'); ?>
+            </label>
+        </p>
+        <?php
+    } else {
+        ?>
+        <p style="margin-top:0"><strong><?php esc_html_e('Hero image', 'sage'); ?></strong></p>
+        <p class="description" style="margin:.25rem 0 1rem"><?php esc_html_e('The hero banner’s lower-right caption is set under “Home page layout” → Hero image (banner).', 'sage'); ?></p>
+        <?php
+    }
+    ?>
     <p style="margin-top:0"><strong><?php esc_html_e('Content photos', 'sage'); ?></strong></p>
     <p style="margin-top:.25rem">
         <label for="rv_f_img_credits"><?php esc_html_e('One credit per line — each line captions the next photo down the page, in the lower-right of that photo. Leave a line blank to skip a photo.', 'sage'); ?></label>
@@ -78,10 +91,17 @@ add_action('save_post', function ($post_id) {
     if (! current_user_can('edit_post', $post_id)) {
         return;
     }
-    $text = isset($_POST['rv_f_hero_credit']) ? sanitize_textarea_field(wp_unslash($_POST['rv_f_hero_credit'])) : '';
+
+    // Hero credit is edited here only when its own input was rendered (i.e. not
+    // the front page). On the front page it lives in the "Home page layout" box,
+    // so touching it here would clobber that value — skip it.
+    if (isset($_POST['rv_hero_credit_hero_present'])) {
+        $text = isset($_POST['rv_f_hero_credit']) ? sanitize_textarea_field(wp_unslash($_POST['rv_f_hero_credit'])) : '';
+        update_post_meta($post_id, 'rv_f_hero_credit', $text);
+        update_post_meta($post_id, 'rv_f_hero_credit_show', isset($_POST['rv_f_hero_credit_show']) ? '1' : '0');
+    }
+
     $imgs = isset($_POST['rv_f_img_credits']) ? sanitize_textarea_field(wp_unslash($_POST['rv_f_img_credits'])) : '';
-    update_post_meta($post_id, 'rv_f_hero_credit', $text);
-    update_post_meta($post_id, 'rv_f_hero_credit_show', isset($_POST['rv_f_hero_credit_show']) ? '1' : '0');
     update_post_meta($post_id, 'rv_f_img_credits', $imgs);
 });
 
