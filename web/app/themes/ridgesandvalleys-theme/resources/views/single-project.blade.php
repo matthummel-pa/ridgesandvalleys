@@ -6,7 +6,7 @@
     @php($id = get_the_ID())
     @php($m = fn ($k) => trim((string) get_post_meta($id, $k, true)))
 
-    @php($isConcept = $m('_rv_is_concept') === '1')
+    @php($isConcept = $m('_rv_is_concept') === '1' || strpos((string) $m('_rv_url'), 'github.io/rv-concepts') !== false)
     @php($preview = $m('_rv_preview'))
     @php($eyebrow = $m('_rv_eyebrow') ?: ($m('_rv_client') ?: __('Case study', 'sage')))
     @php($summary = $m('_rv_summary'))
