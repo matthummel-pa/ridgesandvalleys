@@ -12,6 +12,7 @@
  *   - a sortable list (drag, or ↑/↓ buttons) to reorder sections
  *   - a show/hide checkbox per section
  *   - image pickers for the two content photos (Featured work, Rooted / local)
+ *   - the hero proof-stat lines shown under the hero buttons
  *
  * Everything is stored as post meta on the front page, so it travels with the
  * page and needs no code edits. Nothing here touches the database on deploy.
@@ -81,6 +82,37 @@ function home_sections(): array
     ));
 }
 
+/**
+ * Hero proof-stat rows for the strip under the hero buttons. Returns a list of
+ * ['value' => ..., 'label' => ...]; reads the per-page "value | label" lines,
+ * falling back to the built-in true defaults when none are set.
+ */
+function hero_stats(?int $post_id = null): array
+{
+    $post_id = $post_id ?: home_page_id();
+    $raw = $post_id ? (string) get_post_meta($post_id, 'rv_f_hero_stats', true) : '';
+
+    $lines = array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $raw) ?: []));
+    if (! $lines) {
+        $lines = [
+            __('15+ yrs | building for the web', 'sage'),
+            __('~7 days | to your first draft', 'sage'),
+            __('WCAG 2.1 AA | accessibility, built in', 'sage'),
+            __('You own it | domain, hosting & site', 'sage'),
+        ];
+    }
+
+    $out = [];
+    foreach ($lines as $line) {
+        $parts = array_map('trim', explode('|', $line, 2));
+        if ($parts[0] === '') {
+            continue;
+        }
+        $out[] = ['value' => $parts[0], 'label' => $parts[1] ?? ''];
+    }
+    return $out;
+}
+
 /* -------------------------------------------------------------------------
  * Editor meta box (front page only)
  * ---------------------------------------------------------------------- */
@@ -119,28 +151,31 @@ function home_layout_box($post): void
     $rooted_img      = (string) get_post_meta($post->ID, 'rv_f_rooted_img', true);
     $featured_credit = (string) get_post_meta($post->ID, 'rv_f_featured_credit', true);
     $rooted_credit   = (string) get_post_meta($post->ID, 'rv_f_rooted_credit', true);
+    $hero_stats      = (string) get_post_meta($post->ID, 'rv_f_hero_stats', true);
 
     wp_nonce_field('rv_home_layout', 'rv_home_layout_nonce');
     ?>
     <style>
       .rv-hl-note{color:#646970;margin:.2em 0 1em}
-      .rv-hl-list{margin:0;padding:0;list-style:none;max-width:640px}
+      .rv-hl-list{margin:0;padding:0;list-style:none;max-width:40rem}
       .rv-hl-item{display:flex;align-items:center;gap:.6em;padding:.55em .7em;margin:0 0 .4em;
         border:1px solid #dcdcde;border-radius:6px;background:#fff}
       .rv-hl-item.rv-hl-hidden{opacity:.55;background:#f6f7f7}
       .rv-hl-grip{cursor:grab;color:#a7aaad;font-size:1.1em;line-height:1;user-select:none}
       .rv-hl-name{flex:1;font-weight:600}
       .rv-hl-btn{cursor:pointer;border:1px solid #c3c4c7;background:#f6f7f7;border-radius:4px;
-        width:26px;height:26px;line-height:1;font-size:14px;padding:0}
+        width:1.7em;height:1.7em;line-height:1;font-size:14px;padding:0}
       .rv-hl-btn:disabled{opacity:.4;cursor:default}
       .rv-hl-vis{display:flex;align-items:center;gap:.35em;color:#50575e;white-space:nowrap}
       .rv-hl-images{display:flex;flex-wrap:wrap;gap:1.5em;margin-top:1.4em;
         padding-top:1.2em;border-top:1px solid #e0e0e0}
-      .rv-hl-img{flex:1;min-width:240px}
+      .rv-hl-img{flex:1;min-width:15rem}
       .rv-hl-img h4{margin:.2em 0 .5em}
-      .rv-hl-thumb{display:block;max-width:100%;height:auto;max-height:130px;border:1px solid #dcdcde;
+      .rv-hl-thumb{display:block;max-width:100%;height:auto;max-height:8rem;border:1px solid #dcdcde;
         border-radius:6px;margin-bottom:.5em;background:#f6f7f7}
       .rv-hl-thumb:not([src]),.rv-hl-thumb[src=""]{display:none}
+      .rv-hl-stats{margin-top:1.4em;padding-top:1.2em;border-top:1px solid #e0e0e0}
+      .rv-hl-stats h4{margin:.2em 0 .4em}
     </style>
 
     <p class="rv-hl-note"><?php esc_html_e('Drag a section, or use the ↑ / ↓ buttons, to change the order it appears on the home page. Untick a section to hide it. Changes save when you press Update.', 'sage'); ?></p>
@@ -197,6 +232,13 @@ function home_layout_box($post): void
           <p class="rv-hl-note"><?php esc_html_e('Caption over the lower-right of this photo, explaining what it shows. Leave blank to hide it. Font, colour and size: Theme Options → Image credits.', 'sage'); ?></p>
         </div>
       <?php endforeach; ?>
+    </div>
+
+    <div class="rv-hl-stats">
+      <h4><?php esc_html_e('Hero proof stats (under the buttons)', 'sage'); ?></h4>
+      <label for="rv_f_hero_stats" class="screen-reader-text"><?php esc_html_e('Hero proof stats', 'sage'); ?></label>
+      <textarea id="rv_f_hero_stats" name="rv_f_hero_stats" rows="4" class="widefat" placeholder="15+ yrs | building for the web&#10;~7 days | to your first draft&#10;WCAG 2.1 AA | accessibility, built in&#10;You own it | domain, hosting &amp; site"><?php echo esc_textarea($hero_stats); ?></textarea>
+      <p class="rv-hl-note"><?php esc_html_e('One stat per line, formatted “value | label”. Leave blank to use the built-in defaults. Keep these to true, verifiable claims — no invented ratings or client counts.', 'sage'); ?></p>
     </div>
 
     <script>
@@ -342,5 +384,13 @@ add_action('save_post_page', function ($post_id) {
         } else {
             update_post_meta($post_id, 'rv_f_' . $key, $val);
         }
+    }
+
+    // Hero proof stats — one "value | label" per line, shown under the buttons.
+    $stats = isset($_POST['rv_f_hero_stats']) ? sanitize_textarea_field(wp_unslash($_POST['rv_f_hero_stats'])) : '';
+    if ($stats === '') {
+        delete_post_meta($post_id, 'rv_f_hero_stats');
+    } else {
+        update_post_meta($post_id, 'rv_f_hero_stats', $stats);
     }
 });
