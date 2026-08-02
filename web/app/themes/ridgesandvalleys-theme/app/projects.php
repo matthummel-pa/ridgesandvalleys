@@ -449,3 +449,29 @@ add_action('admin_init', function () {
 add_action('after_switch_theme', function () {
     flush_rewrite_rules();
 });
+
+/**
+ * Expose the case-study meta fields to the REST API (read + write for editors)
+ * so a Project can be populated programmatically. Protected (underscore-
+ * prefixed) meta needs an auth_callback before REST will allow writes.
+ */
+add_action('init', function () {
+    $keys = [
+        '_rv_eyebrow', '_rv_client', '_rv_summary', '_rv_industry', '_rv_location',
+        '_rv_timeline', '_rv_services', '_rv_url', '_rv_challenge', '_rv_approach',
+        '_rv_result', '_rv_m1_value', '_rv_m1_label', '_rv_m2_value', '_rv_m2_label',
+        '_rv_m3_value', '_rv_m3_label', '_rv_quote', '_rv_quote_author', '_rv_quote_role',
+        '_rv_deliverables', '_rv_tech', '_rv_cta_text', '_rv_cta_url',
+        '_rv_is_concept', '_rv_preview', '_rv_designer',
+    ];
+    foreach ($keys as $k) {
+        register_post_meta('project', $k, [
+            'type'          => 'string',
+            'single'        => true,
+            'show_in_rest'  => true,
+            'auth_callback' => function () {
+                return current_user_can('edit_posts');
+            },
+        ]);
+    }
+});
