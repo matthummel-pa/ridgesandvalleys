@@ -59,3 +59,44 @@ collect(['setup', 'filters', 'helpers', 'projects', 'contact', 'customizer', 'in
             );
         }
     });
+
+/*
+|--------------------------------------------------------------------------
+| Page content sections (added)
+|--------------------------------------------------------------------------
+|
+| Styles the editor-authored content sections on the interior pages (Services,
+| Work, About, FAQ, Free Tools, and any default-template page) to match the
+| intro band under the home-page hero, and adds a gentle reveal-on-scroll.
+| Ships as static theme files (assets/rv-page-sections.css/.js) that travel
+| with the theme, independent of the Vite build. Uses only global WordPress
+| functions, so it is safe to register here in the (global-namespace)
+| functions.php.
+|
+*/
+
+add_action('wp_enqueue_scripts', function () {
+    $cssRel  = 'assets/rv-page-sections.css';
+    $cssPath = get_theme_file_path($cssRel);
+    wp_enqueue_style(
+        'rv-page-sections',
+        get_theme_file_uri($cssRel),
+        ['rv-enhancements'],
+        file_exists($cssPath) ? (string) filemtime($cssPath) : '1.0.0'
+    );
+
+    $jsRel  = 'assets/rv-page-sections.js';
+    $jsPath = get_theme_file_path($jsRel);
+    wp_enqueue_script(
+        'rv-page-sections',
+        get_theme_file_uri($jsRel),
+        [],
+        file_exists($jsPath) ? (string) filemtime($jsPath) : '1.0.0',
+        true
+    );
+}, 21);
+
+add_action('wp_head', function () {
+    echo "<script>document.documentElement.classList.add('rv-js');</script>\n"; // phpcs:ignore
+}, 0);
+
