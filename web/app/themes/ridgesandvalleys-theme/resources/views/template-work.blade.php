@@ -8,7 +8,7 @@
 
   <section class="rv-hero">
     <span class="rv-stripe" aria-hidden="true"></span>
-    <span class="rv-hero-bg" style="background-image:url('{{ \App\field('hero_bg', \App\stock_image('hero-work')) }}')" aria-hidden="true"></span>
+    @include('partials.hero-bg', ['fallback' => \App\stock_image('hero-work')])
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Selected work · Gettysburg & Adams County', 'sage'))) !!}
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Business owners buy', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('confidence.', 'sage')) }}</em></h1>

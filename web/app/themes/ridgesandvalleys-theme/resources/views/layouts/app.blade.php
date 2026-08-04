@@ -91,7 +91,13 @@
          clearance, so the hero's own large top padding doubled up and pushed the
          headline, subhead, and CTA low on the page. Pull them up (the home hero
          keeps its own tuned spacing via the .home scope). */
-      body:not(.home) .rv-hero-inner { padding-block: clamp(2rem, 4.5vw, 3.25rem) clamp(2.75rem, 6vw, 4.5rem); }
+      body:not(.home) .rv-hero-inner { padding-block: clamp(1.25rem, 3vw, 2.25rem) clamp(2rem, 5vw, 3.25rem); }
+      /* Uniform interior-hero height so every page's Featured-Image background
+         reads the same size (sized to the Services hero); content is vertically
+         centered within the band. */
+      body:not(.home) .rv-hero { min-height: clamp(380px, 50vh, 480px); display: grid; align-content: center; }
+      /* Compact the headline so long titles (e.g. About) don't tower over the band. */
+      body:not(.home) .rv-hero-title { font-size: clamp(2.25rem, 4.5vw, 3.5rem); max-width: 26ch; }
       .rv-hero-title { margin-inline: 0; }
       .rv-hero-actions { justify-content: flex-start; }
       .rv-cta-inner { text-align: left; }

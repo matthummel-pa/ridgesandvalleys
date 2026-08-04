@@ -77,6 +77,7 @@ $total = array_sum(array_map(fn ($g) => count($g[2]), $wcag));
   {{-- HERO --}}
   <section class="rv-hero">
     <span class="rv-stripe" aria-hidden="true"></span>
+    @include('partials.hero-bg', ['fallback' => ''])
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Accessibility · WCAG 2.1 AA · Section 508', 'sage'))) !!}
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('A front door that opens for', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('everyone.', 'sage')) }}</em></h1>

@@ -22,6 +22,7 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
 @section('content')
   <section class="rv-hero rv-contact-hero">
     <span class="rv-stripe" aria-hidden="true"></span>
+    @include('partials.hero-bg', ['fallback' => ''])
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Get in touch', 'sage'))) !!}
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Let\'s build something', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('local.', 'sage')) }}</em></h1>

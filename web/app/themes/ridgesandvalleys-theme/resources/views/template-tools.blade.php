@@ -22,6 +22,7 @@ $faqs = [
   {{-- HERO --}}
   <section class="rv-hero">
     <span class="rv-stripe" aria-hidden="true"></span>
+    @include('partials.hero-bg', ['fallback' => ''])
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Free website tools · No email required', 'sage'))) !!}
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Free tools to check your', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('website.', 'sage')) }}</em></h1>

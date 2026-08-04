@@ -9,6 +9,7 @@
   {{-- HERO --}}
   <section class="rv-hero">
     <span class="rv-stripe" aria-hidden="true"></span>
+    @include('partials.hero-bg', ['fallback' => ''])
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Free local SEO scorecard', 'sage'))) !!}
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Do nearby customers', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('find you?', 'sage')) }}</em></h1>
