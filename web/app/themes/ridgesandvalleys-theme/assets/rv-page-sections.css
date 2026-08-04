@@ -1,0 +1,254 @@
+/* =========================================================================
+   Ridges & Valleys — Interior page sections, compaction & content cards
+   -------------------------------------------------------------------------
+   Three jobs, all scoped to interior pages (never the home page):
+     1. Tighter vertical rhythm — less scrolling. One token (--section-y)
+        drives every .rv-band, so shrinking it here compacts the whole page.
+     2. Shorter heroes — drop the forced full-screen min-height and tighten
+        the hero padding + title so more content sits above the fold.
+     3. The editor-authored content section under the hero becomes a
+        full-bleed Contour band whose H3 sub-sections are grouped (by
+        rv-page-sections.js) into an icon-card grid.
+
+   Scope for the content section: `body.page:not(.home) .rv-reading.rv-prose`
+   Excludes home, blog posts (body.single), Journal index (body.blog), and the
+   Contact form-intro (.rv-prose without .rv-reading).
+
+   Static theme asset — ships with the theme, independent of the Vite build.
+   ========================================================================= */
+
+/* ---- 1. Tighter vertical rhythm on every interior page ------------------ */
+/* --section-y is the padding-block of every .rv-band; interior pages stack
+   many of them, so this single override is the biggest length reduction. */
+body:not(.home) { --section-y: clamp(2.25rem, 4.5vw, 3.5rem); }
+/* Full-bleed bands use 100vw, which is a hair wider than the content box when a
+   scrollbar is present; clip the few stray px so no horizontal scrollbar appears.
+   .rv-main is a sibling of the sticky header, so this never affects the header. */
+body:not(.home) .rv-main { overflow-x: hidden; }
+
+/* ---- 2. Interior heroes: shorter, no forced full-screen height ---------- */
+body:not(.home) .rv-hero,
+body:not(.home) .rv-hero > .rv-hero-inner { min-height: 0; }
+body:not(.home) .rv-hero-inner {
+	padding-block: clamp(1.4rem, 3.4vw, 2.4rem) clamp(1.75rem, 4vw, 3rem);
+}
+body:not(.home) .rv-hero .rv-hero-title {
+	font-size: clamp(2rem, 4.4vw, 3.15rem);
+	line-height: 1.08;
+	max-width: 22ch;
+	margin-bottom: .5rem;
+}
+body:not(.home) .rv-hero .rv-hero-sub {
+	margin-top: .5rem;
+	font-size: clamp(1.02rem, 1.35vw, 1.16rem);
+	line-height: 1.5;
+	max-width: 66ch;
+}
+body:not(.home) .rv-hero-actions { margin-top: 1.1rem; }
+
+/* ---- 3. Content section: full-bleed Contour band ------------------------ */
+body.page:not(.home) .rv-reading.rv-prose {
+	position: relative;
+	isolation: isolate;
+	color: var(--color-body);
+	/* override the template's inline padding-bottom:0 so the band breathes */
+	padding-bottom: clamp(2.25rem, 5vw, 3.75rem) !important;
+}
+/* Full-bleed band fill (edge to edge, theme-aware). */
+body.page:not(.home) .rv-reading.rv-prose::before {
+	content: "";
+	position: absolute;
+	z-index: -2;
+	pointer-events: none;
+	top: 0;
+	bottom: 0;
+	left: 50%;
+	width: 100vw;
+	margin-left: -50vw;
+	background: var(--color-cream);
+}
+html[data-theme="dark"] body.page:not(.home) .rv-reading.rv-prose::before {
+	background: rgba(255, 255, 255, .04);
+}
+/* Faint contour-pine motif over the band, also full-bleed. */
+body.page:not(.home) .rv-reading.rv-prose::after {
+	content: "";
+	position: absolute;
+	z-index: -1;
+	pointer-events: none;
+	top: 0;
+	bottom: 0;
+	left: 50%;
+	width: 100vw;
+	margin-left: -50vw;
+	background: url('../public/fonts/contour-pine.svg') no-repeat center / cover;
+	opacity: .05;
+}
+
+/* Intro header (H2 + lead + figure), before the first H3, stays as-is. */
+body.page:not(.home) .rv-reading.rv-prose > h2:first-child {
+	margin: 0 0 .4em;
+	font-size: clamp(1.7rem, 3.2vw, 2.35rem);
+	line-height: 1.12;
+}
+body.page:not(.home) .rv-reading.rv-prose > h2:first-child + p {
+	font-size: clamp(1.05rem, 1.6vw, 1.2rem);
+	line-height: 1.6;
+	color: var(--color-body);
+}
+body.page:not(.home) .rv-reading.rv-prose > figure.wp-block-image img,
+body.page:not(.home) .rv-reading.rv-prose > figure img,
+body.page:not(.home) .rv-reading.rv-prose > img {
+	width: 100%;
+	height: auto;
+	max-height: clamp(240px, 36vh, 400px);
+	object-fit: cover;
+	border-radius: 16px;
+	box-shadow: var(--shadow-soft, 0 14px 34px rgba(20, 25, 20, .14));
+	margin-block: 1.4rem;
+}
+body.page:not(.home) .rv-reading.rv-prose a {
+	color: var(--color-pine);
+	text-underline-offset: .15em;
+}
+
+/* ---- 4. Icon-card grid (built from the H3 sub-sections by JS) ----------- */
+/* The grid breaks out wider than the 760px reading column so it can show
+   2–3 columns; centred in the viewport, clamped to the container width. */
+body.page:not(.home) .rv-reading.rv-prose .rv-subgrid {
+	width: min(calc(100vw - 3rem), var(--container, 1180px));
+	margin: 1.75rem 50% 0;
+	transform: translateX(-50%);
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(min(100%, 292px), 1fr));
+	gap: 1rem 1.1rem;
+	align-items: stretch;
+}
+body.page:not(.home) .rv-reading.rv-prose .rv-subcard {
+	position: relative;
+	overflow: hidden;
+	display: flex;
+	flex-direction: column;
+	background: var(--color-surface, #fff);
+	border: 1px solid var(--color-line);
+	border-radius: 16px;
+	padding: 1.5rem 1.45rem 1.35rem;
+	transition: transform .16s ease, box-shadow .2s ease, border-color .16s ease;
+}
+body.page:not(.home) .rv-reading.rv-prose .rv-subcard::before {
+	content: "";
+	position: absolute;
+	left: 0;
+	top: 0;
+	bottom: 0;
+	width: 5px;
+	background: var(--ridgeline, var(--color-clay));
+}
+body.page:not(.home) .rv-reading.rv-prose .rv-subcard:hover {
+	transform: translateY(-3px);
+	box-shadow: var(--shadow-soft, 0 12px 30px rgba(20, 25, 20, .12));
+	border-color: color-mix(in srgb, var(--color-sage) 55%, var(--color-line));
+}
+/* Graphical icon chip */
+body.page:not(.home) .rv-reading.rv-prose .rv-subcard-ic {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	flex: 0 0 auto;
+	width: 2.6rem;
+	height: 2.6rem;
+	margin-bottom: .85rem;
+	border-radius: 12px;
+	background: color-mix(in srgb, var(--color-clay) 14%, transparent);
+	color: var(--color-clay);
+}
+body.page:not(.home) .rv-reading.rv-prose .rv-subcard-ic svg {
+	width: 1.4rem;
+	height: 1.4rem;
+	display: block;
+}
+html[data-theme="dark"] body.page:not(.home) .rv-reading.rv-prose .rv-subcard-ic {
+	background: color-mix(in srgb, var(--color-wheat) 16%, transparent);
+	color: var(--color-wheat);
+}
+/* Card heading + copy (overrides the generic prose h3 rule) */
+body.page:not(.home) .rv-reading.rv-prose .rv-subcard > h3 {
+	margin: 0 0 .5rem;
+	padding: 0;
+	border: 0;
+	font-size: 1.16rem;
+	line-height: 1.25;
+}
+body.page:not(.home) .rv-reading.rv-prose .rv-subcard > p {
+	margin: 0 0 .7rem;
+	font-size: 1rem;
+	line-height: 1.6;
+	color: var(--color-body);
+}
+body.page:not(.home) .rv-reading.rv-prose .rv-subcard > p:last-child { margin-bottom: 0; }
+/* Lists inside a card → clay-diamond checklist */
+body.page:not(.home) .rv-reading.rv-prose .rv-subcard ul {
+	list-style: none;
+	margin: .35rem 0 0;
+	padding: 0;
+	display: grid;
+	gap: .45rem;
+}
+body.page:not(.home) .rv-reading.rv-prose .rv-subcard li {
+	position: relative;
+	padding-left: 1.5rem;
+	font-size: .98rem;
+	line-height: 1.45;
+	color: var(--color-body);
+}
+body.page:not(.home) .rv-reading.rv-prose .rv-subcard li::before {
+	content: "";
+	position: absolute;
+	left: .1rem;
+	top: .5em;
+	width: .5rem;
+	height: .5rem;
+	border-radius: 2px;
+	background: var(--color-clay);
+	transform: rotate(45deg);
+}
+
+/* ---- 5. Fallback styling if JS is off (no cards) ------------------------ */
+/* Without rv-page-sections.js the H3s stay inline prose; give them the clay
+   top-rule so the section still reads as scannable sub-sections. */
+body.page:not(.home) .rv-reading.rv-prose > h3 {
+	margin-top: 1.6em;
+	padding-block-start: .7rem;
+	border-block-start: 2px solid var(--color-clay);
+}
+body.page:not(.home) .rv-reading.rv-prose > ul {
+	list-style: none;
+	padding-left: 0;
+}
+body.page:not(.home) .rv-reading.rv-prose > ul > li {
+	position: relative;
+	padding-left: 1.6rem;
+	margin-bottom: .5em;
+}
+body.page:not(.home) .rv-reading.rv-prose > ul > li::before {
+	content: "";
+	position: absolute;
+	left: .15rem;
+	top: .62em;
+	width: .5rem;
+	height: .5rem;
+	border-radius: 2px;
+	background: var(--color-clay);
+	transform: rotate(45deg);
+}
+
+/* ---- 6. Fade-up on load — pure CSS, always ends visible ----------------- */
+@keyframes rv-page-fade-up {
+	from { opacity: 0; transform: translateY(18px); }
+	to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+	.rv-js body.page:not(.home) .rv-reading.rv-prose {
+		animation: rv-page-fade-up .8s cubic-bezier(.2, .6, .2, 1) both;
+	}
+}
