@@ -1,0 +1,107 @@
+/* =========================================================================
+   Ridges & Valleys — Page content sections
+   -------------------------------------------------------------------------
+   Gives the editor-authored content sections on the interior pages
+   (Services, Work, About, FAQ, Free Tools, and any default-template page)
+   the same look as the intro band under the home-page hero: the Contour
+   paper band with the subtle contour-pine motif, Young Serif headings
+   (applied globally), clay section rules, framed images, scannable lists —
+   plus a gentle fade-up on load.
+
+   Scope: `body.page:not(.home) .rv-reading.rv-prose`
+     - matches the interior page content sections
+     - excludes the home page (its intro is already styled)
+     - excludes blog posts (body.single) and the Journal index (body.blog)
+     - excludes the Contact form-intro (it is .rv-prose without .rv-reading)
+
+   Static theme asset — ships with the theme, independent of the Vite build.
+   ========================================================================= */
+
+body.page:not(.home) .rv-reading.rv-prose {
+	position: relative;
+	isolation: isolate;
+	color: var(--color-body);
+}
+
+/* Subtle contour-pine motif, echoing the band behind the home-page intro. */
+body.page:not(.home) .rv-reading.rv-prose::before {
+	content: "";
+	position: absolute;
+	inset: calc(-1 * var(--gutter)) -6vw;
+	z-index: -1;
+	pointer-events: none;
+	background: url('../public/fonts/contour-pine.svg') no-repeat center / cover;
+	opacity: .05;
+}
+
+/* The opening heading reads as a section title; the paragraph after it, a lead. */
+body.page:not(.home) .rv-reading.rv-prose > h2:first-child {
+	margin-top: 0;
+	font-size: clamp(1.9rem, 3.6vw, 2.6rem);
+	line-height: 1.12;
+}
+body.page:not(.home) .rv-reading.rv-prose > h2:first-child + p {
+	font-size: clamp(1.08rem, 1.7vw, 1.28rem);
+	line-height: 1.6;
+	color: var(--color-body);
+}
+
+/* Sub-sections get the clay top-rule used by the home intro columns — scannable. */
+body.page:not(.home) .rv-reading.rv-prose h3 {
+	margin-top: 2.1em;
+	padding-block-start: .9rem;
+	border-block-start: 2px solid var(--color-clay);
+}
+
+/* Framed images, like the home intro figure. */
+body.page:not(.home) .rv-reading.rv-prose figure.wp-block-image img,
+body.page:not(.home) .rv-reading.rv-prose > img {
+	width: 100%;
+	height: auto;
+	border-radius: 16px;
+	box-shadow: var(--shadow-soft, 0 14px 34px rgba(20, 25, 20, .14));
+	margin-block: 1.75rem;
+}
+
+/* Checklist-style lists with a clay diamond marker. */
+body.page:not(.home) .rv-reading.rv-prose ul {
+	list-style: none;
+	padding-left: 0;
+}
+body.page:not(.home) .rv-reading.rv-prose ul > li {
+	position: relative;
+	padding-left: 1.6rem;
+	margin-bottom: .55em;
+}
+body.page:not(.home) .rv-reading.rv-prose ul > li::before {
+	content: "";
+	position: absolute;
+	left: .15rem;
+	top: .62em;
+	width: .5rem;
+	height: .5rem;
+	border-radius: 2px;
+	background: var(--color-clay);
+	transform: rotate(45deg);
+}
+
+body.page:not(.home) .rv-reading.rv-prose a {
+	color: var(--color-pine);
+	text-underline-offset: .15em;
+}
+
+/* -------------------------------------------------------------------------
+   Fade-up on load — pure CSS, always ends visible.
+   Gated on .rv-js (set in <head>) so no-JS users get the content immediately.
+   fill-mode `both` guarantees the section ends fully visible (opacity:1), so
+   content can never get stuck hidden. Reduced-motion users skip the motion.
+   ------------------------------------------------------------------------- */
+@keyframes rv-page-fade-up {
+	from { opacity: 0; transform: translateY(18px); }
+	to   { opacity: 1; transform: none; }
+}
+@media (prefers-reduced-motion: no-preference) {
+	.rv-js body.page:not(.home) .rv-reading.rv-prose {
+		animation: rv-page-fade-up .8s cubic-bezier(.2, .6, .2, 1) both;
+	}
+}
