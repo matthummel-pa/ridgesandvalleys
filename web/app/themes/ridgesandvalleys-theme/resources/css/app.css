@@ -127,9 +127,26 @@ pre code { background: none; padding: 0; color: inherit; }
 .rv-shell { max-width: var(--container); margin-inline: auto; padding-inline: var(--gutter); }
 .rv-shell-full { width: 100%; }
 .rv-reading { max-width: var(--reading); margin-inline: auto; padding-inline: var(--gutter); }
+/* Entry width modes for the default page / post templates. The width-mode class
+   on the layout wrapper sets --rv-entry-max; .rv-entry caps content to it, so
+   the Customizer / per-entry width control actually drives body-content width. */
+.rv-entry { max-width: var(--rv-entry-max, var(--reading)); margin-inline: auto; padding-inline: var(--gutter); }
+.rv-w-full { --rv-entry-max: none; }
+.rv-w-boxed { --rv-entry-max: var(--container); }
+.rv-w-narrow { --rv-entry-max: var(--reading); }
 .rv-layout { display: grid; grid-template-columns: minmax(0,1fr); gap: clamp(2rem,5vw,4rem); padding-block: var(--section-y); }
-body:not(.no-sidebar) .rv-layout { grid-template-columns: minmax(0,1fr) 300px; }
-@media (max-width: 900px) { body:not(.no-sidebar) .rv-layout { grid-template-columns: minmax(0,1fr); } }
+/* Sidebar grid: reserve a second column only when an entry opts into a sidebar
+   (and the Blog Sidebar widget area has widgets — enforced in \App\entry_layout). */
+.rv-layout.rv-has-sidebar { grid-template-columns: minmax(0,1fr) var(--rv-sidebar-w, 300px); }
+.rv-layout.rv-side-left { grid-template-columns: var(--rv-sidebar-w, 300px) minmax(0,1fr); }
+.rv-layout.rv-side-left .rv-content { order: 2; }
+.rv-layout.rv-side-left .rv-sidebar { order: 1; }
+.rv-content { min-width: 0; }
+@media (max-width: 900px) {
+	.rv-layout.rv-has-sidebar,
+	.rv-layout.rv-side-left { grid-template-columns: minmax(0,1fr); }
+	.rv-layout.rv-side-left .rv-content { order: 0; }
+}
 
 .rv-stripe { display: block; height: 8px; background: var(--stripe); }
 .rv-stripe-thin { height: 5px; }

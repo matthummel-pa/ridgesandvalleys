@@ -2,20 +2,20 @@
 
 <article @php(post_class('rv-single'))>
   <header class="rv-single-hero">
-    <div class="rv-reading">
+    <div class="rv-entry">
       {!! \App\breadcrumbs() !!}
       @php($cats = get_the_category())
       @if (! empty($cats))
         {!! \App\eyebrow($cats[0]->name) !!}
       @endif
-      <h1 class="rv-single-title">{!! get_the_title() !!}</h1>
+      @unless (\App\entry_hero_enabled())<h1 class="rv-single-title">{!! get_the_title() !!}</h1>@endunless
       {!! \App\post_meta() !!}
     </div>
   </header>
 
-  @if (has_post_thumbnail())
+  @if (! \App\entry_hero_enabled() && has_post_thumbnail())
     <figure class="rv-single-figure">@php(the_post_thumbnail('rv-hero', ['class' => 'rv-single-image', 'loading' => 'eager', 'fetchpriority' => 'high', 'decoding' => 'async']))</figure>
-  @else
+  @elseif (! \App\entry_hero_enabled())
     @php($heroImg = \App\blog_post_image())
     @if ($heroImg)
       <figure class="rv-single-figure"><img class="rv-single-image" src="{{ $heroImg }}" alt="{{ get_the_title() }}" width="1600" height="900" loading="eager" fetchpriority="high" decoding="async"></figure>
@@ -25,7 +25,7 @@
   @php($rvToc = \App\post_toc_data())
   @php($rvSummary = \App\post_summary())
   @if ($rvSummary || count($rvToc['items']) > 1)
-    <div class="rv-reading">
+    <div class="rv-entry">
       <aside class="rv-tldr" aria-label="{{ __('Article summary and contents', 'sage') }}">
         @if ($rvSummary)
           <div class="rv-tldr-summary">
@@ -47,7 +47,7 @@
     </div>
   @endif
 
-  <div class="rv-reading rv-prose">
+  <div class="rv-entry rv-prose">
     {!! \App\content_add_inline_cta($rvToc['content']) !!}
     @php(wp_link_pages(['before' => '<nav class="rv-page-links">' . __('Pages:', 'sage'), 'after' => '</nav>']))
     @php($tags = get_the_tag_list('<ul class="rv-tags"><li>', '</li><li>', '</li></ul>'))
@@ -59,7 +59,7 @@
   @php($rvShareOn = (bool) get_theme_mod('rv_share_enable', true))
   @php($rvHelpfulOn = (bool) get_theme_mod('rv_helpful_enable', true))
   @if ($rvShareOn || $rvHelpfulOn)
-    <div class="rv-reading rv-single-actions">
+    <div class="rv-entry rv-single-actions">
       @if ($rvShareOn){!! \App\share_links() !!}@else<span></span>@endif
       @if ($rvHelpfulOn)
         <div class="rv-helpful" data-cta="{{ \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')) }}">
@@ -74,7 +74,7 @@
     </div>
   @endif
 
-  <div class="rv-reading" style="margin-top:2.5rem">
+  <div class="rv-entry" style="margin-top:2.5rem">
     <div class="rv-author">
       <span class="rv-author-avatar" aria-hidden="true"></span>
       <div>
@@ -110,7 +110,7 @@
     </section>
   @endif
 
-  <footer class="rv-reading rv-single-nav">
+  <footer class="rv-entry rv-single-nav">
     @php(the_post_navigation(['prev_text' => '<span class="rv-nav-label">' . __('Previous', 'sage') . '</span> <span class="rv-nav-title">%title</span>', 'next_text' => '<span class="rv-nav-label">' . __('Next', 'sage') . '</span> <span class="rv-nav-title">%title</span>']))
   </footer>
 </article>
@@ -125,7 +125,7 @@
 @endif
 
 @if (comments_open() || get_comments_number())
-  <div class="rv-reading">@php(comments_template())</div>
+  <div class="rv-entry">@php(comments_template())</div>
 @endif
 
 <script>

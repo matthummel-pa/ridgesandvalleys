@@ -1,7 +1,8 @@
 @extends('layouts.app')
 
 @section('content')
-  <div class="rv-shell rv-layout">
+  @php($rvL = \App\entry_layout())
+  <div class="rv-shell rv-layout rv-w-{{ $rvL['width'] }} {{ $rvL['sidebar'] !== 'none' ? 'rv-has-sidebar rv-side-'.$rvL['sidebar'] : '' }}">
     <div class="rv-content">
       <header class="rv-page-head">
         {!! \App\eyebrow(__('Archive', 'sage')) !!}
@@ -24,6 +25,6 @@
       @endif
     </div>
 
-    @include('sections.sidebar')
+    @if ($rvL['sidebar'] !== 'none')@include('sections.sidebar')@endif
   </div>
 @endsection
