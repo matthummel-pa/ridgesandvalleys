@@ -1,12 +1,18 @@
 <?php
 /**
- * Layout controls: per-entry Hero, Content width, and Sidebar for the default
- * page / single / archive templates.
+ * Layout controls for pages, posts, and archives.
+ *
+ * Two independent width/alignment controls:
+ *   1. Page      — the outer content column of the DEFAULT page/single template.
+ *   2. Content   — the editor content (the_content() ".rv-prose" block). This is
+ *                  applied via body classes, so it works on EVERY template,
+ *                  including the bespoke ones (About, Services, …).
+ * Plus a Sidebar position (default template only).
  *
  * Design defaults live in the Customizer (Appearance -> Customize -> Theme
- * Options -> "Layout — Content & Sidebar"). Any page or post can override them
- * from its "Layout & Hero (theme)" box. Clients edit content; the developer
- * sets the design defaults. Nothing here is hard-coded per page.
+ * Options -> "Layout — Content & Sidebar"); any page/post overrides them from
+ * its "Layout (theme)" box. Hero controls are intentionally NOT here — pages
+ * manage the hero from their own content fields.
  */
 
 namespace App;
@@ -19,7 +25,6 @@ if (! defined('ABSPATH')) {
  * Option vocabularies
  * ------------------------------------------------------------------ */
 
-/** Allowed content-width modes. */
 function layout_widths(): array
 {
     return [
@@ -29,7 +34,15 @@ function layout_widths(): array
     ];
 }
 
-/** Allowed sidebar positions. */
+function layout_aligns(): array
+{
+    return [
+        'left'   => __('Left', 'sage'),
+        'center' => __('Center', 'sage'),
+        'right'  => __('Right', 'sage'),
+    ];
+}
+
 function layout_sidebars(): array
 {
     return [
@@ -43,11 +56,6 @@ function layout_sidebars(): array
  * Resolver: per-entry override -> per-type Customizer default
  * ------------------------------------------------------------------ */
 
-/**
- * Resolve the effective layout for the current view.
- *
- * @return array{hero:bool,hero_title:string,hero_sub:string,hero_bg:string,width:string,sidebar:string}
- */
 function entry_layout(): array
 {
     static $cache = [];
@@ -58,49 +66,35 @@ function entry_layout(): array
         return $cache[$key];
     }
 
-    $widths   = layout_widths();
-    $sidebars = layout_sidebars();
+    $widths = layout_widths();
+    $aligns = layout_aligns();
+    $sides  = layout_sidebars();
+
+    $pick = function ($meta, $default, $allowed) {
+        return isset($allowed[$meta]) ? $meta : $default;
+    };
 
     if (is_singular()) {
         $type = (get_post_type($id) === 'post') ? 'post' : 'page';
 
-        $heroDefault    = (bool) get_theme_mod("rv_{$type}_hero_default", false);
-        $widthDefault   = (string) get_theme_mod("rv_{$type}_width", 'full');
-        $sidebarDefault = (string) get_theme_mod("rv_{$type}_sidebar", 'none');
+        $pageWidth    = $pick((string) get_post_meta($id, '_rv_page_width', true),    (string) get_theme_mod("rv_{$type}_page_width", 'full'),      $widths);
+        $pageAlign    = $pick((string) get_post_meta($id, '_rv_page_align', true),    (string) get_theme_mod("rv_{$type}_page_align", 'center'),    $aligns);
+        $contentWidth = $pick((string) get_post_meta($id, '_rv_content_width', true), (string) get_theme_mod("rv_{$type}_content_width", 'narrow'), $widths);
+        $contentAlign = $pick((string) get_post_meta($id, '_rv_content_align', true), (string) get_theme_mod("rv_{$type}_content_align", 'center'), $aligns);
+        $sidebar      = $pick((string) get_post_meta($id, '_rv_layout_sidebar', true),(string) get_theme_mod("rv_{$type}_sidebar", 'none'),         $sides);
 
-        $heroMeta = (string) get_post_meta($id, '_rv_layout_hero', true);
-        $hero = $heroMeta === 'show' ? true : ($heroMeta === 'hide' ? false : $heroDefault);
-
-        $widthMeta   = (string) get_post_meta($id, '_rv_layout_width', true);
-        $sidebarMeta = (string) get_post_meta($id, '_rv_layout_sidebar', true);
-
-        $width   = isset($widths[$widthMeta]) ? $widthMeta : $widthDefault;
-        $sidebar = isset($sidebars[$sidebarMeta]) ? $sidebarMeta : $sidebarDefault;
-
-        $title = (string) get_post_meta($id, '_rv_hero_title', true);
-        if ($title === '') {
-            $title = get_the_title($id);
-        }
-        $sub = (string) get_post_meta($id, '_rv_hero_sub', true);
-
-        $bg = (string) get_the_post_thumbnail_url($id, 'rv-hero');
-        if ($bg === '') {
-            $bg = (string) get_post_meta($id, '_rv_hero_bg', true);
-        }
+        $hero  = (bool) get_theme_mod("rv_{$type}_hero_default", false);
+        $title = get_the_title($id);
+        $bg    = (string) get_the_post_thumbnail_url($id, 'rv-hero');
     } else {
-        $hero    = false;
-        $title   = '';
-        $sub     = '';
-        $bg      = '';
-        $width   = (string) get_theme_mod('rv_archive_width', 'full');
-        $sidebar = (string) get_theme_mod('rv_archive_sidebar', 'none');
-    }
-
-    if (! isset($widths[$width])) {
-        $width = 'full';
-    }
-    if (! isset($sidebars[$sidebar])) {
-        $sidebar = 'none';
+        $pageWidth    = $pick('', (string) get_theme_mod('rv_archive_page_width', 'full'), $widths);
+        $pageAlign    = $pick('', (string) get_theme_mod('rv_archive_page_align', 'center'), $aligns);
+        $contentWidth = 'narrow';
+        $contentAlign = 'center';
+        $sidebar      = $pick('', (string) get_theme_mod('rv_archive_sidebar', 'none'), $sides);
+        $hero = false;
+        $title = '';
+        $bg = '';
     }
 
     // A sidebar column only appears when the widget area actually has widgets.
@@ -109,30 +103,34 @@ function entry_layout(): array
     }
 
     return $cache[$key] = [
-        'hero'       => (bool) $hero,
-        'hero_title' => $title,
-        'hero_sub'   => $sub,
-        'hero_bg'    => $bg,
-        'width'      => $width,
-        'sidebar'    => $sidebar,
+        'page_width'    => $pageWidth,
+        'page_align'    => $pageAlign,
+        'content_width' => $contentWidth,
+        'content_align' => $contentAlign,
+        'sidebar'       => $sidebar,
+        'hero'          => $hero,
+        'hero_title'    => $title,
+        'hero_bg'       => $bg,
     ];
 }
 
-/** Whether the current entry shows the full-bleed hero band. */
+/** Whether the current entry shows the full-bleed hero band (Customizer default). */
 function entry_hero_enabled(): bool
 {
-    return entry_layout()['hero'];
+    return (bool) entry_layout()['hero'];
 }
 
 /* ------------------------------------------------------------------ *
- * Body classes (width + sidebar state for global CSS hooks)
+ * Body classes — drive the editor-content width/align on EVERY template
  * ------------------------------------------------------------------ */
 add_filter('body_class', function (array $classes): array {
-    if (is_singular() || is_archive() || is_home()) {
-        $l = entry_layout();
-        $classes[] = 'rv-w-' . $l['width'];
-        $classes[] = $l['sidebar'] === 'none' ? 'rv-no-side' : ('rv-side-' . $l['sidebar']);
+    if (! (is_singular() || is_archive() || is_home())) {
+        return $classes;
     }
+    $l = entry_layout();
+    $classes[] = 'rv-cw-' . $l['content_width'];
+    $classes[] = 'rv-ca-' . $l['content_align'];
+    $classes[] = $l['sidebar'] === 'none' ? 'rv-no-side' : ('rv-side-' . $l['sidebar']);
     return $classes;
 });
 
@@ -150,56 +148,36 @@ add_action('customize_register', function ($wp_customize) {
     $wp_customize->add_section('rv_layout_cs', [
         'title'       => __('Layout — Content & Sidebar', 'sage'),
         'panel'       => 'rv_theme_options',
-        'description' => __('Design defaults for the standard page, post, and archive templates. Any page or post can override these from its "Layout & Hero" box.', 'sage'),
+        'description' => __('Design defaults for pages, posts, and archives. Any page/post can override these from its "Layout (theme)" box. Page width = the outer column of the default template; Content width = the editor content on every template.', 'sage'),
     ]);
 
-    $widthChoices   = layout_widths();
-    $sidebarChoices = layout_sidebars();
+    $widths = layout_widths();
+    $aligns = layout_aligns();
+    $sides  = layout_sidebars();
 
-    $add_select = function ($id, $label, $default, $choices) use ($wp_customize) {
-        $wp_customize->add_setting($id, [
-            'default'           => $default,
-            'sanitize_callback' => 'sanitize_key',
-        ]);
-        $wp_customize->add_control($id, [
-            'label'   => $label,
-            'section' => 'rv_layout_cs',
-            'type'    => 'select',
-            'choices' => $choices,
-        ]);
+    $sel = function ($id, $label, $default, $choices) use ($wp_customize) {
+        $wp_customize->add_setting($id, ['default' => $default, 'sanitize_callback' => 'sanitize_key']);
+        $wp_customize->add_control($id, ['label' => $label, 'section' => 'rv_layout_cs', 'type' => 'select', 'choices' => $choices]);
+    };
+    $chk = function ($id, $label, $default = false) use ($wp_customize) {
+        $wp_customize->add_setting($id, ['default' => $default, 'sanitize_callback' => function ($v) { return (bool) $v; }]);
+        $wp_customize->add_control($id, ['label' => $label, 'section' => 'rv_layout_cs', 'type' => 'checkbox']);
     };
 
-    $add_toggle = function ($id, $label, $default = false) use ($wp_customize) {
-        $wp_customize->add_setting($id, [
-            'default'           => $default,
-            'sanitize_callback' => function ($v) { return (bool) $v; },
-        ]);
-        $wp_customize->add_control($id, [
-            'label'   => $label,
-            'section' => 'rv_layout_cs',
-            'type'    => 'checkbox',
-        ]);
-    };
+    foreach (['page' => __('Pages', 'sage'), 'post' => __('Posts', 'sage')] as $t => $tl) {
+        $sel("rv_{$t}_page_width",    sprintf(__('%s: page width', 'sage'), $tl),            'full',   $widths);
+        $sel("rv_{$t}_page_align",    sprintf(__('%s: page alignment', 'sage'), $tl),        'center', $aligns);
+        $sel("rv_{$t}_content_width", sprintf(__('%s: content width', 'sage'), $tl),         'narrow', $widths);
+        $sel("rv_{$t}_content_align", sprintf(__('%s: content alignment', 'sage'), $tl),     'center', $aligns);
+        $sel("rv_{$t}_sidebar",       sprintf(__('%s: sidebar', 'sage'), $tl),               'none',   $sides);
+        $chk("rv_{$t}_hero_default",  sprintf(__('%s: show hero band by default', 'sage'), $tl), false);
+    }
 
-    // Pages
-    $add_toggle('rv_page_hero_default', __('Pages: show hero band by default', 'sage'), false);
-    $add_select('rv_page_width', __('Pages: content width', 'sage'), 'full', $widthChoices);
-    $add_select('rv_page_sidebar', __('Pages: sidebar', 'sage'), 'none', $sidebarChoices);
+    $sel('rv_archive_page_width', __('Archives: page width', 'sage'),  'full', $widths);
+    $sel('rv_archive_page_align', __('Archives: page alignment', 'sage'), 'center', $aligns);
+    $sel('rv_archive_sidebar',    __('Archives: sidebar', 'sage'),     'none', $sides);
 
-    // Posts
-    $add_toggle('rv_post_hero_default', __('Posts: show hero band by default', 'sage'), false);
-    $add_select('rv_post_width', __('Posts: content width', 'sage'), 'full', $widthChoices);
-    $add_select('rv_post_sidebar', __('Posts: sidebar', 'sage'), 'none', $sidebarChoices);
-
-    // Archives (blog index, categories, tags, search)
-    $add_select('rv_archive_width', __('Archives: content width', 'sage'), 'full', $widthChoices);
-    $add_select('rv_archive_sidebar', __('Archives: sidebar', 'sage'), 'none', $sidebarChoices);
-
-    // Sidebar column width
-    $wp_customize->add_setting('rv_sidebar_width', [
-        'default'           => 300,
-        'sanitize_callback' => 'absint',
-    ]);
+    $wp_customize->add_setting('rv_sidebar_width', ['default' => 300, 'sanitize_callback' => 'absint']);
     $wp_customize->add_control('rv_sidebar_width', [
         'label'       => __('Sidebar width (px)', 'sage'),
         'section'     => 'rv_layout_cs',
@@ -217,24 +195,11 @@ add_action('wp_head', function () {
 }, 20);
 
 /* ------------------------------------------------------------------ *
- * Per-entry "Layout & Hero" box (pages + posts)
+ * Per-entry "Layout (theme)" box (pages + posts)
  * ------------------------------------------------------------------ */
 add_action('add_meta_boxes', function () {
     foreach (['page', 'post'] as $pt) {
-        add_meta_box(
-            'rv_layout_box',
-            __('Layout & Hero (theme)', 'sage'),
-            __NAMESPACE__ . '\\render_layout_box',
-            $pt,
-            'side',
-            'default'
-        );
-    }
-});
-
-add_action('admin_enqueue_scripts', function ($hook) {
-    if (in_array($hook, ['post.php', 'post-new.php'], true)) {
-        wp_enqueue_media();
+        add_meta_box('rv_layout_box', __('Layout (theme)', 'sage'), __NAMESPACE__ . '\\render_layout_box', $pt, 'side', 'default');
     }
 });
 
@@ -242,77 +207,34 @@ function render_layout_box($post): void
 {
     wp_nonce_field('rv_layout_box', 'rv_layout_box_nonce');
 
-    $hero    = (string) get_post_meta($post->ID, '_rv_layout_hero', true);
-    $width   = (string) get_post_meta($post->ID, '_rv_layout_width', true);
-    $sidebar = (string) get_post_meta($post->ID, '_rv_layout_sidebar', true);
-    $hTitle  = (string) get_post_meta($post->ID, '_rv_hero_title', true);
-    $hSub    = (string) get_post_meta($post->ID, '_rv_hero_sub', true);
-    $hBg     = (string) get_post_meta($post->ID, '_rv_hero_bg', true);
+    $widthOpts = ['' => __('Default (Customizer)', 'sage')] + layout_widths();
+    $alignOpts = ['' => __('Default (Customizer)', 'sage')] + layout_aligns();
+    $sideOpts  = ['' => __('Default (Customizer)', 'sage')] + layout_sidebars();
 
-    $heroOpts = [
-        ''     => __('Default (Customizer)', 'sage'),
-        'show' => __('Show hero band', 'sage'),
-        'hide' => __('Hide hero band', 'sage'),
-    ];
-    $widthOpts   = ['' => __('Default (Customizer)', 'sage')] + layout_widths();
-    $sidebarOpts = ['' => __('Default (Customizer)', 'sage')] + layout_sidebars();
+    $val = function ($k) use ($post) { return (string) get_post_meta($post->ID, $k, true); };
 
-    $select = function ($name, $current, $options) {
+    $field = function ($name, $label, $current, $options) {
+        printf('<p style="margin:0 0 .9rem"><label for="%s"><strong>%s</strong></label><br>', esc_attr($name), esc_html($label));
         printf('<select name="%s" id="%s" style="width:100%%">', esc_attr($name), esc_attr($name));
-        foreach ($options as $val => $lab) {
-            printf('<option value="%s"%s>%s</option>', esc_attr($val), selected($current, $val, false), esc_html($lab));
+        foreach ($options as $v => $l) {
+            printf('<option value="%s"%s>%s</option>', esc_attr($v), selected($current, $v, false), esc_html($l));
         }
-        echo '</select>';
+        echo '</select></p>';
     };
 
-    echo '<p><label for="rv_layout_hero"><strong>' . esc_html__('Hero band', 'sage') . '</strong></label><br>';
-    $select('rv_layout_hero', $hero, $heroOpts);
-    echo '</p>';
+    echo '<p class="description" style="margin-top:0">' . esc_html__('The page (outer column) applies to the default template. The content (editor) width applies on every template, including custom page templates.', 'sage') . '</p>';
 
-    echo '<p><label for="rv_hero_title">' . esc_html__('Hero title (optional)', 'sage') . '</label><br>';
-    printf('<input type="text" name="rv_hero_title" id="rv_hero_title" value="%s" style="width:100%%" placeholder="%s"></p>', esc_attr($hTitle), esc_attr__('Defaults to the page title', 'sage'));
+    echo '<p style="margin:.6rem 0 .3rem;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#646970">' . esc_html__('Page', 'sage') . '</p>';
+    $field('rv_page_width', __('Page width', 'sage'), $val('_rv_page_width'), $widthOpts);
+    $field('rv_page_align', __('Page alignment', 'sage'), $val('_rv_page_align'), $alignOpts);
 
-    echo '<p><label for="rv_hero_sub">' . esc_html__('Hero subtitle (optional)', 'sage') . '</label><br>';
-    printf('<textarea name="rv_hero_sub" id="rv_hero_sub" rows="2" style="width:100%%">%s</textarea></p>', esc_textarea($hSub));
-
-    echo '<p><label for="rv_hero_bg">' . esc_html__('Hero background image', 'sage') . '</label><br>';
-    printf('<input type="url" name="rv_hero_bg" id="rv_hero_bg" value="%s" style="width:100%%" placeholder="https://…"><br>', esc_attr($hBg));
-    echo '<button type="button" class="button rv-hero-bg-pick" style="margin-top:.4rem">' . esc_html__('Choose image', 'sage') . '</button> ';
-    echo '<button type="button" class="button-link rv-hero-bg-clear">' . esc_html__('Clear', 'sage') . '</button>';
-    echo '<span class="description" style="display:block;margin-top:.35rem">' . esc_html__('Falls back to the Featured Image when empty.', 'sage') . '</span></p>';
+    echo '<p style="margin:.6rem 0 .3rem;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#646970">' . esc_html__('Editor content area', 'sage') . '</p>';
+    $field('rv_content_width', __('Content width', 'sage'), $val('_rv_content_width'), $widthOpts);
+    $field('rv_content_align', __('Content alignment', 'sage'), $val('_rv_content_align'), $alignOpts);
 
     echo '<hr>';
-
-    echo '<p><label for="rv_layout_width"><strong>' . esc_html__('Content width', 'sage') . '</strong></label><br>';
-    $select('rv_layout_width', $width, $widthOpts);
-    echo '</p>';
-
-    echo '<p><label for="rv_layout_sidebar"><strong>' . esc_html__('Sidebar', 'sage') . '</strong></label><br>';
-    $select('rv_layout_sidebar', $sidebar, $sidebarOpts);
-    echo '<span class="description" style="display:block;margin-top:.35rem">' . esc_html__('Needs widgets in Appearance → Widgets → Blog Sidebar. Applies to the default template.', 'sage') . '</span></p>';
-    ?>
-    <script>
-    (function () {
-      var pick = document.querySelector('.rv-hero-bg-pick');
-      var clear = document.querySelector('.rv-hero-bg-clear');
-      var field = document.getElementById('rv_hero_bg');
-      if (pick && window.wp && wp.media) {
-        var frame;
-        pick.addEventListener('click', function (e) {
-          e.preventDefault();
-          if (frame) { frame.open(); return; }
-          frame = wp.media({ title: 'Hero background', button: { text: 'Use image' }, multiple: false });
-          frame.on('select', function () {
-            var a = frame.state().get('selection').first().toJSON();
-            field.value = (a.sizes && a.sizes.large ? a.sizes.large.url : a.url) || '';
-          });
-          frame.open();
-        });
-      }
-      if (clear && field) { clear.addEventListener('click', function (e) { e.preventDefault(); field.value = ''; }); }
-    })();
-    </script>
-    <?php
+    $field('rv_layout_sidebar', __('Sidebar', 'sage'), $val('_rv_layout_sidebar'), $sideOpts);
+    echo '<p class="description">' . esc_html__('Sidebar needs widgets in Appearance → Widgets → Blog Sidebar, and applies to the default template.', 'sage') . '</p>';
 }
 
 add_action('save_post', function ($post_id) {
@@ -327,24 +249,18 @@ add_action('save_post', function ($post_id) {
         return;
     }
 
-    $widths   = layout_widths();
-    $sidebars = layout_sidebars();
+    $widths = layout_widths();
+    $aligns = layout_aligns();
+    $sides  = layout_sidebars();
 
-    $hero = isset($_POST['rv_layout_hero']) ? sanitize_key(wp_unslash($_POST['rv_layout_hero'])) : '';
-    update_post_meta($post_id, '_rv_layout_hero', in_array($hero, ['show', 'hide'], true) ? $hero : '');
+    $save = function ($post_key, $meta_key, $allowed) use ($post_id) {
+        $v = isset($_POST[$post_key]) ? sanitize_key(wp_unslash($_POST[$post_key])) : '';
+        update_post_meta($post_id, $meta_key, isset($allowed[$v]) ? $v : '');
+    };
 
-    $width = isset($_POST['rv_layout_width']) ? sanitize_key(wp_unslash($_POST['rv_layout_width'])) : '';
-    update_post_meta($post_id, '_rv_layout_width', isset($widths[$width]) ? $width : '');
-
-    $sidebar = isset($_POST['rv_layout_sidebar']) ? sanitize_key(wp_unslash($_POST['rv_layout_sidebar'])) : '';
-    update_post_meta($post_id, '_rv_layout_sidebar', isset($sidebars[$sidebar]) ? $sidebar : '');
-
-    $title = isset($_POST['rv_hero_title']) ? sanitize_text_field(wp_unslash($_POST['rv_hero_title'])) : '';
-    update_post_meta($post_id, '_rv_hero_title', $title);
-
-    $sub = isset($_POST['rv_hero_sub']) ? sanitize_textarea_field(wp_unslash($_POST['rv_hero_sub'])) : '';
-    update_post_meta($post_id, '_rv_hero_sub', $sub);
-
-    $bg = isset($_POST['rv_hero_bg']) ? esc_url_raw(wp_unslash($_POST['rv_hero_bg'])) : '';
-    update_post_meta($post_id, '_rv_hero_bg', $bg);
+    $save('rv_page_width',    '_rv_page_width',    $widths);
+    $save('rv_page_align',    '_rv_page_align',    $aligns);
+    $save('rv_content_width', '_rv_content_width', $widths);
+    $save('rv_content_align', '_rv_content_align', $aligns);
+    $save('rv_layout_sidebar', '_rv_layout_sidebar', $sides);
 });

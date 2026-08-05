@@ -130,7 +130,7 @@
 
     {{-- ============================ GENERIC LISTING (fallback) ============================ --}}
     @php($rvL = \App\entry_layout())
-    <div class="rv-shell rv-layout rv-w-{{ $rvL['width'] }} {{ $rvL['sidebar'] !== 'none' ? 'rv-has-sidebar rv-side-'.$rvL['sidebar'] : '' }}">
+    <div class="rv-shell rv-layout {{ $rvL['sidebar'] !== 'none' ? 'rv-has-sidebar rv-side-'.$rvL['sidebar'] : '' }}">
       <div class="rv-content">
         @if (have_posts())
           <div class="rv-post-list">

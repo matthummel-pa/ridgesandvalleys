@@ -2,7 +2,7 @@
 
 @section('content')
   @php($rvL = \App\entry_layout())
-  <div class="rv-shell rv-layout rv-w-{{ $rvL['width'] }} {{ $rvL['sidebar'] !== 'none' ? 'rv-has-sidebar rv-side-'.$rvL['sidebar'] : '' }}">
+  <div class="rv-shell rv-layout {{ $rvL['sidebar'] !== 'none' ? 'rv-has-sidebar rv-side-'.$rvL['sidebar'] : '' }}">
     <div class="rv-content">
       <header class="rv-page-head">
         {!! \App\eyebrow(__('Archive', 'sage')) !!}
