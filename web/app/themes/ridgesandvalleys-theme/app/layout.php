@@ -2,11 +2,8 @@
 /**
  * Layout controls for pages, posts, and archives.
  *
- * Two independent width/alignment controls:
+ * Page width/alignment control plus a sidebar:
  *   1. Page      — the outer content column of the DEFAULT page/single template.
- *   2. Content   — the editor content (the_content() ".rv-prose" block). This is
- *                  applied via body classes, so it works on EVERY template,
- *                  including the bespoke ones (About, Services, …).
  * Plus a Sidebar position (default template only).
  *
  * Design defaults live in the Customizer (Appearance -> Customize -> Theme
@@ -79,8 +76,6 @@ function entry_layout(): array
 
         $pageWidth    = $pick((string) get_post_meta($id, '_rv_page_width', true),    (string) get_theme_mod("rv_{$type}_page_width", 'full'),      $widths);
         $pageAlign    = $pick((string) get_post_meta($id, '_rv_page_align', true),    (string) get_theme_mod("rv_{$type}_page_align", 'center'),    $aligns);
-        $contentWidth = $pick((string) get_post_meta($id, '_rv_content_width', true), (string) get_theme_mod("rv_{$type}_content_width", 'narrow'), $widths);
-        $contentAlign = $pick((string) get_post_meta($id, '_rv_content_align', true), (string) get_theme_mod("rv_{$type}_content_align", 'center'), $aligns);
         $sidebar      = $pick((string) get_post_meta($id, '_rv_layout_sidebar', true),(string) get_theme_mod("rv_{$type}_sidebar", 'none'),         $sides);
 
         $hero  = (bool) get_theme_mod("rv_{$type}_hero_default", false);
@@ -89,8 +84,6 @@ function entry_layout(): array
     } else {
         $pageWidth    = $pick('', (string) get_theme_mod('rv_archive_page_width', 'full'), $widths);
         $pageAlign    = $pick('', (string) get_theme_mod('rv_archive_page_align', 'center'), $aligns);
-        $contentWidth = 'narrow';
-        $contentAlign = 'center';
         $sidebar      = $pick('', (string) get_theme_mod('rv_archive_sidebar', 'none'), $sides);
         $hero = false;
         $title = '';
@@ -105,8 +98,6 @@ function entry_layout(): array
     return $cache[$key] = [
         'page_width'    => $pageWidth,
         'page_align'    => $pageAlign,
-        'content_width' => $contentWidth,
-        'content_align' => $contentAlign,
         'sidebar'       => $sidebar,
         'hero'          => $hero,
         'hero_title'    => $title,
@@ -128,8 +119,6 @@ add_filter('body_class', function (array $classes): array {
         return $classes;
     }
     $l = entry_layout();
-    $classes[] = 'rv-cw-' . $l['content_width'];
-    $classes[] = 'rv-ca-' . $l['content_align'];
     $classes[] = $l['sidebar'] === 'none' ? 'rv-no-side' : ('rv-side-' . $l['sidebar']);
     return $classes;
 });
@@ -148,7 +137,7 @@ add_action('customize_register', function ($wp_customize) {
     $wp_customize->add_section('rv_layout_cs', [
         'title'       => __('Layout — Content & Sidebar', 'sage'),
         'panel'       => 'rv_theme_options',
-        'description' => __('Design defaults for pages, posts, and archives. Any page/post can override these from its "Layout (theme)" box. Page width = the outer column of the default template; Content width = the editor content on every template.', 'sage'),
+        'description' => __('Design defaults for pages, posts, and archives. Any page/post can override these from its "Layout (theme)" box. Page width = the outer column of the default template. Bespoke templates control their own content width.', 'sage'),
     ]);
 
     $widths = layout_widths();
@@ -167,8 +156,6 @@ add_action('customize_register', function ($wp_customize) {
     foreach (['page' => __('Pages', 'sage'), 'post' => __('Posts', 'sage')] as $t => $tl) {
         $sel("rv_{$t}_page_width",    sprintf(__('%s: page width', 'sage'), $tl),            'full',   $widths);
         $sel("rv_{$t}_page_align",    sprintf(__('%s: page alignment', 'sage'), $tl),        'center', $aligns);
-        $sel("rv_{$t}_content_width", sprintf(__('%s: content width', 'sage'), $tl),         'narrow', $widths);
-        $sel("rv_{$t}_content_align", sprintf(__('%s: content alignment', 'sage'), $tl),     'center', $aligns);
         $sel("rv_{$t}_sidebar",       sprintf(__('%s: sidebar', 'sage'), $tl),               'none',   $sides);
         $chk("rv_{$t}_hero_default",  sprintf(__('%s: show hero band by default', 'sage'), $tl), false);
     }
@@ -222,15 +209,11 @@ function render_layout_box($post): void
         echo '</select></p>';
     };
 
-    echo '<p class="description" style="margin-top:0">' . esc_html__('The page (outer column) applies to the default template. The content (editor) width applies on every template, including custom page templates.', 'sage') . '</p>';
+    echo '<p class="description" style="margin-top:0">' . esc_html__('The page (outer column) width and sidebar apply to the default template. Bespoke templates manage their own content width.', 'sage') . '</p>';
 
     echo '<p style="margin:.6rem 0 .3rem;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#646970">' . esc_html__('Page', 'sage') . '</p>';
     $field('rv_page_width', __('Page width', 'sage'), $val('_rv_page_width'), $widthOpts);
     $field('rv_page_align', __('Page alignment', 'sage'), $val('_rv_page_align'), $alignOpts);
-
-    echo '<p style="margin:.6rem 0 .3rem;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:#646970">' . esc_html__('Editor content area', 'sage') . '</p>';
-    $field('rv_content_width', __('Content width', 'sage'), $val('_rv_content_width'), $widthOpts);
-    $field('rv_content_align', __('Content alignment', 'sage'), $val('_rv_content_align'), $alignOpts);
 
     echo '<hr>';
     $field('rv_layout_sidebar', __('Sidebar', 'sage'), $val('_rv_layout_sidebar'), $sideOpts);
@@ -260,7 +243,5 @@ add_action('save_post', function ($post_id) {
 
     $save('rv_page_width',    '_rv_page_width',    $widths);
     $save('rv_page_align',    '_rv_page_align',    $aligns);
-    $save('rv_content_width', '_rv_content_width', $widths);
-    $save('rv_content_align', '_rv_content_align', $aligns);
     $save('rv_layout_sidebar', '_rv_layout_sidebar', $sides);
 });
