@@ -101,17 +101,6 @@
       <section class="rv-shell rv-band" style="padding-top:0">@include('partials.content-none')</section>
     @endif
 
-    {{-- LOCAL SEO CONTENT: topics + internal links (gives the archive real content) --}}
-    <section class="rv-band rv-band-alt">
-      <div class="rv-shell-full">
-        <div class="rv-reading rv-prose">
-          <h2>{{ __('Web design & SEO help for local businesses', 'sage') }}</h2>
-          <p>{{ __('This journal is where I share what actually moves the needle for a small business website in Adams County — the same advice I give paying clients, written in plain English. If you run a shop, practice, or service business around Gettysburg, these posts are for you.', 'sage') }}</p>
-          <p>{{ __('You\'ll find straight answers on what a website should cost, how to show up on Google Maps for “near me” searches, whether to hire a local designer or use a DIY builder, and how to keep your site fast, accessible, and secure. When you\'re ready to put any of it into practice, ', 'sage') }}<a href="{{ home_url('/services/') }}">{{ __('see the services', 'sage') }}</a>{{ __(', try the ', 'sage') }}<a href="{{ home_url('/free-tools/') }}">{{ __('free website tools', 'sage') }}</a>{{ __(', or ', 'sage') }}<a href="{{ $ctaHref }}">{{ __('tell me about your business', 'sage') }}</a>{{ __('.', 'sage') }}</p>
-        </div>
-      </div>
-    </section>
-
     {{-- NEWSLETTER --}}
     <section class="rv-cta-band">
       <div class="rv-shell rv-cta-inner">
