@@ -3,17 +3,19 @@
 /**
  * Optimized SEO titles + meta descriptions per page, supplied in code.
  *
- * Rank Math owns the frontend <title> and meta description. These filters
+ * The active SEO plugin (Yoast SEO or Rank Math) owns the frontend <title> and
+ * meta description. These filters
  * provide hand-written, keyword-front SEO titles (~<=60 chars) and ~155-char
  * descriptions for the studio's pages. Each override DEFERS to any value set in
  * the Rank Math UI (per-post rank_math_title / rank_math_description), so
  * editing a page's SEO in wp-admin always wins over these defaults.
  *
  * Focus keywords are noted in comments for reference. The focus keyword is a
- * Rank Math editor-analysis field (post meta rank_math_focus_keyword) and is not
+ * SEO plugin's editor-analysis field (Yoast: _yoast_wpseo_focuskw; Rank Math: rank_math_focus_keyword) and is not
  * frontend output, so it must be set in wp-admin — see the SEO plan doc.
  *
- * Only runs when Rank Math is active (the filters simply never fire otherwise).
+ * Filters are registered for both Yoast and Rank Math; only the active plugin's
+ * hooks ever fire.
  */
 
 namespace App;
@@ -124,25 +126,49 @@ function rv_seo_meta_current(): ?array
     return null;
 }
 
-/** True when the current queried object has an explicit Rank Math value for $key. */
-function rv_seo_has_override(string $key): bool
+/** True when the queried object has an explicit SEO value in any of $keys (post meta). */
+function rv_seo_has_override(string ...$keys): bool
 {
     $id = (int) get_queried_object_id();
-    return $id > 0 && trim((string) get_post_meta($id, $key, true)) !== '';
+    if ($id <= 0) {
+        return false;
+    }
+    foreach ($keys as $k) {
+        if (trim((string) get_post_meta($id, $k, true)) !== '') {
+            return true;
+        }
+    }
+    return false;
 }
 
-add_filter('rank_math/frontend/title', function ($title) {
+/** Optimized SEO title for the current page, or the original when overridden/unmapped. */
+function rv_seo_filter_title($title)
+{
     $m = rv_seo_meta_current();
-    if ($m && $m[0] !== '' && ! rv_seo_has_override('rank_math_title')) {
+    if ($m && $m[0] !== '' && ! rv_seo_has_override('_yoast_wpseo_title', 'rank_math_title')) {
         return $m[0];
     }
     return $title;
-}, 20);
+}
 
-add_filter('rank_math/frontend/description', function ($desc) {
+/** Optimized meta description for the current page, or the original when overridden/unmapped. */
+function rv_seo_filter_desc($desc)
+{
     $m = rv_seo_meta_current();
-    if ($m && $m[1] !== '' && ! rv_seo_has_override('rank_math_description')) {
+    if ($m && $m[1] !== '' && ! rv_seo_has_override('_yoast_wpseo_metadesc', 'rank_math_description')) {
         return $m[1];
     }
     return $desc;
-}, 20);
+}
+
+// Yoast SEO (active): title, meta description, and matching Open Graph / Twitter.
+add_filter('wpseo_title', __NAMESPACE__ . '\\rv_seo_filter_title', 20);
+add_filter('wpseo_metadesc', __NAMESPACE__ . '\\rv_seo_filter_desc', 20);
+add_filter('wpseo_opengraph_title', __NAMESPACE__ . '\\rv_seo_filter_title', 20);
+add_filter('wpseo_opengraph_desc', __NAMESPACE__ . '\\rv_seo_filter_desc', 20);
+add_filter('wpseo_twitter_title', __NAMESPACE__ . '\\rv_seo_filter_title', 20);
+add_filter('wpseo_twitter_description', __NAMESPACE__ . '\\rv_seo_filter_desc', 20);
+
+// Rank Math (kept so the meta still applies if the site switches back).
+add_filter('rank_math/frontend/title', __NAMESPACE__ . '\\rv_seo_filter_title', 20);
+add_filter('rank_math/frontend/description', __NAMESPACE__ . '\\rv_seo_filter_desc', 20);
