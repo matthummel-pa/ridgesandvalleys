@@ -101,19 +101,7 @@
       <section class="rv-shell rv-band" style="padding-top:0">@include('partials.content-none')</section>
     @endif
 
-    {{-- NEWSLETTER --}}
-    <section class="rv-cta-band">
-      <div class="rv-shell rv-cta-inner">
-        {!! \App\eyebrow(__('Once a month, tops', 'sage')) !!}
-        <h2 class="rv-cta-title">{{ __('Local, useful, no spam.', 'sage') }}</h2>
-        <p class="rv-cta-sub">{{ __('Occasional notes on getting found and getting work online in South Central PA.', 'sage') }}</p>
-        <form class="rv-newsletter-form" style="margin-inline:auto" action="{{ $ctaHref }}" method="get">
-          <label class="screen-reader-text" for="rv-news-email">{{ __('Email address', 'sage') }}</label>
-          <input id="rv-news-email" type="email" name="email" placeholder="{{ __('you@yourbusiness.com', 'sage') }}" required>
-          <button class="rv-btn rv-btn-on-dark" type="submit">{{ __('Subscribe', 'sage') }}</button>
-        </form>
-      </div>
-    </section>
+    {{-- NEWSLETTER: moved to the site footer (sections/footer.blade.php) --}}
 
   @else
 
