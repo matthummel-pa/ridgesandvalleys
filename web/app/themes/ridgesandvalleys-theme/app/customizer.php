@@ -1072,7 +1072,13 @@ add_action('customize_register', function ($wp_customize) {
     /* Contact */
     $wp_customize->add_section('rv_contact', ['title' => __('Contact', 'sage'), 'panel' => 'rv_theme_options']);
     $wp_customize->add_setting('rv_contact_email', ['default' => get_option('admin_email'), 'sanitize_callback' => 'sanitize_email']);
-    $wp_customize->add_control('rv_contact_email', ['label' => __('Where contact-form messages are sent', 'sage'), 'section' => 'rv_contact', 'type' => 'email']);
+    $wp_customize->add_control('rv_contact_email', ['label' => __('Email address', 'sage'), 'description' => __('Shown in the footer contact block and used as the contact-form recipient.', 'sage'), 'section' => 'rv_contact', 'type' => 'email']);
+
+    $wp_customize->add_setting('rv_contact_phone', ['default' => '223-340-8098', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control('rv_contact_phone', ['label' => __('Phone number', 'sage'), 'description' => __('Shown in the footer. The tel: link is generated automatically.', 'sage'), 'section' => 'rv_contact', 'type' => 'text']);
+
+    $wp_customize->add_setting('rv_contact_location', ['default' => 'Gettysburg, PA', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_control('rv_contact_location', ['label' => __('Location', 'sage'), 'description' => __('Shown in the footer with a map-pin icon. Service-area business — use city and state, not a street address.', 'sage'), 'section' => 'rv_contact', 'type' => 'text']);
 
     /* Blog & Journal — editable text + show/hide for the post enhancements */
     $wp_customize->add_section('rv_blog', ['title' => __('Blog & Journal', 'sage'), 'panel' => 'rv_theme_options']);

@@ -1,6 +1,7 @@
 @php($tagline = get_theme_mod('rv_footer_tagline', __('Websites that help South Central PA businesses get found and get work.', 'sage')))
 @php($rvPhone = trim(get_theme_mod('rv_contact_phone', '223-340-8098')))
-@php($rvEmail = trim(get_theme_mod('rv_contact_email', 'matt@ridgesandvalleys.com')))
+@php($rvEmail = trim(get_theme_mod('rv_contact_email', 'matt@matthummel.com')))
+@php($rvLocation = trim(get_theme_mod('rv_contact_location', 'Gettysburg, PA')))
 @php($rvPhoneTel = $rvPhone ? '+1' . preg_replace('/\D/', '', $rvPhone) : '')
 
 <style>
@@ -40,10 +41,18 @@
         <p class="rv-footer-tagline">{!! wp_kses_post($tagline) !!}</p>
       @endif
 
-      @if ($rvPhone || $rvEmail)
+      @if ($rvPhone || $rvEmail || $rvLocation)
         <div class="rv-footer-contact">
           <h2 class="rv-footer-heading rv-footer-contact-heading">{{ __('Contact', 'sage') }}</h2>
           <ul class="rv-contact-list">
+            @if ($rvLocation)
+              <li>
+                <a class="rv-contact-link" href="https://www.google.com/maps/search/?api=1&amp;query={{ rawurlencode($rvLocation) }}" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+                  <span>{{ $rvLocation }}</span>
+                </a>
+              </li>
+            @endif
             @if ($rvPhone)
               <li>
                 <a class="rv-contact-link" href="tel:{{ $rvPhoneTel }}">
