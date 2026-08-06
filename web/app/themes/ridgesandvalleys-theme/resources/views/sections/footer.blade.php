@@ -51,9 +51,9 @@
   .rv-news-modal{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:1.25rem}
   .rv-news-modal__backdrop{position:absolute;inset:0;background:rgba(18,30,25,.6)}
   .rv-news-modal__dialog{position:relative;z-index:1;width:min(31rem,100%);max-height:90vh;overflow:auto;
-    background:var(--color-surface,#f7f1e6);color:#23201b;border:1px solid rgba(0,0,0,.08);
+    background:#fff;color:#23201b;border:1px solid rgba(0,0,0,.08);
     border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.4);padding:clamp(1.5rem,3vw,2.1rem)}
-  .rv-news-modal__dialog .rv-fnews-eyebrow{color:#9d4a31}
+  .rv-news-modal__dialog .rv-fnews-eyebrow{color:#9d4a31;margin-bottom:.9rem}
   .rv-news-modal__title{margin:.1rem 0 .3rem;font-family:var(--font-display);font-size:1.5rem;line-height:1.15;color:#1e3a31}
   .rv-news-modal__sub{margin:0 0 1.1rem;color:#4f4a40;font-size:.95rem;line-height:1.45}
   .rv-news-modal__close{position:absolute;top:.7rem;right:.7rem;width:2.2rem;height:2.2rem;display:grid;place-items:center;
@@ -93,7 +93,7 @@
       <section class="rv-fnews" aria-labelledby="rv-fnews-title">
         <div class="rv-fnews-copy">
           <p class="rv-fnews-eyebrow">{{ __('The newsletter', 'sage') }}</p>
-          <h2 id="rv-fnews-title" class="rv-footer-heading rv-fnews-title">{{ __('Local, useful, no spam.', 'sage') }}</h2>
+          <h2 id="rv-fnews-title" class="rv-fnews-title">{{ __('Local, useful, no spam.', 'sage') }}</h2>
           <p class="rv-fnews-sub">{{ __('Occasional notes on getting found and getting work online in South Central PA. Once a month, tops.', 'sage') }}</p>
         </div>
         <form class="rv-fnews-form" id="rv-fnews-form" novalidate>
@@ -187,11 +187,9 @@
   @if ($rvNewsletter)
     <div class="rv-news-modal" id="rv-news-modal" hidden>
       <div class="rv-news-modal__backdrop" data-rv-news-close></div>
-      <div class="rv-news-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="rv-news-modal-title">
+      <div class="rv-news-modal__dialog" role="dialog" aria-modal="true" aria-label="{{ __('Newsletter signup', 'sage') }}">
         <button type="button" class="rv-news-modal__close" data-rv-news-close aria-label="{{ __('Close', 'sage') }}">&times;</button>
-        <p class="rv-fnews-eyebrow">{{ __('The newsletter', 'sage') }}</p>
-        <h2 id="rv-news-modal-title" class="rv-news-modal__title">{{ __('Local, useful, no spam.', 'sage') }}</h2>
-        <p class="rv-news-modal__sub">{{ __('Add your details and I will send the occasional note. Once a month, tops, and you can unsubscribe anytime.', 'sage') }}</p>
+        <p class="rv-fnews-eyebrow rv-news-modal__eyebrow">{{ __('The newsletter', 'sage') }}</p>
         <div id="rv-news-hs-form" class="rv-news-hs"></div>
       </div>
     </div>
