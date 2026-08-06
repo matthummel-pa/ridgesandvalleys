@@ -822,11 +822,12 @@ html[data-theme="dark"] .rv-serp-desc { color: #bdc1c6; }
 /* ===================================================== Comment form polish
    #comments-scoped so these win over the Customizer's base comment styles. */
 #comments .rv-form-title { position: relative; }
-#comments .rv-form-title::before { content: "Your turn"; display: block; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-clay); font-weight: 600; margin-bottom: 0.45rem; }
+#comments .rv-form-title::before { content: "Your turn"; display: block; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: #9d4a31; font-weight: 600; margin-bottom: 0.45rem; } /* darker clay: 5.4:1 on cream, WCAG AA */
 #comments .rv-comment-form { position: relative; overflow: visible; }
 #comments .rv-comment-form::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--color-pine), var(--color-clay)); border-radius: 16px 16px 0 0; }
 #comments .rv-form-note { color: var(--color-muted); font-size: 0.9rem; margin-top: 0.15rem; }
 #comments .logged-in-as { color: var(--color-muted); font-size: 0.9rem; }
+#comments .logged-in-as a, #comments .rv-form-note a { text-decoration: underline; } /* links distinguishable without color (WCAG 1.4.1) */
 #comments .rvc-field input:focus,
 #comments .rvc-field textarea:focus { border-color: var(--color-pine); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-pine) 16%, transparent); outline: none; }
 #comments .rvc-field textarea { min-height: 130px; }
