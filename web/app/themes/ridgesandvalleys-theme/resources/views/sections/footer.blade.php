@@ -40,49 +40,16 @@
     background:var(--color-clay);color:#fff;box-shadow:0 .5rem 1.2rem rgba(176,85,58,.32);transition:transform .12s ease,filter .12s ease}
   .rv-fnews-btn:hover{filter:brightness(1.06)}
   .rv-fnews-btn:active{transform:translateY(1px)}
+  .rv-fnews-status{flex:1 1 100%;margin:.15rem 0 0;font-size:.9rem;line-height:1.4}
+  .rv-fnews-status[data-state="ok"]{color:#7CF3C9}
+  .rv-fnews-status[data-state="err"]{color:#FFC9C2}
+  .rv-fnews-status[data-state="pending"]{color:var(--color-wheat)}
   @media (max-width:760px){
     .rv-fnews{flex-direction:column;align-items:stretch;gap:.9rem}
     .rv-fnews-form{flex-basis:auto}
     .rv-fnews-btn{width:100%}
   }
 
-  /* Newsletter popup — full HubSpot form on a light card */
-  .rv-news-modal[hidden]{display:none}
-  .rv-news-modal{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:1.25rem}
-  .rv-news-modal__backdrop{position:absolute;inset:0;background:rgba(18,30,25,.6)}
-  .rv-news-modal__dialog{position:relative;z-index:1;width:min(31rem,100%);max-height:90vh;overflow:auto;
-    background:#fff;color:#23201b;border:1px solid rgba(0,0,0,.08);
-    border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.4);padding:clamp(1.5rem,3vw,2.1rem)}
-  .rv-news-modal__dialog .rv-fnews-eyebrow{color:#9d4a31;margin-bottom:.9rem}
-  .rv-news-modal__title{margin:.1rem 0 .3rem;font-family:var(--font-display);font-size:1.5rem;line-height:1.15;color:#1e3a31}
-  .rv-news-modal__sub{margin:0 0 1.1rem;color:#4f4a40;font-size:.95rem;line-height:1.45}
-  .rv-news-modal__close{position:absolute;top:.7rem;right:.7rem;width:2.2rem;height:2.2rem;display:grid;place-items:center;
-    border:0;border-radius:100px;background:rgba(0,0,0,.06);color:#23201b;cursor:pointer;font-size:1.4rem;line-height:1}
-  .rv-news-modal__close:hover{background:rgba(0,0,0,.12)}
-  .rv-news-modal__close:focus-visible{outline:2px solid var(--color-pine);outline-offset:2px}
-
-  /* HubSpot form inside the popup — branded for the light card (applies when the
-     embed renders inline; HubSpot's own iframe styling is used if it doesn't). */
-  .rv-news-hs .hs-form{max-width:none}
-  .rv-news-hs .hs-form fieldset{max-width:none;margin:0}
-  .rv-news-hs .hs-form .hs-form-field{margin:0 0 .8rem}
-  .rv-news-hs .hs-form label{display:block;font-size:.85rem;font-weight:600;color:#23201b;margin:0 0 .3rem}
-  .rv-news-hs .hs-form label .hs-form-required{color:#b0553a;margin-inline-start:.15rem}
-  .rv-news-hs .hs-form .hs-input,
-  .rv-news-hs .hs-form input[type=email],
-  .rv-news-hs .hs-form input[type=text],
-  .rv-news-hs .hs-form input[type=tel]{width:100%;box-sizing:border-box;padding:.7rem .9rem;border-radius:.6rem;
-    border:1px solid rgba(0,0,0,.22)!important;background:#fff!important;color:#23201b!important;font:inherit;line-height:1.2}
-  .rv-news-hs .hs-form .hs-input:focus,.rv-news-hs .hs-form .hs-input:focus-visible{outline:2px solid var(--color-pine)!important;outline-offset:1px;border-color:var(--color-pine)!important}
-  .rv-news-hs .hs-form .inputs-list{list-style:none;margin:0;padding:0}
-  .rv-news-hs .hs-form .hs-button,
-  .rv-news-hs .hs-form input[type=submit]{display:inline-block;margin-top:.4rem;background:var(--color-clay)!important;color:#fff!important;
-    border:0;cursor:pointer;font:inherit;font-weight:800;padding:.8rem 1.6rem;border-radius:100px;box-shadow:0 .5rem 1.2rem rgba(176,85,58,.3)}
-  .rv-news-hs .hs-form .hs-button:hover{filter:brightness(1.05)}
-  .rv-news-hs .hs-error-msgs li,.rv-news-hs .hs-error-msg{color:#b0553a;font-size:.82rem;list-style:none;margin:.3rem 0 0;padding:0}
-  .rv-news-hs .submitted-message,.rv-news-hs .hs-form__submitted-message{color:#2e5245;font-weight:700;font-size:.98rem;line-height:1.4}
-  .rv-news-hs .legal-consent-container,.rv-news-hs .hs-richtext{font-size:.78rem;color:#6e6558;margin-top:.4rem}
-  .rv-news-hs .legal-consent-container a{color:#2e5245}
 </style>
 
 <footer class="rv-footer" role="contentinfo">
@@ -98,8 +65,9 @@
         </div>
         <form class="rv-fnews-form" id="rv-fnews-form" novalidate>
           <label class="rv-sr-only" for="rv-fnews-email">{{ __('Your email address', 'sage') }}</label>
-          <input class="rv-fnews-input" id="rv-fnews-email" type="email" name="email" autocomplete="email" inputmode="email" placeholder="{{ __('you@yourbusiness.com', 'sage') }}">
+          <input class="rv-fnews-input" id="rv-fnews-email" type="email" name="email" autocomplete="email" inputmode="email" required placeholder="{{ __('you@yourbusiness.com', 'sage') }}">
           <button class="rv-fnews-btn" type="submit">{{ __('Sign me up', 'sage') }}</button>
+          <p class="rv-fnews-status" id="rv-fnews-status" role="status" aria-live="polite" hidden></p>
         </form>
       </section>
     </div>
@@ -185,77 +153,39 @@
   </div>
 
   @if ($rvNewsletter)
-    <div class="rv-news-modal" id="rv-news-modal" hidden>
-      <div class="rv-news-modal__backdrop" data-rv-news-close></div>
-      <div class="rv-news-modal__dialog" role="dialog" aria-modal="true" aria-label="{{ __('Newsletter signup', 'sage') }}">
-        <button type="button" class="rv-news-modal__close" data-rv-news-close aria-label="{{ __('Close', 'sage') }}">&times;</button>
-        <p class="rv-fnews-eyebrow rv-news-modal__eyebrow">{{ __('The newsletter', 'sage') }}</p>
-        <div id="rv-news-hs-form" class="rv-news-hs"></div>
-      </div>
-    </div>
-
-    <script src="//js.hsforms.net/forms/embed/v2.js" charset="utf-8"></script>
     <script>
       (function () {
-        var modal = document.getElementById('rv-news-modal');
         var form = document.getElementById('rv-fnews-form');
-        var emailField = document.getElementById('rv-fnews-email');
-        if (!modal || !form) return;
-        var built = false, lastFocus = null, prefill = '';
-
-        function buildForm() {
-          if (built) return;
-          (function make() {
-            if (window.hbspt && window.hbspt.forms) {
-              built = true;
-              window.hbspt.forms.create({
-                portalId: @json((string) $hsPortal),
-                formId: @json((string) $hsForm),
-                region: @json((string) $hsRegion),
-                target: '#rv-news-hs-form',
-                css: '',
-                onFormReady: function () {
-                  try {
-                    if (!prefill) return;
-                    var el = document.querySelector('#rv-news-hs-form input[type=email], #rv-news-hs-form input[name="email"]');
-                    if (el) { el.value = prefill; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }
-                  } catch (e) {}
-                }
-              });
-            } else { setTimeout(make, 200); }
-          })();
-        }
-
-        function openModal() {
-          lastFocus = document.activeElement;
-          prefill = emailField ? emailField.value.trim() : '';
-          buildForm();
-          modal.hidden = false;
-          document.documentElement.style.overflow = 'hidden';
-          var closeBtn = modal.querySelector('.rv-news-modal__close');
-          if (closeBtn) closeBtn.focus();
-        }
-        function closeModal() {
-          modal.hidden = true;
-          document.documentElement.style.overflow = '';
-          if (lastFocus && lastFocus.focus) lastFocus.focus();
-        }
-
-        form.addEventListener('submit', function (e) { e.preventDefault(); openModal(); });
-        modal.addEventListener('click', function (e) {
-          if (e.target.hasAttribute('data-rv-news-close')) closeModal();
-        });
-        document.addEventListener('keydown', function (e) {
-          if (e.key === 'Escape' && !modal.hidden) closeModal();
-        });
-        modal.addEventListener('keydown', function (e) {
-          if (e.key !== 'Tab') return;
-          var sel = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
-          var items = Array.prototype.slice.call(modal.querySelectorAll(sel)).filter(function (el) { return el.offsetParent !== null; });
-          if (!items.length) return;
-          var first = items[0], last = items[items.length - 1];
-          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
-          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        if (!form) return;
+        var emailEl = document.getElementById('rv-fnews-email');
+        var statusEl = document.getElementById('rv-fnews-status');
+        var btn = form.querySelector('.rv-fnews-btn');
+        var endpoint = 'https://api.hsforms.com/submissions/v3/integration/submit/' + @json((string) $hsPortal) + '/' + @json((string) $hsForm);
+        function show(msg, state) { statusEl.hidden = false; statusEl.textContent = msg; statusEl.setAttribute('data-state', state); }
+        form.addEventListener('submit', function (e) {
+          e.preventDefault();
+          var email = (emailEl.value || '').trim();
+          if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) { show('Please enter a valid email address.', 'err'); emailEl.focus(); return; }
+          btn.disabled = true;
+          show('Signing you up…', 'pending');
+          fetch(endpoint, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ fields: [{ name: 'email', value: email }], context: { pageUri: location.href, pageName: document.title } })
+          }).then(function (r) {
+            return r.json().catch(function () { return {}; }).then(function (j) { return { ok: r.ok, j: j }; });
+          }).then(function (res) {
+            btn.disabled = false;
+            if (res.ok) {
+              form.reset();
+              var m = (res.j && res.j.inlineMessage) ? res.j.inlineMessage.replace(/<[^>]*>/g, '') : 'Thanks — you are on the list.';
+              show(m, 'ok');
+            } else {
+              var msg = 'Something went wrong. Please try again.';
+              if (res.j && res.j.errors && res.j.errors[0] && res.j.errors[0].message) msg = res.j.errors[0].message;
+              show(msg, 'err');
+            }
+          }).catch(function () { btn.disabled = false; show('Network error. Please try again.', 'err'); });
         });
       })();
     </script>
