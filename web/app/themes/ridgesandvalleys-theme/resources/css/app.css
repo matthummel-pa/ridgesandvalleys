@@ -289,11 +289,23 @@ pre code { background: none; padding: 0; color: inherit; }
 .rv-tags { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; }
 .rv-tags a { display: inline-block; font-family: var(--font-mono); font-size: 0.75rem; letter-spacing: 0.04em; background: var(--color-cream); color: var(--color-body); padding: 0.3rem 0.7rem; border-radius: 999px; text-decoration: none; }
 .rv-tags a:hover { background: #E7EDE6; color: var(--color-pine-deep); }
-.rv-single-nav { padding-block: 2rem var(--section-y); border-top: 1px solid var(--color-line); }
-.rv-single-nav .nav-links { display: flex; justify-content: space-between; gap: 1.5rem; flex-wrap: wrap; }
-.rv-single-nav a { text-decoration: none; }
-.rv-nav-label { display: block; font-family: var(--font-mono); font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-muted); }
-.rv-nav-title { font-family: var(--font-display); font-weight: 700; color: var(--color-ink); }
+.rv-single-nav { padding-block: 2.25rem var(--section-y); border-top: 1px solid var(--color-line); }
+.rv-single-nav .nav-links { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.rv-single-nav .nav-previous { grid-column: 1; }
+.rv-single-nav .nav-next { grid-column: 2; text-align: right; }
+.rv-single-nav a { display: block; height: 100%; text-decoration: none; background: var(--color-surface); border: 1.5px solid var(--color-line); border-radius: 16px; padding: 1rem 1.25rem; transition: transform .15s ease, border-color .15s ease, box-shadow .2s ease; }
+.rv-single-nav a:hover { transform: translateY(-3px); border-color: color-mix(in srgb, var(--color-pine) 40%, var(--color-line)); box-shadow: var(--shadow-lift); }
+.rv-single-nav .rv-nav-label { display: inline-flex; align-items: center; gap: 0.4rem; font-family: var(--font-mono); font-size: 0.68rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-clay); font-weight: 600; margin-bottom: 0.45rem; }
+.rv-single-nav .rv-nav-label::before { content: "\2190"; font-size: 1rem; line-height: 1; }
+.rv-single-nav .nav-next .rv-nav-label { flex-direction: row-reverse; }
+.rv-single-nav .nav-next .rv-nav-label::before { content: "\2192"; }
+.rv-single-nav .rv-nav-title { font-family: var(--font-display); font-weight: 700; font-size: 1.06rem; line-height: 1.28; color: var(--color-ink); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.rv-single-nav a:hover .rv-nav-title { color: var(--color-pine); }
+@media (max-width: 640px) {
+  .rv-single-nav .nav-links { grid-template-columns: 1fr; }
+  .rv-single-nav .nav-next { grid-column: 1; text-align: left; }
+  .rv-single-nav .nav-next .rv-nav-label { flex-direction: row; }
+}
 .rv-project-visit { margin-top: 1rem; }
 
 /* ============================================================= Forms */
