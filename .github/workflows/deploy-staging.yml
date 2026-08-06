@@ -66,8 +66,8 @@ jobs:
             ./ \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.STAGING_PATH }}/"
 
-      - name: Flush caches on staging (best effort)
+      - name: Flush WordPress + SiteGround caches on staging (best effort)
         run: |
           ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
-            "cd ${{ secrets.STAGING_PATH }}/web && wp cache flush 2>/dev/null" || true
+            "cd ${{ secrets.STAGING_PATH }}/web && wp cache flush 2>/dev/null; wp sg purge 2>/dev/null" || true

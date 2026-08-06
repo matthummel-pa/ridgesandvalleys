@@ -20,6 +20,16 @@
         <a class="rv-btn rv-btn-primary" href="{{ \App\cta_href(\App\field('hero_btn_url', get_theme_mod('rv_cta_url', '/contact/'))) }}">{{ \App\field('hero_btn', __('Work with us', 'sage')) }}</a>
       </div>
       <p class="rv-hero-trust">{{ \App\field('about_meta', __('Family-owned · Accessibility-first · Serving Gettysburg & South Central PA', 'sage')) }}</p>
+      <ul class="rv-about-proof" aria-label="{{ __('What you can count on', 'sage') }}">
+        @foreach (\App\field_rows('about_proof', [
+          ['v' => __('15+ yrs', 'sage'), 'l' => __('building for the web', 'sage')],
+          ['v' => __('~7 days', 'sage'), 'l' => __('to your first draft', 'sage')],
+          ['v' => __('WCAG 2.1 AA', 'sage'), 'l' => __('on every page', 'sage')],
+          ['v' => __('You own it', 'sage'), 'l' => __('site, domain, hosting', 'sage')],
+        ]) as $pf)
+          <li><b>{{ $pf['v'] ?? '' }}</b><span>{{ $pf['l'] ?? '' }}</span></li>
+        @endforeach
+      </ul>
     </div>
   </section>
 
@@ -192,10 +202,97 @@
     </div>
   </section>
 
+  {{-- TRY US BEFORE YOU HIRE US: THE SIX FREE TOOLS --}}
+  <section class="rv-shell rv-band rv-about-tools">
+    {!! \App\eyebrow(\App\field('tools_eyebrow', __('Try us before you hire us', 'sage'))) !!}
+    <h2 class="rv-section-title">{{ \App\field('tools_title', __('Six free tools.', 'sage')) }} <em class="rv-accent">{{ \App\field('tools_accent', __('No account, no email.', 'sage')) }}</em></h2>
+    <p class="rv-page-intro">{{ \App\field('tools_intro', __('Every checker on this site is free and open to anyone. Put in your address, get a plain-English report card, and fix what you like — with us or without us. It is the easiest way to see how we think before you spend a dollar.', 'sage')) }}</p>
+    <div class="rv-about-ind">
+      @foreach (\App\field_rows('tools_items', [
+        ['title' => __('Website Grader', 'sage'), 'url' => '/website-grader/', 'text' => __('Your whole site graded across seven areas, so you know what to fix first.', 'sage')],
+        ['title' => __('SEO Checker', 'sage'), 'url' => '/seo-checker/', 'text' => __('Shows exactly why you are — or are not — showing up in search.', 'sage')],
+        ['title' => __('Accessibility Checker', 'sage'), 'url' => '/accessibility/', 'text' => __('Scans a page against WCAG 2.1 AA so more customers can use your site.', 'sage')],
+        ['title' => __('Security Checker', 'sage'), 'url' => '/security-checker/', 'text' => __('HTTPS, headers, and leaks — the things that protect your customers\' trust.', 'sage')],
+        ['title' => __('Email Deliverability Checker', 'sage'), 'url' => '/email-checker/', 'text' => __('SPF, DKIM, and DMARC, so your invoices stop landing in junk.', 'sage')],
+        ['title' => __('Local SEO Scorecard', 'sage'), 'url' => '/local-seo/', 'text' => __('Scores the local signals that get you into Google\'s map pack.', 'sage')],
+      ]) as $tl)
+        <article>
+          <h3><a href="{{ home_url($tl['url'] ?? '/free-tools/') }}">{{ $tl['title'] ?? '' }}</a></h3>
+          <p>{{ $tl['text'] ?? '' }}</p>
+        </article>
+      @endforeach
+    </div>
+    <p class="rv-about-tools-cta">
+      <a class="rv-btn rv-btn-ghost" href="{{ home_url('/free-tools/') }}">{{ \App\field('tools_button', __('See all six free tools', 'sage')) }}</a>
+    </p>
+  </section>
+
+  {{-- HOW PRICING WORKS + HOW TO REACH US (NAP) --}}
+  <section class="rv-band rv-band-alt rv-about-reach">
+    <div class="rv-shell rv-about-reach-grid">
+      <div>
+        {!! \App\eyebrow(\App\field('price_eyebrow', __('How pricing works', 'sage'))) !!}
+        <h2 class="rv-about-local-h">{{ \App\field('price_title', __('One fixed price,', 'sage')) }} <em class="rv-accent">{{ \App\field('price_accent', __('agreed up front.', 'sage')) }}</em></h2>
+        <p class="rv-feature-text">{!! \App\field('price_p1', __('<strong>No hourly meter, no surprise invoices.</strong> You get the number before the work starts, and it does not move unless you ask for something new — and then we agree on that price first, too.', 'sage')) !!}</p>
+        <ul class="rv-about-prices">
+          @foreach (\App\field_rows('price_items', [
+            ['title' => __('Website Rescue', 'sage'), 'text' => __('$950–$1,500 — fix what you already have.', 'sage')],
+            ['title' => __('Local Launch', 'sage'), 'text' => __('$2,750–$3,750 — a new site built to get found locally.', 'sage')],
+            ['title' => __('Growth Site', 'sage'), 'text' => __('$4,500+ — bigger builds with more pages and moving parts.', 'sage')],
+            ['title' => __('Care & Grow', 'sage'), 'text' => __('$179–$349/mo — updates, backups, and steady improvements.', 'sage')],
+          ]) as $pr)
+            <li><b>{{ $pr['title'] ?? '' }}</b> <span>{{ $pr['text'] ?? '' }}</span></li>
+          @endforeach
+        </ul>
+      </div>
+      <div>
+        {!! \App\eyebrow(\App\field('reach_eyebrow', __('How to reach us', 'sage'))) !!}
+        <h2 class="rv-about-local-h">{{ \App\field('reach_title', __('Talk to a', 'sage')) }} <em class="rv-accent">{{ \App\field('reach_accent', __('real person.', 'sage')) }}</em></h2>
+        @php($rvPhone = trim(get_theme_mod('rv_contact_phone', '223-340-8098')))
+        @php($rvEmail = trim(get_theme_mod('rv_contact_email', 'matt@ridgesandvalleys.com')))
+        @php($rvLocation = trim(get_theme_mod('rv_contact_location', 'Gettysburg, PA')))
+        <ul class="rv-about-nap">
+          <li><span class="rv-about-nap-l">{{ __('Studio', 'sage') }}</span> <b>{{ __('Ridges & Valleys Studio', 'sage') }}</b></li>
+          @if ($rvPhone)<li><span class="rv-about-nap-l">{{ __('Phone', 'sage') }}</span> <a href="tel:+1{{ preg_replace('/\D+/', '', $rvPhone) }}">{{ $rvPhone }}</a></li>@endif
+          @if ($rvEmail)<li><span class="rv-about-nap-l">{{ __('Email', 'sage') }}</span> <a href="mailto:{{ $rvEmail }}">{{ $rvEmail }}</a></li>@endif
+          @if ($rvLocation)<li><span class="rv-about-nap-l">{{ __('Based in', 'sage') }}</span> <b>{{ $rvLocation }}</b></li>@endif
+          <li><span class="rv-about-nap-l">{{ __('Serving', 'sage') }}</span> <b>{{ __('Adams County & South Central PA', 'sage') }}</b></li>
+        </ul>
+        <p class="rv-post-meta rv-about-nap-note">{{ \App\field('reach_note', __('We work from a home studio and meet clients at their place of business, so we do not publish a street address. Call, email, or ask for a free quote — you will hear back from Matt, not a call center.', 'sage')) }}</p>
+        <div class="rv-hero-actions" style="justify-content:flex-start;margin-top:1.1rem">
+          <a class="rv-btn rv-btn-primary" href="{{ $ctaHref }}">{{ \App\field('reach_button', __('Get a free quote', 'sage')) }}</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
   @include('partials.cta')
 
   <style>
     .rv-hero-invite{font-size:1.02rem;opacity:.9;margin-top:.6rem}
+    /* Proof strip (hero) */
+    .rv-about-proof{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem .75rem;margin:1.1rem 0 0;padding:0}
+    .rv-about-proof li{display:flex;flex-direction:column;gap:.1rem;background:color-mix(in srgb,#fff 12%,transparent);border:1px solid color-mix(in srgb,#fff 26%,transparent);border-radius:12px;padding:.55rem .9rem}
+    .rv-about-proof b{font-family:var(--font-display);font-size:1.02rem;font-weight:800;line-height:1.1}
+    .rv-about-proof span{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
+    /* Free tools band */
+    .rv-about-tools .rv-about-ind h3 a{color:inherit;text-decoration:none}
+    .rv-about-tools .rv-about-ind h3 a:hover{text-decoration:underline}
+    .rv-about-tools-cta{margin:1.5rem 0 0}
+    /* Pricing + NAP band */
+    .rv-about-reach-grid{display:grid;grid-template-columns:1fr 1fr;gap:clamp(2rem,4vw,3.5rem);align-items:start}
+    @media(max-width:820px){.rv-about-reach-grid{grid-template-columns:1fr}}
+    .rv-about-prices{list-style:none;margin:1.25rem 0 0;padding:0;display:grid;gap:.7rem}
+    .rv-about-prices li{position:relative;padding:.15rem 0 .15rem .95rem}
+    .rv-about-prices li::before{content:"";position:absolute;left:0;top:.15rem;bottom:.15rem;width:4px;border-radius:2px;background:var(--ridgeline)}
+    .rv-about-prices b{font-family:var(--font-display);color:var(--color-ink);display:block;font-size:1.02rem}
+    .rv-about-prices span{color:var(--color-body);font-size:.95rem;line-height:1.5}
+    .rv-about-nap{list-style:none;margin:1.25rem 0 0;padding:0;display:grid;gap:.6rem}
+    .rv-about-nap li{display:grid;grid-template-columns:6.5rem 1fr;gap:.75rem;align-items:baseline;font-size:1rem;color:var(--color-ink)}
+    .rv-about-nap-l{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.11em;text-transform:uppercase;color:var(--color-clay);font-weight:600}
+    .rv-about-nap a{color:var(--color-ink)}
+    .rv-about-nap-note{margin-top:1.1rem;max-width:52ch}
+    @media(max-width:480px){.rv-about-nap li{grid-template-columns:1fr;gap:.15rem}}
     .rv-about-local-grid{display:grid;grid-template-columns:1.25fr .9fr;gap:clamp(2rem,4vw,3.5rem);align-items:start}
     @media(max-width:820px){.rv-about-local-grid{grid-template-columns:1fr}}
     .rv-about-local-h{font-family:var(--font-display);font-weight:800;font-size:clamp(1.9rem,4.4vw,3.1rem);line-height:1.04;letter-spacing:-.02em;color:var(--color-ink);margin:.45rem 0 1.1rem}

@@ -26,3 +26,6 @@
 # Misc
 .DS_Store
 npm-debug.log
+
+# Local scratch — files staged for manual deletion (see README)
+_to_delete/

@@ -1,0 +1,163 @@
+# Changelog
+
+All notable changes to the Ridges & Valleys Studio website live here.
+
+The format follows [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) and this
+project uses [Semantic Versioning](https://semver.org/spec/v2.0.0.html). Dates are the
+date the change landed on `main`.
+
+**What counts as a release here:** every push to `main` that touches
+`web/app/themes/ridgesandvalleys-theme/**` builds and deploys automatically. Version
+numbers below are cut by hand when a meaningful group of work ships — they mark
+milestones, not individual deploys. For the deploy-by-deploy record (run IDs, timings,
+failures), see [`docs/deploy-log.md`](docs/deploy-log.md). For problems hit and how they
+were fixed, see [`docs/error-log.md`](docs/error-log.md).
+
+**How to add an entry:** put your change under `## [Unreleased]` in the right category
+as part of the same commit that makes the change. When you cut a version, move the
+`Unreleased` items down under a new heading with today's date.
+
+Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
+
+---
+
+## [Unreleased]
+
+### Added
+
+- **About page: proof strip in the hero** — 15+ yrs, ~7 days to first draft,
+  WCAG 2.1 AA, You own it. Every item is a claim we can back up in under a minute.
+- **About page: "Try us before you hire us" band** — links all six free tools
+  (Website Grader, SEO Checker, Accessibility Checker, Security Checker, Email
+  Deliverability Checker, Local SEO Scorecard) with a plain-English "what it does"
+  line each, plus a link to `/free-tools/`.
+- **About page: pricing + contact band** — the four fixed-price offers stated openly
+  (Website Rescue, Local Launch, Growth Site, Care & Grow) next to a NAP block
+  (studio name, phone, email, based-in, service area) that matches the footer exactly.
+  Phone and email pull from the same Customizer settings the footer uses, so there is
+  one place to change them.
+- **`CHANGELOG.md`** (this file), **`docs/deploy-log.md`**, and **`docs/error-log.md`**.
+- **`docs/` directory** for operational records that do not belong in the README.
+
+### Changed
+
+- **README expanded** — four new sections: "Editing page copy without a deploy" (the
+  `\App\field()` / `field_lines()` / `field_rows()` helpers, and why routine copy
+  changes should never need a deploy), "Verifying a deploy actually landed" (match the
+  Actions run to the SHA, then compare Vite manifest hashes — with the two caveats that
+  have burned us), "Accessibility & brand standards" (WCAG 2.1 AA, bespoke-styles-only,
+  NAP, verifiable claims), and "Logs & changelog" (which of the three files to write in,
+  and when). The pre-commit checks and the four cache-clearing commands the deploy runs
+  are now spelled out, and the troubleshooting table gained four entries.
+- **`.gitignore`** now ignores `_to_delete/`, the local scratch folder used to stage
+  files for manual deletion.
+- **Deploy workflows now purge the SiteGround cache too** (`wp sg purge`) after the
+  WordPress object cache flush, on both the production and staging pipelines. Without
+  it, SG Optimizer's page cache could keep serving the old markup for minutes after a
+  successful deploy, which looked like a failed deploy.
+
+### Notes
+
+- The About page copy lives in the Blade template as translatable defaults. Every
+  string is overridable per-page through the theme's page-fields system
+  (`\App\field()` / `\App\field_rows()`), so content can be edited in WordPress
+  without a deploy.
+
+---
+
+## [1.2.0] — 2026-08-06
+
+### Added
+
+- Site-wide custom code injection — header, below-body, and footer slots.
+- Editable footer contact fields (phone, email, location) with Gettysburg, PA defaults.
+- Bespoke local-SEO sidebar on single posts, always on.
+- HubSpot newsletter signup as a native form in the footer.
+
+### Changed
+
+- Previous/Next post navigation redesigned as cards.
+- Comment form restyled — mono eyebrow, gradient accent stripe, pine focus ring.
+- Newsletter moved out of the blog index and into the footer, so it appears
+  site-wide instead of on one template.
+- SEO titles and meta descriptions optimized for all core pages and wired to Yoast,
+  with Rank Math kept as a fallback.
+- Footer email set back to `matt@ridgesandvalleys.com`.
+
+### Removed
+
+- Editor-content block from bespoke page templates — the templates own their layout,
+  so the duplicate block was producing a second, unstyled copy of the content.
+- Editor-content width/alignment control, superseded by the page-level layout controls.
+- Local-SEO content block from the journal (blog index).
+
+---
+
+## [1.1.0] — 2026-08-05
+
+### Added
+
+- Dynamic layout controls — per-entry hero, content width, and sidebar toggles.
+- Per-page hero typography plus hero button label and style controls.
+- Hero copy width and font-size Customizer controls.
+- Hero image credit / caption with show-hide and Customizer styling, extended to
+  in-content photos.
+- Open Images — search and import openly licensed photos from Openverse.
+- Reorderable homepage sections with per-section image fields.
+- Contour brand system — Young Serif and Geist Mono, topographic SVG motifs.
+- Logo wordmark with Customizer logo-size and hero alignment controls.
+
+### Changed
+
+- Uniform interior hero sizing, tighter About padding, per-page Featured Image heroes.
+- Interior page section styling and reveal-on-scroll treatment.
+- Contact info added to the footer's first column and to the mobile menu.
+
+---
+
+## [1.0.0] — 2026-07-30
+
+First Bedrock release. The repo became the source of truth for the theme, and the
+first automated deploy reached the live site.
+
+### Added
+
+- **Bedrock structure** — `web/` docroot, `web/wp/` core, `web/app/` for themes,
+  plugins, and uploads, `config/` for environment config, `.env` kept out of git.
+- **Sage 11 bespoke theme** at `web/app/themes/ridgesandvalleys-theme/`
+  (Blade + Tailwind CSS v4 + TypeScript + Vite + Acorn).
+- **DDEV config** and a pinned `composer.lock` (WordPress 7.0.2 and plugins).
+- **GitHub Actions deploy pipeline** — builds the theme, rsyncs it to SiteGround over
+  SSH, then clears the Acorn view cache and flushes the WordPress cache.
+- **Staging deploy pipeline** (`workflow_dispatch` only, currently idle) that can push
+  the full Bedrock tree to a staging path if we ever move off managed shared hosting.
+
+### Changed
+
+- Theme folder renamed to `ridgesandvalleys-theme` to match the live active-theme slug,
+  so a deploy overwrites the running theme instead of installing a second one.
+- All Pressroot references removed from code, comments, and CI.
+
+### Fixed
+
+- **Composer platform mismatch.** The lock file had been generated under local PHP 8.5,
+  so CI (PHP 8.3) rejected Symfony 8.x. Pinned `config.platform.php` to `8.3` in both
+  the root and theme `composer.json` and re-locked; Symfony resolved back to 7.4.
+- **`npm ci` lock mismatch.** A global `legacy-peer-deps=true` in `~/.npmrc` meant the
+  local lock file could never be reproduced in a clean CI runner. Added a repo-level
+  `.npmrc` and regenerated `package-lock.json`.
+- **Deploy cache flush** — switched to `cd` + `wp` so the remote path resolves reliably,
+  and added an explicit Acorn view-cache clear, since Blade compiles views outside the
+  theme directory and rsyncing new `.blade.php` files alone does not update the site.
+
+---
+
+## [0.1.0] — 2026-07-15
+
+### Added
+
+- Initial Ridges & Valleys Studio site on the Pressroot framework, rebranded with the
+  earthy palette in `theme.json`, plus an SEO / performance / accessibility mu-plugin
+  and playbook. Superseded by the Bedrock rebuild in 1.0.0.
+
+[Unreleased]: https://github.com/matthummel-pa/ridgesandvalleys/compare/main...HEAD
