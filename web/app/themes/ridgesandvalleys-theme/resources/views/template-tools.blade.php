@@ -37,14 +37,8 @@ $faqs = [
   {{-- INTRO (SEO content) --}}
   <section class="rv-shell-full">
     <div class="rv-reading rv-prose" style="padding-block:var(--section-y) 0">
-      @while(have_posts()) @php(the_post())
-        @if (trim(get_the_content()))
-          @php(the_content())
-        @else
           <p>{{ __('Your website is working for you around the clock — but is it actually doing its job? Most small-business owners have no easy way to tell whether their site loads fast enough, shows up on Google, works on a phone, or keeps visitors\' information safe. These free tools answer those questions in plain English, so you can see exactly where your site stands before you spend a dollar fixing it.', 'sage') }}</p>
           <p>{{ __('There\'s no catch. Every tool below runs instantly in your browser or against your live page — no account, no email, no sales call required. Enter your address, read your results, and decide what to do next. If you\'d like a hand with what turns up, that\'s what the studio is here for.', 'sage') }}</p>
-        @endif
-      @endwhile
     </div>
   </section>
 

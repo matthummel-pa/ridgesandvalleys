@@ -23,13 +23,6 @@
     </div>
   </section>
 
-  {{-- Optional page body content --}}
-  @while(have_posts()) @php(the_post())
-    @if (trim(get_the_content()))
-      <section class="rv-shell-full"><div class="rv-reading rv-prose" style="padding-bottom:0">@php(the_content())</div></section>
-    @endif
-  @endwhile
-
   {{-- THE STUDIO --}}
   <section class="rv-shell rv-band rv-about-bio">
     {!! \App\eyebrow(\App\field('bio_eyebrow', __('The studio', 'sage'))) !!}

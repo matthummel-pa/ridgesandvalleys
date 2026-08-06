@@ -245,16 +245,10 @@ $total = array_sum(array_map(fn ($g) => count($g[2]), $wcag));
       <div class="rv-reading">
         {!! \App\eyebrow(\App\field('stmt_eyebrow', __('Our commitment', 'sage'))) !!}
         <h2 class="rv-section-title">{{ \App\field('stmt_title', __('Accessibility statement', 'sage')) }}</h2>
-        @while(have_posts()) @php(the_post())
-          @if (trim(get_the_content()))
-            <div class="rv-prose" style="margin-top:1rem">@php(the_content())</div>
-          @else
             <div class="rv-prose" style="margin-top:1rem">
               <p>{{ \App\field('stmt_p1', __('Ridges & Valleys Studio is committed to making this website usable for as many people as possible, regardless of ability or technology. I aim to meet WCAG 2.1 Level AA across the site: readable contrast, keyboard-accessible navigation, meaningful text alternatives, clear focus states, semantic structure, and content that works with screen readers.', 'sage')) }}</p>
               <p>{{ \App\field('stmt_p2', __('Accessibility is ongoing work. Some third-party or embedded content may not fully meet this standard; where I find gaps, I work to fix or replace them. If you run into a barrier on this site, please tell me what happened and the page you were on — I\'ll put it right.', 'sage')) }}</p>
             </div>
-          @endif
-        @endwhile
         <p style="margin-top:1.5rem"><a class="rv-btn rv-btn-primary" href="{{ $ctaHref }}">{{ \App\field('stmt_button', __('Report an accessibility issue', 'sage')) }}</a></p>
       </div>
     </div>

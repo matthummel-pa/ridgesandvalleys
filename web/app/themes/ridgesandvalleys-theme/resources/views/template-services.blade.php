@@ -20,12 +20,6 @@
     </div>
   </section>
 
-  <section class="rv-shell-full">
-    <div class="rv-reading rv-prose" style="padding-top:var(--section-y);padding-bottom:0">
-      @while(have_posts()) @php(the_post()) @if (trim(get_the_content())) @php(the_content()) @endif @endwhile
-    </div>
-  </section>
-
   {{-- PACKAGES --}}
   <section id="packages" class="rv-shell rv-band" style="scroll-margin-top:6rem">
     <div class="rv-svc-plans-head">

@@ -64,12 +64,6 @@ foreach ($faqRows as $r) {
     </div>
   </section>
 
-  @while(have_posts()) @php(the_post())
-    @if (trim(get_the_content()))
-      <section class="rv-shell-full"><div class="rv-reading rv-prose" style="padding-top:var(--section-y);padding-bottom:0">@php(the_content())</div></section>
-    @endif
-  @endwhile
-
   {{-- DESIGN PROCESS — GUIDED GRAPHIC --}}
   <section class="rv-shell rv-band rv-faqproc">
     <div class="rv-headstack">

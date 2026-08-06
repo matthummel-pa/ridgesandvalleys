@@ -59,11 +59,6 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
       <div class="rv-contact-formcol">
         {!! \App\eyebrow(\App\field('cform_eyebrow', __('Project inquiry', 'sage'))) !!}
         <h2 class="rv-section-title" style="margin-top:.4rem">{{ \App\field('cform_title', __('Tell me about your', 'sage')) }} <em class="rv-accent">{{ \App\field('cform_accent', __('business.', 'sage')) }}</em></h2>
-        @while(have_posts()) @php(the_post())
-          @if (trim(get_the_content()))
-            <div class="rv-prose rv-contact-intro-body">@php(the_content())</div>
-          @endif
-        @endwhile
         <div class="rv-contact-wrap">@php(\App\contact_form())</div>
         <p class="rv-tool-hint" style="margin-top:1.25rem">{{ \App\field('contact_note', __('The project clock starts when this and your assets are complete. Feedback within two business days keeps launch on schedule.', 'sage')) }}</p>
       </div>
