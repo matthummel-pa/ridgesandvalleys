@@ -21,75 +21,87 @@
   .rv-footer-contact .rv-contact-link{font-size:.95rem;opacity:.92}
   .rv-footer-contact .rv-contact-link:hover,.rv-footer-contact .rv-contact-link:focus-visible{opacity:1}
 
-  /* Newsletter strip — full-width in footer, responsive on all devices */
-  .rv-footer-news{display:flex;flex-wrap:wrap;gap:1rem 2rem;align-items:center;justify-content:space-between;
-    padding-block:clamp(1.25rem,3vw,1.9rem);border-block-end:1px solid rgba(255,255,255,.12)}
-  .rv-footer-news-copy{flex:1 1 18rem;min-width:0}
-  .rv-footer-news-title{margin:0}
-  .rv-footer-news-sub{margin:.35rem 0 0;opacity:.85;font-size:.95rem;line-height:1.45;max-width:46ch}
-  .rv-footer-news-form{flex:1 1 20rem;max-width:34rem;min-width:0}
-  @media (max-width:720px){
-    .rv-footer-news{flex-direction:column;align-items:stretch;gap:.9rem}
-    .rv-footer-news-form{max-width:none}
+  /* Newsletter — closing CTA band: copy left, action right */
+  .rv-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  .rv-fnews{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.1rem 2.5rem;
+    padding:clamp(1.4rem,3vw,2rem) clamp(1.35rem,3vw,2.1rem);margin-block:clamp(1.1rem,3vw,1.9rem);
+    border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.045);position:relative;overflow:hidden}
+  .rv-fnews::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--color-pine),var(--color-clay))}
+  .rv-fnews-copy{flex:1 1 20rem;min-width:0}
+  .rv-fnews-eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--color-wheat);font-weight:600;margin:0 0 .35rem}
+  .rv-fnews-title{margin:0;font-size:clamp(1.3rem,2.3vw,1.8rem);line-height:1.14}
+  .rv-fnews-sub{margin:.4rem 0 0;opacity:.85;font-size:.95rem;line-height:1.45;max-width:46ch}
+  .rv-fnews-form{flex:0 1 24rem;min-width:min(100%,17rem);display:flex;gap:.6rem;flex-wrap:wrap}
+  .rv-fnews-input{flex:1 1 12rem;min-width:0;box-sizing:border-box;padding:.8rem 1rem;border-radius:100px;
+    border:1px solid rgba(255,255,255,.28);background:rgba(255,255,255,.08);color:#EAFFF7;font:inherit;line-height:1.2}
+  .rv-fnews-input::placeholder{color:rgba(255,255,255,.55)}
+  .rv-fnews-input:focus,.rv-fnews-input:focus-visible{outline:2px solid var(--color-wheat);outline-offset:1px;border-color:var(--color-wheat)}
+  .rv-fnews-btn{flex:0 0 auto;border:0;cursor:pointer;font:inherit;font-weight:800;padding:.8rem 1.5rem;border-radius:100px;
+    background:var(--color-clay);color:#fff;box-shadow:0 .5rem 1.2rem rgba(176,85,58,.32);transition:transform .12s ease,filter .12s ease}
+  .rv-fnews-btn:hover{filter:brightness(1.06)}
+  .rv-fnews-btn:active{transform:translateY(1px)}
+  @media (max-width:760px){
+    .rv-fnews{flex-direction:column;align-items:stretch;gap:.9rem}
+    .rv-fnews-form{flex-basis:auto}
+    .rv-fnews-btn{width:100%}
   }
 
-  /* HubSpot embedded form — branded to match the dark footer (css:'' disables HubSpot's default styles) */
-  .rv-hs-form .hs-form{max-width:34rem}
-  .rv-hs-form .hs-form fieldset{max-width:none;margin:0}
-  .rv-hs-form .hs-form .hs-form-field{margin:0 0 .7rem}
-  .rv-hs-form .hs-form label{display:block;font-size:.82rem;font-weight:600;opacity:.9;margin:0 0 .3rem;color:#EAFFF7}
-  .rv-hs-form .hs-form label .hs-form-required{color:#FF7A66;margin-inline-start:.15rem}
-  .rv-hs-form .hs-form .hs-input,
-  .rv-hs-form .hs-form input[type=email],
-  .rv-hs-form .hs-form input[type=text],
-  .rv-hs-form .hs-form input[type=tel]{
-    width:100%;box-sizing:border-box;padding:.72rem .95rem;border-radius:.6rem;
-    border:1px solid rgba(255,255,255,.28)!important;background:rgba(255,255,255,.08)!important;
-    color:#EAFFF7!important;font:inherit;line-height:1.2}
-  .rv-hs-form .hs-form .hs-input::placeholder{color:rgba(255,255,255,.55)}
-  .rv-hs-form .hs-form .hs-input:focus,
-  .rv-hs-form .hs-form .hs-input:focus-visible{outline:2px solid rgba(124,243,201,.6);outline-offset:1px;border-color:rgba(124,243,201,.6)!important}
-  .rv-hs-form .hs-form .inputs-list{list-style:none;margin:0;padding:0}
-  .rv-hs-form .hs-form .hs-button,
-  .rv-hs-form .hs-form input[type=submit]{
-    display:inline-block;margin-top:.35rem;background:#FF5A4D!important;color:#fff!important;border:0;cursor:pointer;
-    font:inherit;font-weight:800;padding:.8rem 1.6rem;border-radius:100px;
-    box-shadow:0 .6rem 1.4rem rgba(255,90,77,.35);transition:transform .12s ease,filter .12s ease}
-  .rv-hs-form .hs-form .hs-button:hover{filter:brightness(1.06)}
-  .rv-hs-form .hs-form .hs-button:active{transform:translateY(1px)}
-  .rv-hs-form .hs-error-msgs,.rv-hs-form .hs-error-msg,.rv-hs-form .hs-form .hs-error-msgs li{color:#FFC9C2;font-size:.82rem;margin:.3rem 0 0;list-style:none;padding:0}
-  .rv-hs-form .submitted-message,.rv-hs-form .hs-form__submitted-message{color:#7CF3C9;font-weight:700;font-size:.98rem;line-height:1.4}
-  .rv-hs-form .hs-form .legal-consent-container,.rv-hs-form .hs-form .hs-richtext{font-size:.78rem;opacity:.8;margin-top:.4rem}
-  .rv-hs-form .hs-form .legal-consent-container a{color:#7CF3C9}
-  @media (min-width:721px){ .rv-hs-form .hs-form .hs_submit{display:inline-block} }
+  /* Newsletter popup — full HubSpot form on a light card */
+  .rv-news-modal[hidden]{display:none}
+  .rv-news-modal{position:fixed;inset:0;z-index:1000;display:grid;place-items:center;padding:1.25rem}
+  .rv-news-modal__backdrop{position:absolute;inset:0;background:rgba(18,30,25,.6)}
+  .rv-news-modal__dialog{position:relative;z-index:1;width:min(31rem,100%);max-height:90vh;overflow:auto;
+    background:var(--color-surface,#f7f1e6);color:#23201b;border:1px solid rgba(0,0,0,.08);
+    border-radius:20px;box-shadow:0 24px 60px rgba(0,0,0,.4);padding:clamp(1.5rem,3vw,2.1rem)}
+  .rv-news-modal__dialog .rv-fnews-eyebrow{color:#9d4a31}
+  .rv-news-modal__title{margin:.1rem 0 .3rem;font-family:var(--font-display);font-size:1.5rem;line-height:1.15;color:#1e3a31}
+  .rv-news-modal__sub{margin:0 0 1.1rem;color:#4f4a40;font-size:.95rem;line-height:1.45}
+  .rv-news-modal__close{position:absolute;top:.7rem;right:.7rem;width:2.2rem;height:2.2rem;display:grid;place-items:center;
+    border:0;border-radius:100px;background:rgba(0,0,0,.06);color:#23201b;cursor:pointer;font-size:1.4rem;line-height:1}
+  .rv-news-modal__close:hover{background:rgba(0,0,0,.12)}
+  .rv-news-modal__close:focus-visible{outline:2px solid var(--color-pine);outline-offset:2px}
+
+  /* HubSpot form inside the popup — branded for the light card (applies when the
+     embed renders inline; HubSpot's own iframe styling is used if it doesn't). */
+  .rv-news-hs .hs-form{max-width:none}
+  .rv-news-hs .hs-form fieldset{max-width:none;margin:0}
+  .rv-news-hs .hs-form .hs-form-field{margin:0 0 .8rem}
+  .rv-news-hs .hs-form label{display:block;font-size:.85rem;font-weight:600;color:#23201b;margin:0 0 .3rem}
+  .rv-news-hs .hs-form label .hs-form-required{color:#b0553a;margin-inline-start:.15rem}
+  .rv-news-hs .hs-form .hs-input,
+  .rv-news-hs .hs-form input[type=email],
+  .rv-news-hs .hs-form input[type=text],
+  .rv-news-hs .hs-form input[type=tel]{width:100%;box-sizing:border-box;padding:.7rem .9rem;border-radius:.6rem;
+    border:1px solid rgba(0,0,0,.22)!important;background:#fff!important;color:#23201b!important;font:inherit;line-height:1.2}
+  .rv-news-hs .hs-form .hs-input:focus,.rv-news-hs .hs-form .hs-input:focus-visible{outline:2px solid var(--color-pine)!important;outline-offset:1px;border-color:var(--color-pine)!important}
+  .rv-news-hs .hs-form .inputs-list{list-style:none;margin:0;padding:0}
+  .rv-news-hs .hs-form .hs-button,
+  .rv-news-hs .hs-form input[type=submit]{display:inline-block;margin-top:.4rem;background:var(--color-clay)!important;color:#fff!important;
+    border:0;cursor:pointer;font:inherit;font-weight:800;padding:.8rem 1.6rem;border-radius:100px;box-shadow:0 .5rem 1.2rem rgba(176,85,58,.3)}
+  .rv-news-hs .hs-form .hs-button:hover{filter:brightness(1.05)}
+  .rv-news-hs .hs-error-msgs li,.rv-news-hs .hs-error-msg{color:#b0553a;font-size:.82rem;list-style:none;margin:.3rem 0 0;padding:0}
+  .rv-news-hs .submitted-message,.rv-news-hs .hs-form__submitted-message{color:#2e5245;font-weight:700;font-size:.98rem;line-height:1.4}
+  .rv-news-hs .legal-consent-container,.rv-news-hs .hs-richtext{font-size:.78rem;color:#6e6558;margin-top:.4rem}
+  .rv-news-hs .legal-consent-container a{color:#2e5245}
 </style>
 
 <footer class="rv-footer" role="contentinfo">
   <span class="rv-stripe" aria-hidden="true"></span>
-  @if (get_theme_mod('rv_footer_cta_enable', true))
-    <section class="rv-fcta rv-fcta--{{ get_theme_mod('rv_footer_cta_style', 'pine') }}">
-      <div class="rv-shell rv-fcta-inner">
-        <div class="rv-fcta-text">
-          {!! \App\eyebrow(get_theme_mod('rv_footer_cta_eyebrow', __('Let’s build something', 'sage'))) !!}
-          <h2 class="rv-fcta-title">{{ get_theme_mod('rv_footer_cta_title', __('Ready for a website that works as hard as you do?', 'sage')) }}</h2>
-          @php($fctaSub = get_theme_mod('rv_footer_cta_sub', __('Tell me about your business and I’ll show you what’s possible — no pressure, no jargon.', 'sage')))
-          @if ($fctaSub)<p class="rv-fcta-sub">{{ $fctaSub }}</p>@endif
-        </div>
-        <a class="rv-btn rv-fcta-btn" href="{{ \App\cta_href(get_theme_mod('rv_footer_cta_url', get_theme_mod('rv_cta_url', '/contact/')) ?: '/contact/') }}">{{ get_theme_mod('rv_footer_cta_btn', __('Start your project', 'sage')) }}</a>
-      </div>
-    </section>
-  @endif
 
   @if ($rvNewsletter)
-    {{-- Newsletter (moved here from the Journal page) — native HubSpot form --}}
-    <div class="rv-shell rv-footer-news">
-      <div class="rv-footer-news-copy">
-        <h2 class="rv-footer-heading rv-footer-news-title">{{ __('Local, useful, no spam.', 'sage') }}</h2>
-        <p class="rv-footer-news-sub">{{ __('Occasional notes on getting found and getting work online in South Central PA — once a month, tops.', 'sage') }}</p>
-      </div>
-      <div class="rv-footer-news-form">
-        <div id="rv-footer-hs-form" class="rv-hs-form"></div>
-      </div>
+    <div class="rv-shell">
+      <section class="rv-fnews" aria-labelledby="rv-fnews-title">
+        <div class="rv-fnews-copy">
+          <p class="rv-fnews-eyebrow">{{ __('The newsletter', 'sage') }}</p>
+          <h2 id="rv-fnews-title" class="rv-footer-heading rv-fnews-title">{{ __('Local, useful, no spam.', 'sage') }}</h2>
+          <p class="rv-fnews-sub">{{ __('Occasional notes on getting found and getting work online in South Central PA. Once a month, tops.', 'sage') }}</p>
+        </div>
+        <form class="rv-fnews-form" id="rv-fnews-form" novalidate>
+          <label class="rv-sr-only" for="rv-fnews-email">{{ __('Your email address', 'sage') }}</label>
+          <input class="rv-fnews-input" id="rv-fnews-email" type="email" name="email" autocomplete="email" inputmode="email" placeholder="{{ __('you@yourbusiness.com', 'sage') }}">
+          <button class="rv-fnews-btn" type="submit">{{ __('Sign me up', 'sage') }}</button>
+        </form>
+      </section>
     </div>
   @endif
 
@@ -173,23 +185,80 @@
   </div>
 
   @if ($rvNewsletter)
+    <div class="rv-news-modal" id="rv-news-modal" hidden>
+      <div class="rv-news-modal__backdrop" data-rv-news-close></div>
+      <div class="rv-news-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="rv-news-modal-title">
+        <button type="button" class="rv-news-modal__close" data-rv-news-close aria-label="{{ __('Close', 'sage') }}">&times;</button>
+        <p class="rv-fnews-eyebrow">{{ __('The newsletter', 'sage') }}</p>
+        <h2 id="rv-news-modal-title" class="rv-news-modal__title">{{ __('Local, useful, no spam.', 'sage') }}</h2>
+        <p class="rv-news-modal__sub">{{ __('Add your details and I will send the occasional note. Once a month, tops, and you can unsubscribe anytime.', 'sage') }}</p>
+        <div id="rv-news-hs-form" class="rv-news-hs"></div>
+      </div>
+    </div>
+
     <script src="//js.hsforms.net/forms/embed/v2.js" charset="utf-8"></script>
     <script>
       (function () {
-        function build() {
-          if (window.hbspt && window.hbspt.forms) {
-            window.hbspt.forms.create({
-              portalId: @json((string) $hsPortal),
-              formId: @json((string) $hsForm),
-              region: @json((string) $hsRegion),
-              target: "#rv-footer-hs-form",
-              css: ""
-            });
-          } else {
-            setTimeout(build, 250);
-          }
+        var modal = document.getElementById('rv-news-modal');
+        var form = document.getElementById('rv-fnews-form');
+        var emailField = document.getElementById('rv-fnews-email');
+        if (!modal || !form) return;
+        var built = false, lastFocus = null, prefill = '';
+
+        function buildForm() {
+          if (built) return;
+          (function make() {
+            if (window.hbspt && window.hbspt.forms) {
+              built = true;
+              window.hbspt.forms.create({
+                portalId: @json((string) $hsPortal),
+                formId: @json((string) $hsForm),
+                region: @json((string) $hsRegion),
+                target: '#rv-news-hs-form',
+                css: '',
+                onFormReady: function () {
+                  try {
+                    if (!prefill) return;
+                    var el = document.querySelector('#rv-news-hs-form input[type=email], #rv-news-hs-form input[name="email"]');
+                    if (el) { el.value = prefill; el.dispatchEvent(new Event('input', { bubbles: true })); el.dispatchEvent(new Event('change', { bubbles: true })); }
+                  } catch (e) {}
+                }
+              });
+            } else { setTimeout(make, 200); }
+          })();
         }
-        build();
+
+        function openModal() {
+          lastFocus = document.activeElement;
+          prefill = emailField ? emailField.value.trim() : '';
+          buildForm();
+          modal.hidden = false;
+          document.documentElement.style.overflow = 'hidden';
+          var closeBtn = modal.querySelector('.rv-news-modal__close');
+          if (closeBtn) closeBtn.focus();
+        }
+        function closeModal() {
+          modal.hidden = true;
+          document.documentElement.style.overflow = '';
+          if (lastFocus && lastFocus.focus) lastFocus.focus();
+        }
+
+        form.addEventListener('submit', function (e) { e.preventDefault(); openModal(); });
+        modal.addEventListener('click', function (e) {
+          if (e.target.hasAttribute('data-rv-news-close')) closeModal();
+        });
+        document.addEventListener('keydown', function (e) {
+          if (e.key === 'Escape' && !modal.hidden) closeModal();
+        });
+        modal.addEventListener('keydown', function (e) {
+          if (e.key !== 'Tab') return;
+          var sel = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+          var items = Array.prototype.slice.call(modal.querySelectorAll(sel)).filter(function (el) { return el.offsetParent !== null; });
+          if (!items.length) return;
+          var first = items[0], last = items[items.length - 1];
+          if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+          else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+        });
       })();
     </script>
   @endif

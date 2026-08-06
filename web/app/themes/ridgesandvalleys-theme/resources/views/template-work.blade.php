@@ -355,5 +355,4 @@
     @media(max-width:720px){.rv-morebiz-panel{grid-template-columns:1fr;gap:1.5rem}}
   </style>
 
-  @include('partials.cta')
 @endsection

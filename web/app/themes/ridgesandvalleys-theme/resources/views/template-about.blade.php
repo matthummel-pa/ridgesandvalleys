@@ -266,8 +266,6 @@
     </div>
   </section>
 
-  @include('partials.cta')
-
   <style>
     .rv-hero-invite{font-size:1.02rem;opacity:.9;margin-top:.6rem}
     /* Proof strip (hero) */

@@ -61,8 +61,6 @@
     @endif
   </section>
 
-  @include('partials.cta')
-
   <style>
     .rv-repo-detail{padding-top:6rem;padding-bottom:3rem}
     .rv-repo-head{margin-top:1.25rem;max-width:80ch}

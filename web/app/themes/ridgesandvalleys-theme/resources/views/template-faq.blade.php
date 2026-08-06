@@ -108,8 +108,6 @@ foreach ($faqRows as $r) {
     @endforeach
   </section>
 
-  @include('partials.cta')
-
   {!! \App\faq_schema($faqs) !!}
 
   <style>

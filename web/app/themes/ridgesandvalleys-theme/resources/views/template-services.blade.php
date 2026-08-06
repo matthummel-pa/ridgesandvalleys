@@ -206,8 +206,6 @@
     </div>
   </section>
 
-  @include('partials.cta')
-
   <style>
     /* Plans — pricing grid (4-up, no orphan card) */
     .rv-svc-plans{display:grid;grid-template-columns:repeat(4,1fr);gap:1.15rem;margin-top:2.25rem;align-items:stretch}
