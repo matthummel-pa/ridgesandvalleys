@@ -3,21 +3,12 @@
 @section('content')
   @include('partials.entry-hero')
 
-  @php($rvL = \App\entry_layout())
-  @if ($rvL['sidebar'] !== 'none')
-    <div class="rv-shell rv-layout rv-has-sidebar rv-side-{{ $rvL['sidebar'] }}">
-      <div class="rv-content">
-        @while(have_posts()) @php(the_post())
-          @include('partials.content-single')
-        @endwhile
-      </div>
-      @include('sections.sidebar')
-    </div>
-  @else
-    <div class="rv-pagewrap rv-pw-{{ $rvL['page_width'] }} rv-pa-{{ $rvL['page_align'] }}">
+  <div class="rv-shell rv-layout rv-has-sidebar rv-side-right">
+    <div class="rv-content">
       @while(have_posts()) @php(the_post())
         @include('partials.content-single')
       @endwhile
     </div>
-  @endif
+    @include('partials.post-sidebar')
+  </div>
 @endsection
