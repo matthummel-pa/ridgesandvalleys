@@ -1,6 +1,6 @@
 @php($tagline = get_theme_mod('rv_footer_tagline', __('Websites that help South Central PA businesses get found and get work.', 'sage')))
 @php($rvPhone = trim(get_theme_mod('rv_contact_phone', '223-340-8098')))
-@php($rvEmail = trim(get_theme_mod('rv_contact_email', 'matt@matthummel.com')))
+@php($rvEmail = trim(get_theme_mod('rv_contact_email', 'matt@ridgesandvalleys.com')))
 @php($rvLocation = trim(get_theme_mod('rv_contact_location', 'Gettysburg, PA')))
 @php($rvPhoneTel = $rvPhone ? '+1' . preg_replace('/\D/', '', $rvPhone) : '')
 
