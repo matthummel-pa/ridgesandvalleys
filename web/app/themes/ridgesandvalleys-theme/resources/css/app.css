@@ -818,3 +818,16 @@ html[data-theme="dark"] .rv-serp-desc { color: #bdc1c6; }
 .rv-toc-list a { display: block; padding: 0.35rem 0 0.35rem 1.7rem; position: relative; color: var(--color-ink); text-decoration: none; font-size: 0.88rem; line-height: 1.35; border-left: 2px solid var(--color-line); }
 .rv-toc-list a::before { content: counter(rvtoc); position: absolute; left: 0.55rem; top: 0.35rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-clay); }
 .rv-toc-list a:hover { color: var(--color-clay); border-left-color: var(--color-clay); }
+
+/* ===================================================== Comment form polish
+   #comments-scoped so these win over the Customizer's base comment styles. */
+#comments .rv-form-title { position: relative; }
+#comments .rv-form-title::before { content: "Your turn"; display: block; font-family: var(--font-mono); font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-clay); font-weight: 600; margin-bottom: 0.45rem; }
+#comments .rv-comment-form { position: relative; overflow: visible; }
+#comments .rv-comment-form::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, var(--color-pine), var(--color-clay)); border-radius: 16px 16px 0 0; }
+#comments .rv-form-note { color: var(--color-muted); font-size: 0.9rem; margin-top: 0.15rem; }
+#comments .logged-in-as { color: var(--color-muted); font-size: 0.9rem; }
+#comments .rvc-field input:focus,
+#comments .rvc-field textarea:focus { border-color: var(--color-pine); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-pine) 16%, transparent); outline: none; }
+#comments .rvc-field textarea { min-height: 130px; }
+#comments .rv-comment-submit { margin-top: 0.5rem; }
