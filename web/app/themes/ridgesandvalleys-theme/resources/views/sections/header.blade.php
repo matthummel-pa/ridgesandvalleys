@@ -79,7 +79,7 @@
           @endif
           @if ($rvEmail)
             <li>
-              <a class="rv-contact-link" href="mailto:{{ antispambot($rvEmail) }}">
+              <a class="rv-contact-link" href="mailto:{!! antispambot($rvEmail) !!}">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
                 <span>{!! antispambot($rvEmail) !!}</span>
               </a>

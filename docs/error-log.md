@@ -177,12 +177,119 @@ nothing under the theme directory) or the run failed and nobody looked.
 gh run list --limit 10
 ```
 
-If the newest run's SHA is older than `origin/main`'s HEAD, you have an
-undeployed commit. This exact situation happened with `3fc3371` on 2026-08-06 —
-see `docs/deploy-log.md`.
+If the newest run's SHA is older than `origin/main`'s HEAD, you *may* have an
+undeployed commit. Before concluding that, check the commit is not empty:
 
-**Fix.** Push any commit that touches the theme path, or fire the workflow
-manually from the Actions tab.
+```bash
+git diff --stat <sha>^ <sha>
+```
+
+Empty output means the commit changes no files and there is nothing to deploy.
+That is exactly what happened with `3fc3371` on 2026-08-06 — the SHA mismatch
+was real, the commit was empty, and live was fine. See `docs/deploy-log.md`.
+
+**Fix.** If the commit really does change theme files, push any commit that
+touches the theme path, or fire the workflow manually.
+
+---
+
+## `git push` rejected: "refusing to allow an OAuth App to ... workflow"
+
+**Symptom.** A push that includes any change under `.github/workflows/` is
+rejected:
+
+```
+! [remote rejected] main -> main (refusing to allow an OAuth App to create or
+update workflow `.github/workflows/deploy-staging.yml` without `workflow` scope)
+```
+
+The commit is fine. The push is fine. Only the workflow file is the problem.
+
+**Cause.** The push went out over HTTPS, so it authenticated with the `gh` CLI's
+OAuth token, and that token has no `workflow` scope:
+
+```bash
+gh auth status
+# Token scopes: 'admin:public_key', 'gist', 'read:org', 'repo'
+```
+
+GitHub blocks OAuth tokens from touching workflow definitions unless the scope
+is explicitly granted. This is a guardrail against a compromised token
+rewriting CI to run arbitrary code.
+
+**Fix.** Push over SSH instead. SSH keys are not subject to OAuth app scopes:
+
+```bash
+GIT_SSH_COMMAND='ssh -i ~/.ssh/mykey -o IdentitiesOnly=yes' \
+  git push git@github.com:matthummel-pa/ridgesandvalleys.git main:main
+```
+
+The `origin` remote stays HTTPS; this just overrides the transport for one
+push. The alternative — `gh auth refresh -s workflow` — widens the token's
+permissions permanently, which is the worse trade for a change this occasional.
+
+---
+
+## Push lands on origin but fires no workflow run
+
+**Symptom.** A push succeeds and the commit is confirmed on the remote, but no
+Actions run appears — not after 20 seconds, not after 45.
+
+**What was ruled out**, in order, on 2026-08-06 for commit `31edc06`:
+
+- Actions enabled on the repo — `{"enabled":true,"allowed_actions":"all"}`
+- Both workflows `state: active`
+- The remote copy of `deploy-theme.yml` carries the right path filter,
+  `web/app/themes/ridgesandvalleys-theme/**`
+- The commit demonstrably touches that path
+- `git ls-remote origin main` returns the pushed SHA
+
+So the trigger conditions were all satisfied and the run still did not fire.
+**Root cause not determined.** Worth suspecting, untested: GitHub sometimes
+suppresses push triggers for pushes that arrive over a transport or identity
+the repo does not associate with a workflow-capable actor — this push was the
+SSH workaround above.
+
+**Fix / workaround.** Dispatch it by hand. Both workflows carry
+`workflow_dispatch`:
+
+```bash
+gh workflow run deploy-theme.yml --ref main
+gh run list --limit 3
+```
+
+Run `31127099769` deployed this way and succeeded in 1m20s.
+
+**Do not** assume a green working tree means a green live site. Always confirm
+a run exists for your SHA — see "Pushed to origin but never deployed" above.
+
+---
+
+## Contact `mailto:` renders as `&amp;#109;&amp;#97;tt&amp;#64;...`
+
+**Symptom.** The header and footer email link displays correctly but is dead —
+clicking it opens a mail client addressed to literal garbage. Live HTML shows:
+
+```html
+href="mailto:&amp;#109;&amp;#97;tt&amp;#64;ridg&amp;#101;s&amp;#97;ndv..."
+```
+
+**Cause.** WordPress's `antispambot()` returns a string of HTML entities
+(`&#109;` and so on) to hide the address from scrapers. Blade's `{{ }}` runs
+`htmlspecialchars` on whatever it prints, which escapes the leading `&` of
+every entity into `&amp;` — so the browser renders the entity *text* instead of
+decoding it. The `<span>` next to it looked fine because it already used
+`{!! !!}`; only the `href` was wrong.
+
+**Fix.** Use `{!! !!}` for any `antispambot()` output, in attributes as well as
+in text:
+
+```blade
+<a class="rv-contact-link" href="mailto:{!! antispambot($rvEmail) !!}">
+```
+
+**General rule:** a helper that *returns* markup or entities must never go
+through `{{ }}`. Escaping already-escaped output is the bug.
 
 ---
 
@@ -223,24 +330,43 @@ fast and loudly in Actions, so the cost of finding out there is low.
 
 ---
 
-## Local links 301 to `-2` slugs that do not exist on live
+## Clean slugs 301 to `-2` slugs — on live, not just local
 
-**Symptom.** A link that is correct in the template — `/free-tools/`,
-`/local-seo/` — returns a 301 to `/free-tools-2/` or `/local-seo-2/` on
-`localhost:8080`. It looks like the template has the wrong URL.
+**Symptom.** `/free-tools/` and `/local-seo/` return a 301 to `/free-tools-2/`
+and `/local-seo-2/`. The `-2` pages return 200 and are the real pages.
 
-**Cause.** The local database was imported more than once, so WordPress
-resolved the slug collision by appending `-2`. The live database is clean.
+**Correction to an earlier version of this entry.** This was first written up as
+a local-only problem, with the claim "the live database is clean." That was
+wrong, and it was wrong because of how it was checked: a browser-style fetch
+follows redirects silently, so the clean URL appeared to return 200 when it was
+actually returning 301 and the fetcher was quietly landing on the `-2` page.
+`curl -sI` — headers only, no redirect following — tells the truth:
 
-**Fix.** Nothing in the code. Verify against live before "fixing" a link:
-
-```bash
-curl -s -o /dev/null -w '%{http_code}\n' https://ridgesandvalleys.com/free-tools/
+```
+$ curl -sI https://ridgesandvalleys.com/free-tools/ | head -3
+HTTP/2 301
+location: https://ridgesandvalleys.com/free-tools-2/
+x-redirect-by: WordPress
 ```
 
-If live returns 200, the template is right and your local content is the
-problem. Re-import the live database cleanly (drop and recreate first) if the
-duplicates get in your way.
+Same for `/local-seo/`. **Always use `curl -sI` when the question is "what
+status does this URL return," not a tool that follows redirects for you.**
 
-**Do not** change a template URL to match a local `-2` slug. That ships a
-broken link.
+**Cause.** `x-redirect-by: WordPress` means this is WordPress's own canonical
+redirect, not a plugin rule or an nginx rule. It happens when the clean slug is
+already claimed by another post — usually a trashed, drafted, or duplicated
+page — so WordPress appended `-2` to the live one and now points the clean URL
+at it.
+
+**Fix.** This is content work in the WordPress admin, not code. Find the object
+holding the `free-tools` / `local-seo` slug (check Trash and Drafts, plus any
+attachment or revision with that slug), remove or rename it, then edit the real
+page's permalink back to the clean slug. Flush permalinks afterward.
+
+**Do not** change template URLs to point at `-2`. The clean slugs are the ones
+in the sitemap, in outreach copy, and in anything already linked — repointing
+the templates locks in the wrong canonical instead of fixing it.
+
+**Status:** open as of 2026-08-06. The redirects work, so nothing is broken for
+a visitor, but the site is serving `-2` canonicals on two pages that matter for
+local SEO.

@@ -56,6 +56,42 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   it, SG Optimizer's page cache could keep serving the old markup for minutes after a
   successful deploy, which looked like a failed deploy.
 
+### Fixed
+
+- **Header and footer email links were dead on every page.** The `href` used
+  `{{ antispambot($rvEmail) }}`; Blade escaped the ampersand of each HTML entity
+  `antispambot()` returns, so the link resolved to literal `&amp;#109;&amp;#97;tt…`
+  text instead of an address. Switched both to `{!! … !!}`, matching the adjacent
+  `<span>` that was already correct. This was live on a lead-generation site, so
+  anyone clicking the contact link in the header or footer got a broken compose window.
+- **Social row email icon pointed at `mailtohello@ridgesandvalleys.com`.** Two faults
+  in one link: a doubled `mailto` prefix and the wrong address. The Customizer field
+  sanitizes with `sanitize_email()`, which strips the colon out of a pasted
+  `mailto:hello@…` and stores `mailtohello@…`; `social_links()` then prepended
+  `mailto:` again. Added `\App\social_email_address()` to strip any leading mailto
+  prefix and validate the result, used it both when rendering the link and as the
+  Customizer's sanitize callback, and made the link skip itself entirely rather than
+  render if no valid address survives.
+  **Still needs a human:** the stored address is `hello@`, but the studio address is
+  `matt@ridgesandvalleys.com`. That is content, not code — fix it in
+  Customizer → Social Links → Email.
+
+### Corrected
+
+- **`docs/deploy-log.md`** claimed commit `3fc3371` had been pushed but never deployed,
+  leaving live one commit stale. It had not. `3fc3371` is an empty commit —
+  `git diff --stat 3fc3371^ 3fc3371` returns nothing — and the newsletter work it was
+  named for actually shipped in `48105d5`, which deployed normally. The entry now
+  records the wrong conclusion alongside the right one, and the "Pushed to origin but
+  never deployed" runbook in `docs/error-log.md` now tells you to check the commit is
+  non-empty before concluding anything.
+- **`docs/error-log.md`** claimed the duplicate `-2` slugs were a local-only problem and
+  that "the live database is clean." Production has the same problem:
+  `curl -sI https://ridgesandvalleys.com/free-tools/` returns `301` to `/free-tools-2/`,
+  same for `/local-seo/`, both with `x-redirect-by: WordPress`. The earlier check used a
+  fetcher that followed redirects silently, so a 301 looked like a 200. Entry rewritten,
+  including the method error that caused it, and flagged as open.
+
 ### Notes
 
 - The About page copy lives in the Blade template as translatable defaults. Every

@@ -51,19 +51,27 @@ Newest first. "Run" is the GitHub Actions run ID.
 - **Shipped:** About page proof strip, six-free-tools band, pricing + NAP band;
   new `CHANGELOG.md`, `docs/deploy-log.md`, `docs/error-log.md`; rewritten
   `README.md`; `wp sg purge` added to both the production and staging workflows.
-- **Why it mattered:** commit `3fc3371` (newsletter block removed from the home
-  template) had been pushed to `origin/main` but **never deployed** — the newest
-  Actions run at the time was `31126770067`, which was for `48105d5`. So the
-  live site was one commit stale. This deploy cleared that.
+- **Correction — live was not stale.** An earlier version of this entry said
+  commit `3fc3371` ("Move newsletter into footer as native HubSpot form") had
+  been pushed to `origin/main` but never deployed, because the newest Actions
+  run at the time was `31126770067` and that run was for `48105d5`. The SHA
+  mismatch was real; the conclusion was wrong. `3fc3371` is an **empty commit** —
+  `git diff --stat 3fc3371^ 3fc3371` returns nothing, and `git show --stat`
+  lists no files. The newsletter work actually shipped in `48105d5`, which did
+  deploy. So live was never missing anything. **Lesson: a SHA newer than the
+  last deployed run does not by itself mean live is stale — check that the
+  commit changes files before concluding anything.**
 - **Correction worth remembering.** Mid-investigation the local `manifest.json`
   read `app-smLHJxVW.css` / `app-Cch2uB98.js` against live's
   `app-Dhb0iuw-.css` / `app-VukVg13C.js`, which looked like proof of drift. It
   was not. That local manifest was a stale build artifact from before the
   rebase; rebuilding after `git pull --rebase` produced hashes identical to
   live. **Always rebuild before comparing manifests, and remember the manifest
-  only fingerprints Vite output** — a Blade-only change like `3fc3371` rsyncs
-  straight across and never moves a hash. The SHA-to-run check is what caught
-  this one.
+  only fingerprints Vite output** — a Blade-only change rsyncs straight across
+  and never moves a hash, so matching hashes do not prove a template change
+  landed. Between the two checks: the manifest tells you whether the CSS/JS
+  bundle is current, and the SHA-to-run check tells you whether the latest
+  commit actually ran. Neither is sufficient alone.
 - **Also fixed locally:** `main` was three commits behind `origin/main`
   (`d7b9743`, `48105d5`, `3fc3371`). Recovered with
   `git stash push -- .github/workflows/` → `git pull --rebase origin main` →

@@ -1158,7 +1158,15 @@ add_action('customize_register', function ($wp_customize) {
 
     foreach (social_platforms() as $key => $label) {
         $id = 'rv_social_' . $key;
-        $wp_customize->add_setting($id, ['default' => '', 'sanitize_callback' => ($key === 'email') ? 'sanitize_email' : 'esc_url_raw']);
+        // Email uses social_email_address() rather than sanitize_email() so that a
+        // pasted "mailto:you@example.com" keeps its address instead of being
+        // silently mangled into "mailtoyou@example.com" when the colon is stripped.
+        $wp_customize->add_setting($id, [
+            'default'           => '',
+            'sanitize_callback' => ($key === 'email')
+                ? static fn ($value) => social_email_address((string) $value)
+                : 'esc_url_raw',
+        ]);
         $wp_customize->add_control($id, [
             /* translators: %s: platform name. */
             'label'   => sprintf(__('%s URL', 'sage'), $label),

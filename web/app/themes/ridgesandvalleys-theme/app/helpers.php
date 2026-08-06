@@ -132,6 +132,24 @@ function icon(string $name): string
 }
 
 /**
+ * Normalise a stored social "email" value into a bare address.
+ *
+ * The Customizer field runs sanitize_email(), which quietly drops the colon
+ * from a pasted "mailto:you@example.com" and stores "mailtoyou@example.com".
+ * Strip any leading mailto prefix, with or without its colon, then validate.
+ * Returns an empty string when there is nothing usable, so callers can skip
+ * the link rather than render a broken one.
+ */
+function social_email_address(string $stored): string
+{
+    $addr = trim($stored);
+    $addr = preg_replace('/^\s*mailto:?\s*/i', '', $addr);
+    $addr = sanitize_email((string) $addr);
+
+    return is_email($addr) ? $addr : '';
+}
+
+/**
  * Social links row from Customizer values.
  */
 function social_links(string $class = 'rv-social'): string
@@ -147,7 +165,19 @@ function social_links(string $class = 'rv-social'): string
         if (! $url) {
             continue;
         }
-        $href = ($key === 'email') ? 'mailto:' . antispambot($url) : esc_url($url);
+        if ($key === 'email') {
+            // The Customizer field sanitizes with sanitize_email(), which strips
+            // the colon out of a pasted "mailto:you@example.com" and leaves
+            // "mailtoyou@example.com" behind. Prepending "mailto:" to that gives
+            // a dead link, so normalise the stored value before building the href.
+            $addr = social_email_address($url);
+            if (! $addr) {
+                continue;
+            }
+            $href = 'mailto:' . antispambot($addr);
+        } else {
+            $href = esc_url($url);
+        }
         $rank = isset($pos[$key]) ? $pos[$key] : (count($order) + $n);
         $items[] = [
             'order' => $rank,
