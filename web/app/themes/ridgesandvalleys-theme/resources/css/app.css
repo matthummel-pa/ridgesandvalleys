@@ -832,3 +832,4 @@ html[data-theme="dark"] .rv-serp-desc { color: #bdc1c6; }
 #comments .rvc-field textarea:focus { border-color: var(--color-pine); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-pine) 16%, transparent); outline: none; }
 #comments .rvc-field textarea { min-height: 130px; }
 #comments .rv-comment-submit { margin-top: 0.5rem; }
+#comments .comment-edit-link { color: #9d4a31; } /* darker clay: clears 4.5:1 AA at small size */
