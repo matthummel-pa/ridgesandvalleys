@@ -32,7 +32,7 @@
          so converting this row to filter buttons keeps the SEO internal links. --}}
     @php($cats = get_categories(['hide_empty' => true, 'number' => 12, 'orderby' => 'count', 'order' => 'DESC']))
     @if ($cats)
-      <section class="rv-shell rv-band" style="padding-bottom:0">
+      <section class="rv-shell rv-band" style="padding-bottom:clamp(1.75rem,4vw,2.75rem)">
         <div class="rv-work-cats rv-work-filters" role="group" aria-label="{{ __('Filter posts by category', 'sage') }}">
           <span class="rv-work-cats-label">{{ __('Show me', 'sage') }}</span>
           <button type="button" class="rv-work-cat rv-filter" data-filter="all" aria-pressed="true">{{ __('All posts', 'sage') }}</button>
