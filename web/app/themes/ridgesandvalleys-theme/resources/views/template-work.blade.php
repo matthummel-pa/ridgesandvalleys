@@ -67,19 +67,67 @@
         <h2 class="rv-section-title">{{ \App\field('work_cs_title', __('Concepts, built', 'sage')) }} <em class="rv-accent">{{ \App\field('work_cs_accent', __('in full.', 'sage')) }}</em></h2>
         <p class="rv-page-intro">{{ \App\field('work_cs_intro', __('These are concept sites I designed and coded from scratch — one for each kind of local business I work with. Anything marked “Concept” is my own self-initiated demo, not a client project. Click any one for the problem it solves, my approach, and a live, working preview.', 'sage')) }}</p>
       </div>
-      <div class="rv-work-cats">
-        <span class="rv-work-cats-label">{{ \App\field('work_cats_label', __('Built for', 'sage')) }}</span>
-        @foreach (\App\field_lines('work_cats', [__('Hotels & inns', 'sage'), __('Restaurants', 'sage'), __('Retail & shops', 'sage'), __('Tours', 'sage'), __('Real estate', 'sage')]) as $cat)
-          <span class="rv-work-cat">{{ $cat }}</span>
-        @endforeach
-      </div>
-      <div class="rv-grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:2rem">
+      {{-- Derive a canonical category per project from its meta/title so the
+           filter pills always match the work that's actually shown. --}}
+      @php($rvCatDefs = [
+        ['slug' => 'restaurants', 'label' => __('Restaurants', 'sage'), 'kw' => ['restaurant', 'kitchen', 'tavern', 'bistro', 'eatery', 'dining', 'food & drink', 'bakery', 'cafe', 'café', 'coffee', 'pizzeria', 'grill', 'pub', 'brewery']],
+        ['slug' => 'inns', 'label' => __('Hotels & inns', 'sage'), 'kw' => ['inn', 'hotel', 'b&b', 'bed and breakfast', 'bed & breakfast', 'lodging', 'lodge', 'cottage', 'guesthouse', 'motel', 'hospitality', 'stay']],
+        ['slug' => 'retail', 'label' => __('Retail & shops', 'sage'), 'kw' => ['retail', 'shop', 'store', 'mercantile', 'boutique', 'goods', 'market', 'thread', 'apparel', 'gift']],
+        ['slug' => 'tours', 'label' => __('Tours', 'sage'), 'kw' => ['tour', 'tours', 'battlefield', 'history', 'guide', 'trail', 'experience', 'sightseeing']],
+        ['slug' => 'realestate', 'label' => __('Real estate', 'sage'), 'kw' => ['real estate', 'realty', 'realtor', 'property', 'properties', 'homes for sale', 'broker']],
+        ['slug' => 'services', 'label' => __('Professional services', 'sage'), 'kw' => ['law', 'legal', 'attorney', 'lawyer', 'accountant', 'accounting', 'dental', 'dentist', 'medical', 'clinic', 'consult', 'agency', 'financial', 'insurance', 'professional service']],
+      ])
+      @php($rvCat = function ($id) use ($rvCatDefs) {
+        $hay = strtolower(trim(
+          (string) get_post_meta($id, '_rv_industry', true) . ' ' .
+          (string) get_post_meta($id, '_rv_eyebrow', true) . ' ' .
+          (string) get_post_meta($id, '_rv_client', true) . ' ' .
+          (string) get_the_title($id)
+        ));
+        foreach ($rvCatDefs as $d) {
+          foreach ($d['kw'] as $k) {
+            if ($k !== '' && strpos($hay, $k) !== false) {
+              return ['slug' => $d['slug'], 'label' => $d['label']];
+            }
+          }
+        }
+        return ['slug' => 'other', 'label' => __('Other', 'sage')];
+      })
+      @php($rvPresent = [])
+      @foreach ($work->posts as $rvP)
+        @php($rvC = $rvCat($rvP->ID))
+        @php($rvPresent[$rvC['slug']] = $rvC['label'])
+      @endforeach
+      {{-- Keep pills in the studio's preferred order; any extras (e.g. Other) fall to the end. --}}
+      @php($rvOrdered = [])
+      @foreach ($rvCatDefs as $d)
+        @if (isset($rvPresent[$d['slug']]))
+          @php($rvOrdered[$d['slug']] = $rvPresent[$d['slug']])
+        @endif
+      @endforeach
+      @foreach ($rvPresent as $rvSlug => $rvLabel)
+        @if (! isset($rvOrdered[$rvSlug]))
+          @php($rvOrdered[$rvSlug] = $rvLabel)
+        @endif
+      @endforeach
+
+      @if (count($rvOrdered) > 1)
+        <div class="rv-work-cats rv-work-filters" role="group" aria-label="{{ __('Filter work by category', 'sage') }}">
+          <span class="rv-work-cats-label">{{ \App\field('work_cats_label', __('Show me', 'sage')) }}</span>
+          <button type="button" class="rv-work-cat rv-filter" data-filter="all" aria-pressed="true">{{ __('Show all', 'sage') }}</button>
+          @foreach ($rvOrdered as $rvSlug => $rvLabel)
+            <button type="button" class="rv-work-cat rv-filter" data-filter="{{ esc_attr($rvSlug) }}" aria-pressed="false">{{ $rvLabel }}</button>
+          @endforeach
+        </div>
+      @endif
+      <div class="rv-grid rv-work-grid" id="rv-work-grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:2rem">
         @while($work->have_posts()) @php($work->the_post())
           @php($peyebrow = get_post_meta(get_the_ID(), '_rv_eyebrow', true) ?: (get_post_meta(get_the_ID(), '_rv_client', true) ?: __('Case study', 'sage')))
           @php($psummary = get_post_meta(get_the_ID(), '_rv_summary', true) ?: get_the_excerpt())
           @php($ppreview = get_post_meta(get_the_ID(), '_rv_preview', true))
           @php($pconcept = get_post_meta(get_the_ID(), '_rv_is_concept', true) === '1')
-          <article @php(post_class('rv-card rv-work-card'))>
+          @php($pcat = $rvCat(get_the_ID()))
+          <article data-cat="{{ esc_attr($pcat['slug']) }}" @php(post_class('rv-card rv-work-card'))>
             <a class="rv-work-link" href="{{ get_permalink() }}">
               @if (has_post_thumbnail())
                 <span class="rv-work-thumb">@php(the_post_thumbnail('rv-card', ['loading' => 'lazy']))@if ($pconcept)<span class="rv-work-badge">{{ __('Concept', 'sage') }}</span>@endif</span>
@@ -293,6 +341,17 @@
     .rv-work-cats{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:1.75rem}
     .rv-work-cats-label{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin-right:.35rem}
     .rv-work-cat{background:color-mix(in srgb,var(--color-clay) 10%,var(--color-surface));border:1px solid color-mix(in srgb,var(--color-clay) 30%,var(--color-line));border-radius:999px;padding:.45rem 1rem;font-family:var(--font-display);font-weight:700;font-size:.92rem;color:var(--color-ink)}
+    /* Clickable filter tabs (pills) + smooth crossfade */
+    .rv-work-filters{margin-top:1.75rem}
+    .rv-filter{cursor:pointer;line-height:1.2;-webkit-appearance:none;appearance:none;transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .15s ease}
+    .rv-filter:hover{transform:translateY(-1px);border-color:var(--color-clay);color:var(--color-clay)}
+    .rv-filter:focus-visible{outline:2px solid var(--color-clay);outline-offset:2px}
+    .rv-filter[aria-pressed="true"]{background:var(--color-pine);border-color:var(--color-pine);color:#fff}
+    .rv-filter[aria-pressed="true"]:hover{background:var(--color-pine);border-color:var(--color-pine);color:#fff;transform:none}
+    .rv-work-grid{transition:opacity .25s ease}
+    .rv-work-grid.is-filtering{opacity:0}
+    .rv-work-card.is-hidden{display:none}
+    @media(prefers-reduced-motion:reduce){.rv-work-grid{transition:none}.rv-filter{transition:none}}
     /* Mid-page CTA */
     .rv-work-midcta-wrap{padding-top:var(--section-y)}
     .rv-work-midcta{display:grid;grid-template-columns:1.5fr auto;gap:2rem;align-items:center;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,18px);padding:clamp(1.75rem,3.5vw,2.75rem);position:relative;overflow:hidden}
@@ -354,5 +413,47 @@
     .rv-morebiz-check{margin:0}
     @media(max-width:720px){.rv-morebiz-panel{grid-template-columns:1fr;gap:1.5rem}}
   </style>
+
+  <script>
+    (function () {
+      var grid = document.getElementById('rv-work-grid');
+      var bar = document.querySelector('.rv-work-filters');
+      if (!grid || !bar) return;
+
+      var cards = Array.prototype.slice.call(grid.querySelectorAll('.rv-work-card'));
+      var buttons = Array.prototype.slice.call(bar.querySelectorAll('.rv-filter'));
+      var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function applyFilter(filter) {
+        cards.forEach(function (card) {
+          var show = filter === 'all' || card.getAttribute('data-cat') === filter;
+          card.classList.toggle('is-hidden', !show);
+        });
+      }
+
+      function setActive(active) {
+        buttons.forEach(function (b) {
+          b.setAttribute('aria-pressed', b === active ? 'true' : 'false');
+        });
+      }
+
+      buttons.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          if (btn.getAttribute('aria-pressed') === 'true') return;
+          setActive(btn);
+          var filter = btn.getAttribute('data-filter');
+          if (reduce) { applyFilter(filter); return; }
+          // Fade the grid out, swap which cards show, then fade back in.
+          grid.classList.add('is-filtering');
+          window.setTimeout(function () {
+            applyFilter(filter);
+            requestAnimationFrame(function () {
+              grid.classList.remove('is-filtering');
+            });
+          }, 250);
+        });
+      });
+    })();
+  </script>
 
 @endsection
