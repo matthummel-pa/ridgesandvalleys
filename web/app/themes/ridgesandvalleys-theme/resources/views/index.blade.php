@@ -27,19 +27,23 @@
       </div>
     </section>
 
-    {{-- CATEGORY FILTERS: same look + in-place filtering as the Work page pills.
-         Category archives stay internally linked via each post card's eyebrow,
-         so converting this row to filter buttons keeps the SEO internal links. --}}
+    {{-- SECTION HEADING + CATEGORY FILTERS: "Latest from the Journal" sits above
+         the pills as a stable label for the whole list. (It used to live in the
+         grid below the featured post, so it only rose up under the pills once a
+         filter hid the featured post.) --}}
     @php($cats = get_categories(['hide_empty' => true, 'number' => 12, 'orderby' => 'count', 'order' => 'DESC']))
-    @if ($cats)
+    @if (have_posts() || $cats)
       <section class="rv-shell rv-band" style="padding-bottom:clamp(1.75rem,4vw,2.75rem)">
-        <div class="rv-work-cats rv-work-filters" role="group" aria-label="{{ __('Filter posts by category', 'sage') }}">
-          <span class="rv-work-cats-label">{{ __('Show me', 'sage') }}</span>
-          <button type="button" class="rv-work-cat rv-filter" data-filter="all" aria-pressed="true">{{ __('All posts', 'sage') }}</button>
-          @foreach ($cats as $c)
-            <button type="button" class="rv-work-cat rv-filter" data-filter="{{ esc_attr($c->slug) }}" aria-pressed="false">{{ html_entity_decode($c->name) }}</button>
-          @endforeach
-        </div>
+        <h2 class="rv-section-title" style="margin-bottom:clamp(1.5rem,3.5vw,2.25rem)">{{ __('Latest from the', 'sage') }} <em class="rv-accent">{{ __('Journal', 'sage') }}</em></h2>
+        @if ($cats)
+          <div class="rv-work-cats rv-work-filters" role="group" aria-label="{{ __('Filter posts by category', 'sage') }}" style="margin-top:0">
+            <span class="rv-work-cats-label">{{ __('Show me', 'sage') }}</span>
+            <button type="button" class="rv-work-cat rv-filter" data-filter="all" aria-pressed="true">{{ __('All posts', 'sage') }}</button>
+            @foreach ($cats as $c)
+              <button type="button" class="rv-work-cat rv-filter" data-filter="{{ esc_attr($c->slug) }}" aria-pressed="false">{{ html_entity_decode($c->name) }}</button>
+            @endforeach
+          </div>
+        @endif
       </section>
     @endif
 
@@ -75,8 +79,7 @@
 
       {{-- POST GRID --}}
       <section id="latest" class="rv-shell rv-band" style="padding-top:0;scroll-margin-top:6rem">
-        <h2 class="rv-section-title">{{ __('Latest from the', 'sage') }} <em class="rv-accent">{{ __('Journal', 'sage') }}</em></h2>
-        <div class="rv-blog-grid" style="margin-top:2rem">
+        <div class="rv-blog-grid" style="margin-top:0">
           @php($i = 0)
           @while(have_posts()) @php(the_post())
             @if (! is_paged() && get_the_ID() === $featuredId && $i === 0)
