@@ -24,9 +24,10 @@
   /* Newsletter — closing CTA band: copy left, action right */
   .rv-sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   .rv-fnews{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:1.1rem 2.5rem;
-    padding:clamp(1.4rem,3vw,2rem) clamp(1.35rem,3vw,2.1rem);margin-block:clamp(1.1rem,3vw,1.9rem);
+    padding:clamp(1.1rem,3vw,1.75rem) clamp(1.15rem,3vw,1.9rem);margin:clamp(2.5rem,5vw,3.75rem) 0 clamp(.6rem,1.5vw,1rem);
     border:1px solid rgba(255,255,255,.14);border-radius:18px;background:rgba(255,255,255,.045);position:relative;overflow:hidden}
   .rv-fnews::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--color-pine),var(--color-clay))}
+  .rv-footer .rv-footer-inner{padding-top:clamp(1.75rem,4vw,2.5rem)}
   .rv-fnews-copy{flex:1 1 20rem;min-width:0}
   .rv-fnews-eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--color-wheat);font-weight:600;margin:0 0 .35rem}
   .rv-fnews-title{margin:0;color:#f7f1e6;font-size:clamp(1.3rem,2.3vw,1.8rem);line-height:1.14}
@@ -45,7 +46,7 @@
   .rv-fnews-status[data-state="err"]{color:#FFC9C2}
   .rv-fnews-status[data-state="pending"]{color:var(--color-wheat)}
   @media (max-width:760px){
-    .rv-fnews{flex-direction:column;align-items:stretch;gap:.9rem}
+    .rv-fnews{flex-direction:column;align-items:stretch;gap:.7rem;padding:1.15rem 1.2rem}
     .rv-fnews-form{flex-basis:auto}
     .rv-fnews-btn{width:100%}
   }
