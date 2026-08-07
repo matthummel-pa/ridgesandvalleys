@@ -54,6 +54,9 @@ add_action('pre_get_posts', function ($query) {
 function project_field_groups(): array
 {
     return [
+        __('Project type', 'sage') => [
+            '_rv_is_concept' => [__('This is a concept / demo project', 'sage'), 'checkbox', ''],
+        ],
         __('At a glance', 'sage') => [
             '_rv_eyebrow'  => [__('Eyebrow label', 'sage'), 'text', __('e.g. Local Launch · Real client', 'sage')],
             '_rv_client'   => [__('Client', 'sage'), 'text', __('e.g. Bradley Goldsmith Law', 'sage')],
@@ -101,6 +104,7 @@ function project_field_groups(): array
 function project_group_hint(string $label): string
 {
     $hints = [
+        __('Project type', 'sage')                       => __('Tick this for concept or demo projects (like the restaurant and inn concepts). It turns on the “Open the live demo” and “Get a site like this” buttons and the “not a real business” note, and credits Ridges & Valleys as the designer. Leave it off for real client work.', 'sage'),
         __('At a glance', 'sage')                        => __('The quick facts shown at the top of the case study and on its card in the Work grid: client, one-line summary, industry, location, timeline, and the live URL.', 'sage'),
         __('The story', 'sage')                          => __('The heart of the case study — what was getting in the way before, what you did about it, and what changed after. A short paragraph in each box works best.', 'sage'),
         __('Results (up to three)', 'sage')              => __('The big numbers in the dark results band. Give each a short value (e.g. “7 days”) and a label (e.g. “design to launch”). Leave a value/label pair blank to hide it.', 'sage'),
@@ -169,8 +173,13 @@ add_action('add_meta_boxes', function () {
             foreach ($fields as $key => $def) {
                 [$label, $type, $placeholder] = $def;
                 $val  = get_post_meta($post->ID, $key, true);
-                $full = in_array($type, ['textarea', 'lines'], true) || in_array($key, ['_rv_summary', '_rv_services', '_rv_tech'], true);
+                $full = in_array($type, ['textarea', 'lines', 'checkbox'], true) || in_array($key, ['_rv_summary', '_rv_services', '_rv_tech'], true);
                 echo '<p class="' . ($full ? 'rv-mb-full' : '') . '">';
+                if ($type === 'checkbox') {
+                    printf('<label for="%1$s" style="font-weight:600"><input type="checkbox" id="%1$s" name="%1$s" value="1" %2$s style="margin-right:.45rem"> %3$s</label>', esc_attr($key), checked($val, '1', false), esc_html($label));
+                    echo '</p>';
+                    continue;
+                }
                 printf('<label for="%1$s">%2$s</label>', esc_attr($key), esc_html($label));
                 if (in_array($type, ['textarea', 'lines'], true)) {
                     printf('<textarea id="%1$s" name="%1$s" placeholder="%3$s">%2$s</textarea>', esc_attr($key), esc_textarea($val), esc_attr($placeholder));
@@ -200,6 +209,10 @@ add_action('save_post_project', function ($post_id) {
 
     foreach (project_field_groups() as $fields) {
         foreach ($fields as $key => $def) {
+            if ($def[1] === 'checkbox') {
+                isset($_POST[$key]) ? update_post_meta($post_id, $key, '1') : delete_post_meta($post_id, $key);
+                continue;
+            }
             if (! isset($_POST[$key])) {
                 continue;
             }
