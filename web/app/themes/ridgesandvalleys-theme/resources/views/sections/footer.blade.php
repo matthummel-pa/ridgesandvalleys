@@ -29,7 +29,7 @@
   .rv-fnews::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:linear-gradient(180deg,var(--color-pine),var(--color-clay))}
   .rv-fnews-copy{flex:1 1 20rem;min-width:0}
   .rv-fnews-eyebrow{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--color-wheat);font-weight:600;margin:0 0 .35rem}
-  .rv-fnews-title{margin:0;font-size:clamp(1.3rem,2.3vw,1.8rem);line-height:1.14}
+  .rv-fnews-title{margin:0;color:#f7f1e6;font-size:clamp(1.3rem,2.3vw,1.8rem);line-height:1.14}
   .rv-fnews-sub{margin:.4rem 0 0;opacity:.85;font-size:.95rem;line-height:1.45;max-width:46ch}
   .rv-fnews-form{flex:0 1 24rem;min-width:min(100%,17rem);display:flex;gap:.6rem;flex-wrap:wrap}
   .rv-fnews-input{flex:1 1 12rem;min-width:0;box-sizing:border-box;padding:.8rem 1rem;border-radius:100px;
