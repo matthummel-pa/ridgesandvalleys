@@ -416,5 +416,19 @@
     html[data-theme="dark"] .rv-cs-quote cite{color:var(--color-wheat)}
     html[data-theme="dark"] .rv-btn-ghost-dark{background:transparent;color:#fff;border-color:color-mix(in srgb,#fff 55%,transparent)}
     html[data-theme="dark"] .rv-btn-ghost-dark:hover{background:color-mix(in srgb,#fff 12%,transparent);color:#fff;border-color:#fff}
+
+    /* ---- A11y + alignment fixes (override site-wide Customizer CSS on this template) ---- */
+    /* Center the editor write-up. The site-wide reading-layout rule
+       (body:not(.home) .rv-reading.rv-prose) left-pins any reading column;
+       this case-study block should be centered, like the pull-quote. */
+    body:not(.home) .rv-cs .rv-reading.rv-cs-body{margin-inline:auto;max-width:var(--reading)}
+    /* Ghost buttons on the dark hero + template bands: a Customizer rule
+       (body .rv-btn-ghost) forces pine text/border, which is invisible on the
+       dark pine background. Restore legible light ghost styling (light + dark mode). */
+    html .rv-cs-hero .rv-btn-ghost,html .rv-cs-template .rv-btn-ghost{background:transparent;border-color:color-mix(in srgb,#fff 55%,transparent);color:#fff}
+    html .rv-cs-hero .rv-btn-ghost:hover,html .rv-cs-template .rv-btn-ghost:hover{background:color-mix(in srgb,#fff 12%,transparent);border-color:#fff;color:#fff}
+    /* Contrast: meet WCAG AA (4.5:1) for the local-SEO link and the Services label. */
+    .rv-cs-local-link{color:#9d4a31}
+    .rv-cs-services .rv-cs-fact-k{color:var(--color-muted)}
   </style>
 @endsection
