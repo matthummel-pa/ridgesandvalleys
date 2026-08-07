@@ -27,23 +27,13 @@
       </div>
     </section>
 
-    {{-- SECTION HEADING + CATEGORY FILTERS: "Latest from the Journal" sits above
-         the pills as a stable label for the whole list. (It used to live in the
-         grid below the featured post, so it only rose up under the pills once a
-         filter hid the featured post.) --}}
+    {{-- SECTION HEADING: "Latest from the Journal" and the sticky/featured post
+         stay at the top; the category filter is rendered underneath them (after
+         the featured post, above the grid) and filters only the grid. --}}
     @php($cats = get_categories(['hide_empty' => true, 'number' => 12, 'orderby' => 'count', 'order' => 'DESC']))
-    @if (have_posts() || $cats)
-      <section class="rv-shell rv-band" style="padding-bottom:clamp(1.75rem,4vw,2.75rem)">
-        <h2 class="rv-section-title" style="margin-bottom:clamp(1.5rem,3.5vw,2.25rem)">{{ __('Latest from the', 'sage') }} <em class="rv-accent">{{ __('Journal', 'sage') }}</em></h2>
-        @if ($cats)
-          <div class="rv-work-cats rv-work-filters" role="group" aria-label="{{ __('Filter posts by category', 'sage') }}" style="margin-top:0">
-            <span class="rv-work-cats-label">{{ __('Show me', 'sage') }}</span>
-            <button type="button" class="rv-work-cat rv-filter" data-filter="all" aria-pressed="true">{{ __('All posts', 'sage') }}</button>
-            @foreach ($cats as $c)
-              <button type="button" class="rv-work-cat rv-filter" data-filter="{{ esc_attr($c->slug) }}" aria-pressed="false">{{ html_entity_decode($c->name) }}</button>
-            @endforeach
-          </div>
-        @endif
+    @if (have_posts())
+      <section class="rv-shell rv-band" style="padding-bottom:0">
+        <h2 class="rv-section-title">{{ __('Latest from the', 'sage') }} <em class="rv-accent">{{ __('Journal', 'sage') }}</em></h2>
       </section>
     @endif
 
@@ -52,8 +42,7 @@
       @if (! is_paged())
         @php(the_post())
         @php($featuredId = get_the_ID())
-        @php($fCatSlugs = implode(' ', array_map(function ($t) { return $t->slug; }, get_the_category() ?: [])))
-        <section class="rv-shell rv-band rv-featured-post rv-filter-item" data-cat="{{ esc_attr($fCatSlugs) }}">
+        <section class="rv-shell rv-band rv-featured-post" style="padding-top:clamp(1rem,2.5vw,1.75rem)">
           {!! \App\eyebrow(__('Featured', 'sage')) !!}
           <div class="rv-split" style="margin-top:1rem">
             @php($fimg = \App\blog_post_image())
@@ -75,6 +64,20 @@
         @php(rewind_posts())
       @else
         @php($featuredId = 0)
+      @endif
+
+      {{-- CATEGORY FILTER: sits under the sticky post; filters the grid below.
+           Category archives stay internally linked via each post card's eyebrow. --}}
+      @if ($cats)
+        <section class="rv-shell rv-band" style="padding-top:0;padding-bottom:clamp(1.75rem,4vw,2.75rem)">
+          <div class="rv-work-cats rv-work-filters" role="group" aria-label="{{ __('Filter posts by category', 'sage') }}">
+            <span class="rv-work-cats-label">{{ __('Show me', 'sage') }}</span>
+            <button type="button" class="rv-work-cat rv-filter" data-filter="all" aria-pressed="true">{{ __('All posts', 'sage') }}</button>
+            @foreach ($cats as $c)
+              <button type="button" class="rv-work-cat rv-filter" data-filter="{{ esc_attr($c->slug) }}" aria-pressed="false">{{ html_entity_decode($c->name) }}</button>
+            @endforeach
+          </div>
+        </section>
       @endif
 
       {{-- POST GRID --}}
@@ -129,8 +132,7 @@
       /* Crossfade + hide, matching the Work grid */
       .rv-blog-grid{transition:opacity .25s ease}
       .rv-blog-grid.is-filtering{opacity:0}
-      .rv-blogcard.is-hidden,
-      .rv-featured-post.is-hidden{display:none}
+      .rv-blogcard.is-hidden{display:none}
       @media(prefers-reduced-motion:reduce){.rv-blog-grid{transition:none}.rv-filter{transition:none}}
     </style>
 
@@ -141,7 +143,6 @@
         if (!grid || !bar) return;
 
         var cards = Array.prototype.slice.call(grid.querySelectorAll('.rv-blogcard'));
-        var featured = document.querySelector('.rv-featured-post');
         var empty = document.querySelector('.rv-filter-empty');
         var buttons = Array.prototype.slice.call(bar.querySelectorAll('.rv-filter'));
         var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -159,12 +160,8 @@
             card.classList.toggle('is-hidden', !show);
             if (show) shown++;
           });
-          if (featured) {
-            featured.classList.toggle('is-hidden', !inCat(featured, filter));
-          }
           if (empty) {
-            var featShown = featured && !featured.classList.contains('is-hidden');
-            empty.hidden = (shown > 0 || featShown);
+            empty.hidden = (shown > 0);
           }
         }
 
