@@ -5,7 +5,7 @@
     <h2 class="rv-section-title">{{ \App\field('included_title', __('Included in', 'sage')) }} <em class="rv-accent">{{ \App\field('included_accent', __('every', 'sage')) }}</em> {{ \App\field('included_title_end', __('build.', 'sage')) }}</h2>
     <div class="rv-grid rv-grid-3" style="margin-top:2rem">
       @foreach (\App\field_rows('included_items', [
-        ['title' => __('Accessibility-first', 'sage'), 'text' => __('Built to WCAG 2.1 AA — readable contrast, keyboard navigation, and screen-reader-friendly structure on every page.', 'sage')],
+        ['title' => __('Accessibility-first', 'sage'), 'text' => __('Built to WCAG 2.2 AA — readable contrast, keyboard navigation, and screen-reader-friendly structure on every page.', 'sage')],
         ['title' => __('Mobile-first', 'sage'), 'text' => __('Designed for the phone first, because that\'s where most of your visitors actually are.', 'sage')],
         ['title' => __('You own everything', 'sage'), 'text' => __('Your domain, your hosting account, your site. No lock-in, and you can leave a care plan anytime.', 'sage')],
         ['title' => __('Found locally', 'sage'), 'text' => __('Google Business Profile setup, on-page SEO, and the local foundations that put you on the map.', 'sage')],

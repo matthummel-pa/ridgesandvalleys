@@ -40,7 +40,7 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
       newest run, the one matching your SHA
 - [ ] Live manifest hashes match your local `manifest.json`
 - [ ] The changed page renders correctly at ~390px wide and on desktop
-- [ ] Accessibility pass on the changed page (WCAG 2.1 AA)
+- [ ] Accessibility pass on the changed page (WCAG 2.2 AA)
 
 ## Log
 

@@ -73,8 +73,8 @@ function rv_seo_meta_map(): array
         ],
         // kw: website accessibility statement
         'accessibility' => [
-            "Accessibility Statement (WCAG 2.1 AA) | Ridges & Valleys",
-            "Our commitment to WCAG 2.1 Level AA: readable contrast, keyboard navigation, and screen-reader-friendly structure on every page. Report an accessibility issue.",
+            "Accessibility Statement (WCAG 2.2 AA) | Ridges & Valleys",
+            "Our commitment to WCAG 2.2 Level AA: readable contrast, keyboard navigation, and screen-reader-friendly structure on every page. Report an accessibility issue.",
         ],
         // kw: free website grader
         'website-grader' => [

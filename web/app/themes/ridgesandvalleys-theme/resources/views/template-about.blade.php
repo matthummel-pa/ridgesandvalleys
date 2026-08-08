@@ -24,7 +24,7 @@
         @foreach (\App\field_rows('about_proof', [
           ['v' => __('15+ yrs', 'sage'), 'l' => __('building for the web', 'sage')],
           ['v' => __('~7 days', 'sage'), 'l' => __('to your first draft', 'sage')],
-          ['v' => __('WCAG 2.1 AA', 'sage'), 'l' => __('on every page', 'sage')],
+          ['v' => __('WCAG 2.2 AA', 'sage'), 'l' => __('on every page', 'sage')],
           ['v' => __('You own it', 'sage'), 'l' => __('site, domain, hosting', 'sage')],
         ]) as $pf)
           <li><b>{{ $pf['v'] ?? '' }}</b><span>{{ $pf['l'] ?? '' }}</span></li>
@@ -117,7 +117,7 @@
       <div class="rv-grid rv-grid-3" style="margin-top:2rem">
         @foreach (\App\field_rows('creds_items', [
           ['title' => __('WordPress, done right', 'sage'), 'text' => __('Custom themes and clean, page-builder-free builds — the platform that keeps you in control of your own site.', 'sage')],
-          ['title' => __('Accessibility & front-end', 'sage'), 'text' => __('WCAG 2.1 AA, semantic HTML, performance, and modern CSS/JavaScript that holds up on real devices.', 'sage')],
+          ['title' => __('Accessibility & front-end', 'sage'), 'text' => __('WCAG 2.2 AA, semantic HTML, performance, and modern CSS/JavaScript that holds up on real devices.', 'sage')],
           ['title' => __('Business platforms', 'sage'), 'text' => __('Experience with the Microsoft Power Platform and integrations — useful when a website needs to talk to the rest of your operation.', 'sage')],
         ]) as $sk)
           <article class="rv-card rv-feature">
@@ -211,7 +211,7 @@
       @foreach (\App\field_rows('tools_items', [
         ['title' => __('Website Grader', 'sage'), 'url' => '/website-grader/', 'text' => __('Your whole site graded across seven areas, so you know what to fix first.', 'sage')],
         ['title' => __('SEO Checker', 'sage'), 'url' => '/seo-checker/', 'text' => __('Shows exactly why you are — or are not — showing up in search.', 'sage')],
-        ['title' => __('Accessibility Checker', 'sage'), 'url' => '/accessibility/', 'text' => __('Scans a page against WCAG 2.1 AA so more customers can use your site.', 'sage')],
+        ['title' => __('Accessibility Checker', 'sage'), 'url' => '/accessibility/', 'text' => __('Scans a page against WCAG 2.2 AA so more customers can use your site.', 'sage')],
         ['title' => __('Security Checker', 'sage'), 'url' => '/security-checker/', 'text' => __('HTTPS, headers, and leaks — the things that protect your customers\' trust.', 'sage')],
         ['title' => __('Email Deliverability Checker', 'sage'), 'url' => '/email-checker/', 'text' => __('SPF, DKIM, and DMARC, so your invoices stop landing in junk.', 'sage')],
         ['title' => __('Local SEO Scorecard', 'sage'), 'url' => '/local-seo/', 'text' => __('Scores the local signals that get you into Google\'s map pack.', 'sage')],

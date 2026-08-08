@@ -300,7 +300,7 @@ function page_field_map(): array
                 ['included_accent', __('Accent word', 'sage'), 'text', __('every', 'sage')],
                 ['included_title_end', __('Heading (after accent)', 'sage'), 'text', __('build.', 'sage')],
                 ['included_items', __('Cards', 'sage'), 'repeater', [
-                    ['title' => __('Accessibility-first', 'sage'), 'text' => __('Built to WCAG 2.1 AA — readable contrast, keyboard navigation, and screen-reader-friendly structure on every page.', 'sage')],
+                    ['title' => __('Accessibility-first', 'sage'), 'text' => __('Built to WCAG 2.2 AA — readable contrast, keyboard navigation, and screen-reader-friendly structure on every page.', 'sage')],
                     ['title' => __('Mobile-first', 'sage'), 'text' => __('Designed for the phone first, because that\'s where most of your visitors actually are.', 'sage')],
                     ['title' => __('You own everything', 'sage'), 'text' => __('Your domain, your hosting account, your site. No lock-in, and you can leave a care plan anytime.', 'sage')],
                     ['title' => __('Found locally', 'sage'), 'text' => __('Google Business Profile setup, on-page SEO, and the local foundations that put you on the map.', 'sage')],

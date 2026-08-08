@@ -4,7 +4,7 @@
 @extends('layouts.app')
 
 @php
-/* WCAG 2.1 Level A + AA success criteria — the substance of the U.S. federal
+/* WCAG 2.2 Level A + AA success criteria — the substance of the U.S. federal
    accessibility standards (Section 508 references WCAG 2.0 AA; the ADA Title II
    rule and the courts reference WCAG 2.1 AA). Grouped by the four POUR
    principles. Each row: [number, name, level, plain-language note]. */
@@ -45,10 +45,13 @@ $wcag = [
     ['2.4.5', 'Multiple Ways', 'AA', 'More than one way to find a page (menu, search, sitemap).'],
     ['2.4.6', 'Headings and Labels', 'AA', 'Headings and form labels are descriptive.'],
     ['2.4.7', 'Focus Visible', 'AA', 'The keyboard focus indicator is always visible.'],
+    ['2.4.11', 'Focus Not Obscured (Minimum)', 'AA', 'A sticky header or footer never fully hides the item you tabbed to.'],
     ['2.5.1', 'Pointer Gestures', 'A', 'Multi-finger or path gestures have a simple alternative.'],
     ['2.5.2', 'Pointer Cancellation', 'A', 'Accidental taps can be aborted before they fire.'],
     ['2.5.3', 'Label in Name', 'A', 'A control\'s visible label matches its accessible name.'],
     ['2.5.4', 'Motion Actuation', 'A', 'Features triggered by motion have a button alternative.'],
+    ['2.5.7', 'Dragging Movements', 'AA', 'Anything you drag also works with a single tap or click.'],
+    ['2.5.8', 'Target Size (Minimum)', 'AA', 'Buttons and links are at least 24×24px, so they are easy to hit.'],
   ]],
   'Understandable' => ['U', 'Information and the operation of the interface must be understandable.', [
     ['3.1.1', 'Language of Page', 'A', 'The page\'s language is set so screen readers pronounce it right.'],
@@ -57,13 +60,15 @@ $wcag = [
     ['3.2.2', 'On Input', 'A', 'Changing a field doesn\'t trigger a surprise action.'],
     ['3.2.3', 'Consistent Navigation', 'AA', 'Navigation stays in the same place across pages.'],
     ['3.2.4', 'Consistent Identification', 'AA', 'The same components are labeled the same way everywhere.'],
+    ['3.2.6', 'Consistent Help', 'A', 'Help — contact, phone, email — sits in the same place on every page.'],
     ['3.3.1', 'Error Identification', 'A', 'Form errors are described in text, not just color.'],
     ['3.3.2', 'Labels or Instructions', 'A', 'Every field has a clear label or instruction.'],
     ['3.3.3', 'Error Suggestion', 'AA', 'When we can, we suggest how to fix an error.'],
     ['3.3.4', 'Error Prevention (Legal, Financial, Data)', 'AA', 'Important submissions can be reviewed and corrected.'],
+    ['3.3.7', 'Redundant Entry', 'A', 'You are never asked to re-enter information you already gave in the same step.'],
+    ['3.3.8', 'Accessible Authentication (Minimum)', 'AA', 'No login step that is a memory or puzzle test with no alternative.'],
   ]],
   'Robust' => ['R', 'Content must be robust enough for assistive technologies, now and later.', [
-    ['4.1.1', 'Parsing', 'A', 'Clean, valid markup that assistive tech can read reliably.'],
     ['4.1.2', 'Name, Role, Value', 'A', 'Custom controls expose their name, role, and state.'],
     ['4.1.3', 'Status Messages', 'AA', 'Status updates are announced without stealing focus.'],
   ]],
@@ -79,7 +84,7 @@ $total = array_sum(array_map(fn ($g) => count($g[2]), $wcag));
     <span class="rv-stripe" aria-hidden="true"></span>
     @include('partials.hero-bg', ['fallback' => ''])
     <div class="rv-shell rv-hero-inner">
-      {!! \App\eyebrow(\App\field('hero_eyebrow', __('Accessibility · WCAG 2.1 AA · Section 508', 'sage'))) !!}
+      {!! \App\eyebrow(\App\field('hero_eyebrow', __('Accessibility · WCAG 2.2 AA · Section 508', 'sage'))) !!}
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('A front door that opens for', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('everyone.', 'sage')) }}</em></h1>
       <p class="rv-hero-sub">{{ \App\field('hero_sub', __('An accessible website isn\'t a nice-to-have — it\'s how you reach more customers, rank better, and stay on the right side of the law. Here\'s the full federal standard, what it means, and how I build to it on every project.', 'sage')) }}</p>
       <div class="rv-hero-actions">
@@ -125,7 +130,7 @@ $total = array_sum(array_map(fn ($g) => count($g[2]), $wcag));
           </article>
         @endforeach
       </div>
-      <p class="rv-feature-text" style="margin-top:1.75rem;max-width:74ch">{{ \App\field('legal_through', __('The through-line: WCAG 2.1 Level AA is the target. Build to it and you\'re aligned with Section 508, ready for ADA Title II, and measured favorably under Title III. That\'s the standard I build every site to — the full checklist is below.', 'sage')) }}</p>
+      <p class="rv-feature-text" style="margin-top:1.75rem;max-width:74ch">{{ \App\field('legal_through', __('The through-line: WCAG 2.2 Level AA is the target. Build to it and you\'re aligned with Section 508, ready for ADA Title II, and measured favorably under Title III. That\'s the standard I build every site to — the full checklist is below.', 'sage')) }}</p>
     </div>
   </section>
 
@@ -133,13 +138,13 @@ $total = array_sum(array_map(fn ($g) => count($g[2]), $wcag));
   @php($autoMap = ['3.1.1' => 'lang', '2.4.2' => 'title', '1.1.1' => 'alt', '3.3.2' => 'labels', '1.3.1' => 'h1', '2.4.6' => 'headings', '2.4.4' => 'links', '2.4.1' => 'landmark'])
   <section id="standards" class="rv-shell rv-band">
     {!! \App\eyebrow(\App\field('audit_eyebrow', __('Check your own site', 'sage'))) !!}
-    <h2 class="rv-section-title">{{ \App\field('audit_title', __('Run a live', 'sage')) }} <em class="rv-accent">{{ \App\field('audit_accent', __('WCAG 2.1 AA', 'sage')) }}</em> {{ \App\field('audit_title_end', __('audit.', 'sage')) }}</h2>
-    <p class="rv-page-intro">{{ \App\field('audit_intro', __('Enter your URL and watch it run. The automated checks verify what a scanner can — 8 of the 50 criteria — and every other item is flagged for the manual review a person has to do. That\'s most of accessibility, and exactly why I audit by hand.', 'sage')) }}</p>
+    <h2 class="rv-section-title">{{ \App\field('audit_title', __('Run a live', 'sage')) }} <em class="rv-accent">{{ \App\field('audit_accent', __('WCAG 2.2 AA', 'sage')) }}</em> {{ \App\field('audit_title_end', __('audit.', 'sage')) }}</h2>
+    <p class="rv-page-intro">{{ \App\field('audit_intro', __('Enter your URL and watch it run. The automated checks verify what a scanner can — 8 of the 55 criteria — and every other item is flagged for the manual review a person has to do. That\'s most of accessibility, and exactly why I audit by hand.', 'sage')) }}</p>
 
-    <div class="rv-scan" id="rv-scan" data-endpoint="{{ esc_url(rest_url('rv-tools/v1/a11y')) }}" style="margin-top:2rem" aria-label="{{ __('WCAG 2.1 AA live audit', 'sage') }}">
+    <div class="rv-scan" id="rv-scan" data-endpoint="{{ esc_url(rest_url('rv-tools/v1/a11y')) }}" style="margin-top:2rem" aria-label="{{ __('WCAG 2.2 AA live audit', 'sage') }}">
       <div class="rv-scan-head">
         <div class="rv-scan-head-row">
-          <h3 class="rv-scan-title">{{ __('WCAG 2.1 Level AA — live audit', 'sage') }}</h3>
+          <h3 class="rv-scan-title">{{ __('WCAG 2.2 Level AA — live audit', 'sage') }}</h3>
           <span class="rv-scan-count" id="rv-scan-count">0 / {{ $total }}</span>
         </div>
         <form class="rv-audit-form" id="rv-audit-form">
@@ -246,7 +251,7 @@ $total = array_sum(array_map(fn ($g) => count($g[2]), $wcag));
         {!! \App\eyebrow(\App\field('stmt_eyebrow', __('Our commitment', 'sage'))) !!}
         <h2 class="rv-section-title">{{ \App\field('stmt_title', __('Accessibility statement', 'sage')) }}</h2>
             <div class="rv-prose" style="margin-top:1rem">
-              <p>{{ \App\field('stmt_p1', __('Ridges & Valleys Studio is committed to making this website usable for as many people as possible, regardless of ability or technology. I aim to meet WCAG 2.1 Level AA across the site: readable contrast, keyboard-accessible navigation, meaningful text alternatives, clear focus states, semantic structure, and content that works with screen readers.', 'sage')) }}</p>
+              <p>{{ \App\field('stmt_p1', __('Ridges & Valleys Studio is committed to making this website usable for as many people as possible, regardless of ability or technology. I aim to meet WCAG 2.2 Level AA across the site: readable contrast, keyboard-accessible navigation, meaningful text alternatives, clear focus states, semantic structure, and content that works with screen readers.', 'sage')) }}</p>
               <p>{{ \App\field('stmt_p2', __('Accessibility is ongoing work. Some third-party or embedded content may not fully meet this standard; where I find gaps, I work to fix or replace them. If you run into a barrier on this site, please tell me what happened and the page you were on — I\'ll put it right.', 'sage')) }}</p>
             </div>
         <p style="margin-top:1.5rem"><a class="rv-btn rv-btn-primary" href="{{ $ctaHref }}">{{ \App\field('stmt_button', __('Report an accessibility issue', 'sage')) }}</a></p>

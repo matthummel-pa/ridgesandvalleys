@@ -343,7 +343,7 @@ Not wired up yet — there's no custom code to deploy today. See `claude/operati
 
 These are build requirements, not preferences. Anything that ships has to clear them.
 
-**Accessibility — WCAG 2.1 AA on every page**, built in rather than bolted on. In practice that
+**Accessibility — WCAG 2.2 AA on every page**, built in rather than bolted on. In practice that
 means real semantic headings in order, a visible focus state on every interactive element, text
 contrast that passes at AA, an accessible name on every icon-only control and every landmark list,
 alt text on meaningful images and empty alt on decorative ones (the contour SVGs are decorative),
@@ -368,7 +368,7 @@ these from the Customizer values (`rv_contact_phone`, `rv_contact_email`, `rv_co
 rather than typing them in, so one change updates every appearance.
 
 **Claims must be verifiable in 60 seconds.** The proof strip — 15+ yrs · ~7 days to first draft ·
-WCAG 2.1 AA · You own it — is the standard. No invented stats, ratings, or awards. No implied local
+WCAG 2.2 AA · You own it — is the standard. No invented stats, ratings, or awards. No implied local
 tenure. If you cannot point at the evidence, it does not go on the page.
 
 ---

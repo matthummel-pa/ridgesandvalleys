@@ -97,7 +97,7 @@ function hero_stats(?int $post_id = null): array
         $lines = [
             __('15+ yrs | building for the web', 'sage'),
             __('~7 days | to your first draft', 'sage'),
-            __('WCAG 2.1 AA | accessibility, built in', 'sage'),
+            __('WCAG 2.2 AA | accessibility, built in', 'sage'),
             __('You own it | domain, hosting & site', 'sage'),
         ];
     }
@@ -247,7 +247,7 @@ function home_layout_box($post): void
     <div class="rv-hl-stats">
       <h4><?php esc_html_e('Hero proof stats (under the buttons)', 'sage'); ?></h4>
       <label for="rv_f_hero_stats" class="screen-reader-text"><?php esc_html_e('Hero proof stats', 'sage'); ?></label>
-      <textarea id="rv_f_hero_stats" name="rv_f_hero_stats" rows="4" class="widefat" placeholder="15+ yrs | building for the web&#10;~7 days | to your first draft&#10;WCAG 2.1 AA | accessibility, built in&#10;You own it | domain, hosting &amp; site"><?php echo esc_textarea($hero_stats); ?></textarea>
+      <textarea id="rv_f_hero_stats" name="rv_f_hero_stats" rows="4" class="widefat" placeholder="15+ yrs | building for the web&#10;~7 days | to your first draft&#10;WCAG 2.2 AA | accessibility, built in&#10;You own it | domain, hosting &amp; site"><?php echo esc_textarea($hero_stats); ?></textarea>
       <p class="rv-hl-note"><?php esc_html_e('One stat per line, formatted “value | label”. Leave blank to use the built-in defaults. Keep these to true, verifiable claims — no invented ratings or client counts.', 'sage'); ?></p>
     </div>
 

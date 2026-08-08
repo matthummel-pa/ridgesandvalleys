@@ -65,7 +65,7 @@
           [__('Security & trust', 'sage'), __('HTTPS, mixed content, HSTS, and the security headers browsers look for.', 'sage'), __('Browsers now label unsafe sites “Not secure.” Trust signals protect both your customers and your reputation.', 'sage')],
           [__('Technical foundation', 'sage'), __('Doctype, character encoding, language, favicon, and a healthy HTTP response.', 'sage'), __('The quiet fundamentals that keep a site rendering correctly across every browser and device — the things that break silently.', 'sage')],
           [__('Social & sharing', 'sage'), __('Open Graph tags, a share image, Twitter/X cards, and touch icons.', 'sage'), __('When someone shares your link, these decide whether it looks like a polished preview or a broken, ignorable text link.', 'sage')],
-          [__('Accessibility', 'sage'), __('Covered in depth on its own page — alt text, labels, contrast, keyboard use, and the full WCAG 2.1 AA standard.', 'sage'), __('An accessible site reaches more customers and reduces legal risk. It overlaps heavily with SEO and good UX.', 'sage')],
+          [__('Accessibility', 'sage'), __('Covered in depth on its own page — alt text, labels, contrast, keyboard use, and the full WCAG 2.2 AA standard.', 'sage'), __('An accessible site reaches more customers and reduces legal risk. It overlaps heavily with SEO and good UX.', 'sage')],
           [__('And the human layer', 'sage'), __('Brand fit, message clarity, conversion path, trust, and the dozens of judgment calls no scanner can make.', 'sage'), __('A perfect technical score still loses if the site doesn\'t say the right thing to the right person. That\'s the part I finish by hand.', 'sage')],
         ])
         @foreach ($areas as $a)
