@@ -46,8 +46,12 @@ if [ ! -f .env ]; then
     echo ""
     for key in AUTH_KEY SECURE_AUTH_KEY LOGGED_IN_KEY NONCE_KEY \
                AUTH_SALT SECURE_AUTH_SALT LOGGED_IN_SALT NONCE_SALT; do
-      val="$(LC_ALL=C tr -dc 'A-Za-z0-9' </dev/urandom | head -c 64)"
-      echo "${key}='${val}'"
+      # Read a bounded chunk (head -c on a file terminates cleanly) and slice
+      # in bash so no reader is left writing to a closed pipe (SIGPIPE would
+      # trip `set -o pipefail`). Only ~24% of random bytes are alphanumeric,
+      # so read plenty to reliably yield 64 characters.
+      raw="$(head -c 1024 /dev/urandom | LC_ALL=C tr -dc 'A-Za-z0-9')"
+      echo "${key}='${raw:0:64}'"
     done
   } > .env
   echo "Wrote development .env"
