@@ -2,8 +2,17 @@
   "preset": "per",
   "exclude": [
     "web/wp",
-    "web/app/mu-plugins/bedrock-disallow-indexing",
+    "web/app/cache",
+    "web/app/uploads",
+    "web/app/ai1wm-backups",
+    "web/app/mu-plugins",
     "web/app/plugins",
     "web/app/themes/twentytwentyfive"
+  ],
+  "notPath": [
+    "web/app/index.php",
+    "web/app/themes/index.php",
+    "web/app/advanced-headers.php",
+    "web/app/sgs_encrypt_key.php"
   ]
 }

@@ -29,7 +29,7 @@ function post_meta(): string
     $out[] = sprintf(
         '<time class="rv-meta-date" datetime="%s">%s</time>',
         esc_attr(get_the_date(DATE_W3C)),
-        esc_html(get_the_date())
+        esc_html(get_the_date()),
     );
 
     if (get_post_type() === 'post') {
@@ -40,7 +40,7 @@ function post_meta(): string
             $out[] = sprintf(
                 '<a class="rv-meta-cat" href="%s">%s</a>',
                 esc_url(get_category_link($cats[0]->term_id)),
-                esc_html($cats[0]->name)
+                esc_html($cats[0]->name),
             );
         }
     }
@@ -187,7 +187,7 @@ function social_links(string $class = 'rv-social'): string
                 $href,
                 ($key === 'email') ? '' : ' target="_blank" rel="noopener noreferrer"',
                 esc_attr($label),
-                icon($key)
+                icon($key),
             ),
         ];
     }
@@ -197,7 +197,7 @@ function social_links(string $class = 'rv-social'): string
     }
 
     // Reorder by the per-platform display order (Customizer > Social Links).
-    usort($items, static fn ($a, $b) => $a['order'] <=> $b['order']);
+    usort($items, static fn($a, $b) => $a['order'] <=> $b['order']);
     $html = '';
     foreach ($items as $it) {
         $html .= $it['html'];
@@ -268,7 +268,7 @@ function brand_logo(string $context = 'header'): string
         return sprintf(
             '<a class="rv-brand-lockup rv-brand-text-link" href="%s" rel="home"><span class="rv-brand-name">%s</span></a>',
             $home,
-            esc_html($name)
+            esc_html($name),
         );
     }
 
@@ -283,7 +283,7 @@ function brand_logo(string $context = 'header'): string
             '<a class="rv-brand-lockup rv-brand-logo-link" href="%s" rel="home" aria-label="%s">%s</a>',
             $home,
             esc_attr($name),
-            $img
+            $img,
         );
     }
 
@@ -299,7 +299,7 @@ function brand_logo(string $context = 'header'): string
         '<a class="rv-brand-lockup rv-brand-logo-link" href="%s" rel="home" aria-label="%s">%s</a>',
         $home,
         esc_attr($name),
-        $img
+        $img,
     );
 }
 
@@ -387,10 +387,15 @@ function faq_schema(array $faqs): string
 {
     $schema = ['@context' => 'https://schema.org', '@type' => 'FAQPage', 'mainEntity' => []];
     foreach ($faqs as $f) {
+        $q = is_array($f) ? (string) ($f['q'] ?? $f[0] ?? '') : '';
+        $a = is_array($f) ? (string) ($f['a'] ?? $f[1] ?? '') : '';
+        if ($q === '') {
+            continue;
+        }
         $schema['mainEntity'][] = [
             '@type'          => 'Question',
-            'name'           => $f[0],
-            'acceptedAnswer' => ['@type' => 'Answer', 'text' => $f[1]],
+            'name'           => $q,
+            'acceptedAnswer' => ['@type' => 'Answer', 'text' => $a],
         ];
     }
     return '<script type="application/ld+json">' . wp_json_encode($schema) . '</script>';
@@ -452,7 +457,7 @@ function related_posts(int $limit = 3): array
         : get_posts($base);
 
     if (count($posts) < $limit) {
-        $have = array_map(static fn ($p) => $p->ID, $posts);
+        $have = array_map(static fn($p) => $p->ID, $posts);
         $fill = get_posts([
             'post_type'           => 'post',
             'posts_per_page'      => $limit - count($posts),
@@ -530,7 +535,7 @@ function post_toc_data(?string $html = null): array
     // wrapping the fragment in <html>/<body> or adding a doctype.
     $dom->loadHTML(
         '<?xml encoding="utf-8"?><div id="rv-toc-root">' . $html . '</div>',
-        LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD
+        LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD,
     );
     libxml_clear_errors();
     libxml_use_internal_errors($prev);
@@ -747,4 +752,28 @@ function theme_toggle_icons(string $style = 'sun-moon'): string
     };
 
     return $svg('rv-sun', $light) . $svg('rv-moon', $dark);
+}
+
+/**
+ * Parse a Customizer textarea of "Label | /url/" lines into
+ * [['label' => ..., 'url' => ...], ...]. Used by the journal sidebar.
+ *
+ * @param  array<int, string>  $defaultLines
+ * @return array<int, array{label: string, url: string}>
+ */
+function mod_link_lines(string $mod, array $defaultLines): array
+{
+    $raw = trim((string) get_theme_mod($mod, ''));
+    $lines = $raw !== '' ? preg_split('/\r\n|\r|\n/', $raw) : $defaultLines;
+    $out = [];
+    foreach ((array) $lines as $line) {
+        $line = trim((string) $line);
+        if ($line === '') {
+            continue;
+        }
+        $parts = array_map('trim', explode('|', $line, 2));
+        $out[] = ['label' => $parts[0], 'url' => $parts[1] ?? ''];
+    }
+
+    return $out;
 }

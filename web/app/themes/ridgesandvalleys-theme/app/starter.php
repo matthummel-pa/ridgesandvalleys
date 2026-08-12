@@ -169,8 +169,12 @@ function rv_run_starter(): void
     }
 
     update_option('show_on_front', 'page');
-    if (! empty($ids['home']))    update_option('page_on_front', $ids['home']);
-    if (! empty($ids['journal'])) update_option('page_for_posts', $ids['journal']);
+    if (! empty($ids['home'])) {
+        update_option('page_on_front', $ids['home']);
+    }
+    if (! empty($ids['journal'])) {
+        update_option('page_for_posts', $ids['journal']);
+    }
 
     rv_ensure_menu('Primary', 'primary', [$ids['about'], $ids['services'], $ids['work'], $ids['faq'], $ids['free-tools'], $ids['contact']]);
     rv_ensure_menu('Footer', 'footer', [$ids['services'], $ids['work'], $ids['journal'], $ids['accessibility'], $ids['contact']]);

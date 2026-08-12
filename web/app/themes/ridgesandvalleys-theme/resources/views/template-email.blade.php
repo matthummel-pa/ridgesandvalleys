@@ -23,9 +23,9 @@
 
   {{-- LIVE CHECKER --}}
   <section id="email" class="rv-shell rv-band">
-    {!! \App\eyebrow(__('Instant DNS check', 'sage')) !!}
-    <h2 class="rv-section-title">{{ __('Check your email', 'sage') }} <em class="rv-accent">{{ __('setup.', 'sage') }}</em></h2>
-    <p class="rv-page-intro">{{ __('Enter your domain (like yourbusiness.com — not your full email address). This reads your public DNS records; it never touches your inbox or your password.', 'sage') }}</p>
+    {!! \App\eyebrow(\App\field('scan_eyebrow', __('Instant DNS check', 'sage'))) !!}
+    <h2 class="rv-section-title">{{ \App\field('scan_title', __('Check your email', 'sage')) }} <em class="rv-accent">{{ \App\field('scan_accent', __('setup.', 'sage')) }}</em></h2>
+    <p class="rv-page-intro">{{ \App\field('scan_intro', __('Enter your domain (like yourbusiness.com — not your full email address). This reads your public DNS records; it never touches your inbox or your password.', 'sage')) }}</p>
 
     <div class="rv-scan" id="rv-email" data-endpoint="{{ esc_url(rest_url('rv-tools/v1/email')) }}" style="margin-top:2rem" aria-label="{{ __('Email deliverability checker', 'sage') }}">
       <div class="rv-scan-head">
@@ -48,29 +48,28 @@
         <button type="button" class="rv-btn rv-btn-ghost" id="rv-email-reset">{{ __('Reset', 'sage') }}</button>
       </div>
     </div>
-    <p class="rv-audit-note">{{ __('SPF, DKIM, and DMARC are fiddly to set up and easy to get wrong. Want me to configure them for you the right way?', 'sage') }} <a href="{{ $ctaHref }}">{{ __('Talk to me', 'sage') }}</a>.</p>
+    <p class="rv-audit-note">{{ \App\field('scan_note', __('SPF, DKIM, and DMARC are fiddly to set up and easy to get wrong. Want me to configure them for you the right way?', 'sage')) }} <a href="{{ $ctaHref }}">{{ \App\field('scan_note_link', __('Talk to me', 'sage')) }}</a>.</p>
   </section>
 
   {{-- WHAT WE CHECK --}}
   <section class="rv-band rv-band-alt">
     <div class="rv-shell">
-      {!! \App\eyebrow(__('What the check covers', 'sage')) !!}
-      <h2 class="rv-section-title">{{ __('The three records that', 'sage') }} <em class="rv-accent">{{ __('protect', 'sage') }}</em> {{ __('your email.', 'sage') }}</h2>
+      {!! \App\eyebrow(\App\field('areas_eyebrow', __('What the check covers', 'sage'))) !!}
+      <h2 class="rv-section-title">{{ \App\field('areas_title', __('The three records that', 'sage')) }} <em class="rv-accent">{{ \App\field('areas_accent', __('protect', 'sage')) }}</em> {{ \App\field('areas_title_end', __('your email.', 'sage')) }}</h2>
       <div class="rv-grid rv-grid-3" style="margin-top:2rem">
-        @php($areas = [
-          [__('Can you receive mail? (MX)', 'sage'), __('Whether your domain has mail servers set up to accept email at all.', 'sage'), __('If MX records are missing or wrong, email sent to your business simply bounces — customers assume you ignored them.', 'sage')],
-          [__('SPF — who can send as you', 'sage'), __('The record listing which servers are allowed to send email from your domain.', 'sage'), __('Without SPF, anyone can forge email from your address, and legitimate mail from your real provider is more likely to be flagged as spam.', 'sage')],
-          [__('DKIM — a tamper-proof signature', 'sage'), __('A cryptographic signature that proves a message genuinely came from you.', 'sage'), __('DKIM lets inbox providers verify your mail is authentic and unaltered — a big factor in whether you land in the inbox or the junk folder.', 'sage')],
-          [__('DMARC — the anti-phishing policy', 'sage'), __('The rule that ties SPF and DKIM together and tells inboxes what to do with mail that fails.', 'sage'), __('DMARC is what actually stops scammers from sending phishing emails “from” your business to your customers and suppliers.', 'sage')],
-          [__('Why this hits small businesses', 'sage'), __('Many local businesses use email that was set up years ago and never configured for authentication.', 'sage'), __('The result is quiet damage: invoices and quotes landing in spam, and no protection if someone impersonates your brand.', 'sage')],
-          [__('The good news', 'sage'), __('These are one-time DNS fixes — set them correctly once and they keep working.', 'sage'), __('Getting SPF, DKIM, and DMARC right improves inbox placement and shuts the door on spoofing. It\'s among the highest-value, lowest-cost fixes there is.', 'sage')],
-        ])
-        @foreach ($areas as $a)
+        @foreach (\App\field_rows('areas_items', [
+          ['title' => __('Can you receive mail? (MX)', 'sage'), 'text' => __('Whether your domain has mail servers set up to accept email at all.', 'sage'), 'why' => __('If MX records are missing or wrong, email sent to your business simply bounces — customers assume you ignored them.', 'sage')],
+          ['title' => __('SPF — who can send as you', 'sage'), 'text' => __('The record listing which servers are allowed to send email from your domain.', 'sage'), 'why' => __('Without SPF, anyone can forge email from your address, and legitimate mail from your real provider is more likely to be flagged as spam.', 'sage')],
+          ['title' => __('DKIM — a tamper-proof signature', 'sage'), 'text' => __('A cryptographic signature that proves a message genuinely came from you.', 'sage'), 'why' => __('DKIM lets inbox providers verify your mail is authentic and unaltered — a big factor in whether you land in the inbox or the junk folder.', 'sage')],
+          ['title' => __('DMARC — the anti-phishing policy', 'sage'), 'text' => __('The rule that ties SPF and DKIM together and tells inboxes what to do with mail that fails.', 'sage'), 'why' => __('DMARC is what actually stops scammers from sending phishing emails “from” your business to your customers and suppliers.', 'sage')],
+          ['title' => __('Why this hits small businesses', 'sage'), 'text' => __('Many local businesses use email that was set up years ago and never configured for authentication.', 'sage'), 'why' => __('The result is quiet damage: invoices and quotes landing in spam, and no protection if someone impersonates your brand.', 'sage')],
+          ['title' => __('The good news', 'sage'), 'text' => __('These are one-time DNS fixes — set them correctly once and they keep working.', 'sage'), 'why' => __('Getting SPF, DKIM, and DMARC right improves inbox placement and shuts the door on spoofing. It\'s among the highest-value, lowest-cost fixes there is.', 'sage')],
+        ]) as $a)
           <article class="rv-card rv-feature">
             <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-            <h3 class="rv-feature-title">{{ $a[0] }}</h3>
-            <p class="rv-feature-text" style="margin-bottom:.6rem">{{ $a[1] }}</p>
-            <p class="rv-feature-text" style="color:var(--color-muted);font-size:.9rem"><b style="color:var(--color-body)">{{ __('Why it matters:', 'sage') }}</b> {{ $a[2] }}</p>
+            <h3 class="rv-feature-title">{{ $a['title'] ?? '' }}</h3>
+            <p class="rv-feature-text" style="margin-bottom:.6rem">{{ $a['text'] ?? '' }}</p>
+            <p class="rv-feature-text" style="color:var(--color-muted);font-size:.9rem"><b style="color:var(--color-body)">{{ __('Why it matters:', 'sage') }}</b> {{ $a['why'] ?? '' }}</p>
           </article>
         @endforeach
       </div>

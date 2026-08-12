@@ -196,8 +196,8 @@ add_action('add_meta_boxes', function () {
 });
 
 add_action('save_post_project', function ($post_id) {
-    if (! isset($_POST['rv_project_details_nonce']) ||
-        ! wp_verify_nonce(sanitize_key($_POST['rv_project_details_nonce']), 'rv_project_details')) {
+    if (! isset($_POST['rv_project_details_nonce'])
+        || ! wp_verify_nonce(sanitize_key($_POST['rv_project_details_nonce']), 'rv_project_details')) {
         return;
     }
     if (defined('DOING_AUTOSAVE') && DOING_AUTOSAVE) {

@@ -129,8 +129,14 @@ function rv_rest_grade(\WP_REST_Request $req)
     $add(__('Open Graph tags for sharing', 'sage'), $hasOg, 6);
     $add(__('Page under 1 MB', 'sage'), $kb <= 1024, 8, __('Compress images and trim scripts.', 'sage'));
 
-    $earned = 0; $possible = 0;
-    foreach ($checks as $c) { $possible += $c['weight']; if ($c['pass']) $earned += $c['weight']; }
+    $earned = 0;
+    $possible = 0;
+    foreach ($checks as $c) {
+        $possible += $c['weight'];
+        if ($c['pass']) {
+            $earned += $c['weight'];
+        }
+    }
     $score = (int) round($earned / max(1, $possible) * 100);
 
     return new \WP_REST_Response([
@@ -161,20 +167,29 @@ function rv_rest_a11y(\WP_REST_Request $req)
     };
 
     // Language
-    $add(__('Page language declared', 'sage'),
+    $add(
+        __('Page language declared', 'sage'),
         ($dom->documentElement && $dom->documentElement->hasAttribute('lang')) ? 'pass' : 'fail',
-        __('Screen readers need lang="…" on <html>.', 'sage'));
+        __('Screen readers need lang="…" on <html>.', 'sage'),
+    );
 
     // Title
     $title = trim((string) ($dom->getElementsByTagName('title')->item(0)->textContent ?? ''));
     $add(__('Document has a title', 'sage'), $title !== '' ? 'pass' : 'fail');
 
     // Images alt
-    $imgs = $dom->getElementsByTagName('img'); $missing = 0;
-    foreach ($imgs as $img) { if (! $img->hasAttribute('alt')) $missing++; }
-    $add(__('Images have alt attributes', 'sage'),
+    $imgs = $dom->getElementsByTagName('img');
+    $missing = 0;
+    foreach ($imgs as $img) {
+        if (! $img->hasAttribute('alt')) {
+            $missing++;
+        }
+    }
+    $add(
+        __('Images have alt attributes', 'sage'),
         $imgs->length === 0 ? 'pass' : ($missing === 0 ? 'pass' : ($missing <= 2 ? 'warn' : 'fail')),
-        $missing ? sprintf(_n('%d image missing alt.', '%d images missing alt.', $missing, 'sage'), $missing) : '');
+        $missing ? sprintf(_n('%d image missing alt.', '%d images missing alt.', $missing, 'sage'), $missing) : '',
+    );
 
     // Inputs labelled
     $inputs = $xp->query('//input[not(@type="hidden")] | //select | //textarea');
@@ -183,16 +198,23 @@ function rv_rest_a11y(\WP_REST_Request $req)
         $id = $el->getAttribute('id');
         $has = ($el->hasAttribute('aria-label') || $el->hasAttribute('aria-labelledby')
             || ($id && $xp->query('//label[@for="' . $id . '"]')->length));
-        if (! $has) $unlabelled++;
+        if (! $has) {
+            $unlabelled++;
+        }
     }
-    $add(__('Form fields have labels', 'sage'),
+    $add(
+        __('Form fields have labels', 'sage'),
         $inputs->length === 0 ? 'pass' : ($unlabelled === 0 ? 'pass' : 'fail'),
-        $unlabelled ? sprintf(_n('%d field without a label.', '%d fields without a label.', $unlabelled, 'sage'), $unlabelled) : '');
+        $unlabelled ? sprintf(_n('%d field without a label.', '%d fields without a label.', $unlabelled, 'sage'), $unlabelled) : '',
+    );
 
     // Single H1
     $h1 = $dom->getElementsByTagName('h1')->length;
-    $add(__('Exactly one H1 heading', 'sage'), $h1 === 1 ? 'pass' : ($h1 === 0 ? 'fail' : 'warn'),
-        $h1 !== 1 ? sprintf(__('Found %d.', 'sage'), $h1) : '');
+    $add(
+        __('Exactly one H1 heading', 'sage'),
+        $h1 === 1 ? 'pass' : ($h1 === 0 ? 'fail' : 'warn'),
+        $h1 !== 1 ? sprintf(__('Found %d.', 'sage'), $h1) : '',
+    );
 
     // Heading order (no skipped levels)
     $levels = [];
@@ -200,26 +222,42 @@ function rv_rest_a11y(\WP_REST_Request $req)
         $levels[] = (int) substr($h->nodeName, 1);
     }
     $skip = false;
-    for ($i = 1; $i < count($levels); $i++) { if ($levels[$i] - $levels[$i - 1] > 1) { $skip = true; break; } }
-    $add(__('Headings don\'t skip levels', 'sage'), $skip ? 'warn' : 'pass',
-        $skip ? __('A heading jumps more than one level.', 'sage') : '');
+    for ($i = 1; $i < count($levels); $i++) {
+        if ($levels[$i] - $levels[$i - 1] > 1) {
+            $skip = true;
+            break;
+        }
+    }
+    $add(
+        __('Headings don\'t skip levels', 'sage'),
+        $skip ? 'warn' : 'pass',
+        $skip ? __('A heading jumps more than one level.', 'sage') : '',
+    );
 
     // Link text
     $vague = 0;
     foreach ($dom->getElementsByTagName('a') as $a) {
         $t = strtolower(trim($a->textContent));
-        if (in_array($t, ['click here', 'here', 'read more', 'more', 'link'], true)) $vague++;
+        if (in_array($t, ['click here', 'here', 'read more', 'more', 'link'], true)) {
+            $vague++;
+        }
     }
-    $add(__('Links have descriptive text', 'sage'), $vague === 0 ? 'pass' : 'warn',
-        $vague ? sprintf(_n('%d vague link ("click here").', '%d vague links ("click here").', $vague, 'sage'), $vague) : '');
+    $add(
+        __('Links have descriptive text', 'sage'),
+        $vague === 0 ? 'pass' : 'warn',
+        $vague ? sprintf(_n('%d vague link ("click here").', '%d vague links ("click here").', $vague, 'sage'), $vague) : '',
+    );
 
     // Landmarks
     $hasMain = $xp->query('//main | //*[@role="main"]')->length > 0;
-    $add(__('Has a main landmark', 'sage'), $hasMain ? 'pass' : 'warn',
-        $hasMain ? '' : __('Wrap primary content in <main>.', 'sage'));
+    $add(
+        __('Has a main landmark', 'sage'),
+        $hasMain ? 'pass' : 'warn',
+        $hasMain ? '' : __('Wrap primary content in <main>.', 'sage'),
+    );
 
-    $fails = count(array_filter($findings, fn ($f) => $f['status'] === 'fail'));
-    $warns = count(array_filter($findings, fn ($f) => $f['status'] === 'warn'));
+    $fails = count(array_filter($findings, fn($f) => $f['status'] === 'fail'));
+    $warns = count(array_filter($findings, fn($f) => $f['status'] === 'warn'));
 
     return new \WP_REST_Response([
         'ok'       => true,
@@ -247,7 +285,7 @@ function rv_render_grader(): string
 {
     $ep = esc_url(rest_url('rv-tools/v1/grade'));
     ob_start(); ?>
-    <?php echo rv_tool_open('grader', __('Website grader', 'sage'), __('Score any page on the quick wins that matter for getting found.', 'sage')); // phpcs:ignore ?>
+    <?php echo rv_tool_open('grader', __('Website grader', 'sage'), __('Score any page on the quick wins that matter for getting found.', 'sage')); // phpcs:ignore?>
         <form class="rv-tool-form" data-endpoint="<?php echo $ep; ?>">
             <label class="screen-reader-text" for="rv-grader-url"><?php esc_html_e('Website URL', 'sage'); ?></label>
             <input type="url" id="rv-grader-url" name="url" placeholder="https://your-site.com" required />
@@ -262,7 +300,7 @@ function rv_render_accessibility(): string
 {
     $ep = esc_url(rest_url('rv-tools/v1/a11y'));
     ob_start(); ?>
-    <?php echo rv_tool_open('a11y', __('Accessibility checker', 'sage'), __('Catch the common accessibility problems on a page before your visitors do.', 'sage')); // phpcs:ignore ?>
+    <?php echo rv_tool_open('a11y', __('Accessibility checker', 'sage'), __('Catch the common accessibility problems on a page before your visitors do.', 'sage')); // phpcs:ignore?>
         <form class="rv-tool-form" data-endpoint="<?php echo $ep; ?>">
             <label class="screen-reader-text" for="rv-a11y-url"><?php esc_html_e('Website URL', 'sage'); ?></label>
             <input type="url" id="rv-a11y-url" name="url" placeholder="https://your-site.com" required />
@@ -276,7 +314,7 @@ function rv_render_accessibility(): string
 function rv_render_contrast(): string
 {
     ob_start(); ?>
-    <?php echo rv_tool_open('contrast', __('Color contrast checker', 'sage'), __('Check any text/background pair against WCAG AA and AAA.', 'sage')); // phpcs:ignore ?>
+    <?php echo rv_tool_open('contrast', __('Color contrast checker', 'sage'), __('Check any text/background pair against WCAG AA and AAA.', 'sage')); // phpcs:ignore?>
         <div class="rv-tool-form rv-contrast-form">
             <span class="rv-field-inline"><label for="rv-c-fg"><?php esc_html_e('Text', 'sage'); ?></label>
                 <input type="color" id="rv-c-fg" value="#23201B" /><input type="text" id="rv-c-fg-hex" value="#23201B" spellcheck="false" /></span>
@@ -291,7 +329,7 @@ function rv_render_contrast(): string
 function rv_render_estimator(): string
 {
     ob_start(); ?>
-    <?php echo rv_tool_open('estimator', __('Project quote estimator', 'sage'), __('A ballpark range for a new site — not a quote, just a starting point.', 'sage')); // phpcs:ignore ?>
+    <?php echo rv_tool_open('estimator', __('Project quote estimator', 'sage'), __('A ballpark range for a new site — not a quote, just a starting point.', 'sage')); // phpcs:ignore?>
         <div class="rv-tool-form rv-stack">
             <label>Project type
                 <select id="rv-e-type">
@@ -322,7 +360,7 @@ function rv_render_estimator(): string
 function rv_render_calculator(): string
 {
     ob_start(); ?>
-    <?php echo rv_tool_open('calculator', __('Care plan cost calculator', 'sage'), __('Estimate what ongoing care, hosting, and updates would run per month.', 'sage')); // phpcs:ignore ?>
+    <?php echo rv_tool_open('calculator', __('Care plan cost calculator', 'sage'), __('Estimate what ongoing care, hosting, and updates would run per month.', 'sage')); // phpcs:ignore?>
         <div class="rv-tool-form rv-stack">
             <label>Care level
                 <select id="rv-k-tier">

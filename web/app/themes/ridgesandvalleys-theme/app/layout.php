@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Layout controls for pages, posts, and archives.
  *
@@ -74,9 +75,9 @@ function entry_layout(): array
     if (is_singular()) {
         $type = (get_post_type($id) === 'post') ? 'post' : 'page';
 
-        $pageWidth    = $pick((string) get_post_meta($id, '_rv_page_width', true),    (string) get_theme_mod("rv_{$type}_page_width", 'full'),      $widths);
-        $pageAlign    = $pick((string) get_post_meta($id, '_rv_page_align', true),    (string) get_theme_mod("rv_{$type}_page_align", 'center'),    $aligns);
-        $sidebar      = $pick((string) get_post_meta($id, '_rv_layout_sidebar', true),(string) get_theme_mod("rv_{$type}_sidebar", 'none'),         $sides);
+        $pageWidth    = $pick((string) get_post_meta($id, '_rv_page_width', true), (string) get_theme_mod("rv_{$type}_page_width", 'full'), $widths);
+        $pageAlign    = $pick((string) get_post_meta($id, '_rv_page_align', true), (string) get_theme_mod("rv_{$type}_page_align", 'center'), $aligns);
+        $sidebar      = $pick((string) get_post_meta($id, '_rv_layout_sidebar', true), (string) get_theme_mod("rv_{$type}_sidebar", 'none'), $sides);
 
         $hero  = (bool) get_theme_mod("rv_{$type}_hero_default", false);
         $title = get_the_title($id);
@@ -149,20 +150,22 @@ add_action('customize_register', function ($wp_customize) {
         $wp_customize->add_control($id, ['label' => $label, 'section' => 'rv_layout_cs', 'type' => 'select', 'choices' => $choices]);
     };
     $chk = function ($id, $label, $default = false) use ($wp_customize) {
-        $wp_customize->add_setting($id, ['default' => $default, 'sanitize_callback' => function ($v) { return (bool) $v; }]);
+        $wp_customize->add_setting($id, ['default' => $default, 'sanitize_callback' => function ($v) {
+            return (bool) $v;
+        }]);
         $wp_customize->add_control($id, ['label' => $label, 'section' => 'rv_layout_cs', 'type' => 'checkbox']);
     };
 
     foreach (['page' => __('Pages', 'sage'), 'post' => __('Posts', 'sage')] as $t => $tl) {
-        $sel("rv_{$t}_page_width",    sprintf(__('%s: page width', 'sage'), $tl),            'full',   $widths);
-        $sel("rv_{$t}_page_align",    sprintf(__('%s: page alignment', 'sage'), $tl),        'center', $aligns);
-        $sel("rv_{$t}_sidebar",       sprintf(__('%s: sidebar', 'sage'), $tl),               'none',   $sides);
-        $chk("rv_{$t}_hero_default",  sprintf(__('%s: show hero band by default', 'sage'), $tl), false);
+        $sel("rv_{$t}_page_width", sprintf(__('%s: page width', 'sage'), $tl), 'full', $widths);
+        $sel("rv_{$t}_page_align", sprintf(__('%s: page alignment', 'sage'), $tl), 'center', $aligns);
+        $sel("rv_{$t}_sidebar", sprintf(__('%s: sidebar', 'sage'), $tl), 'none', $sides);
+        $chk("rv_{$t}_hero_default", sprintf(__('%s: show hero band by default', 'sage'), $tl), false);
     }
 
-    $sel('rv_archive_page_width', __('Archives: page width', 'sage'),  'full', $widths);
+    $sel('rv_archive_page_width', __('Archives: page width', 'sage'), 'full', $widths);
     $sel('rv_archive_page_align', __('Archives: page alignment', 'sage'), 'center', $aligns);
-    $sel('rv_archive_sidebar',    __('Archives: sidebar', 'sage'),     'none', $sides);
+    $sel('rv_archive_sidebar', __('Archives: sidebar', 'sage'), 'none', $sides);
 
     $wp_customize->add_setting('rv_sidebar_width', ['default' => 300, 'sanitize_callback' => 'absint']);
     $wp_customize->add_control('rv_sidebar_width', [
@@ -198,7 +201,9 @@ function render_layout_box($post): void
     $alignOpts = ['' => __('Default (Customizer)', 'sage')] + layout_aligns();
     $sideOpts  = ['' => __('Default (Customizer)', 'sage')] + layout_sidebars();
 
-    $val = function ($k) use ($post) { return (string) get_post_meta($post->ID, $k, true); };
+    $val = function ($k) use ($post) {
+        return (string) get_post_meta($post->ID, $k, true);
+    };
 
     $field = function ($name, $label, $current, $options) {
         printf('<p style="margin:0 0 .9rem"><label for="%s"><strong>%s</strong></label><br>', esc_attr($name), esc_html($label));
@@ -241,7 +246,7 @@ add_action('save_post', function ($post_id) {
         update_post_meta($post_id, $meta_key, isset($allowed[$v]) ? $v : '');
     };
 
-    $save('rv_page_width',    '_rv_page_width',    $widths);
-    $save('rv_page_align',    '_rv_page_align',    $aligns);
+    $save('rv_page_width', '_rv_page_width', $widths);
+    $save('rv_page_align', '_rv_page_align', $aligns);
     $save('rv_layout_sidebar', '_rv_layout_sidebar', $sides);
 });

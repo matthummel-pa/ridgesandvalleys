@@ -9,8 +9,8 @@ namespace App;
 /**
  * Editorial excerpt length + ellipsis.
  */
-add_filter('excerpt_length', fn () => 28);
-add_filter('excerpt_more', fn () => '&hellip;');
+add_filter('excerpt_length', fn() => 28);
+add_filter('excerpt_more', fn() => '&hellip;');
 
 /**
  * Zero-friction comment spam trap.
@@ -28,7 +28,7 @@ add_filter('preprocess_comment', function ($commentdata) {
         wp_die(
             esc_html__('Your comment looks automated and was not posted. If you are a real person, please go back and submit again without filling the hidden field.', 'sage'),
             esc_html__('Comment blocked', 'sage'),
-            ['response' => 403, 'back_link' => true]
+            ['response' => 403, 'back_link' => true],
         );
     }
 

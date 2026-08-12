@@ -14,7 +14,7 @@ use Roots\Acorn\Application;
 |
 */
 
-if (! file_exists($composer = __DIR__.'/vendor/autoload.php')) {
+if (! file_exists($composer = __DIR__ . '/vendor/autoload.php')) {
     wp_die(__('Error locating autoloader. Please run <code>composer install</code>.', 'sage'));
 }
 
@@ -55,7 +55,7 @@ collect(['setup', 'filters', 'helpers', 'projects', 'contact', 'customizer', 'cu
         if (! locate_template($file = "app/{$file}.php", true, true)) {
             wp_die(
                 /* translators: %s is replaced with the relative file path */
-                sprintf(__('Error locating <code>%s</code> for inclusion.', 'sage'), $file)
+                sprintf(__('Error locating <code>%s</code> for inclusion.', 'sage'), $file),
             );
         }
     });
@@ -82,7 +82,7 @@ add_action('wp_enqueue_scripts', function () {
         'rv-page-sections',
         get_theme_file_uri($cssRel),
         ['rv-enhancements'],
-        file_exists($cssPath) ? (string) filemtime($cssPath) : '1.0.0'
+        file_exists($cssPath) ? (string) filemtime($cssPath) : '1.0.0',
     );
 
     $jsRel  = 'assets/rv-page-sections.js';
@@ -92,11 +92,10 @@ add_action('wp_enqueue_scripts', function () {
         get_theme_file_uri($jsRel),
         [],
         file_exists($jsPath) ? (string) filemtime($jsPath) : '1.0.0',
-        true
+        true,
     );
 }, 21);
 
 add_action('wp_head', function () {
     echo "<script>document.documentElement.classList.add('rv-js');</script>\n"; // phpcs:ignore
 }, 0);
-

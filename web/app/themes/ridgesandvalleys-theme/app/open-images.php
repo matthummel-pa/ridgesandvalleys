@@ -108,7 +108,7 @@ function oi_search(string $q, string $license, string $source, int $page): array
         'page_size' => OI_PAGESIZE,
         'source'    => $source,
         'mature'    => 'false',
-    ], static fn ($v) => $v !== '' && $v !== null);
+    ], static fn($v) => $v !== '' && $v !== null);
     $args = oi_apply_license($license, $args);
 
     $res = wp_remote_get(add_query_arg($args, OI_API), [
@@ -203,7 +203,7 @@ add_action('admin_menu', function () {
         __('Open Images', 'sage'),
         'upload_files',
         'rv-open-images',
-        __NAMESPACE__ . '\\render_open_images_page'
+        __NAMESPACE__ . '\\render_open_images_page',
     );
 });
 
@@ -295,7 +295,7 @@ function render_open_images_page(): void
         echo '<div style="border:1px solid #dcdcde;border-radius:8px;overflow:hidden;background:#fff;display:flex;flex-direction:column">';
         printf(
             '<div style="aspect-ratio:4/3;background:#f0f0f1 center/cover no-repeat url(%s)"></div>',
-            esc_url($thumb)
+            esc_url($thumb),
         );
         echo '<div style="padding:.6rem .7rem;display:flex;flex-direction:column;gap:.35rem;flex:1">';
         printf('<strong style="font-size:.85rem;line-height:1.25;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">%s</strong>', esc_html($ttl));

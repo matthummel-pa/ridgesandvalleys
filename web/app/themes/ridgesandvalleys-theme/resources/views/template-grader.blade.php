@@ -23,9 +23,9 @@
 
   {{-- LIVE GRADER --}}
   <section id="grader" class="rv-shell rv-band">
-    {!! \App\eyebrow(__('Instant report card', 'sage')) !!}
-    <h2 class="rv-section-title">{{ __('Grade any', 'sage') }} <em class="rv-accent">{{ __('website.', 'sage') }}</em></h2>
-    <p class="rv-page-intro">{{ __('A fast, honest read of the signals in your page and its server responses — free, no email, no signup. It complements a hands-on audit rather than replacing it.', 'sage') }}</p>
+    {!! \App\eyebrow(\App\field('scan_eyebrow', __('Instant report card', 'sage'))) !!}
+    <h2 class="rv-section-title">{{ \App\field('scan_title', __('Grade any', 'sage')) }} <em class="rv-accent">{{ \App\field('scan_accent', __('website.', 'sage')) }}</em></h2>
+    <p class="rv-page-intro">{{ \App\field('scan_intro', __('A fast, honest read of the signals in your page and its server responses — free, no email, no signup. It complements a hands-on audit rather than replacing it.', 'sage')) }}</p>
 
     <div class="rv-scan" id="rv-grader" data-endpoint="{{ esc_url(rest_url('rv-tools/v1/audit')) }}" style="margin-top:2rem" aria-label="{{ __('Website grader', 'sage') }}">
       <div class="rv-scan-head">
@@ -48,32 +48,31 @@
         <button type="button" class="rv-btn rv-btn-ghost" id="rv-grade-reset">{{ __('Reset', 'sage') }}</button>
       </div>
     </div>
-    <p class="rv-audit-note">{{ __('An automated read can\'t catch everything a person can. Want a full audit with the fixes done for you?', 'sage') }} <a href="{{ $ctaHref }}">{{ __('Talk to me', 'sage') }}</a>.</p>
+    <p class="rv-audit-note">{{ \App\field('scan_note', __('An automated read can\'t catch everything a person can. Want a full audit with the fixes done for you?', 'sage')) }} <a href="{{ $ctaHref }}">{{ \App\field('scan_note_link', __('Talk to me', 'sage')) }}</a>.</p>
   </section>
 
   {{-- WHAT WE GRADE & WHY --}}
   <section class="rv-band rv-band-alt">
     <div class="rv-shell">
-      {!! \App\eyebrow(__('What the grade covers', 'sage')) !!}
-      <h2 class="rv-section-title">{{ __('Seven areas, and why', 'sage') }} <em class="rv-accent">{{ __('each one', 'sage') }}</em> {{ __('matters.', 'sage') }}</h2>
+      {!! \App\eyebrow(\App\field('areas_eyebrow', __('What the grade covers', 'sage'))) !!}
+      <h2 class="rv-section-title">{{ \App\field('areas_title', __('Seven areas, and why', 'sage')) }} <em class="rv-accent">{{ \App\field('areas_accent', __('each one', 'sage')) }}</em> {{ \App\field('areas_title_end', __('matters.', 'sage')) }}</h2>
       <div class="rv-grid rv-grid-3" style="margin-top:2rem">
-        @php($areas = [
-          [__('SEO — search visibility', 'sage'), __('Titles, meta descriptions, headings, alt text, canonical tags, schema, and whether the page is even indexable.', 'sage'), __('This is how customers find you on Google without paying for ads. Small on-page fixes are often the highest-return work a local site can get.', 'sage')],
-          [__('Page speed', 'sage'), __('Server response time, page weight, compression, caching, request count, and image sizing.', 'sage'), __('Slow pages lose visitors before they ever see your offer, and speed is a direct Google ranking factor — especially on mobile.', 'sage')],
-          [__('Mobile & responsive', 'sage'), __('Viewport, pinch-zoom, responsive images, and whether the layout fits a phone screen.', 'sage'), __('Most local searches happen on a phone. A site that fights the phone is a site that sends customers to the next result.', 'sage')],
-          [__('Readability & content', 'sage'), __('How much real content there is, how clearly it reads, link text quality, and content-to-code ratio.', 'sage'), __('Thin or dense pages don\'t rank and don\'t convert. Clear, useful writing is what earns trust and answers a buyer\'s question.', 'sage')],
-          [__('Security & trust', 'sage'), __('HTTPS, mixed content, HSTS, and the security headers browsers look for.', 'sage'), __('Browsers now label unsafe sites “Not secure.” Trust signals protect both your customers and your reputation.', 'sage')],
-          [__('Technical foundation', 'sage'), __('Doctype, character encoding, language, favicon, and a healthy HTTP response.', 'sage'), __('The quiet fundamentals that keep a site rendering correctly across every browser and device — the things that break silently.', 'sage')],
-          [__('Social & sharing', 'sage'), __('Open Graph tags, a share image, Twitter/X cards, and touch icons.', 'sage'), __('When someone shares your link, these decide whether it looks like a polished preview or a broken, ignorable text link.', 'sage')],
-          [__('Accessibility', 'sage'), __('Covered in depth on its own page — alt text, labels, contrast, keyboard use, and the full WCAG 2.2 AA standard.', 'sage'), __('An accessible site reaches more customers and reduces legal risk. It overlaps heavily with SEO and good UX.', 'sage')],
-          [__('And the human layer', 'sage'), __('Brand fit, message clarity, conversion path, trust, and the dozens of judgment calls no scanner can make.', 'sage'), __('A perfect technical score still loses if the site doesn\'t say the right thing to the right person. That\'s the part I finish by hand.', 'sage')],
-        ])
-        @foreach ($areas as $a)
+        @foreach (\App\field_rows('areas_items', [
+          ['title' => __('SEO — search visibility', 'sage'), 'text' => __('Titles, meta descriptions, headings, alt text, canonical tags, schema, and whether the page is even indexable.', 'sage'), 'why' => __('This is how customers find you on Google without paying for ads. Small on-page fixes are often the highest-return work a local site can get.', 'sage')],
+          ['title' => __('Page speed', 'sage'), 'text' => __('Server response time, page weight, compression, caching, request count, and image sizing.', 'sage'), 'why' => __('Slow pages lose visitors before they ever see your offer, and speed is a direct Google ranking factor — especially on mobile.', 'sage')],
+          ['title' => __('Mobile & responsive', 'sage'), 'text' => __('Viewport, pinch-zoom, responsive images, and whether the layout fits a phone screen.', 'sage'), 'why' => __('Most local searches happen on a phone. A site that fights the phone is a site that sends customers to the next result.', 'sage')],
+          ['title' => __('Readability & content', 'sage'), 'text' => __('How much real content there is, how clearly it reads, link text quality, and content-to-code ratio.', 'sage'), 'why' => __('Thin or dense pages don\'t rank and don\'t convert. Clear, useful writing is what earns trust and answers a buyer\'s question.', 'sage')],
+          ['title' => __('Security & trust', 'sage'), 'text' => __('HTTPS, mixed content, HSTS, and the security headers browsers look for.', 'sage'), 'why' => __('Browsers now label unsafe sites “Not secure.” Trust signals protect both your customers and your reputation.', 'sage')],
+          ['title' => __('Technical foundation', 'sage'), 'text' => __('Doctype, character encoding, language, favicon, and a healthy HTTP response.', 'sage'), 'why' => __('The quiet fundamentals that keep a site rendering correctly across every browser and device — the things that break silently.', 'sage')],
+          ['title' => __('Social & sharing', 'sage'), 'text' => __('Open Graph tags, a share image, Twitter/X cards, and touch icons.', 'sage'), 'why' => __('When someone shares your link, these decide whether it looks like a polished preview or a broken, ignorable text link.', 'sage')],
+          ['title' => __('Accessibility', 'sage'), 'text' => __('Covered in depth on its own page — alt text, labels, contrast, keyboard use, and the full WCAG 2.2 AA standard.', 'sage'), 'why' => __('An accessible site reaches more customers and reduces legal risk. It overlaps heavily with SEO and good UX.', 'sage')],
+          ['title' => __('And the human layer', 'sage'), 'text' => __('Brand fit, message clarity, conversion path, trust, and the dozens of judgment calls no scanner can make.', 'sage'), 'why' => __('A perfect technical score still loses if the site doesn\'t say the right thing to the right person. That\'s the part I finish by hand.', 'sage')],
+        ]) as $a)
           <article class="rv-card rv-feature">
             <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-            <h3 class="rv-feature-title">{{ $a[0] }}</h3>
-            <p class="rv-feature-text" style="margin-bottom:.6rem">{{ $a[1] }}</p>
-            <p class="rv-feature-text" style="color:var(--color-muted);font-size:.9rem"><b style="color:var(--color-body)">{{ __('Why it matters:', 'sage') }}</b> {{ $a[2] }}</p>
+            <h3 class="rv-feature-title">{{ $a['title'] ?? '' }}</h3>
+            <p class="rv-feature-text" style="margin-bottom:.6rem">{{ $a['text'] ?? '' }}</p>
+            <p class="rv-feature-text" style="color:var(--color-muted);font-size:.9rem"><b style="color:var(--color-body)">{{ __('Why it matters:', 'sage') }}</b> {{ $a['why'] ?? '' }}</p>
           </article>
         @endforeach
       </div>
@@ -82,12 +81,16 @@
 
   {{-- HOW TO READ IT --}}
   <section class="rv-shell rv-band">
-    {!! \App\eyebrow(__('Reading your report', 'sage')) !!}
-    <h2 class="rv-section-title">{{ __('A score is a', 'sage') }} <em class="rv-accent">{{ __('starting point,', 'sage') }}</em> {{ __('not a verdict.', 'sage') }}</h2>
+    {!! \App\eyebrow(\App\field('read_eyebrow', __('Reading your report', 'sage'))) !!}
+    <h2 class="rv-section-title">{{ \App\field('read_title', __('A score is a', 'sage')) }} <em class="rv-accent">{{ \App\field('read_accent', __('starting point,', 'sage')) }}</em> {{ \App\field('read_title_end', __('not a verdict.', 'sage')) }}</h2>
     <div class="rv-grid rv-grid-3" style="margin-top:2rem">
-      <article class="rv-card rv-feature"><span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span><h3 class="rv-feature-title">{{ __('Green, amber, red', 'sage') }}</h3><p class="rv-feature-text">{{ __('Each check passes, needs a look, or fails — with the exact value found (your title length, load time, image count) so nothing is a mystery.', 'sage') }}</p></article>
-      <article class="rv-card rv-feature"><span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span><h3 class="rv-feature-title">{{ __('Why, in plain English', 'sage') }}</h3><p class="rv-feature-text">{{ __('Every item explains what it means for your business — not jargon, but the cost or opportunity behind the check.', 'sage') }}</p></article>
-      <article class="rv-card rv-feature"><span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span><h3 class="rv-feature-title">{{ __('Automated ≠ complete', 'sage') }}</h3><p class="rv-feature-text">{{ __('This reads signals in your code and server responses. It won\'t judge your design, copy, or strategy — that\'s where a person comes in.', 'sage') }}</p></article>
+      @foreach (\App\field_rows('read_items', [
+        ['title' => __('Green, amber, red', 'sage'), 'text' => __('Each check passes, needs a look, or fails — with the exact value found (your title length, load time, image count) so nothing is a mystery.', 'sage')],
+        ['title' => __('Why, in plain English', 'sage'), 'text' => __('Every item explains what it means for your business — not jargon, but the cost or opportunity behind the check.', 'sage')],
+        ['title' => __('Automated ≠ complete', 'sage'), 'text' => __('This reads signals in your code and server responses. It won\'t judge your design, copy, or strategy — that\'s where a person comes in.', 'sage')],
+      ]) as $r)
+        <article class="rv-card rv-feature"><span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span><h3 class="rv-feature-title">{{ $r['title'] ?? '' }}</h3><p class="rv-feature-text">{{ $r['text'] ?? '' }}</p></article>
+      @endforeach
     </div>
   </section>
 

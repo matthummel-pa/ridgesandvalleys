@@ -18,7 +18,7 @@ add_action('add_meta_boxes', function () {
         __NAMESPACE__ . '\\render_post_options_box',
         'post',
         'side',
-        'default'
+        'default',
     );
 });
 
@@ -52,7 +52,7 @@ add_action('save_post_post', function ($post_id) {
         update_post_meta(
             $post_id,
             'rv_f_post_summary',
-            wp_kses_post(wp_unslash($_POST['rv_f_post_summary']))
+            wp_kses_post(wp_unslash($_POST['rv_f_post_summary'])),
         );
     }
 });

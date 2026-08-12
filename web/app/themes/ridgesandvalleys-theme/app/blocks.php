@@ -47,7 +47,7 @@ function render_ridgeline_cta($attr): string
 
     ob_start();
     ?>
-    <section <?php echo $wrapper; // phpcs:ignore ?>>
+    <section <?php echo $wrapper; // phpcs:ignore?>>
         <div class="rv-shell rv-cta-inner">
             <?php if ($heading) : ?>
                 <h2 class="rv-cta-title"><?php echo esc_html($heading); ?></h2>

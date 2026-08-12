@@ -45,7 +45,7 @@ add_action('wp_enqueue_scripts', function () {
         'rv-enhancements',
         get_theme_file_uri($rel),
         [],
-        file_exists($path) ? (string) filemtime($path) : '1.0.0'
+        file_exists($path) ? (string) filemtime($path) : '1.0.0',
     );
 }, 20);
 
@@ -55,7 +55,7 @@ add_action('wp_enqueue_scripts', function () {
 add_action('wp_head', function () {
     printf(
         '<link rel="preload" as="font" type="font/woff2" crossorigin href="%s/Outfit-Variable.woff2">' . "\n",
-        esc_url(get_theme_file_uri('public/fonts'))
+        esc_url(get_theme_file_uri('public/fonts')),
     );
     echo '<style id="rv-fonts">' . rv_font_face_css() . "</style>\n"; // phpcs:ignore
 }, 1);
@@ -295,7 +295,7 @@ CSS;
 add_action('wp_head', function () {
     printf(
         '<link rel="preload" as="font" type="font/woff2" crossorigin href="%s/YoungSerif-Regular.woff2">' . "\n",
-        esc_url(get_theme_file_uri('public/fonts'))
+        esc_url(get_theme_file_uri('public/fonts')),
     );
 }, 1);
 
