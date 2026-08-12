@@ -12,6 +12,33 @@ WP_URL="http://localhost:8080"
 DATADIR=/var/lib/mysql
 SOCK=/run/mysqld/mysqld.sock
 
+# --- 0. System toolchain (idempotent) ---------------------------------------
+# Runs on the default Cloud Agent image, which already ships Node/npm but not
+# the PHP/MariaDB stack this Bedrock project needs. Guard each install so the
+# script is a no-op once the tools are present.
+if ! command -v php >/dev/null 2>&1; then
+  echo "Installing PHP 8.3 + MariaDB and extensions."
+  sudo apt-get update -y
+  sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
+    php8.3-cli php8.3-common php8.3-mysql php8.3-xml php8.3-curl php8.3-mbstring \
+    php8.3-zip php8.3-gd php8.3-intl php8.3-bcmath php8.3-exif php8.3-fileinfo \
+    php8.3-tokenizer mariadb-server mariadb-client unzip curl
+fi
+
+if ! command -v composer >/dev/null 2>&1; then
+  echo "Installing Composer."
+  php -r "copy('https://getcomposer.org/installer', '/tmp/composer-setup.php');"
+  sudo php /tmp/composer-setup.php --quiet --install-dir=/usr/local/bin --filename=composer
+  rm -f /tmp/composer-setup.php
+fi
+
+if ! command -v wp >/dev/null 2>&1; then
+  echo "Installing WP-CLI."
+  curl -fsSL -o /tmp/wp-cli.phar https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
+  chmod +x /tmp/wp-cli.phar
+  sudo mv /tmp/wp-cli.phar /usr/local/bin/wp
+fi
+
 # --- 1. Bring up a reliable MariaDB -----------------------------------------
 # A datadir captured while the server was running (e.g. from a VM snapshot)
 # leaves InnoDB needing crash recovery, which hangs in the Cloud Agent
