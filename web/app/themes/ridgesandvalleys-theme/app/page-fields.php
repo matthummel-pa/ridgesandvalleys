@@ -267,6 +267,7 @@ function page_field_map(): array
                 ['pkg4_price', __('Package 4 · price', 'sage'), 'text', '$179'],
                 ['pkg4_desc', __('Package 4 · description', 'sage'), 'textarea', __('Updates, backups, security, small changes, reporting.', 'sage')],
                 ['pkg_cta', __('“Compare all services” button label', 'sage'), 'text', __('Compare all services', 'sage')],
+                ['pkg_cta_url', __('“Compare all services” button link', 'sage'), 'text', '/gettysburg-web-design-services/'],
             ],
             __('Rooted section', 'sage') => [
                 ['rooted_eyebrow', __('Eyebrow', 'sage'), 'text', __('Rooted in the ridges & valleys', 'sage')],
@@ -289,7 +290,6 @@ function page_field_map(): array
                 ['hero_btn1_url', __('Hero button 1 link (“Plan my site”)', 'sage'), 'url', __('e.g. /contact/', 'sage')],
                 ['hero_btn2_url', __('Hero button 2 link (“See the process”)', 'sage'), 'url', __('e.g. /services/', 'sage')],
                 ['cta_button_url', __('Closing CTA button link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
-                ['pkg_cta_url', __('“Compare all services” button link', 'sage'), 'url', __('e.g. /services/', 'sage')],
             ],
             __('Hero trust line', 'sage') => [
                 ['hero_trust', __('Trust line under the buttons', 'sage'), 'text', __('15+ yrs building for the web · Accessibility-first · WordPress · Local support', 'sage')],
