@@ -464,11 +464,26 @@ function page_field_map(): array
                 __('keep.', 'sage'),
                 __('Every package leads with one outcome — more calls, more bookings, easier-to-find hours — not a feature list. Fixed scope, honest pricing, no jargon.', 'sage')
             ),
+            __('Before pricing', 'sage') => [
+                ['svcvalue_eyebrow', __('Eyebrow', 'sage'), 'text', __('Before the pricing', 'sage')],
+                ['svcvalue_title', __('Heading (before accent)', 'sage'), 'text', __('What you\'re really', 'sage')],
+                ['svcvalue_accent', __('Accent phrase', 'sage'), 'text', __('paying for.', 'sage')],
+                ['svcvalue_intro', __('Intro paragraph', 'sage'), 'textarea', __('Every package below buys the same three things, whatever your budget. The price changes with scope — the standards never do.', 'sage')],
+                ['svcvalue_items', __('Value cards', 'sage'), 'repeater', [
+                    ['title' => __('A site that gets found', 'sage'), 'text' => __('Local SEO and a properly set-up Google Business Profile, baked in — so neighbors and visitors in Adams County actually find you.', 'sage')],
+                    ['title' => __('A site that earns trust', 'sage'), 'text' => __('Fast, mobile-first, accessible pages with clear copy and real photos — the things that turn a first-time visitor into a phone call.', 'sage')],
+                    ['title' => __('A site you own', 'sage'), 'text' => __('Your domain, your hosting, your content — plus training so you can run it yourself. No lock-in, no ransom.', 'sage')],
+                ], [
+                    ['title', __('Card title', 'sage'), 'text'],
+                    ['text', __('Card text', 'sage'), 'textarea'],
+                ]],
+            ],
             __('Packages', 'sage') => [
                 ['plans_eyebrow', __('Eyebrow', 'sage'), 'text', __('Simple, fixed pricing', 'sage')],
                 ['plans_title', __('Heading (before accent)', 'sage'), 'text', __('Pick the plan that fits', 'sage')],
                 ['plans_accent', __('Accent phrase', 'sage'), 'text', __('where you are.', 'sage')],
                 ['plans_intro', __('Intro paragraph', 'sage'), 'textarea', __('Every package is one fixed price, agreed up front — no hourly meter, no surprise invoices. Start with a rescue, launch a full local site, or keep things growing after. Not sure which fits? Tell me about your business and I\'ll point you to the right one.', 'sage')],
+                ['packages_btn', __('Package button label', 'sage'), 'text', __('Get a quote', 'sage')],
                 ['packages_items', __('Package cards', 'sage'), 'repeater', [
                     ['name' => __('Website Rescue', 'sage'), 'price' => __('$950–$1,500', 'sage'), 'flag' => '', 'desc' => __('For a site that\'s mostly there. Audit, content cleanup, broken links, mobile fixes, speed and SEO improvements.', 'sage'), 'features' => [__('Speed + mobile fixes', 'sage'), __('Refreshed design + content', 'sage'), __('Accessibility + SEO cleanup', 'sage')]],
                     ['name' => __('Local Launch', 'sage'), 'price' => __('$2,750–$3,750', 'sage'), 'flag' => __('Most popular', 'sage'), 'desc' => __('Up to 5 pages, contact form, local SEO foundations, analytics, accessibility review, one revision.', 'sage'), 'features' => [__('Custom design + copy', 'sage'), __('Google Business Profile setup', 'sage'), __('Launch in 7–10 days', 'sage')]],

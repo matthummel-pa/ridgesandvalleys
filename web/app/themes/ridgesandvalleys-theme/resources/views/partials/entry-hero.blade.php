@@ -13,7 +13,7 @@
     @endif
     <div class="rv-shell rv-hero-inner">
       <h1 class="rv-hero-title">{!! wp_kses_post($rvHero['hero_title']) !!}</h1>
-      @if (trim($rvHero['hero_sub']) !== '')
+      @if (trim($rvHero['hero_sub'] ?? '') !== '')
         <p class="rv-hero-sub">{{ $rvHero['hero_sub'] }}</p>
       @endif
     </div>

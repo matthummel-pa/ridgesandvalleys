@@ -20,6 +20,26 @@
     </div>
   </section>
 
+  {{-- WHAT YOU'RE REALLY PAYING FOR (value pillars, above the pricing) --}}
+  <section class="rv-shell rv-band">
+    {!! \App\eyebrow(\App\field('svcvalue_eyebrow', __('Before the pricing', 'sage'))) !!}
+    <h2 class="rv-section-title">{{ \App\field('svcvalue_title', __('What you\'re really', 'sage')) }} <em class="rv-accent">{{ \App\field('svcvalue_accent', __('paying for.', 'sage')) }}</em></h2>
+    <p class="rv-page-intro">{{ \App\field('svcvalue_intro', __('Every package below buys the same three things, whatever your budget. The price changes with scope — the standards never do.', 'sage')) }}</p>
+    <div class="rv-grid rv-grid-3" style="margin-top:2rem">
+      @foreach (\App\field_rows('svcvalue_items', [
+        ['title' => __('A site that gets found', 'sage'), 'text' => __('Local SEO and a properly set-up Google Business Profile, baked in — so neighbors and visitors in Adams County actually find you.', 'sage')],
+        ['title' => __('A site that earns trust', 'sage'), 'text' => __('Fast, mobile-first, accessible pages with clear copy and real photos — the things that turn a first-time visitor into a phone call.', 'sage')],
+        ['title' => __('A site you own', 'sage'), 'text' => __('Your domain, your hosting, your content — plus training so you can run it yourself. No lock-in, no ransom.', 'sage')],
+      ]) as $v)
+        <article class="rv-card rv-feature">
+          <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
+          <h3 class="rv-feature-title">{{ $v['title'] ?? '' }}</h3>
+          <p class="rv-feature-text">{{ $v['text'] ?? '' }}</p>
+        </article>
+      @endforeach
+    </div>
+  </section>
+
   {{-- PACKAGES --}}
   <section id="packages" class="rv-shell rv-band" style="scroll-margin-top:6rem">
     <div class="rv-svc-plans-head">
@@ -45,7 +65,7 @@
             <ul class="rv-service-list">
               @foreach (\App\lines($s['features'] ?? []) as $item)<li>{{ $item }}</li>@endforeach
             </ul>
-            <a class="rv-btn {{ $isFeatured ? 'rv-btn-primary' : 'rv-btn-ghost' }} rv-plan-btn" href="{{ $ctaHref }}">{{ __('Get a quote', 'sage') }}</a>
+            <a class="rv-btn {{ $isFeatured ? 'rv-btn-primary' : 'rv-btn-ghost' }} rv-plan-btn" href="{{ $ctaHref }}">{{ \App\field('packages_btn', __('Get a quote', 'sage')) }}</a>
           </div>
         </article>
       @endforeach
