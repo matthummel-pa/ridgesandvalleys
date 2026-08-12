@@ -15,10 +15,11 @@ if [ ! -d "${DATADIR}/mysql" ]; then
   sudo mariadb-install-db --user=mysql --datadir="${DATADIR}" >/dev/null 2>&1 || true
 fi
 
-# Start the daemon only if it is not already answering.
+# Start the daemon only if it is not already answering. The launch and its
+# log redirect both run under sudo so root (not the calling user) opens the
+# log file in /var/log.
 if ! sudo mysqladmin --socket="${SOCK}" ping >/dev/null 2>&1; then
-  sudo setsid mariadbd --user=mysql --datadir="${DATADIR}" --socket="${SOCK}" \
-    </dev/null >"${LOG}" 2>&1 &
+  sudo sh -c "setsid mariadbd --user=mysql --datadir='${DATADIR}' --socket='${SOCK}' </dev/null >'${LOG}' 2>&1 &"
   for _ in $(seq 1 60); do
     if sudo mysqladmin --socket="${SOCK}" ping >/dev/null 2>&1; then
       break
