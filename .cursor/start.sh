@@ -42,7 +42,8 @@ for _ in $(seq 1 90); do
   sleep 1
 done
 
-# Never came up — surface the daemon log so the failure is diagnosable.
-echo "ERROR: MariaDB did not become ready in time. Recent log:" >&2
-sudo tail -n 60 "${LOG}" >&2 || true
+# Never came up — surface the daemon log (most-recent line first so the
+# failure point survives any log truncation) so it is diagnosable.
+echo "ERROR: MariaDB did not become ready in time. Recent log (newest first):" >&2
+sudo tail -n 40 "${LOG}" 2>/dev/null | tac >&2 || true
 exit 1
