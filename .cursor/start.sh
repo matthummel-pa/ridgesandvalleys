@@ -28,7 +28,10 @@ fi
 sudo chown -R mysql:mysql "${DATADIR}"
 
 # Launch under sudo so root (not the calling user) opens the log in /var/log.
-sudo sh -c "setsid mariadbd --user=mysql --datadir='${DATADIR}' --socket='${SOCK}' </dev/null >'${LOG}' 2>&1 &"
+# --innodb-use-native-aio=0 disables io_uring/native AIO: the Cloud Agent
+# sandbox blocks io_uring syscalls, which otherwise hangs InnoDB crash
+# recovery on startup.
+sudo sh -c "setsid mariadbd --user=mysql --datadir='${DATADIR}' --socket='${SOCK}' --innodb-use-native-aio=0 </dev/null >'${LOG}' 2>&1 &"
 
 # Wait for readiness.
 for _ in $(seq 1 90); do
