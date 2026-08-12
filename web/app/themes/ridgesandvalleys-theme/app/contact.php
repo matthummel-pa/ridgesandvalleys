@@ -59,7 +59,7 @@ function contact_fields(?int $post_id = null): array
             $choices = strip_field_markers((string) $choices);
             $choices = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $choices))));
         }
-        $choices = array_map(fn ($c) => strip_field_markers((string) $c), $choices);
+        $choices = array_map(fn($c) => strip_field_markers((string) $c), $choices);
         $width = strip_field_markers((string) ($row['width'] ?? 'full'));
         if (! in_array($width, ['full', 'half', 'third'], true)) {
             $width = 'full';
@@ -161,8 +161,8 @@ add_action('init', function () {
 
     $redirect = wp_get_referer() ?: home_url('/');
 
-    if (! isset($_POST['rv_contact_nonce']) ||
-        ! wp_verify_nonce(sanitize_key($_POST['rv_contact_nonce']), 'rv_contact')) {
+    if (! isset($_POST['rv_contact_nonce'])
+        || ! wp_verify_nonce(sanitize_key($_POST['rv_contact_nonce']), 'rv_contact')) {
         wp_safe_redirect(add_query_arg('contact', 'error', $redirect));
         exit;
     }
@@ -367,7 +367,7 @@ function contact_form(?int $post_id = null): void
         '<form class="%s" method="post" action="%s" aria-label="%s" novalidate>',
         esc_attr($form_class),
         esc_url(home_url(add_query_arg([]))),
-        esc_attr__('Contact form', 'sage')
+        esc_attr__('Contact form', 'sage'),
     );
     wp_nonce_field('rv_contact', 'rv_contact_nonce');
     printf('<input type="hidden" name="rv_form_page" value="%d">', (int) $post_id);
@@ -395,7 +395,7 @@ function contact_form(?int $post_id = null): void
                 esc_attr($id),
                 $reqAttr . $reqAria,
                 esc_html($f['label']),
-                $reqMark // phpcs:ignore
+                $reqMark, // phpcs:ignore
             );
             echo '</div>';
             continue;
@@ -410,7 +410,7 @@ function contact_form(?int $post_id = null): void
                     '<textarea id="%1$s" name="%1$s" rows="6"%2$s placeholder="%3$s"></textarea>',
                     esc_attr($id),
                     $reqAttr . $reqAria,
-                    esc_attr($ph)
+                    esc_attr($ph),
                 );
                 break;
             case 'select':
@@ -429,7 +429,7 @@ function contact_form(?int $post_id = null): void
                     $reqAttr . $reqAria,
                     $auto,
                     contact_inputmode($f['type']),
-                    esc_attr($ph)
+                    esc_attr($ph),
                 );
         }
 
@@ -445,7 +445,7 @@ function contact_form(?int $post_id = null): void
             '<label class="rv-ff-checkline"><input type="checkbox" name="rv_consent" value="1"%1$s> <span>%2$s%3$s</span></label>',
             $consent_req ? ' required aria-required="true"' : '',
             wp_kses_post($consent_text), // phpcs:ignore
-            $consent_req ? ' <span class="rv-req" aria-hidden="true">*</span>' : ''
+            $consent_req ? ' <span class="rv-req" aria-hidden="true">*</span>' : '',
         );
         echo '</div>';
     }
@@ -468,7 +468,7 @@ function contact_form(?int $post_id = null): void
     printf(
         '<button type="submit" name="rv_contact_submit" value="1" class="rv-btn rv-btn-primary%s">%s</button>',
         $btn_full ? ' rv-ff-btn--full' : '',
-        $btn_inner // phpcs:ignore -- icon() is a trusted whitelisted SVG; label is escaped above
+        $btn_inner, // phpcs:ignore -- icon() is a trusted whitelisted SVG; label is escaped above
     );
     echo '</div>';
 

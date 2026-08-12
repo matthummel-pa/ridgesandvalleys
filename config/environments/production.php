@@ -1,4 +1,5 @@
 <?php
+
 /**
  * Production configuration — applied when WP_ENV=production.
  */

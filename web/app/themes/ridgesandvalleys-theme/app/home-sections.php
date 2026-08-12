@@ -54,7 +54,7 @@ function home_section_order(): array
     $saved = $pid ? (string) get_post_meta($pid, 'rv_home_order', true) : '';
     $order = array_values(array_intersect(
         array_filter(array_map('trim', explode(',', $saved))),
-        $all
+        $all,
     ));
     foreach ($all as $k) {
         if (! in_array($k, $order, true)) {
@@ -78,7 +78,7 @@ function home_sections(): array
     $hidden = home_hidden_sections();
     return array_values(array_filter(
         home_section_order(),
-        fn ($k) => ! in_array($k, $hidden, true)
+        fn($k) => ! in_array($k, $hidden, true),
     ));
 }
 
@@ -127,7 +127,7 @@ add_action('add_meta_boxes_page', function ($post) {
         __NAMESPACE__ . '\\home_layout_box',
         'page',
         'normal',
-        'high'
+        'high',
     );
 });
 
@@ -225,7 +225,7 @@ function home_layout_box($post): void
               'credit'     => $rooted_credit,
           ],
       ];
-      foreach ($imgs as $name => $cfg) : ?>
+    foreach ($imgs as $name => $cfg) : ?>
         <div class="rv-hl-img" data-img="<?php echo esc_attr($name); ?>">
           <h4><?php echo esc_html($cfg['label']); ?></h4>
           <img class="rv-hl-thumb" src="<?php echo esc_url($cfg['value']); ?>" alt="">
@@ -360,7 +360,7 @@ add_action('save_post_page', function ($post_id) {
     $posted = isset($_POST['rv_home_order']) ? (string) wp_unslash($_POST['rv_home_order']) : '';
     $order  = array_values(array_intersect(
         array_filter(array_map('trim', explode(',', $posted))),
-        $all
+        $all,
     ));
     foreach ($all as $k) {
         if (! in_array($k, $order, true)) {

@@ -101,7 +101,7 @@ add_action('admin_menu', function () {
         __('Update Theme', 'sage'),
         'update_themes',
         'rv-theme-update',
-        __NAMESPACE__ . '\\render_theme_updater_page'
+        __NAMESPACE__ . '\\render_theme_updater_page',
     );
 });
 
@@ -154,7 +154,7 @@ function render_theme_updater_page(): void
             esc_html($run['event']),
             $when,
             esc_url($run['html_url']),
-            esc_html__('view run on GitHub', 'sage')
+            esc_html__('view run on GitHub', 'sage'),
         );
     }
 
@@ -164,7 +164,7 @@ function render_theme_updater_page(): void
         echo '<div class="notice notice-info inline"><p>' . sprintf(
             /* translators: %s: URL of Theme APIs page. */
             wp_kses_post(__('To enable one-click updates, add a GitHub token under <strong>GitHub</strong> on the <a href="%s">Theme APIs</a> page (or define <code>RV_INTEGRATION_GITHUB_TOKEN</code> in wp-config.php).', 'sage')),
-            esc_url($apisUrl)
+            esc_url($apisUrl),
         ) . '</p></div>';
         echo '<h2>' . esc_html__('Token setup (one time)', 'sage') . '</h2>';
         echo '<ol style="max-width:70ch">';
@@ -177,7 +177,7 @@ function render_theme_updater_page(): void
         wp_nonce_field('rv_theme_update', 'rv_updater_nonce');
         printf(
             '<p><button type="submit" class="button button-primary button-hero">%1$s</button></p>',
-            esc_html__('Update theme from GitHub', 'sage')
+            esc_html__('Update theme from GitHub', 'sage'),
         );
         printf(
             '<p class="description">%s</p>',
@@ -186,8 +186,8 @@ function render_theme_updater_page(): void
                 __('Deploys %1$s@%2$s via %3$s. Anyone can also trigger this by pushing to the branch.', 'sage'),
                 $r['owner'] . '/' . $r['repo'],
                 $r['ref'],
-                $r['workflow']
-            ))
+                $r['workflow'],
+            )),
         );
         echo '</form>';
         echo '<p style="margin-top:1rem"><a class="button" href="' . esc_url(admin_url('themes.php?page=rv-theme-update')) . '">' . esc_html__('Refresh status', 'sage') . '</a></p>';

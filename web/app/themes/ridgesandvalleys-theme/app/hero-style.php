@@ -61,7 +61,7 @@ function hero_css_size(string $v): string
 function hero_css_spacing(string $v): string
 {
     $v = trim($v);
-    if ($v === '' ) {
+    if ($v === '') {
         return '';
     }
     if ($v === 'normal' || preg_match('/^-?\d*\.?\d+(px|rem|em)$/i', $v)) {

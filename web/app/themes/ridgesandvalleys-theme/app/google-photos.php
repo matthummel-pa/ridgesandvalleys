@@ -309,7 +309,7 @@ add_action('admin_menu', function () {
         __('Google Photos', 'sage'),
         'upload_files',
         'rv-google-photos',
-        __NAMESPACE__ . '\\render_google_photos_page'
+        __NAMESPACE__ . '\\render_google_photos_page',
     );
 });
 
@@ -349,7 +349,7 @@ function render_google_photos_page(): void
                         /* translators: 1: imported count, 2: skipped count. */
                         __('Imported %1$d photo(s) into your Media Library. Skipped %2$d (videos or errors).', 'sage'),
                         (int) $r['imported'],
-                        (int) $r['skipped']
+                        (int) $r['skipped'],
                     )];
                 }
             }
@@ -387,7 +387,7 @@ function render_google_photos_page(): void
         echo '<div class="notice notice-info inline"><p>' . sprintf(
             /* translators: %s: Theme APIs URL. */
             wp_kses_post(__('Add your Google OAuth <strong>Client ID</strong> and <strong>secret</strong> under “Google Photos” on the <a href="%s">Theme APIs</a> page to get started.', 'sage')),
-            esc_url($apisUrl)
+            esc_url($apisUrl),
         ) . '</p></div>';
         echo '<h2>' . esc_html__('One-time setup', 'sage') . '</h2>';
         echo '<ol style="max-width:72ch">';

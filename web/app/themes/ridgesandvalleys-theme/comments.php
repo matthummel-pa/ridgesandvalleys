@@ -37,10 +37,10 @@ $rv_req_mark  = $rv_require ? ' <span class="rvc-req" aria-hidden="true">*</span
                     printf(
                         /* translators: %s: number of comments. */
                         esc_html__('%s responses', 'sage'),
-                        '<span class="rv-comments-count">' . esc_html(number_format_i18n($rv_count)) . '</span>'
+                        '<span class="rv-comments-count">' . esc_html(number_format_i18n($rv_count)) . '</span>',
                     );
                 }
-                ?>
+?>
             </h2>
 
             <?php if ($rv_count > 1) : ?>
@@ -60,7 +60,7 @@ $rv_req_mark  = $rv_require ? ' <span class="rvc-req" aria-hidden="true">*</span
                 'short_ping'  => true,
                 'reply_text'  => __('Reply', 'sage'),
             ]);
-            ?>
+?>
         </ol>
 
         <?php
@@ -70,7 +70,7 @@ $rv_req_mark  = $rv_require ? ' <span class="rvc-req" aria-hidden="true">*</span
             'screen_reader_text' => __('Comments navigation', 'sage'),
             'class'              => 'rv-comments-pagination',
         ]);
-        ?>
+?>
     <?php endif; ?>
 
     <?php if (! comments_open() && $rv_count > 0) : ?>
@@ -145,7 +145,7 @@ $rv_req_mark  = $rv_require ? ' <span class="rvc-req" aria-hidden="true">*</span
             'comment_field'        => $rv_comment_field,
         ]);
     endif;
-    ?>
+?>
 </section>
 
 <script>

@@ -121,12 +121,23 @@ function rv_rest_audit(\WP_REST_Request $req)
 
     $imgs = $dom->getElementsByTagName('img');
     $imgTotal = $imgs->length;
-    $imgAlt = 0; $imgLazy = 0; $imgDims = 0; $imgSrcset = 0;
+    $imgAlt = 0;
+    $imgLazy = 0;
+    $imgDims = 0;
+    $imgSrcset = 0;
     foreach ($imgs as $img) {
-        if ($img->hasAttribute('alt') && trim($img->getAttribute('alt')) !== '') $imgAlt++;
-        if (strtolower($img->getAttribute('loading')) === 'lazy') $imgLazy++;
-        if ($img->hasAttribute('width') && $img->hasAttribute('height')) $imgDims++;
-        if ($img->hasAttribute('srcset')) $imgSrcset++;
+        if ($img->hasAttribute('alt') && trim($img->getAttribute('alt')) !== '') {
+            $imgAlt++;
+        }
+        if (strtolower($img->getAttribute('loading')) === 'lazy') {
+            $imgLazy++;
+        }
+        if ($img->hasAttribute('width') && $img->hasAttribute('height')) {
+            $imgDims++;
+        }
+        if ($img->hasAttribute('srcset')) {
+            $imgSrcset++;
+        }
     }
 
     $viewportNode = $xp->query('//meta[@name="viewport"]/@content')->item(0);
@@ -143,7 +154,9 @@ function rv_rest_audit(\WP_REST_Request $req)
     $jsonld    = $xp->query('//script[@type="application/ld+json"]')->length;
     $robotsNoindex = false;
     foreach ($xp->query('//meta[@name="robots"]/@content') as $r) {
-        if (stripos($r->nodeValue, 'noindex') !== false) $robotsNoindex = true;
+        if (stripos($r->nodeValue, 'noindex') !== false) {
+            $robotsNoindex = true;
+        }
     }
     $lang    = $dom->documentElement && $dom->documentElement->hasAttribute('lang') && trim($dom->documentElement->getAttribute('lang')) !== '';
     $charset = $xp->query('//meta[@charset]')->length > 0 || $xp->query('//meta[translate(@http-equiv,"CT","ct")="content-type"]')->length > 0;
@@ -159,7 +172,9 @@ function rv_rest_audit(\WP_REST_Request $req)
     $vague = 0;
     foreach ($dom->getElementsByTagName('a') as $a) {
         $t = strtolower(trim($a->textContent));
-        if (in_array($t, ['click here', 'here', 'read more', 'more', 'link', 'this'], true)) $vague++;
+        if (in_array($t, ['click here', 'here', 'read more', 'more', 'link', 'this'], true)) {
+            $vague++;
+        }
     }
 
     // headers
@@ -190,7 +205,9 @@ function rv_rest_audit(\WP_REST_Request $req)
     $sc = max(1, count($sample));
     $sentences = max(1, (int) preg_match_all('/[.!?]+/', implode(' ', $sample)));
     $syl = 0;
-    foreach ($sample as $w) { $syl += grader_syllables($w); }
+    foreach ($sample as $w) {
+        $syl += grader_syllables($w);
+    }
     $flesch = 206.835 - 1.015 * ($sc / $sentences) - 84.6 * ($syl / $sc);
     $flesch = max(0, min(100, round($flesch)));
     $codeRatio = strlen($html) > 0 ? round(strlen($textAll) / strlen($html) * 100) : 0;
@@ -209,150 +226,352 @@ function rv_rest_audit(\WP_REST_Request $req)
 
     /* --- SEO --- */
     $cat('seo', 'SEO', __('Search visibility', 'sage'), __('Whether search engines can understand your page and show it to the right people.', 'sage'));
-    $add('seo', __('Has a page title', 'sage'), $title !== '' ? 'pass' : 'fail', 12,
+    $add(
+        'seo',
+        __('Has a page title', 'sage'),
+        $title !== '' ? 'pass' : 'fail',
+        12,
         $title !== '' ? sprintf(__('“%s”', 'sage'), mb_strimwidth($title, 0, 70, '…')) : __('No <title> found.', 'sage'),
-        __('The title is the clickable headline in Google results and the browser tab — it\'s the single biggest on-page SEO signal.', 'sage'));
-    $add('seo', __('Title length is 30–60 characters', 'sage'), ($titleLen >= 30 && $titleLen <= 60) ? 'pass' : ($title !== '' ? 'warn' : 'fail'), 5,
+        __('The title is the clickable headline in Google results and the browser tab — it\'s the single biggest on-page SEO signal.', 'sage'),
+    );
+    $add(
+        'seo',
+        __('Title length is 30–60 characters', 'sage'),
+        ($titleLen >= 30 && $titleLen <= 60) ? 'pass' : ($title !== '' ? 'warn' : 'fail'),
+        5,
         sprintf(__('%d characters.', 'sage'), $titleLen),
-        __('Too short wastes the space; too long gets cut off in results. ~50–60 characters shows in full and reads as a real headline.', 'sage'));
-    $add('seo', __('Has a meta description', 'sage'), $metaDesc !== '' ? 'pass' : 'fail', 9,
+        __('Too short wastes the space; too long gets cut off in results. ~50–60 characters shows in full and reads as a real headline.', 'sage'),
+    );
+    $add(
+        'seo',
+        __('Has a meta description', 'sage'),
+        $metaDesc !== '' ? 'pass' : 'fail',
+        9,
         $metaDesc !== '' ? sprintf(__('%d characters.', 'sage'), $descLen) : __('No meta description.', 'sage'),
-        __('This is the summary under your link in search results. A good one is your ad copy — it drives whether people click you or a competitor.', 'sage'));
-    $add('seo', __('Meta description is 120–160 characters', 'sage'), ($descLen >= 120 && $descLen <= 160) ? 'pass' : ($metaDesc !== '' ? 'warn' : 'fail'), 4,
+        __('This is the summary under your link in search results. A good one is your ad copy — it drives whether people click you or a competitor.', 'sage'),
+    );
+    $add(
+        'seo',
+        __('Meta description is 120–160 characters', 'sage'),
+        ($descLen >= 120 && $descLen <= 160) ? 'pass' : ($metaDesc !== '' ? 'warn' : 'fail'),
+        4,
         sprintf(__('%d characters.', 'sage'), $descLen),
-        __('Around 150 characters fills the space Google gives you without being truncated mid-sentence.', 'sage'));
-    $add('seo', __('Exactly one H1 heading', 'sage'), $h1 === 1 ? 'pass' : 'warn', 8,
+        __('Around 150 characters fills the space Google gives you without being truncated mid-sentence.', 'sage'),
+    );
+    $add(
+        'seo',
+        __('Exactly one H1 heading', 'sage'),
+        $h1 === 1 ? 'pass' : 'warn',
+        8,
         sprintf(__('Found %d.', 'sage'), $h1),
-        __('The H1 tells search engines the page\'s main topic. One clear H1 avoids mixed signals about what the page is about.', 'sage'));
-    $add('seo', __('Uses H2 subheadings', 'sage'), $h2 >= 1 ? 'pass' : 'warn', 4,
+        __('The H1 tells search engines the page\'s main topic. One clear H1 avoids mixed signals about what the page is about.', 'sage'),
+    );
+    $add(
+        'seo',
+        __('Uses H2 subheadings', 'sage'),
+        $h2 >= 1 ? 'pass' : 'warn',
+        4,
         sprintf(__('%d H2 headings.', 'sage'), $h2),
-        __('Subheadings structure your content for skimming readers and help search engines understand its sections.', 'sage'));
-    $add('seo', __('Images have alt text', 'sage'), ($imgTotal === 0 || $imgAlt / max(1, $imgTotal) >= 0.9) ? 'pass' : ($imgAlt / max(1, $imgTotal) >= 0.5 ? 'warn' : 'fail'), 6,
+        __('Subheadings structure your content for skimming readers and help search engines understand its sections.', 'sage'),
+    );
+    $add(
+        'seo',
+        __('Images have alt text', 'sage'),
+        ($imgTotal === 0 || $imgAlt / max(1, $imgTotal) >= 0.9) ? 'pass' : ($imgAlt / max(1, $imgTotal) >= 0.5 ? 'warn' : 'fail'),
+        6,
         $imgTotal ? sprintf(__('%d of %d images described.', 'sage'), $imgAlt, $imgTotal) : __('No images.', 'sage'),
-        __('Alt text is how image search and screen readers understand pictures — free SEO and accessibility in one attribute.', 'sage'));
-    $add('seo', __('Canonical link set', 'sage'), $canonical ? 'pass' : 'warn', 4,
+        __('Alt text is how image search and screen readers understand pictures — free SEO and accessibility in one attribute.', 'sage'),
+    );
+    $add(
+        'seo',
+        __('Canonical link set', 'sage'),
+        $canonical ? 'pass' : 'warn',
+        4,
         $canonical ? __('Present.', 'sage') : __('No canonical tag.', 'sage'),
-        __('A canonical tag tells Google which version of a page is the “real” one, preventing duplicate-content confusion.', 'sage'));
-    $add('seo', __('Structured data (schema)', 'sage'), $jsonld > 0 ? 'pass' : 'warn', 4,
+        __('A canonical tag tells Google which version of a page is the “real” one, preventing duplicate-content confusion.', 'sage'),
+    );
+    $add(
+        'seo',
+        __('Structured data (schema)', 'sage'),
+        $jsonld > 0 ? 'pass' : 'warn',
+        4,
         $jsonld > 0 ? sprintf(__('%d JSON-LD blocks.', 'sage'), $jsonld) : __('None found.', 'sage'),
-        __('Schema markup can earn rich results — star ratings, business hours, FAQs — that make your listing stand out.', 'sage'));
-    $add('seo', __('Indexable by search engines', 'sage'), $robotsNoindex ? 'fail' : 'pass', 8,
+        __('Schema markup can earn rich results — star ratings, business hours, FAQs — that make your listing stand out.', 'sage'),
+    );
+    $add(
+        'seo',
+        __('Indexable by search engines', 'sage'),
+        $robotsNoindex ? 'fail' : 'pass',
+        8,
         $robotsNoindex ? __('This page is set to noindex!', 'sage') : __('No noindex directive.', 'sage'),
-        __('A stray “noindex” tag hides a page from Google entirely — a surprisingly common and costly accident.', 'sage'));
+        __('A stray “noindex” tag hides a page from Google entirely — a surprisingly common and costly accident.', 'sage'),
+    );
 
     /* --- Performance --- */
     $cat('speed', 'SPD', __('Page speed', 'sage'), __('How fast the page responds and how heavy it is — speed keeps visitors and helps rankings.', 'sage'));
-    $add('speed', __('Fast server response', 'sage'), $band($fetch['ms'] <= 600, $fetch['ms'] <= 1200), 12,
+    $add(
+        'speed',
+        __('Fast server response', 'sage'),
+        $band($fetch['ms'] <= 600, $fetch['ms'] <= 1200),
+        12,
         sprintf(__('%d ms to first byte.', 'sage'), $fetch['ms']),
-        __('Slow response time delays everything else. Every extra second measurably increases the share of visitors who give up and leave.', 'sage'));
-    $add('speed', __('Lean HTML document', 'sage'), $band($kb <= 100, $kb <= 300), 6,
+        __('Slow response time delays everything else. Every extra second measurably increases the share of visitors who give up and leave.', 'sage'),
+    );
+    $add(
+        'speed',
+        __('Lean HTML document', 'sage'),
+        $band($kb <= 100, $kb <= 300),
+        6,
         sprintf(__('%d KB of HTML.', 'sage'), $kb),
-        __('A bloated HTML file is slow to download and parse — often a sign of a page builder stuffing the page with markup.', 'sage'));
-    $add('speed', __('Compression enabled', 'sage'), ($enc !== '') ? 'pass' : 'warn', 8,
+        __('A bloated HTML file is slow to download and parse — often a sign of a page builder stuffing the page with markup.', 'sage'),
+    );
+    $add(
+        'speed',
+        __('Compression enabled', 'sage'),
+        ($enc !== '') ? 'pass' : 'warn',
+        8,
         $enc !== '' ? sprintf(__('%s.', 'sage'), strtoupper($enc)) : __('No gzip/brotli detected.', 'sage'),
-        __('Text compression (gzip/brotli) can shrink pages 70%+ over the wire — one of the cheapest speed wins there is.', 'sage'));
-    $add('speed', __('Browser caching headers', 'sage'), (trim($cache) !== '') ? 'pass' : 'warn', 5,
+        __('Text compression (gzip/brotli) can shrink pages 70%+ over the wire — one of the cheapest speed wins there is.', 'sage'),
+    );
+    $add(
+        'speed',
+        __('Browser caching headers', 'sage'),
+        (trim($cache) !== '') ? 'pass' : 'warn',
+        5,
         trim($cache) !== '' ? __('Cache headers present.', 'sage') : __('No cache-control/expires.', 'sage'),
-        __('Caching lets repeat visitors reuse files instead of re-downloading them, so the second visit feels instant.', 'sage'));
-    $add('speed', __('Reasonable request count', 'sage'), $band($requests <= 40, $requests <= 80), 5,
+        __('Caching lets repeat visitors reuse files instead of re-downloading them, so the second visit feels instant.', 'sage'),
+    );
+    $add(
+        'speed',
+        __('Reasonable request count', 'sage'),
+        $band($requests <= 40, $requests <= 80),
+        5,
         sprintf(__('~%d resources (%d scripts, %d styles, %d images).', 'sage'), $requests, $scripts, $styles, $imgTotal),
-        __('Each file is a separate round-trip. Fewer, bundled files load faster — especially on mobile networks.', 'sage'));
-    $add('speed', __('Images set width & height', 'sage'), ($imgTotal === 0 || $imgDims / max(1, $imgTotal) >= 0.8) ? 'pass' : 'warn', 4,
+        __('Each file is a separate round-trip. Fewer, bundled files load faster — especially on mobile networks.', 'sage'),
+    );
+    $add(
+        'speed',
+        __('Images set width & height', 'sage'),
+        ($imgTotal === 0 || $imgDims / max(1, $imgTotal) >= 0.8) ? 'pass' : 'warn',
+        4,
         $imgTotal ? sprintf(__('%d of %d images sized.', 'sage'), $imgDims, $imgTotal) : __('No images.', 'sage'),
-        __('Dimensions reserve space so the page doesn\'t jump around as images load — a Core Web Vitals (CLS) factor Google measures.', 'sage'));
-    $add('speed', __('Lazy-loads images', 'sage'), ($imgTotal <= 3 || $imgLazy > 0) ? 'pass' : 'warn', 3,
+        __('Dimensions reserve space so the page doesn\'t jump around as images load — a Core Web Vitals (CLS) factor Google measures.', 'sage'),
+    );
+    $add(
+        'speed',
+        __('Lazy-loads images', 'sage'),
+        ($imgTotal <= 3 || $imgLazy > 0) ? 'pass' : 'warn',
+        3,
         $imgTotal ? sprintf(__('%d lazy-loaded.', 'sage'), $imgLazy) : __('No images.', 'sage'),
-        __('Lazy loading defers off-screen images so the visible part of the page paints sooner.', 'sage'));
+        __('Lazy loading defers off-screen images so the visible part of the page paints sooner.', 'sage'),
+    );
 
     /* --- Mobile --- */
     $cat('mobile', 'MOB', __('Mobile & responsive', 'sage'), __('Whether the page works well on phones — where most local searches happen.', 'sage'));
-    $add('mobile', __('Mobile viewport set', 'sage'), $hasViewport ? 'pass' : 'fail', 12,
+    $add(
+        'mobile',
+        __('Mobile viewport set', 'sage'),
+        $hasViewport ? 'pass' : 'fail',
+        12,
         $hasViewport ? __('Responsive viewport present.', 'sage') : __('No viewport meta tag.', 'sage'),
-        __('Without this tag phones render the desktop layout shrunk down — tiny text, sideways scrolling, instant bounce.', 'sage'));
-    $add('mobile', __('Pinch-zoom allowed', 'sage'), $zoomBlocked ? 'fail' : 'pass', 6,
+        __('Without this tag phones render the desktop layout shrunk down — tiny text, sideways scrolling, instant bounce.', 'sage'),
+    );
+    $add(
+        'mobile',
+        __('Pinch-zoom allowed', 'sage'),
+        $zoomBlocked ? 'fail' : 'pass',
+        6,
         $zoomBlocked ? __('Zoom is disabled.', 'sage') : __('Users can zoom.', 'sage'),
-        __('Blocking zoom locks out anyone who needs to enlarge text — an accessibility failure and a frustration for older customers.', 'sage'));
-    $add('mobile', __('Responsive images (srcset)', 'sage'), ($imgTotal === 0 || $imgSrcset > 0) ? 'pass' : 'warn', 5,
+        __('Blocking zoom locks out anyone who needs to enlarge text — an accessibility failure and a frustration for older customers.', 'sage'),
+    );
+    $add(
+        'mobile',
+        __('Responsive images (srcset)', 'sage'),
+        ($imgTotal === 0 || $imgSrcset > 0) ? 'pass' : 'warn',
+        5,
         $imgTotal ? sprintf(__('%d use srcset.', 'sage'), $imgSrcset) : __('No images.', 'sage'),
-        __('srcset serves phone-sized images to phones instead of shipping full desktop images over cell data.', 'sage'));
-    $add('mobile', __('Content fits without side-scroll', 'sage'), $mixed >= 0 && $hasViewport ? 'pass' : 'warn', 4,
+        __('srcset serves phone-sized images to phones instead of shipping full desktop images over cell data.', 'sage'),
+    );
+    $add(
+        'mobile',
+        __('Content fits without side-scroll', 'sage'),
+        $mixed >= 0 && $hasViewport ? 'pass' : 'warn',
+        4,
         $hasViewport ? __('Viewport enables reflow.', 'sage') : __('Layout may overflow.', 'sage'),
-        __('Horizontal scrolling on a phone is a top signal of a non-responsive, dated site.', 'sage'));
+        __('Horizontal scrolling on a phone is a top signal of a non-responsive, dated site.', 'sage'),
+    );
 
     /* --- Readability --- */
     $cat('content', 'TXT', __('Readability & content', 'sage'), __('Whether there\'s enough clear content for visitors and search engines to work with.', 'sage'));
-    $add('content', __('Enough page content', 'sage'), $band($wordCount >= 300, $wordCount >= 150), 8,
+    $add(
+        'content',
+        __('Enough page content', 'sage'),
+        $band($wordCount >= 300, $wordCount >= 150),
+        8,
         sprintf(__('~%d words.', 'sage'), $wordCount),
-        __('Thin pages struggle to rank and rarely answer a customer\'s question. Real, useful content is what earns trust and traffic.', 'sage'));
-    $add('content', __('Reads clearly', 'sage'), $band($flesch >= 60, $flesch >= 45), 6,
+        __('Thin pages struggle to rank and rarely answer a customer\'s question. Real, useful content is what earns trust and traffic.', 'sage'),
+    );
+    $add(
+        'content',
+        __('Reads clearly', 'sage'),
+        $band($flesch >= 60, $flesch >= 45),
+        6,
         sprintf(__('Reading ease %d/100 (%s).', 'sage'), $flesch, grader_reading_label((int) $flesch)),
-        __('Most customers skim. Plain, short sentences (around a 7th–8th grade level) get read; dense corporate prose gets skipped.', 'sage'));
-    $add('content', __('Descriptive link text', 'sage'), $vague === 0 ? 'pass' : ($vague <= 2 ? 'warn' : 'fail'), 5,
+        __('Most customers skim. Plain, short sentences (around a 7th–8th grade level) get read; dense corporate prose gets skipped.', 'sage'),
+    );
+    $add(
+        'content',
+        __('Descriptive link text', 'sage'),
+        $vague === 0 ? 'pass' : ($vague <= 2 ? 'warn' : 'fail'),
+        5,
         $vague ? sprintf(__('%d vague links like “click here”.', 'sage'), $vague) : __('Links are descriptive.', 'sage'),
-        __('“Click here” tells neither a customer nor Google where a link goes. Descriptive links help both.', 'sage'));
-    $add('content', __('Healthy content-to-code ratio', 'sage'), $band($codeRatio >= 10, $codeRatio >= 5), 4,
+        __('“Click here” tells neither a customer nor Google where a link goes. Descriptive links help both.', 'sage'),
+    );
+    $add(
+        'content',
+        __('Healthy content-to-code ratio', 'sage'),
+        $band($codeRatio >= 10, $codeRatio >= 5),
+        4,
         sprintf(__('%d%% of the page is text.', 'sage'), $codeRatio),
-        __('A very low ratio means lots of markup wrapping very little content — often bloated, builder-heavy pages.', 'sage'));
+        __('A very low ratio means lots of markup wrapping very little content — often bloated, builder-heavy pages.', 'sage'),
+    );
 
     /* --- Security --- */
     $cat('security', 'SEC', __('Security & trust', 'sage'), __('Signals that tell browsers and customers your site is safe to use.', 'sage'));
-    $add('security', __('Serves over HTTPS', 'sage'), $https ? 'pass' : 'fail', 12,
+    $add(
+        'security',
+        __('Serves over HTTPS', 'sage'),
+        $https ? 'pass' : 'fail',
+        12,
         $https ? __('Encrypted (https).', 'sage') : __('Not secure (http).', 'sage'),
-        __('Browsers flag non-HTTPS sites as “Not secure,” and forms on them warn users. It\'s table stakes for trust and SEO.', 'sage'));
-    $add('security', __('No mixed content', 'sage'), $mixed === 0 ? 'pass' : 'warn', 6,
+        __('Browsers flag non-HTTPS sites as “Not secure,” and forms on them warn users. It\'s table stakes for trust and SEO.', 'sage'),
+    );
+    $add(
+        'security',
+        __('No mixed content', 'sage'),
+        $mixed === 0 ? 'pass' : 'warn',
+        6,
         $mixed ? sprintf(__('%d insecure resource(s) on a secure page.', 'sage'), $mixed) : __('All resources secure.', 'sage'),
-        __('An HTTPS page loading http:// images or scripts can break the padlock and get blocked by the browser.', 'sage'));
-    $add('security', __('HSTS enabled', 'sage'), $hsts ? 'pass' : 'warn', 4,
+        __('An HTTPS page loading http:// images or scripts can break the padlock and get blocked by the browser.', 'sage'),
+    );
+    $add(
+        'security',
+        __('HSTS enabled', 'sage'),
+        $hsts ? 'pass' : 'warn',
+        4,
         $hsts ? __('Strict-Transport-Security set.', 'sage') : __('No HSTS header.', 'sage'),
-        __('HSTS forces browsers to always use the encrypted version, closing a window attackers can exploit.', 'sage'));
-    $add('security', __('Content-type protection', 'sage'), $nosniff ? 'pass' : 'warn', 3,
+        __('HSTS forces browsers to always use the encrypted version, closing a window attackers can exploit.', 'sage'),
+    );
+    $add(
+        'security',
+        __('Content-type protection', 'sage'),
+        $nosniff ? 'pass' : 'warn',
+        3,
         $nosniff ? __('nosniff set.', 'sage') : __('No X-Content-Type-Options.', 'sage'),
-        __('This header stops browsers from guessing file types, a common trick in certain attacks.', 'sage'));
-    $add('security', __('Clickjacking protection', 'sage'), $xfo ? 'pass' : 'warn', 3,
+        __('This header stops browsers from guessing file types, a common trick in certain attacks.', 'sage'),
+    );
+    $add(
+        'security',
+        __('Clickjacking protection', 'sage'),
+        $xfo ? 'pass' : 'warn',
+        3,
         $xfo ? __('Frame protection set.', 'sage') : __('No X-Frame-Options / frame-ancestors.', 'sage'),
-        __('Prevents other sites from embedding yours in a hidden frame to trick your visitors.', 'sage'));
-    $add('security', __('Doesn\'t advertise its software', 'sage'), ($poweredBy === '' && $generator === '') ? 'pass' : 'warn', 2,
+        __('Prevents other sites from embedding yours in a hidden frame to trick your visitors.', 'sage'),
+    );
+    $add(
+        'security',
+        __('Doesn\'t advertise its software', 'sage'),
+        ($poweredBy === '' && $generator === '') ? 'pass' : 'warn',
+        2,
         ($poweredBy || $generator) ? trim(__('Exposes: ', 'sage') . trim($poweredBy . ' ' . $generator)) : __('No version headers exposed.', 'sage'),
-        __('Broadcasting your exact platform/version hands attackers a shortlist of known exploits to try.', 'sage'));
+        __('Broadcasting your exact platform/version hands attackers a shortlist of known exploits to try.', 'sage'),
+    );
 
     /* --- Technical --- */
     $cat('tech', 'TEC', __('Technical foundation', 'sage'), __('The quiet fundamentals that keep a site rendering correctly everywhere.', 'sage'));
-    $add('tech', __('Modern doctype', 'sage'), $doctype ? 'pass' : 'warn', 5,
+    $add(
+        'tech',
+        __('Modern doctype', 'sage'),
+        $doctype ? 'pass' : 'warn',
+        5,
         $doctype ? __('HTML5 doctype.', 'sage') : __('Missing/legacy doctype.', 'sage'),
-        __('The HTML5 doctype puts browsers in standards mode so your layout renders predictably.', 'sage'));
-    $add('tech', __('Character encoding declared', 'sage'), $charset ? 'pass' : 'warn', 4,
+        __('The HTML5 doctype puts browsers in standards mode so your layout renders predictably.', 'sage'),
+    );
+    $add(
+        'tech',
+        __('Character encoding declared', 'sage'),
+        $charset ? 'pass' : 'warn',
+        4,
         $charset ? __('Charset set.', 'sage') : __('No charset meta.', 'sage'),
-        __('Declaring UTF-8 prevents garbled characters (curly quotes, accents, emoji) across browsers.', 'sage'));
-    $add('tech', __('Language declared', 'sage'), $lang ? 'pass' : 'warn', 4,
+        __('Declaring UTF-8 prevents garbled characters (curly quotes, accents, emoji) across browsers.', 'sage'),
+    );
+    $add(
+        'tech',
+        __('Language declared', 'sage'),
+        $lang ? 'pass' : 'warn',
+        4,
         $lang ? __('lang attribute set.', 'sage') : __('No lang on <html>.', 'sage'),
-        __('The page language helps screen readers pronounce content and helps search engines serve the right audience.', 'sage'));
-    $add('tech', __('Has a favicon', 'sage'), $favicon ? 'pass' : 'warn', 3,
+        __('The page language helps screen readers pronounce content and helps search engines serve the right audience.', 'sage'),
+    );
+    $add(
+        'tech',
+        __('Has a favicon', 'sage'),
+        $favicon ? 'pass' : 'warn',
+        3,
         $favicon ? __('Favicon linked.', 'sage') : __('No favicon.', 'sage'),
-        __('The little tab icon is a small but real trust and brand-recognition cue in a sea of open tabs.', 'sage'));
-    $add('tech', __('Valid HTTP status', 'sage'), ($fetch['status'] >= 200 && $fetch['status'] < 300) ? 'pass' : 'fail', 4,
+        __('The little tab icon is a small but real trust and brand-recognition cue in a sea of open tabs.', 'sage'),
+    );
+    $add(
+        'tech',
+        __('Valid HTTP status', 'sage'),
+        ($fetch['status'] >= 200 && $fetch['status'] < 300) ? 'pass' : 'fail',
+        4,
         sprintf(__('Returned HTTP %d.', 'sage'), $fetch['status']),
-        __('A page that answers with an error or redirect chain wastes crawl budget and frustrates visitors.', 'sage'));
+        __('A page that answers with an error or redirect chain wastes crawl budget and frustrates visitors.', 'sage'),
+    );
 
     /* --- Social --- */
     $cat('social', 'SOC', __('Social & sharing', 'sage'), __('How your links look when shared on Facebook, LinkedIn, iMessage, and the rest.', 'sage'));
-    $add('social', __('Open Graph title & description', 'sage'), ($ogTitle && $ogDesc) ? 'pass' : ($ogTitle || $ogDesc ? 'warn' : 'fail'), 8,
+    $add(
+        'social',
+        __('Open Graph title & description', 'sage'),
+        ($ogTitle && $ogDesc) ? 'pass' : ($ogTitle || $ogDesc ? 'warn' : 'fail'),
+        8,
         ($ogTitle && $ogDesc) ? __('Both present.', 'sage') : __('Missing OG title or description.', 'sage'),
-        __('Without Open Graph tags, a shared link shows a random title and no summary — it looks broken and gets fewer clicks.', 'sage'));
-    $add('social', __('Social share image', 'sage'), $ogImage ? 'pass' : 'fail', 8,
+        __('Without Open Graph tags, a shared link shows a random title and no summary — it looks broken and gets fewer clicks.', 'sage'),
+    );
+    $add(
+        'social',
+        __('Social share image', 'sage'),
+        $ogImage ? 'pass' : 'fail',
+        8,
         $ogImage ? __('og:image set.', 'sage') : __('No share image.', 'sage'),
-        __('The preview image is most of what people notice in a feed. No image means a tiny, ignorable text link.', 'sage'));
-    $add('social', __('Twitter/X card', 'sage'), $twCard ? 'pass' : 'warn', 3,
+        __('The preview image is most of what people notice in a feed. No image means a tiny, ignorable text link.', 'sage'),
+    );
+    $add(
+        'social',
+        __('Twitter/X card', 'sage'),
+        $twCard ? 'pass' : 'warn',
+        3,
         $twCard ? __('Card type set.', 'sage') : __('No twitter:card.', 'sage'),
-        __('Twitter cards control how your link expands on X — a rich preview instead of a bare URL.', 'sage'));
-    $add('social', __('Apple touch icon', 'sage'), $appleIcon ? 'pass' : 'warn', 2,
+        __('Twitter cards control how your link expands on X — a rich preview instead of a bare URL.', 'sage'),
+    );
+    $add(
+        'social',
+        __('Apple touch icon', 'sage'),
+        $appleIcon ? 'pass' : 'warn',
+        2,
         $appleIcon ? __('Set.', 'sage') : __('None.', 'sage'),
-        __('This is the icon used when someone saves your site to their phone home screen.', 'sage'));
+        __('This is the icon used when someone saves your site to their phone home screen.', 'sage'),
+    );
 
     /* ---- scoring ---- */
     $catOut = [];
-    $totEarned = 0; $totPossible = 0;
+    $totEarned = 0;
+    $totPossible = 0;
     foreach ($categories as $c) {
-        $earned = 0; $possible = 0;
+        $earned = 0;
+        $possible = 0;
         foreach ($c['checks'] as $chk) {
             $possible += $chk['weight'];
             $earned += $chk['status'] === 'pass' ? $chk['weight'] : ($chk['status'] === 'warn' ? $chk['weight'] * 0.5 : 0);
@@ -361,7 +580,8 @@ function rv_rest_audit(\WP_REST_Request $req)
         $c['score'] = $score;
         $c['grade'] = rv_tools_letter($score);
         $catOut[] = $c;
-        $totEarned += $earned; $totPossible += $possible;
+        $totEarned += $earned;
+        $totPossible += $possible;
     }
     $overall = (int) round($totEarned / max(1, $totPossible) * 100);
 
@@ -377,10 +597,20 @@ function rv_rest_audit(\WP_REST_Request $req)
 /** Human label for a Flesch reading-ease score. */
 function grader_reading_label(int $score): string
 {
-    if ($score >= 80) return __('very easy', 'sage');
-    if ($score >= 70) return __('easy', 'sage');
-    if ($score >= 60) return __('plain', 'sage');
-    if ($score >= 50) return __('fairly hard', 'sage');
-    if ($score >= 30) return __('hard', 'sage');
+    if ($score >= 80) {
+        return __('very easy', 'sage');
+    }
+    if ($score >= 70) {
+        return __('easy', 'sage');
+    }
+    if ($score >= 60) {
+        return __('plain', 'sage');
+    }
+    if ($score >= 50) {
+        return __('fairly hard', 'sage');
+    }
+    if ($score >= 30) {
+        return __('hard', 'sage');
+    }
     return __('very hard', 'sage');
 }

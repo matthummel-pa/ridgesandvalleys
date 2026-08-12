@@ -65,7 +65,7 @@ function github_settings(): array
         $o = [];
     }
 
-    $bool = fn (string $k, bool $d) => array_key_exists($k, $o) ? (bool) $o[$k] : $d;
+    $bool = fn(string $k, bool $d) => array_key_exists($k, $o) ? (bool) $o[$k] : $d;
 
     $typeV = $o['type'] ?? 'owner';
     $sortV = $o['sort'] ?? 'pushed';
@@ -240,7 +240,7 @@ function github_all_repos(): array
             'sort'      => $apiSort,
             'direction' => $s['direction'],
         ],
-        'https://api.github.com/users/' . rawurlencode($owner) . '/repos'
+        'https://api.github.com/users/' . rawurlencode($owner) . '/repos',
     );
 
     $data = github_get($endpoint);
@@ -278,7 +278,7 @@ function github_all_repos(): array
 
     // Client-side sort for options the API can't do directly.
     if ($s['sort'] === 'stars') {
-        usort($repos, fn ($a, $b) => $s['direction'] === 'asc' ? $a['stars'] <=> $b['stars'] : $b['stars'] <=> $a['stars']);
+        usort($repos, fn($a, $b) => $s['direction'] === 'asc' ? $a['stars'] <=> $b['stars'] : $b['stars'] <=> $a['stars']);
     }
 
     set_transient($key, $repos, 6 * HOUR_IN_SECONDS);
@@ -302,7 +302,7 @@ function github_repos(?int $count = null): array
             return [];
         }
         $selected = array_flip($s['selected']);
-        return array_values(array_filter($all, fn ($r) => isset($selected[$r['name']])));
+        return array_values(array_filter($all, fn($r) => isset($selected[$r['name']])));
     }
 
     // Auto mode: apply filters, pin featured, sort already applied, then slice.
@@ -324,11 +324,11 @@ function github_repos(?int $count = null): array
 
     $legacyExclude = (array) apply_filters('rv/github_exclude', []);
     if ($legacyExclude) {
-        $repos = array_values(array_filter($repos, fn ($r) => ! in_array($r['name'], $legacyExclude, true)));
+        $repos = array_values(array_filter($repos, fn($r) => ! in_array($r['name'], $legacyExclude, true)));
     }
 
     if ($s['sort'] === 'name') {
-        usort($repos, fn ($a, $b) => $s['direction'] === 'asc' ? strcasecmp($a['title'], $b['title']) : strcasecmp($b['title'], $a['title']));
+        usort($repos, fn($a, $b) => $s['direction'] === 'asc' ? strcasecmp($a['title'], $b['title']) : strcasecmp($b['title'], $a['title']));
     }
 
     if (! empty($s['featured'])) {
@@ -353,8 +353,8 @@ function github_repos(?int $count = null): array
 function github_total_stars(): int
 {
     return array_sum(array_map(
-        fn ($r) => $r['fork'] ? 0 : (int) $r['stars'],
-        github_all_repos()
+        fn($r) => $r['fork'] ? 0 : (int) $r['stars'],
+        github_all_repos(),
     ));
 }
 
@@ -569,7 +569,7 @@ add_action('admin_menu', function () {
         __('GitHub', 'sage'),
         'edit_theme_options',
         'rv-github',
-        __NAMESPACE__ . '\\render_github_settings_page'
+        __NAMESPACE__ . '\\render_github_settings_page',
     );
 });
 
@@ -623,7 +623,7 @@ function render_github_settings_page(): void
             '<label style="display:block;margin:.25rem 0"><input type="checkbox" name="rv_github[%1$s]" value="1" %2$s /> %3$s</label>',
             esc_attr($key),
             checked(! empty($s[$key]), true, false),
-            esc_html($label)
+            esc_html($label),
         );
     };
     $select = function (string $key, array $choices) use ($s) {
@@ -651,18 +651,18 @@ function render_github_settings_page(): void
                 /* translators: 1: display name, 2: @login. */
                 esc_html__('✓ Connected as %1$s (@%2$s).', 'sage'),
                 esc_html($profile['name'] ?: $profile['login']),
-                esc_html($profile['login'])
+                esc_html($profile['login']),
             ),
             sprintf(/* translators: %s: count. */ esc_html__('%s followers', 'sage'), esc_html(number_format_i18n($profile['followers']))),
             sprintf(/* translators: %s: count. */ esc_html__('%s public repos', 'sage'), esc_html(number_format_i18n($profile['public_repos']))),
-            sprintf(/* translators: %s: count. */ esc_html__('★ %s stars', 'sage'), esc_html(number_format_i18n(github_total_stars())))
+            sprintf(/* translators: %s: count. */ esc_html__('★ %s stars', 'sage'), esc_html(number_format_i18n(github_total_stars()))),
         );
     } else {
         echo '<div class="notice notice-warning inline"><p>' . sprintf(
             /* translators: 1: username, 2: URL of Theme APIs page. */
             wp_kses_post(__('Couldn’t reach GitHub for <strong>%1$s</strong> right now. Check the username, or you may be hitting the unauthenticated rate limit — adding a token on the <a href="%2$s">Theme APIs</a> page raises it.', 'sage')),
             esc_html($s['owner']),
-            esc_url($apisUrl)
+            esc_url($apisUrl),
         ) . '</p></div>';
     }
 
@@ -678,7 +678,7 @@ function render_github_settings_page(): void
         '<tr><th scope="row"><label for="rv_gh_owner">%1$s</label></th><td><input name="rv_github[owner]" id="rv_gh_owner" type="text" class="regular-text" value="%2$s" placeholder="octocat" /><p class="description">%3$s</p></td></tr>',
         esc_html__('GitHub username or org', 'sage'),
         esc_attr($s['owner']),
-        esc_html__('The account whose profile and public repositories are shown.', 'sage')
+        esc_html__('The account whose profile and public repositories are shown.', 'sage'),
     );
 
     echo '<tr><th scope="row">' . esc_html__('Repository type', 'sage') . '</th><td>';
@@ -701,7 +701,7 @@ function render_github_settings_page(): void
         '<tr><th scope="row"><label for="rv_gh_minstars">%1$s</label></th><td><input name="rv_github[min_stars]" id="rv_gh_minstars" type="number" min="0" value="%2$d" class="small-text" /><p class="description">%3$s</p></td></tr>',
         esc_html__('Minimum stars', 'sage'),
         (int) $s['min_stars'],
-        esc_html__('Hide repositories below this star count (auto mode).', 'sage')
+        esc_html__('Hide repositories below this star count (auto mode).', 'sage'),
     );
 
     echo '<tr><th scope="row">' . esc_html__('Include', 'sage') . '</th><td>';
@@ -719,12 +719,12 @@ function render_github_settings_page(): void
     printf(
         '<label style="display:block;margin:.25rem 0"><input type="radio" name="rv_github[mode]" value="auto" %s /> %s</label>',
         checked($s['mode'], 'auto', false),
-        esc_html__('Automatic — top repositories by the sort above', 'sage')
+        esc_html__('Automatic — top repositories by the sort above', 'sage'),
     );
     printf(
         '<label style="display:block;margin:.25rem 0"><input type="radio" name="rv_github[mode]" value="pick" %s /> %s</label>',
         checked($s['mode'], 'pick', false),
-        esc_html__('Pick specific repositories (checklist below)', 'sage')
+        esc_html__('Pick specific repositories (checklist below)', 'sage'),
     );
     echo '</td></tr>';
 
@@ -732,7 +732,7 @@ function render_github_settings_page(): void
         '<tr><th scope="row"><label for="rv_gh_count">%1$s</label></th><td><input name="rv_github[count]" id="rv_gh_count" type="number" min="1" max="100" value="%2$d" class="small-text" /> <span class="description">%3$s</span></td></tr>',
         esc_html__('How many to show', 'sage'),
         (int) $s['count'],
-        esc_html__('Automatic mode only.', 'sage')
+        esc_html__('Automatic mode only.', 'sage'),
     );
 
     // Repo picker checklist.
@@ -756,7 +756,7 @@ function render_github_settings_page(): void
                 esc_attr($r['name']),
                 checked(isset($selected[$r['name']]), true, false),
                 esc_html($r['name']),
-                $badges ? ' <span class="description">(' . esc_html(implode(' · ', $badges)) . ')</span>' : ''
+                $badges ? ' <span class="description">(' . esc_html(implode(' · ', $badges)) . ')</span>' : '',
             );
         }
         echo '</div><p class="description">' . esc_html__('Used when “Pick specific repositories” is selected above.', 'sage') . '</p>';
@@ -769,14 +769,14 @@ function render_github_settings_page(): void
         '<tr><th scope="row"><label for="rv_gh_featured">%1$s</label></th><td><input name="rv_github[featured]" id="rv_gh_featured" type="text" class="regular-text" value="%2$s" /><p class="description">%3$s</p></td></tr>',
         esc_html__('Featured repos (pinned first)', 'sage'),
         esc_attr(implode(', ', $s['featured'])),
-        esc_html__('Automatic mode: comma-separated names to show first, in order.', 'sage')
+        esc_html__('Automatic mode: comma-separated names to show first, in order.', 'sage'),
     );
 
     printf(
         '<tr><th scope="row"><label for="rv_gh_exclude">%1$s</label></th><td><input name="rv_github[exclude]" id="rv_gh_exclude" type="text" class="regular-text" value="%2$s" /><p class="description">%3$s</p></td></tr>',
         esc_html__('Hidden repos', 'sage'),
         esc_attr(implode(', ', $s['exclude'])),
-        esc_html__('Automatic mode: comma-separated names to hide.', 'sage')
+        esc_html__('Automatic mode: comma-separated names to hide.', 'sage'),
     );
 
     echo '</tbody></table>';
@@ -818,12 +818,12 @@ function render_github_settings_page(): void
         '<tr><th scope="row"><label for="rv_gh_headline">%1$s</label></th><td><input name="rv_github[headline]" id="rv_gh_headline" type="text" class="regular-text" value="%2$s" placeholder="%3$s" /></td></tr>',
         esc_html__('Section headline', 'sage'),
         esc_attr($s['headline']),
-        esc_attr__('Code, in the open.', 'sage')
+        esc_attr__('Code, in the open.', 'sage'),
     );
     printf(
         '<tr><th scope="row"><label for="rv_gh_intro">%1$s</label></th><td><textarea name="rv_github[intro]" id="rv_gh_intro" rows="2" class="large-text">%2$s</textarea></td></tr>',
         esc_html__('Section intro', 'sage'),
-        esc_textarea($s['intro'])
+        esc_textarea($s['intro']),
     );
     echo '</tbody></table>';
 
@@ -839,7 +839,7 @@ function render_github_settings_page(): void
         echo '<p>' . sprintf(
             /* translators: %s: URL of Theme APIs page. */
             wp_kses_post(__('No token is set. GitHub allows ~60 unauthenticated requests per hour per server — usually fine with 6-hour caching. To raise the limit, add a token under <strong>GitHub</strong> on the <a href="%s">Theme APIs</a> page.', 'sage')),
-            esc_url($apisUrl)
+            esc_url($apisUrl),
         ) . '</p>';
     }
 
@@ -936,7 +936,7 @@ function github_readme_html(string $name): string
         [
             'timeout' => 10,
             'headers' => array_merge(github_headers(), ['Accept' => 'application/vnd.github.html+json']),
-        ]
+        ],
     );
 
     if (is_wp_error($res) || 200 !== (int) wp_remote_retrieve_response_code($res)) {
@@ -962,7 +962,7 @@ function github_absolutize_readme(string $html, string $owner, string $repo, str
     $raw  = 'https://raw.githubusercontent.com/' . $owner . '/' . $repo . '/' . $branch . '/';
     $blob = 'https://github.com/' . $owner . '/' . $repo . '/blob/' . $branch . '/';
 
-    $isAbsolute = fn (string $url) => $url === ''
+    $isAbsolute = fn(string $url) => $url === ''
         || $url[0] === '#'
         || (bool) preg_match('#^(https?:)?//#i', $url)
         || (bool) preg_match('#^(data:|mailto:|tel:)#i', $url);

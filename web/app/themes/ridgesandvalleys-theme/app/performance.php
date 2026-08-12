@@ -38,7 +38,7 @@ add_action('init', function () {
     if (! empty($o['emojis'])) {
         remove_action('wp_head', 'print_emoji_detection_script', 7);
         remove_action('wp_print_styles', 'print_emoji_styles');
-        add_filter('tiny_mce_plugins', fn ($p) => is_array($p) ? array_diff($p, ['wpemoji']) : $p);
+        add_filter('tiny_mce_plugins', fn($p) => is_array($p) ? array_diff($p, ['wpemoji']) : $p);
         add_filter('emoji_svg_url', '__return_false');
     }
 

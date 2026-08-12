@@ -135,7 +135,7 @@ function field_lines(string $key, array $default = [], ?int $post_id = null): ar
     $joinedDefault = implode("\n", $default);
     $val           = (string) apply_filters('rv/field_value', $joined, $key, (int) $post_id, $joinedDefault);
 
-    $items = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $val)), static fn ($s) => $s !== ''));
+    $items = array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $val)), static fn($s) => $s !== ''));
     return $items ?: $default;
 }
 
@@ -183,10 +183,10 @@ function field_rows(string $key, array $default = [], ?int $post_id = null): arr
 function lines($val): array
 {
     if (is_array($val)) {
-        return array_values(array_filter(array_map('trim', array_map('strval', $val)), static fn ($s) => $s !== ''));
+        return array_values(array_filter(array_map('trim', array_map('strval', $val)), static fn($s) => $s !== ''));
     }
     $s = strip_field_markers((string) $val);
-    return array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $s)), static fn ($s) => $s !== ''));
+    return array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $s)), static fn($s) => $s !== ''));
 }
 
 /** Which field set applies to a page (front page detected via the reading setting). */
@@ -219,6 +219,29 @@ function page_field_map(): array
             ['cta_button', __('CTA button label', 'sage'), 'text', $button],
         ];
     };
+    $toolScan = function (string $eyebrow, string $title, string $accent, string $intro, string $note): array {
+        return [
+            ['scan_eyebrow', __('Eyebrow', 'sage'), 'text', $eyebrow],
+            ['scan_title', __('Heading (before accent)', 'sage'), 'text', $title],
+            ['scan_accent', __('Accent word', 'sage'), 'text', $accent],
+            ['scan_intro', __('Intro paragraph', 'sage'), 'textarea', $intro],
+            ['scan_note', __('Note under the tool', 'sage'), 'textarea', $note],
+            ['scan_note_link', __('Note link label', 'sage'), 'text', __('Talk to me', 'sage')],
+        ];
+    };
+    $toolAreas = function (string $eyebrow, string $title, string $accent, string $titleEnd, array $items): array {
+        return [
+            ['areas_eyebrow', __('Eyebrow', 'sage'), 'text', $eyebrow],
+            ['areas_title', __('Heading (before accent)', 'sage'), 'text', $title],
+            ['areas_accent', __('Accent word', 'sage'), 'text', $accent],
+            ['areas_title_end', __('Heading (after accent)', 'sage'), 'text', $titleEnd],
+            ['areas_items', __('Cards', 'sage'), 'repeater', $items, [
+                ['title', __('Card title', 'sage'), 'text'],
+                ['text', __('What it checks', 'sage'), 'textarea'],
+                ['why', __('Why it matters', 'sage'), 'textarea'],
+            ]],
+        ];
+    };
 
     $map = [
         'front-page.blade.php' => [
@@ -226,7 +249,7 @@ function page_field_map(): array
                 __('Gettysburg · Web design · Local growth', 'sage'),
                 __('A better website, without the agency', 'sage'),
                 __('drag.', 'sage'),
-                __('Fast, accessible WordPress websites for Gettysburg, Adams County, and South Central PA businesses — planned with AI, refined by an experienced local developer, and launched without months of meetings.', 'sage')
+                __('Fast, accessible WordPress websites for Gettysburg, Adams County, and South Central PA businesses — planned with AI, refined by an experienced local developer, and launched without months of meetings.', 'sage'),
             ), [
                 // Optional hero side columns. Fill either/both to make the hero 2- or
                 // 3-column; leave blank for the normal single-column hero.
@@ -272,6 +295,7 @@ function page_field_map(): array
                 ['rooted_eyebrow', __('Eyebrow', 'sage'), 'text', __('Rooted in the ridges & valleys', 'sage')],
                 ['rooted_title', __('Heading', 'sage'), 'text', __('Built here.', 'sage')],
                 ['rooted_accent', __('Accent word', 'sage'), 'text', __('Supported', 'sage')],
+                ['rooted_title_end', __('Heading (after accent)', 'sage'), 'text', __('here.', 'sage')],
                 ['rooted_text', __('Paragraph', 'sage'), 'textarea', __('From the Cumberland Valley to South Mountain, Michaux, and the fields around Gettysburg — this is home. I build for the businesses that make this place what it is, and I\'m proud of the history that comes with the address.', 'sage')],
                 ['rooted_chips', __('Region chips (comma-separated)', 'sage'), 'text', 'Gettysburg, Adams County, Cumberland Valley, South Mountain, Michaux'],
             ],
@@ -282,7 +306,7 @@ function page_field_map(): array
             __('Call to action', 'sage') => $cta(
                 __('Is your website ready for Gettysburg\'s 2026 visitors?', 'sage'),
                 __('A short, no-pressure walkthrough of what a fast, accessible site could do for you.', 'sage'),
-                __('Plan my site', 'sage')
+                __('Plan my site', 'sage'),
             ),
             __('Media & links', 'sage') => [
                 ['hero_bg', __('Hero background image', 'sage'), 'image', __('Uses the built-in photo until you choose one.', 'sage')],
@@ -335,6 +359,25 @@ function page_field_map(): array
                 ['htowns_title_end', __('Heading (after accent)', 'sage'), 'text', __('towns.', 'sage')],
                 ['htowns_intro', __('Intro paragraph', 'sage'), 'textarea', __('If your customers are in Adams County or nearby South Central PA, they can find you. Ask about a town-specific page for the places you serve most.', 'sage')],
                 ['htowns_list', __('Town chips', 'sage'), 'lines', ['Gettysburg', 'Hanover', 'Littlestown', 'New Oxford', 'McSherrystown', 'Biglerville', 'East Berlin', 'Fairfield', 'Cashtown', 'Aspers', 'Abbottstown', 'Bonneauville', 'Carlisle', 'Chambersburg', 'York']],
+            ],
+            __('Featured work', 'sage') => [
+                ['featured_eyebrow', __('Eyebrow', 'sage'), 'text', __('Featured work', 'sage')],
+                ['featured_title', __('Heading (before accent)', 'sage'), 'text', __('Proof, not', 'sage')],
+                ['featured_accent', __('Accent word', 'sage'), 'text', __('promises.', 'sage')],
+                ['featured_btn', __('Button (when a project is featured)', 'sage'), 'text', __('Read the case study', 'sage')],
+                ['featured_excerpt', __('Excerpt fallback (when the project has no excerpt)', 'sage'), 'textarea', __('A focused rebuild that made the business easy to reach and easy to trust — shipped in a week.', 'sage')],
+                ['featured_empty_eyebrow', __('Fallback eyebrow (no project yet)', 'sage'), 'text', __('Bradley Goldsmith Law · Local Launch', 'sage')],
+                ['featured_empty_title', __('Fallback heading', 'sage'), 'text', __('A clearer path from visitor to consultation.', 'sage')],
+                ['featured_empty_text', __('Fallback text', 'sage'), 'textarea', __('A focused five-page rebuild that made the firm easy to reach and easy to trust — shipped in a week.', 'sage')],
+                ['featured_empty_btn', __('Fallback button', 'sage'), 'text', __('See the work', 'sage')],
+                ['featured_metrics', __('Fallback metrics', 'sage'), 'repeater', [
+                    ['value' => __('7 days', 'sage'), 'label' => __('design to launch', 'sage')],
+                    ['value' => __('AA', 'sage'), 'label' => __('accessibility', 'sage')],
+                    ['value' => __('100%', 'sage'), 'label' => __('mobile-ready', 'sage')],
+                ], [
+                    ['value', __('Value', 'sage'), 'text'],
+                    ['label', __('Label', 'sage'), 'text'],
+                ]],
             ],
         ],
 
@@ -462,7 +505,7 @@ function page_field_map(): array
                 __('Services', 'sage'),
                 __('Websites that earn their', 'sage'),
                 __('keep.', 'sage'),
-                __('Every package leads with one outcome — more calls, more bookings, easier-to-find hours — not a feature list. Fixed scope, honest pricing, no jargon.', 'sage')
+                __('Every package leads with one outcome — more calls, more bookings, easier-to-find hours — not a feature list. Fixed scope, honest pricing, no jargon.', 'sage'),
             ),
             __('Before pricing', 'sage') => [
                 ['svcvalue_eyebrow', __('Eyebrow', 'sage'), 'text', __('Before the pricing', 'sage')],
@@ -612,7 +655,7 @@ function page_field_map(): array
                 __('Selected work', 'sage'),
                 __('Business owners buy', 'sage'),
                 __('confidence.', 'sage'),
-                __('Most of what\'s here are concept sites I designed and built myself — clearly labeled, fully clickable demos of how I\'d solve a real business problem. As client projects launch, they\'ll appear here the same way: the problem, the approach, and the result.', 'sage')
+                __('Most of what\'s here are concept sites I designed and built myself — clearly labeled, fully clickable demos of how I\'d solve a real business problem. As client projects launch, they\'ll appear here the same way: the problem, the approach, and the result.', 'sage'),
             ),
             __('Media & links', 'sage') => [
                 ['hero_bg', __('Hero background image', 'sage'), 'image', __('Built-in until you choose one.', 'sage')],
@@ -719,7 +762,7 @@ function page_field_map(): array
                 __('FAQ', 'sage'),
                 __('Questions,', 'sage'),
                 __('answered.', 'sage'),
-                __('The things local owners actually ask before we start — every answer right here, no clicking around. Don\'t see yours? Just ask.', 'sage')
+                __('The things local owners actually ask before we start — every answer right here, no clicking around. Don\'t see yours? Just ask.', 'sage'),
             ),
             __('Process section', 'sage') => [
                 ['fproc_eyebrow', __('Eyebrow', 'sage'), 'text', __('How it works', 'sage')],
@@ -901,7 +944,7 @@ function page_field_map(): array
                 __('Accessibility · WCAG 2.1 AA · Section 508', 'sage'),
                 __('A front door that opens for', 'sage'),
                 __('everyone.', 'sage'),
-                __('An accessible website isn\'t a nice-to-have — it\'s how you reach more customers, rank better, and stay on the right side of the law. Here\'s the full federal standard, what it means, and how I build to it on every project.', 'sage')
+                __('An accessible website isn\'t a nice-to-have — it\'s how you reach more customers, rank better, and stay on the right side of the law. Here\'s the full federal standard, what it means, and how I build to it on every project.', 'sage'),
             ),
             __('Hero buttons', 'sage') => [
                 ['a11y_hero_btn1', __('Primary button label', 'sage'), 'text', __('Run a live audit', 'sage')],
@@ -1000,12 +1043,91 @@ function page_field_map(): array
                 __('Free website tools · No email required', 'sage'),
                 __('Free tools to check your', 'sage'),
                 __('website.', 'sage'),
-                __('Grade your site, audit your SEO, test accessibility, and scan your security — in seconds, for free, with no signup. Built by a local developer for Gettysburg and South Central PA businesses who want to know where they really stand online.', 'sage')
+                __('Grade your site, audit your SEO, test accessibility, and scan your security — in seconds, for free, with no signup. Built by a local developer for Gettysburg and South Central PA businesses who want to know where they really stand online.', 'sage'),
             ),
+            __('Intro', 'sage') => [
+                ['tools_intro_p1', __('Paragraph 1', 'sage'), 'textarea', __('Your website is working for you around the clock — but is it actually doing its job? Most small-business owners have no easy way to tell whether their site loads fast enough, shows up on Google, works on a phone, or keeps visitors\' information safe. These free tools answer those questions in plain English, so you can see exactly where your site stands before you spend a dollar fixing it.', 'sage')],
+                ['tools_intro_p2', __('Paragraph 2', 'sage'), 'textarea', __('There\'s no catch. Every tool below runs instantly in your browser or against your live page — no account, no email, no sales call required. Enter your address, read your results, and decide what to do next. If you\'d like a hand with what turns up, that\'s what the studio is here for.', 'sage')],
+            ],
+            __('The checkers', 'sage') => [
+                ['checkers_eyebrow', __('Eyebrow', 'sage'), 'text', __('The checkers', 'sage')],
+                ['checkers_title', __('Heading (before accent)', 'sage'), 'text', __('Six instant', 'sage')],
+                ['checkers_accent', __('Accent phrase', 'sage'), 'text', __('report cards.', 'sage')],
+                ['checkers_intro', __('Intro paragraph', 'sage'), 'textarea', __('Enter your URL and get a clear, color-coded grade with every check explained — and why it matters for your business.', 'sage')],
+                ['checkers_items', __('Tool cards', 'sage'), 'repeater', [
+                    ['badge' => __('Most popular', 'sage'), 'title' => __('Website Grader', 'sage'), 'url' => '/website-grader/', 'text' => __('Your whole site, graded across seven areas — SEO, page speed, mobile, readability, security, technical health, and social sharing.', 'sage'), 'why' => __('The fastest way to see where you stand and what to fix first.', 'sage')],
+                    ['badge' => '', 'title' => __('SEO Checker', 'sage'), 'url' => '/seo-checker/', 'text' => __('A deep search audit with a live Google snippet preview, target-keyword analysis, crawlability (robots.txt + sitemap), and structured data.', 'sage'), 'why' => __('Shows exactly why you are — or aren\'t — showing up in search.', 'sage')],
+                    ['badge' => '', 'title' => __('Accessibility Checker', 'sage'), 'url' => '/accessibility/', 'text' => __('Scan any page against WCAG 2.2 AA — the latest W3C standard — with a live, running checklist.', 'sage'), 'why' => __('Reach more customers and lower your legal risk.', 'sage')],
+                    ['badge' => '', 'title' => __('Security Checker', 'sage'), 'url' => '/security-checker/', 'text' => __('HTTPS and HSTS, the modern browser security headers, cookie safety, information leaks, and front-end risks.', 'sage'), 'why' => __('Protect your customers\' trust — and your reputation.', 'sage')],
+                    ['badge' => '', 'title' => __('Email Deliverability Checker', 'sage'), 'url' => '/email-checker/', 'text' => __('Checks the DNS records — SPF, DKIM, and DMARC — that decide whether your email is trusted or lands in spam.', 'sage'), 'why' => __('Stop your invoices landing in junk, and stop scammers spoofing you.', 'sage')],
+                    ['badge' => '', 'title' => __('Local SEO Scorecard', 'sage'), 'url' => '/local-seo/', 'text' => __('Scores the local signals — NAP, LocalBusiness schema, maps, and reviews — that get you into Google\'s map pack.', 'sage'), 'why' => __('Where much of a local business\'s real traffic comes from.', 'sage')],
+                ], [
+                    ['badge', __('Badge (optional)', 'sage'), 'text'],
+                    ['title', __('Tool name', 'sage'), 'text'],
+                    ['url', __('Link', 'sage'), 'url'],
+                    ['text', __('Description', 'sage'), 'textarea'],
+                    ['why', __('Why it matters', 'sage'), 'textarea'],
+                ]],
+                ['checkers_open', __('Card link label', 'sage'), 'text', __('Open the tool', 'sage')],
+            ],
+            __('Quick tools', 'sage') => [
+                ['quick_eyebrow', __('Eyebrow', 'sage'), 'text', __('Quick tools', 'sage')],
+                ['quick_title', __('Heading (before accent)', 'sage'), 'text', __('Handy calculators &', 'sage')],
+                ['quick_accent', __('Accent word', 'sage'), 'text', __('checks.', 'sage')],
+                ['quick_intro', __('Intro paragraph', 'sage'), 'textarea', __('No URL needed — these run right here on the page. Test a color combination, ballpark a project, or estimate a care plan.', 'sage')],
+            ],
+            __('How to use', 'sage') => [
+                ['howto_eyebrow', __('Eyebrow', 'sage'), 'text', __('Getting the most from them', 'sage')],
+                ['howto_title', __('Heading (before accent)', 'sage'), 'text', __('How to use these', 'sage')],
+                ['howto_accent', __('Accent word', 'sage'), 'text', __('tools.', 'sage')],
+                ['howto_items', __('Tip cards', 'sage'), 'repeater', [
+                    ['title' => __('Start with the grader', 'sage'), 'text' => __('Run the Website Grader first for the big picture, then dig into whichever area scored lowest with the dedicated SEO, accessibility, or security checker.', 'sage')],
+                    ['title' => __('Check your competitors too', 'sage'), 'text' => __('These work on any public URL. Grade a competitor\'s site to see where you can leapfrog them — often it\'s speed, mobile, or local SEO.', 'sage')],
+                    ['title' => __('Re-check after changes', 'sage'), 'text' => __('Made a fix? Run the tool again to confirm it worked. The scores update instantly, so you can see progress as you go.', 'sage')],
+                    ['title' => __('Focus on reds first', 'sage'), 'text' => __('A red “Fail” usually means a real problem a visitor or search engine hits today. Amber “Review” items are worth a look; greens are already working.', 'sage')],
+                    ['title' => __('Read the “why”', 'sage'), 'text' => __('Every check explains the business impact, not just the technical detail — so you can decide what\'s actually worth your time and money.', 'sage')],
+                    ['title' => __('Bring me the results', 'sage'), 'text' => __('Stuck on what a result means or how to fix it? Send it over. I translate these into a short, prioritized plan for local businesses every week.', 'sage')],
+                ], [
+                    ['title', __('Card title', 'sage'), 'text'],
+                    ['text', __('Card text', 'sage'), 'textarea'],
+                ]],
+            ],
+            __('Why free', 'sage') => [
+                ['whyfree_eyebrow', __('Eyebrow', 'sage'), 'text', __('Why give these away?', 'sage')],
+                ['whyfree_title', __('Heading', 'sage'), 'text', __('Built for local businesses, given away for free', 'sage')],
+                ['whyfree_p1', __('Paragraph 1', 'sage'), 'textarea', __('I\'m Matt Hummel, a Gettysburg-based web developer with 15+ years of experience, and I built these tools for the same reason I built this studio: most small businesses in Adams County are paying for websites that quietly underperform, and they have no easy way to see it. A clear, honest checkup shouldn\'t cost anything.', 'sage')],
+                ['whyfree_p2', __('Paragraph 2', 'sage'), 'textarea', __('These tools are also the best way to understand how I work. They\'re fast, accessible, and jargon-free — exactly like the sites I build. If you like the way they explain things, you\'ll like working together. And if the results show your site is in good shape, wonderful; you\'ve lost nothing but a few minutes.', 'sage')],
+                ['whyfree_title2', __('Second heading', 'sage'), 'text', __('What these tools can — and can\'t — tell you', 'sage')],
+                ['whyfree_p3', __('Paragraph 3', 'sage'), 'textarea', __('Automated checks are excellent at measuring the concrete things: whether you serve over HTTPS, whether your titles and meta descriptions are set, whether your pages are fast and mobile-ready, whether search engines are allowed to index them. They\'ll catch the majority of the quick, costly problems that hold a local site back.', 'sage')],
+                ['whyfree_p4', __('Paragraph 4', 'sage'), 'textarea', __('What they can\'t judge is the human layer — whether your message lands, whether the path from visitor to phone call is obvious, whether your content answers the questions your customers actually ask, and the parts of accessibility that require real testing. A perfect technical score still loses if the site says the wrong thing to the wrong person. That\'s where an experienced set of eyes earns its keep, and it\'s the work I finish by hand on every project.', 'sage')],
+                ['whyfree_close_before', __('Closing line (before first link)', 'sage'), 'text', __('When you\'re ready to turn a report into results, ', 'sage')],
+                ['whyfree_close_services', __('Services link label', 'sage'), 'text', __('take a look at the services', 'sage')],
+                ['whyfree_close_or', __('Between links', 'sage'), 'text', __(' or ', 'sage')],
+                ['whyfree_close_contact', __('Contact link label', 'sage'), 'text', __('tell me about your business', 'sage')],
+                ['whyfree_close_after', __('Closing line (after links)', 'sage'), 'text', __('. No pressure, no jargon — just a straight answer about what I\'d do and what it would cost.', 'sage')],
+            ],
+            __('FAQ', 'sage') => [
+                ['tfaq_eyebrow', __('Eyebrow', 'sage'), 'text', __('Common questions', 'sage')],
+                ['tfaq_title', __('Heading (before accent)', 'sage'), 'text', __('Free tools,', 'sage')],
+                ['tfaq_accent', __('Accent word', 'sage'), 'text', __('answered.', 'sage')],
+                ['tfaq_items', __('Questions', 'sage'), 'repeater', [
+                    ['q' => __('Are these tools really free?', 'sage'), 'a' => __('Yes — completely. There\'s no account to create, no email to hand over, and no credit card. Run them as often as you like, on any site you like.', 'sage')],
+                    ['q' => __('Do I have to give you my email or sign up?', 'sage'), 'a' => __('No. Enter a URL (and, for the SEO checker, an optional keyword) and you get your results on the spot. Nothing is gated behind a form.', 'sage')],
+                    ['q' => __('How accurate are the results?', 'sage'), 'a' => __('The URL tools read your page\'s actual code and its server responses, so they\'re reliable for the things a machine can measure — HTTPS, meta tags, headings, security headers, and the like. Judgment calls like design, message clarity, and deep accessibility still need a human. That\'s the part I finish by hand.', 'sage')],
+                    ['q' => __('What\'s the difference between the Website Grader and the SEO Checker?', 'sage'), 'a' => __('The Website Grader is a broad, seven-area report card — a quick overall health check. The SEO Checker goes deep on search specifically, with a Google snippet preview, keyword analysis, crawlability (robots.txt and sitemap), and structured data. Use the grader for the big picture, the SEO checker to dig into rankings.', 'sage')],
+                    ['q' => __('Will you try to sell me something?', 'sage'), 'a' => __('Only if you ask. The tools work with no strings attached. If you\'d like the issues fixed for you, I\'m happy to help — but that\'s your call, not a catch.', 'sage')],
+                    ['q' => __('Can you fix what the tools find?', 'sage'), 'a' => __('Yes. Send me your URL and I\'ll turn the results into a short, prioritized plan in plain English — and I can do the work, from a quick Website Rescue to a full rebuild.', 'sage')],
+                    ['q' => __('Do you work with businesses in my town?', 'sage'), 'a' => __('I serve Gettysburg, Adams County, and the surrounding South Central PA area — Hanover, Littlestown, New Oxford, McSherrystown, Biglerville, Fairfield, and nearby. If you\'re local, we\'re a fit.', 'sage')],
+                    ['q' => __('Do the tools store my website\'s data?', 'sage'), 'a' => __('They fetch the page you enter in order to analyze it, and they don\'t save your results. Each run is a fresh, on-the-spot check.', 'sage')],
+                ], [
+                    ['q', __('Question', 'sage'), 'text'],
+                    ['a', __('Answer', 'sage'), 'textarea'],
+                ]],
+            ],
             __('Call to action', 'sage') => $cta(
                 __('Want a hand with what the tools turned up?', 'sage'),
                 __('I fix these for Gettysburg and South Central PA businesses every week. Tell me your site and I\'ll take a real look.', 'sage'),
-                __('Get a quote', 'sage')
+                __('Get a quote', 'sage'),
             ),
         ],
 
@@ -1014,12 +1136,50 @@ function page_field_map(): array
                 __('Free website grader', 'sage'),
                 __('How good is your website,', 'sage'),
                 __('really?', 'sage'),
-                __('Enter your URL for an instant, plain-English report card across seven areas — SEO, speed, mobile, readability, security, technical health, and social sharing. Every check explains what it found and why it matters for your business.', 'sage')
+                __('Enter your URL for an instant, plain-English report card across seven areas — SEO, speed, mobile, readability, security, technical health, and social sharing. Every check explains what it found and why it matters for your business.', 'sage'),
             ),
+            __('Tool section', 'sage') => $toolScan(
+                __('Instant report card', 'sage'),
+                __('Grade any', 'sage'),
+                __('website.', 'sage'),
+                __('A fast, honest read of the signals in your page and its server responses — free, no email, no signup. It complements a hands-on audit rather than replacing it.', 'sage'),
+                __('An automated read can\'t catch everything a person can. Want a full audit with the fixes done for you?', 'sage'),
+            ),
+            __('What the grade covers', 'sage') => $toolAreas(
+                __('What the grade covers', 'sage'),
+                __('Seven areas, and why', 'sage'),
+                __('each one', 'sage'),
+                __('matters.', 'sage'),
+                [
+                    ['title' => __('SEO — search visibility', 'sage'), 'text' => __('Titles, meta descriptions, headings, alt text, canonical tags, schema, and whether the page is even indexable.', 'sage'), 'why' => __('This is how customers find you on Google without paying for ads. Small on-page fixes are often the highest-return work a local site can get.', 'sage')],
+                    ['title' => __('Page speed', 'sage'), 'text' => __('Server response time, page weight, compression, caching, request count, and image sizing.', 'sage'), 'why' => __('Slow pages lose visitors before they ever see your offer, and speed is a direct Google ranking factor — especially on mobile.', 'sage')],
+                    ['title' => __('Mobile & responsive', 'sage'), 'text' => __('Viewport, pinch-zoom, responsive images, and whether the layout fits a phone screen.', 'sage'), 'why' => __('Most local searches happen on a phone. A site that fights the phone is a site that sends customers to the next result.', 'sage')],
+                    ['title' => __('Readability & content', 'sage'), 'text' => __('How much real content there is, how clearly it reads, link text quality, and content-to-code ratio.', 'sage'), 'why' => __('Thin or dense pages don\'t rank and don\'t convert. Clear, useful writing is what earns trust and answers a buyer\'s question.', 'sage')],
+                    ['title' => __('Security & trust', 'sage'), 'text' => __('HTTPS, mixed content, HSTS, and the security headers browsers look for.', 'sage'), 'why' => __('Browsers now label unsafe sites “Not secure.” Trust signals protect both your customers and your reputation.', 'sage')],
+                    ['title' => __('Technical foundation', 'sage'), 'text' => __('Doctype, character encoding, language, favicon, and a healthy HTTP response.', 'sage'), 'why' => __('The quiet fundamentals that keep a site rendering correctly across every browser and device — the things that break silently.', 'sage')],
+                    ['title' => __('Social & sharing', 'sage'), 'text' => __('Open Graph tags, a share image, Twitter/X cards, and touch icons.', 'sage'), 'why' => __('When someone shares your link, these decide whether it looks like a polished preview or a broken, ignorable text link.', 'sage')],
+                    ['title' => __('Accessibility', 'sage'), 'text' => __('Covered in depth on its own page — alt text, labels, contrast, keyboard use, and the full WCAG 2.2 AA standard.', 'sage'), 'why' => __('An accessible site reaches more customers and reduces legal risk. It overlaps heavily with SEO and good UX.', 'sage')],
+                    ['title' => __('And the human layer', 'sage'), 'text' => __('Brand fit, message clarity, conversion path, trust, and the dozens of judgment calls no scanner can make.', 'sage'), 'why' => __('A perfect technical score still loses if the site doesn\'t say the right thing to the right person. That\'s the part I finish by hand.', 'sage')],
+                ],
+            ),
+            __('Reading your report', 'sage') => [
+                ['read_eyebrow', __('Eyebrow', 'sage'), 'text', __('Reading your report', 'sage')],
+                ['read_title', __('Heading (before accent)', 'sage'), 'text', __('A score is a', 'sage')],
+                ['read_accent', __('Accent phrase', 'sage'), 'text', __('starting point,', 'sage')],
+                ['read_title_end', __('Heading (after accent)', 'sage'), 'text', __('not a verdict.', 'sage')],
+                ['read_items', __('Cards', 'sage'), 'repeater', [
+                    ['title' => __('Green, amber, red', 'sage'), 'text' => __('Each check passes, needs a look, or fails — with the exact value found (your title length, load time, image count) so nothing is a mystery.', 'sage')],
+                    ['title' => __('Why, in plain English', 'sage'), 'text' => __('Every item explains what it means for your business — not jargon, but the cost or opportunity behind the check.', 'sage')],
+                    ['title' => __('Automated ≠ complete', 'sage'), 'text' => __('This reads signals in your code and server responses. It won\'t judge your design, copy, or strategy — that\'s where a person comes in.', 'sage')],
+                ], [
+                    ['title', __('Card title', 'sage'), 'text'],
+                    ['text', __('Card text', 'sage'), 'textarea'],
+                ]],
+            ],
             __('Call to action', 'sage') => $cta(
                 __('Want the fixes, not just the grade?', 'sage'),
                 __('Send me your URL and I\'ll turn the report into a short, prioritized plan — and I can do the work for you.', 'sage'),
-                __('Get my plan', 'sage')
+                __('Get my plan', 'sage'),
             ),
         ],
 
@@ -1028,12 +1188,36 @@ function page_field_map(): array
                 __('Free SEO checker', 'sage'),
                 __('Can Google actually', 'sage'),
                 __('find you?', 'sage'),
-                __('A deep, plain-English SEO audit of any page — snippet preview, crawlability, keyword usage, structured data, links, and the technical fundamentals. Add a target keyword to see how well the page is built around it.', 'sage')
+                __('A deep, plain-English SEO audit of any page — snippet preview, crawlability, keyword usage, structured data, links, and the technical fundamentals. Add a target keyword to see how well the page is built around it.', 'sage'),
+            ),
+            __('Tool section', 'sage') => $toolScan(
+                __('Instant SEO audit', 'sage'),
+                __('Grade a page for', 'sage'),
+                __('search.', 'sage'),
+                __('Enter a URL — and, optionally, the phrase you want to rank for. Free, no email. This reads the page and its robots.txt to check what search engines see.', 'sage'),
+                __('This audits on-page and technical SEO. It can\'t see your backlinks or Google rankings — want a full picture and a plan?', 'sage'),
+            ),
+            __('What the audit covers', 'sage') => $toolAreas(
+                __('What the audit covers', 'sage'),
+                __('The SEO that a', 'sage'),
+                __('local business', 'sage'),
+                __('can control.', 'sage'),
+                [
+                    ['title' => __('Search snippet & meta', 'sage'), 'text' => __('Title tag, meta description, lengths, and canonical URL.', 'sage'), 'why' => __('This is your listing in Google — the headline and summary that decide whether someone clicks you or the shop next door.', 'sage')],
+                    ['title' => __('Indexability & crawlability', 'sage'), 'text' => __('noindex/nofollow, robots.txt, XML sitemap, clean URLs, and HTTPS.', 'sage'), 'why' => __('If Google can\'t crawl or is told not to index a page, nothing else matters — it simply won\'t show up.', 'sage')],
+                    ['title' => __('Content & keywords', 'sage'), 'text' => __('Content depth, heading structure, alt text — and, with a keyword, its use in the title, H1, intro, URL, and density.', 'sage'), 'why' => __('Search is about matching intent. Pages built clearly around a real phrase rank for it; vague pages rank for nothing.', 'sage')],
+                    ['title' => __('Structured data & social', 'sage'), 'text' => __('JSON-LD schema, breadcrumbs, Open Graph, and Twitter cards.', 'sage'), 'why' => __('Schema can win rich results (ratings, hours, FAQs) and social tags make shared links look clickable instead of broken.', 'sage')],
+                    ['title' => __('Link profile', 'sage'), 'text' => __('Internal links, outbound links, and anchor-text quality.', 'sage'), 'why' => __('Internal links pass ranking strength to your key pages and help visitors (and Google) navigate your site.', 'sage')],
+                    ['title' => __('Technical SEO', 'sage'), 'text' => __('Mobile viewport, response speed, page weight, language, and encoding.', 'sage'), 'why' => __('Google indexes the mobile version first and rewards fast pages. The fundamentals quietly gate everything above.', 'sage')],
+                    ['title' => __('Local SEO (beyond the page)', 'sage'), 'text' => __('Google Business Profile, consistent name/address/phone, reviews, and town-specific pages.', 'sage'), 'why' => __('For a local business this is where much of the real traffic comes from — I set it up as part of every build.', 'sage')],
+                    ['title' => __('Off-page (not shown here)', 'sage'), 'text' => __('Backlinks, domain authority, and how others link to you.', 'sage'), 'why' => __('This audit reads your page; it can\'t see the wider web. Off-page strength is the other half of ranking — ask me about it.', 'sage')],
+                    ['title' => __('The strategy layer', 'sage'), 'text' => __('Which keywords are worth chasing, search intent, and content that answers real questions.', 'sage'), 'why' => __('A technically perfect page targeting the wrong phrase still loses. Picking the right battles is the human part.', 'sage')],
+                ],
             ),
             __('Call to action', 'sage') => $cta(
                 __('Want to actually rank, not just score well?', 'sage'),
                 __('Send me your URL and the phrase you want to be found for. I\'ll turn this into a prioritized plan — and do the work.', 'sage'),
-                __('Get my SEO plan', 'sage')
+                __('Get my SEO plan', 'sage'),
             ),
         ],
 
@@ -1042,12 +1226,33 @@ function page_field_map(): array
                 __('Free security checker', 'sage'),
                 __('Is your website', 'sage'),
                 __('locked up?', 'sage'),
-                __('A plain-English security check of any page — HTTPS and HSTS, the modern browser security headers, information leaks, cookie safety, and front-end risks. Every result explains the risk and why it matters for your business.', 'sage')
+                __('A plain-English security check of any page — HTTPS and HSTS, the modern browser security headers, information leaks, cookie safety, and front-end risks. Every result explains the risk and why it matters for your business.', 'sage'),
+            ),
+            __('Tool section', 'sage') => $toolScan(
+                __('Instant security scan', 'sage'),
+                __('Scan a page for', 'sage'),
+                __('safety.', 'sage'),
+                __('Enter a URL for a fast hygiene check of what browsers (and attackers) see in your page and its response headers. Free, no email. It\'s a first-pass check, not a penetration test.', 'sage'),
+                __('This checks configuration and headers, not your passwords, plugins, or server internals. Want a real hardening pass and ongoing monitoring?', 'sage'),
+            ),
+            __('What the scan covers', 'sage') => $toolAreas(
+                __('What the scan covers', 'sage'),
+                __('Five layers of', 'sage'),
+                __('everyday', 'sage'),
+                __('protection.', 'sage'),
+                [
+                    ['title' => __('HTTPS & transport', 'sage'), 'text' => __('HTTPS, an http→https redirect, HSTS, mixed content, and secure form submissions.', 'sage'), 'why' => __('This is the encryption between your visitor and your site. Without it, data can be read or altered in transit and browsers show a “Not secure” warning.', 'sage')],
+                    ['title' => __('Security headers', 'sage'), 'text' => __('Content-Security-Policy, X-Content-Type-Options, clickjacking protection, Referrer-Policy, and Permissions-Policy.', 'sage'), 'why' => __('These headers are free, built-in browser defences against the most common web attacks — most small-business sites simply never turn them on.', 'sage')],
+                    ['title' => __('Information disclosure', 'sage'), 'text' => __('Whether the server, framework, and CMS quietly advertise their exact versions.', 'sage'), 'why' => __('Version numbers are a roadmap for attackers — they tell bots precisely which known exploits are worth trying against you.', 'sage')],
+                    ['title' => __('Cookie safety', 'sage'), 'text' => __('The Secure, HttpOnly, and SameSite flags on any cookies the page sets.', 'sage'), 'why' => __('Properly flagged cookies can\'t be stolen by injected scripts or replayed from other sites — critical if anyone ever logs in.', 'sage')],
+                    ['title' => __('Front-end risks', 'sage'), 'text' => __('Tabnabbing-safe links, inline scripts and handlers, and third-party script sprawl.', 'sage'), 'why' => __('Every external script is code you don\'t control running on your site. Fewer, safer scripts mean a smaller attack surface.', 'sage')],
+                    ['title' => __('Beyond the scan', 'sage'), 'text' => __('Strong passwords, two-factor login, updates, backups, a firewall, and malware monitoring.', 'sage'), 'why' => __('Real security is ongoing, not a one-time score. A Care & Grow plan keeps the site patched, backed up, and watched.', 'sage')],
+                ],
             ),
             __('Call to action', 'sage') => $cta(
                 __('Want your site locked down and kept that way?', 'sage'),
                 __('I harden the fixable items above and keep sites patched, backed up, and monitored on a Care & Grow plan.', 'sage'),
-                __('Secure my site', 'sage')
+                __('Secure my site', 'sage'),
             ),
         ],
 
@@ -1056,12 +1261,33 @@ function page_field_map(): array
                 __('Free email deliverability checker', 'sage'),
                 __('Is your email landing in', 'sage'),
                 __('spam?', 'sage'),
-                __('Enter your domain to check the DNS records that decide whether your email is trusted — SPF, DKIM, and DMARC — and whether anyone can send phishing emails pretending to be your business. Plain English, no signup.', 'sage')
+                __('Enter your domain to check the DNS records that decide whether your email is trusted — SPF, DKIM, and DMARC — and whether anyone can send phishing emails pretending to be your business. Plain English, no signup.', 'sage'),
+            ),
+            __('Tool section', 'sage') => $toolScan(
+                __('Instant DNS check', 'sage'),
+                __('Check your email', 'sage'),
+                __('setup.', 'sage'),
+                __('Enter your domain (like yourbusiness.com — not your full email address). This reads your public DNS records; it never touches your inbox or your password.', 'sage'),
+                __('SPF, DKIM, and DMARC are fiddly to set up and easy to get wrong. Want me to configure them for you the right way?', 'sage'),
+            ),
+            __('What the check covers', 'sage') => $toolAreas(
+                __('What the check covers', 'sage'),
+                __('The three records that', 'sage'),
+                __('protect', 'sage'),
+                __('your email.', 'sage'),
+                [
+                    ['title' => __('Can you receive mail? (MX)', 'sage'), 'text' => __('Whether your domain has mail servers set up to accept email at all.', 'sage'), 'why' => __('If MX records are missing or wrong, email sent to your business simply bounces — customers assume you ignored them.', 'sage')],
+                    ['title' => __('SPF — who can send as you', 'sage'), 'text' => __('The record listing which servers are allowed to send email from your domain.', 'sage'), 'why' => __('Without SPF, anyone can forge email from your address, and legitimate mail from your real provider is more likely to be flagged as spam.', 'sage')],
+                    ['title' => __('DKIM — a tamper-proof signature', 'sage'), 'text' => __('A cryptographic signature that proves a message genuinely came from you.', 'sage'), 'why' => __('DKIM lets inbox providers verify your mail is authentic and unaltered — a big factor in whether you land in the inbox or the junk folder.', 'sage')],
+                    ['title' => __('DMARC — the anti-phishing policy', 'sage'), 'text' => __('The rule that ties SPF and DKIM together and tells inboxes what to do with mail that fails.', 'sage'), 'why' => __('DMARC is what actually stops scammers from sending phishing emails “from” your business to your customers and suppliers.', 'sage')],
+                    ['title' => __('Why this hits small businesses', 'sage'), 'text' => __('Many local businesses use email that was set up years ago and never configured for authentication.', 'sage'), 'why' => __('The result is quiet damage: invoices and quotes landing in spam, and no protection if someone impersonates your brand.', 'sage')],
+                    ['title' => __('The good news', 'sage'), 'text' => __('These are one-time DNS fixes — set them correctly once and they keep working.', 'sage'), 'why' => __('Getting SPF, DKIM, and DMARC right improves inbox placement and shuts the door on spoofing. It\'s among the highest-value, lowest-cost fixes there is.', 'sage')],
+                ],
             ),
             __('Call to action', 'sage') => $cta(
                 __('Want your email trusted and spoof-proof?', 'sage'),
                 __('I\'ll set up SPF, DKIM, and DMARC correctly so your mail reaches inboxes and nobody can impersonate you.', 'sage'),
-                __('Fix my email setup', 'sage')
+                __('Fix my email setup', 'sage'),
             ),
         ],
 
@@ -1070,12 +1296,33 @@ function page_field_map(): array
                 __('Free local SEO scorecard', 'sage'),
                 __('Do nearby customers', 'sage'),
                 __('find you?', 'sage'),
-                __('A scorecard for the signals that get a local business into Google\'s map pack and turn searchers into calls — your name, address, phone, hours, LocalBusiness schema, maps, and reviews. Built for Gettysburg and South Central PA businesses.', 'sage')
+                __('A scorecard for the signals that get a local business into Google\'s map pack and turn searchers into calls — your name, address, phone, hours, LocalBusiness schema, maps, and reviews. Built for Gettysburg and South Central PA businesses.', 'sage'),
+            ),
+            __('Tool section', 'sage') => $toolScan(
+                __('Instant local audit', 'sage'),
+                __('Score your page for', 'sage'),
+                __('local search.', 'sage'),
+                __('Enter your homepage or contact page URL. This reads the local signals on the page — it can\'t see your Google Business Profile or review counts, which are named below.', 'sage'),
+                __('Local ranking also depends on your Google Business Profile, reviews, and citations across the web — the parts a page scan can\'t see. Want the full local-SEO setup?', 'sage'),
+            ),
+            __('What the scorecard covers', 'sage') => $toolAreas(
+                __('What the scorecard covers', 'sage'),
+                __('How local customers', 'sage'),
+                __('actually', 'sage'),
+                __('reach you.', 'sage'),
+                [
+                    ['title' => __('Contact essentials (NAP)', 'sage'), 'text' => __('A tap-to-call phone number, a visible address, and your business hours.', 'sage'), 'why' => __('Nearby, ready-to-buy customers want to call or visit now. Missing hours or a non-clickable number sends them straight to a competitor.', 'sage')],
+                    ['title' => __('LocalBusiness structured data', 'sage'), 'text' => __('Machine-readable schema with your address, phone, hours, and map coordinates.', 'sage'), 'why' => __('This is how you hand Google your business details in a format it trusts — the backbone of appearing in the map pack and knowledge panel.', 'sage')],
+                    ['title' => __('On the map & getting directions', 'sage'), 'text' => __('Your town in the page title, an embedded map, a Google Business Profile link, and one-tap directions.', 'sage'), 'why' => __('These connect your website to your physical location and your Google listing, and remove friction for someone deciding to come in.', 'sage')],
+                    ['title' => __('Reviews & trust', 'sage'), 'text' => __('Review/rating schema and links to your Facebook, Yelp, or Instagram.', 'sage'), 'why' => __('Star ratings in search results and active profiles are often what tips a searcher toward you over the shop next door.', 'sage')],
+                    ['title' => __('Mobile-first', 'sage'), 'text' => __('A fast, secure, responsive page — because local search is overwhelmingly on phones.', 'sage'), 'why' => __('“Near me” searches happen in the moment, on a phone, on the go. If the page fights the phone, you lose the customer.', 'sage')],
+                    ['title' => __('Beyond the page', 'sage'), 'text' => __('A claimed Google Business Profile, a steady flow of reviews, and consistent listings across the web.', 'sage'), 'why' => __('Much of local ranking lives off your website. A page scan can\'t see it — but it\'s where a lot of the real work (and traffic) is, and it\'s part of every local build I do.', 'sage')],
+                ],
             ),
             __('Call to action', 'sage') => $cta(
                 __('Want to own “near me” in Adams County?', 'sage'),
                 __('I set up local SEO end to end — on-page signals, Google Business Profile, and town-by-town pages — for Gettysburg and South Central PA businesses.', 'sage'),
-                __('Get found locally', 'sage')
+                __('Get found locally', 'sage'),
             ),
         ],
     ];
@@ -1204,7 +1451,7 @@ add_filter('get_user_option_meta-box-order_page', function ($order) {
     $id = 'rv_page_content';
     foreach (['side', 'advanced'] as $ctx) {
         if (! empty($order[$ctx])) {
-            $ids = array_values(array_filter(explode(',', $order[$ctx]), static fn ($x) => $x !== '' && $x !== $id));
+            $ids = array_values(array_filter(explode(',', $order[$ctx]), static fn($x) => $x !== '' && $x !== $id));
             $order[$ctx] = implode(',', $ids);
         }
     }
@@ -1212,7 +1459,7 @@ add_filter('get_user_option_meta-box-order_page', function ($order) {
     if (! in_array($id, $normal, true)) {
         array_unshift($normal, $id);
     }
-    $order['normal'] = implode(',', array_filter($normal, static fn ($x) => $x !== ''));
+    $order['normal'] = implode(',', array_filter($normal, static fn($x) => $x !== ''));
     return $order;
 });
 
@@ -1579,7 +1826,7 @@ function render_page_fields_box(\WP_Post $post): void
         printf(
             '<div class="rv-pf-preview" data-pf-action="%1$s" data-pf-nonce="%2$s">',
             esc_url($permalink),
-            esc_attr(wp_create_nonce('rv_preview_' . $post->ID))
+            esc_attr(wp_create_nonce('rv_preview_' . $post->ID)),
         );
         echo '<div class="rv-pf-bar"><span class="rv-pf-bar-t">' . esc_html__('Live preview', 'sage') . '</span><span class="rv-pf-status" aria-live="polite"></span><a class="rv-pf-open" href="' . esc_url($permalink) . '" target="_blank" rel="noopener">' . esc_html__('Open ↗', 'sage') . '</a></div>';
         echo '<div class="rv-pf-stage"><iframe id="rv_pf_frame" name="rv_pf_frame" class="rv-pf-frame" title="' . esc_attr__('Live preview', 'sage') . '"></iframe></div>';
@@ -1623,9 +1870,9 @@ add_action('save_post_page', function ($post_id) {
             if ($type === 'lines') {
                 $raw   = isset($_POST[$name]) ? (string) wp_unslash($_POST[$name]) : '';
                 $items = array_values(array_filter(array_map(
-                    static fn ($s) => sanitize_text_field(trim($s)),
-                    preg_split('/\r\n|\r|\n/', $raw)
-                ), static fn ($s) => $s !== ''));
+                    static fn($s) => sanitize_text_field(trim($s)),
+                    preg_split('/\r\n|\r|\n/', $raw),
+                ), static fn($s) => $s !== ''));
                 if ($items) {
                     update_post_meta($post_id, $name, $items);
                 } else {
@@ -1651,9 +1898,9 @@ add_action('save_post_page', function ($post_id) {
                         switch ($st) {
                             case 'lines':
                                 $cleanRow[$sk] = array_values(array_filter(array_map(
-                                    static fn ($s) => sanitize_text_field(trim($s)),
-                                    preg_split('/\r\n|\r|\n/', (string) $sv)
-                                ), static fn ($s) => $s !== ''));
+                                    static fn($s) => sanitize_text_field(trim($s)),
+                                    preg_split('/\r\n|\r|\n/', (string) $sv),
+                                ), static fn($s) => $s !== ''));
                                 if (! empty($cleanRow[$sk])) {
                                     $hasValue = true;
                                 }

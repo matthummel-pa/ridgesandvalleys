@@ -23,9 +23,9 @@
 
   {{-- LIVE SECURITY CHECKER --}}
   <section id="security" class="rv-shell rv-band">
-    {!! \App\eyebrow(__('Instant security scan', 'sage')) !!}
-    <h2 class="rv-section-title">{{ __('Scan a page for', 'sage') }} <em class="rv-accent">{{ __('safety.', 'sage') }}</em></h2>
-    <p class="rv-page-intro">{{ __('Enter a URL for a fast hygiene check of what browsers (and attackers) see in your page and its response headers. Free, no email. It\'s a first-pass check, not a penetration test.', 'sage') }}</p>
+    {!! \App\eyebrow(\App\field('scan_eyebrow', __('Instant security scan', 'sage'))) !!}
+    <h2 class="rv-section-title">{{ \App\field('scan_title', __('Scan a page for', 'sage')) }} <em class="rv-accent">{{ \App\field('scan_accent', __('safety.', 'sage')) }}</em></h2>
+    <p class="rv-page-intro">{{ \App\field('scan_intro', __('Enter a URL for a fast hygiene check of what browsers (and attackers) see in your page and its response headers. Free, no email. It\'s a first-pass check, not a penetration test.', 'sage')) }}</p>
 
     <div class="rv-scan" id="rv-sec" data-endpoint="{{ esc_url(rest_url('rv-tools/v1/security')) }}" style="margin-top:2rem" aria-label="{{ __('Security checker', 'sage') }}">
       <div class="rv-scan-head">
@@ -48,29 +48,28 @@
         <button type="button" class="rv-btn rv-btn-ghost" id="rv-sec-reset">{{ __('Reset', 'sage') }}</button>
       </div>
     </div>
-    <p class="rv-audit-note">{{ __('This checks configuration and headers, not your passwords, plugins, or server internals. Want a real hardening pass and ongoing monitoring?', 'sage') }} <a href="{{ $ctaHref }}">{{ __('Talk to me', 'sage') }}</a>.</p>
+    <p class="rv-audit-note">{{ \App\field('scan_note', __('This checks configuration and headers, not your passwords, plugins, or server internals. Want a real hardening pass and ongoing monitoring?', 'sage')) }} <a href="{{ $ctaHref }}">{{ \App\field('scan_note_link', __('Talk to me', 'sage')) }}</a>.</p>
   </section>
 
   {{-- WHAT WE CHECK --}}
   <section class="rv-band rv-band-alt">
     <div class="rv-shell">
-      {!! \App\eyebrow(__('What the scan covers', 'sage')) !!}
-      <h2 class="rv-section-title">{{ __('Five layers of', 'sage') }} <em class="rv-accent">{{ __('everyday', 'sage') }}</em> {{ __('protection.', 'sage') }}</h2>
+      {!! \App\eyebrow(\App\field('areas_eyebrow', __('What the scan covers', 'sage'))) !!}
+      <h2 class="rv-section-title">{{ \App\field('areas_title', __('Five layers of', 'sage')) }} <em class="rv-accent">{{ \App\field('areas_accent', __('everyday', 'sage')) }}</em> {{ \App\field('areas_title_end', __('protection.', 'sage')) }}</h2>
       <div class="rv-grid rv-grid-3" style="margin-top:2rem">
-        @php($areas = [
-          [__('HTTPS & transport', 'sage'), __('HTTPS, an http→https redirect, HSTS, mixed content, and secure form submissions.', 'sage'), __('This is the encryption between your visitor and your site. Without it, data can be read or altered in transit and browsers show a “Not secure” warning.', 'sage')],
-          [__('Security headers', 'sage'), __('Content-Security-Policy, X-Content-Type-Options, clickjacking protection, Referrer-Policy, and Permissions-Policy.', 'sage'), __('These headers are free, built-in browser defences against the most common web attacks — most small-business sites simply never turn them on.', 'sage')],
-          [__('Information disclosure', 'sage'), __('Whether the server, framework, and CMS quietly advertise their exact versions.', 'sage'), __('Version numbers are a roadmap for attackers — they tell bots precisely which known exploits are worth trying against you.', 'sage')],
-          [__('Cookie safety', 'sage'), __('The Secure, HttpOnly, and SameSite flags on any cookies the page sets.', 'sage'), __('Properly flagged cookies can\'t be stolen by injected scripts or replayed from other sites — critical if anyone ever logs in.', 'sage')],
-          [__('Front-end risks', 'sage'), __('Tabnabbing-safe links, inline scripts and handlers, and third-party script sprawl.', 'sage'), __('Every external script is code you don\'t control running on your site. Fewer, safer scripts mean a smaller attack surface.', 'sage')],
-          [__('Beyond the scan', 'sage'), __('Strong passwords, two-factor login, updates, backups, a firewall, and malware monitoring.', 'sage'), __('Real security is ongoing, not a one-time score. A Care & Grow plan keeps the site patched, backed up, and watched.', 'sage')],
-        ])
-        @foreach ($areas as $a)
+        @foreach (\App\field_rows('areas_items', [
+          ['title' => __('HTTPS & transport', 'sage'), 'text' => __('HTTPS, an http→https redirect, HSTS, mixed content, and secure form submissions.', 'sage'), 'why' => __('This is the encryption between your visitor and your site. Without it, data can be read or altered in transit and browsers show a “Not secure” warning.', 'sage')],
+          ['title' => __('Security headers', 'sage'), 'text' => __('Content-Security-Policy, X-Content-Type-Options, clickjacking protection, Referrer-Policy, and Permissions-Policy.', 'sage'), 'why' => __('These headers are free, built-in browser defences against the most common web attacks — most small-business sites simply never turn them on.', 'sage')],
+          ['title' => __('Information disclosure', 'sage'), 'text' => __('Whether the server, framework, and CMS quietly advertise their exact versions.', 'sage'), 'why' => __('Version numbers are a roadmap for attackers — they tell bots precisely which known exploits are worth trying against you.', 'sage')],
+          ['title' => __('Cookie safety', 'sage'), 'text' => __('The Secure, HttpOnly, and SameSite flags on any cookies the page sets.', 'sage'), 'why' => __('Properly flagged cookies can\'t be stolen by injected scripts or replayed from other sites — critical if anyone ever logs in.', 'sage')],
+          ['title' => __('Front-end risks', 'sage'), 'text' => __('Tabnabbing-safe links, inline scripts and handlers, and third-party script sprawl.', 'sage'), 'why' => __('Every external script is code you don\'t control running on your site. Fewer, safer scripts mean a smaller attack surface.', 'sage')],
+          ['title' => __('Beyond the scan', 'sage'), 'text' => __('Strong passwords, two-factor login, updates, backups, a firewall, and malware monitoring.', 'sage'), 'why' => __('Real security is ongoing, not a one-time score. A Care & Grow plan keeps the site patched, backed up, and watched.', 'sage')],
+        ]) as $a)
           <article class="rv-card rv-feature">
             <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-            <h3 class="rv-feature-title">{{ $a[0] }}</h3>
-            <p class="rv-feature-text" style="margin-bottom:.6rem">{{ $a[1] }}</p>
-            <p class="rv-feature-text" style="color:var(--color-muted);font-size:.9rem"><b style="color:var(--color-body)">{{ __('Why it matters:', 'sage') }}</b> {{ $a[2] }}</p>
+            <h3 class="rv-feature-title">{{ $a['title'] ?? '' }}</h3>
+            <p class="rv-feature-text" style="margin-bottom:.6rem">{{ $a['text'] ?? '' }}</p>
+            <p class="rv-feature-text" style="color:var(--color-muted);font-size:.9rem"><b style="color:var(--color-body)">{{ __('Why it matters:', 'sage') }}</b> {{ $a['why'] ?? '' }}</p>
           </article>
         @endforeach
       </div>

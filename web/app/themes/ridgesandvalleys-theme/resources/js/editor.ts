@@ -22,6 +22,29 @@ interface RidgelineCtaAttributes {
 }
 
 registerBlockType<RidgelineCtaAttributes>('rv/ridgeline-cta', {
+  title: __('Ridgeline CTA', 'sage'),
+  category: 'design',
+  icon: 'megaphone',
+  description: __('A full-width call-to-action band with the ridgeline gradient.', 'sage'),
+  supports: { html: false, align: ['full'] },
+  attributes: {
+    heading: {
+      type: 'string',
+      default: __('Ready to be easy to find?', 'sage'),
+    },
+    text: {
+      type: 'string',
+      default: __("Tell me about your business. I'll tell you exactly what I'd do — no jargon, no pressure.", 'sage'),
+    },
+    buttonLabel: {
+      type: 'string',
+      default: __('Get a quote', 'sage'),
+    },
+    buttonUrl: {
+      type: 'string',
+      default: '/contact/',
+    },
+  },
   edit: ({ attributes, setAttributes }) => {
     const { heading, text, buttonLabel, buttonUrl } = attributes;
     const blockProps = useBlockProps({
@@ -30,24 +53,25 @@ registerBlockType<RidgelineCtaAttributes>('rv/ridgeline-cta', {
     });
 
     return el(Fragment, null, [
-      el(
-        InspectorControls,
-        { key: 'inspector' },
-        el(
-          PanelBody,
-          { title: __('Button', 'sage'), initialOpen: true },
-          el(TextControl, {
-            label: __('Button label', 'sage'),
-            value: buttonLabel,
-            onChange: (value: string) => setAttributes({ buttonLabel: value }),
-          }),
-          el(TextControl, {
-            label: __('Button URL', 'sage'),
-            value: buttonUrl,
-            onChange: (value: string) => setAttributes({ buttonUrl: value }),
-          }),
-        ),
-      ),
+      el(InspectorControls, {
+        key: 'inspector',
+        children: el(PanelBody, {
+          title: __('Button', 'sage'),
+          initialOpen: true,
+          children: [
+            el(TextControl, {
+              label: __('Button label', 'sage'),
+              value: buttonLabel,
+              onChange: (value: string) => setAttributes({ buttonLabel: value }),
+            }),
+            el(TextControl, {
+              label: __('Button URL', 'sage'),
+              value: buttonUrl,
+              onChange: (value: string) => setAttributes({ buttonUrl: value }),
+            }),
+          ],
+        }),
+      }),
       el('section', { ...blockProps, key: 'preview' }, [
         el(RichText, {
           key: 'heading',

@@ -97,7 +97,7 @@ function ai_generate(string $system, string $prompt)
         return new \WP_Error(
             'rv_ai_no_key',
             __('No AI provider key is set. Add one under Appearance → Theme APIs.', 'sage'),
-            ['status' => 503]
+            ['status' => 503],
         );
     }
 
@@ -229,7 +229,7 @@ function ai_edit_rest(\WP_REST_Request $request)
         return new \WP_Error(
             'rv_ai_unavailable',
             __('No AI provider key is set. Add one under Appearance → Theme APIs.', 'sage'),
-            ['status' => 503]
+            ['status' => 503],
         );
     }
 
@@ -248,7 +248,7 @@ function ai_edit_rest(\WP_REST_Request $request)
     $system = sprintf(
         /* translators: %s: parenthetical field label, e.g. ' (the "Hero title" field)'. */
         __('You are editing microcopy for the website of Ridges & Valleys Studio, a small independent web-design studio in Gettysburg and Adams County, Pennsylvania, run by Matt Hummel. Voice: warm, plain-English, confident, and local — no corporate jargon, no hype, no exclamation-point spam. You are revising a single website field%s. Return ONLY the revised text for that field: no quotation marks, no preamble, no explanation, no markdown, and no list of options. Match the original\'s format and length — if it is a short headline, keep it short; if it has no ending period, do not add one.', 'sage'),
-        $label !== '' ? sprintf(__(' (the "%s" field)', 'sage'), $label) : ''
+        $label !== '' ? sprintf(__(' (the "%s" field)', 'sage'), $label) : '',
     );
 
     $prompt = __('Current text:', 'sage') . "\n\n" . $text . "\n\n" . __('Task:', 'sage') . ' ' . $task;
@@ -280,7 +280,7 @@ add_action('admin_enqueue_scripts', function ($hook) {
         get_theme_file_uri('resources/js/admin-ai.js'),
         [],
         '1.2.0',
-        true
+        true,
     );
 
     $cfg           = ai_edit_provider();

@@ -38,7 +38,7 @@ add_action('add_meta_boxes', function () {
         __NAMESPACE__ . '\\hero_credit_meta_box',
         ['page', 'post'],
         'side',
-        'low'
+        'low',
     );
 });
 
@@ -122,7 +122,7 @@ add_action('wp_footer', function () {
 
     // Content-photo credits: one per line → the Nth .rv-split-media photo.
     $lines = preg_split('/\r\n|\r|\n/', (string) get_post_meta($id, 'rv_f_img_credits', true)) ?: [];
-    $imgHtml = array_map(static fn ($l) => trim($l) === '' ? '' : esc_html(trim($l)), $lines);
+    $imgHtml = array_map(static fn($l) => trim($l) === '' ? '' : esc_html(trim($l)), $lines);
 
     if ($heroHtml === '' && ! array_filter($imgHtml)) {
         return;

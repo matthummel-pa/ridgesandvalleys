@@ -23,9 +23,9 @@
 
   {{-- LIVE SCORECARD --}}
   <section id="local" class="rv-shell rv-band">
-    {!! \App\eyebrow(__('Instant local audit', 'sage')) !!}
-    <h2 class="rv-section-title">{{ __('Score your page for', 'sage') }} <em class="rv-accent">{{ __('local search.', 'sage') }}</em></h2>
-    <p class="rv-page-intro">{{ __('Enter your homepage or contact page URL. This reads the local signals on the page — it can\'t see your Google Business Profile or review counts, which are named below.', 'sage') }}</p>
+    {!! \App\eyebrow(\App\field('scan_eyebrow', __('Instant local audit', 'sage'))) !!}
+    <h2 class="rv-section-title">{{ \App\field('scan_title', __('Score your page for', 'sage')) }} <em class="rv-accent">{{ \App\field('scan_accent', __('local search.', 'sage')) }}</em></h2>
+    <p class="rv-page-intro">{{ \App\field('scan_intro', __('Enter your homepage or contact page URL. This reads the local signals on the page — it can\'t see your Google Business Profile or review counts, which are named below.', 'sage')) }}</p>
 
     <div class="rv-scan" id="rv-local" data-endpoint="{{ esc_url(rest_url('rv-tools/v1/local')) }}" style="margin-top:2rem" aria-label="{{ __('Local SEO scorecard', 'sage') }}">
       <div class="rv-scan-head">
@@ -48,29 +48,28 @@
         <button type="button" class="rv-btn rv-btn-ghost" id="rv-local-reset">{{ __('Reset', 'sage') }}</button>
       </div>
     </div>
-    <p class="rv-audit-note">{{ __('Local ranking also depends on your Google Business Profile, reviews, and citations across the web — the parts a page scan can\'t see. Want the full local-SEO setup?', 'sage') }} <a href="{{ $ctaHref }}">{{ __('Talk to me', 'sage') }}</a>.</p>
+    <p class="rv-audit-note">{{ \App\field('scan_note', __('Local ranking also depends on your Google Business Profile, reviews, and citations across the web — the parts a page scan can\'t see. Want the full local-SEO setup?', 'sage')) }} <a href="{{ $ctaHref }}">{{ \App\field('scan_note_link', __('Talk to me', 'sage')) }}</a>.</p>
   </section>
 
   {{-- WHAT WE CHECK --}}
   <section class="rv-band rv-band-alt">
     <div class="rv-shell">
-      {!! \App\eyebrow(__('What the scorecard covers', 'sage')) !!}
-      <h2 class="rv-section-title">{{ __('How local customers', 'sage') }} <em class="rv-accent">{{ __('actually', 'sage') }}</em> {{ __('reach you.', 'sage') }}</h2>
+      {!! \App\eyebrow(\App\field('areas_eyebrow', __('What the scorecard covers', 'sage'))) !!}
+      <h2 class="rv-section-title">{{ \App\field('areas_title', __('How local customers', 'sage')) }} <em class="rv-accent">{{ \App\field('areas_accent', __('actually', 'sage')) }}</em> {{ \App\field('areas_title_end', __('reach you.', 'sage')) }}</h2>
       <div class="rv-grid rv-grid-3" style="margin-top:2rem">
-        @php($areas = [
-          [__('Contact essentials (NAP)', 'sage'), __('A tap-to-call phone number, a visible address, and your business hours.', 'sage'), __('Nearby, ready-to-buy customers want to call or visit now. Missing hours or a non-clickable number sends them straight to a competitor.', 'sage')],
-          [__('LocalBusiness structured data', 'sage'), __('Machine-readable schema with your address, phone, hours, and map coordinates.', 'sage'), __('This is how you hand Google your business details in a format it trusts — the backbone of appearing in the map pack and knowledge panel.', 'sage')],
-          [__('On the map & getting directions', 'sage'), __('Your town in the page title, an embedded map, a Google Business Profile link, and one-tap directions.', 'sage'), __('These connect your website to your physical location and your Google listing, and remove friction for someone deciding to come in.', 'sage')],
-          [__('Reviews & trust', 'sage'), __('Review/rating schema and links to your Facebook, Yelp, or Instagram.', 'sage'), __('Star ratings in search results and active profiles are often what tips a searcher toward you over the shop next door.', 'sage')],
-          [__('Mobile-first', 'sage'), __('A fast, secure, responsive page — because local search is overwhelmingly on phones.', 'sage'), __('“Near me” searches happen in the moment, on a phone, on the go. If the page fights the phone, you lose the customer.', 'sage')],
-          [__('Beyond the page', 'sage'), __('A claimed Google Business Profile, a steady flow of reviews, and consistent listings across the web.', 'sage'), __('Much of local ranking lives off your website. A page scan can\'t see it — but it\'s where a lot of the real work (and traffic) is, and it\'s part of every local build I do.', 'sage')],
-        ])
-        @foreach ($areas as $a)
+        @foreach (\App\field_rows('areas_items', [
+          ['title' => __('Contact essentials (NAP)', 'sage'), 'text' => __('A tap-to-call phone number, a visible address, and your business hours.', 'sage'), 'why' => __('Nearby, ready-to-buy customers want to call or visit now. Missing hours or a non-clickable number sends them straight to a competitor.', 'sage')],
+          ['title' => __('LocalBusiness structured data', 'sage'), 'text' => __('Machine-readable schema with your address, phone, hours, and map coordinates.', 'sage'), 'why' => __('This is how you hand Google your business details in a format it trusts — the backbone of appearing in the map pack and knowledge panel.', 'sage')],
+          ['title' => __('On the map & getting directions', 'sage'), 'text' => __('Your town in the page title, an embedded map, a Google Business Profile link, and one-tap directions.', 'sage'), 'why' => __('These connect your website to your physical location and your Google listing, and remove friction for someone deciding to come in.', 'sage')],
+          ['title' => __('Reviews & trust', 'sage'), 'text' => __('Review/rating schema and links to your Facebook, Yelp, or Instagram.', 'sage'), 'why' => __('Star ratings in search results and active profiles are often what tips a searcher toward you over the shop next door.', 'sage')],
+          ['title' => __('Mobile-first', 'sage'), 'text' => __('A fast, secure, responsive page — because local search is overwhelmingly on phones.', 'sage'), 'why' => __('“Near me” searches happen in the moment, on a phone, on the go. If the page fights the phone, you lose the customer.', 'sage')],
+          ['title' => __('Beyond the page', 'sage'), 'text' => __('A claimed Google Business Profile, a steady flow of reviews, and consistent listings across the web.', 'sage'), 'why' => __('Much of local ranking lives off your website. A page scan can\'t see it — but it\'s where a lot of the real work (and traffic) is, and it\'s part of every local build I do.', 'sage')],
+        ]) as $a)
           <article class="rv-card rv-feature">
             <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-            <h3 class="rv-feature-title">{{ $a[0] }}</h3>
-            <p class="rv-feature-text" style="margin-bottom:.6rem">{{ $a[1] }}</p>
-            <p class="rv-feature-text" style="color:var(--color-muted);font-size:.9rem"><b style="color:var(--color-body)">{{ __('Why it matters:', 'sage') }}</b> {{ $a[2] }}</p>
+            <h3 class="rv-feature-title">{{ $a['title'] ?? '' }}</h3>
+            <p class="rv-feature-text" style="margin-bottom:.6rem">{{ $a['text'] ?? '' }}</p>
+            <p class="rv-feature-text" style="color:var(--color-muted);font-size:.9rem"><b style="color:var(--color-body)">{{ __('Why it matters:', 'sage') }}</b> {{ $a['why'] ?? '' }}</p>
           </article>
         @endforeach
       </div>

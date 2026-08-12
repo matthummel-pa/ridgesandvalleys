@@ -763,7 +763,7 @@ add_action('customize_register', function ($wp_customize) {
     $toggle_colors = [
         'rv_toggle_icon_color'  => __('Toggle icon color', 'sage'),
         'rv_toggle_bg'          => __('Toggle background', 'sage'),
-        'rv_toggle_border_color'=> __('Toggle border color', 'sage'),
+        'rv_toggle_border_color' => __('Toggle border color', 'sage'),
         'rv_toggle_hover_icon'  => __('Icon color on hover', 'sage'),
         'rv_toggle_hover_bg'    => __('Background on hover', 'sage'),
     ];
@@ -1092,6 +1092,22 @@ add_action('customize_register', function ($wp_customize) {
         ['rv_float_cta_btn', __('Floating CTA — button label', 'sage'), __('Get a free 5-min audit', 'sage'), 'text'],
         ['rv_audit_btn_text', __('End-of-post button label', 'sage'), __('Get a free 5-minute audit', 'sage'), 'text'],
         ['rv_post_author_bio', __('Post author bio', 'sage'), __('Founder of Ridges & Valleys Studio. 15 years as a WordPress developer, now building fast, accessible websites for Gettysburg and South Central PA.', 'sage'), 'textarea'],
+        ['rv_side_cta_eyebrow', __('Sidebar CTA — eyebrow', 'sage'), __('Free · no pressure', 'sage'), 'text'],
+        ['rv_side_cta_title', __('Sidebar CTA — heading', 'sage'), __('A second set of eyes on your site?', 'sage'), 'text'],
+        ['rv_side_cta_text', __('Sidebar CTA — text', 'sage'), __("I'll record a free 5-minute video walkthrough of your website — the first things I'd fix. No pitch.", 'sage'), 'textarea'],
+        ['rv_side_cta_btn', __('Sidebar CTA — button label', 'sage'), __('Get my free audit', 'sage'), 'text'],
+        ['rv_side_tools_title', __('Sidebar tools — heading', 'sage'), __('Free website tools', 'sage'), 'text'],
+        ['rv_side_tools_more', __('Sidebar tools — “see all” label', 'sage'), __('See all free tools', 'sage'), 'text'],
+        ['rv_side_tools', __('Sidebar tools (one per line: Label | /url/)', 'sage'), "Website Grader | /website-grader/\nLocal SEO Scorecard | /local-seo-2/\nSEO Checker | /seo-checker/\nSecurity Checker | /security-checker/\nEmail Deliverability Checker | /email-checker/", 'textarea'],
+        ['rv_side_guides_title', __('Sidebar guides — heading', 'sage'), __('Popular guides', 'sage'), 'text'],
+        ['rv_side_guides', __('Sidebar guides (one per line: Label | /url/)', 'sage'), "What a small-business website costs in Pennsylvania | /small-business-website-cost-pennsylvania/\nHow to show up on Google Maps in Gettysburg | /show-up-google-maps-gettysburg-business/\nHire a local web designer or use Wix? | /hire-local-web-designer-or-use-wix/", 'textarea'],
+        ['rv_side_areas_title', __('Sidebar areas — heading', 'sage'), __('Areas we serve', 'sage'), 'text'],
+        ['rv_side_areas_text', __('Sidebar areas — intro', 'sage'), __('Local web design for Gettysburg and across Adams County & South Central PA:', 'sage'), 'textarea'],
+        ['rv_side_towns', __('Sidebar towns (comma-separated)', 'sage'), 'Gettysburg, Hanover, Littlestown, New Oxford, McSherrystown, Biglerville, East Berlin, Fairfield, Bonneauville, Abbottstown, York Springs', 'text'],
+        ['rv_side_areas_link', __('Sidebar areas — link label', 'sage'), __('Serving your town? Get a free quote', 'sage'), 'text'],
+        ['rv_side_nap_title', __('Sidebar about — heading', 'sage'), __('Ridges & Valleys Studio', 'sage'), 'text'],
+        ['rv_side_nap_text', __('Sidebar about — text', 'sage'), __('Family-owned Gettysburg web design — fast, accessible sites for local businesses. One fixed price, and you own everything.', 'sage'), 'textarea'],
+        ['rv_side_about_link', __('Sidebar about — link label', 'sage'), __('About the studio', 'sage'), 'text'],
     ];
     foreach ($blog_text as [$id, $label, $default, $type]) {
         $wp_customize->add_setting($id, [
@@ -1164,7 +1180,7 @@ add_action('customize_register', function ($wp_customize) {
         $wp_customize->add_setting($id, [
             'default'           => '',
             'sanitize_callback' => ($key === 'email')
-                ? static fn ($value) => social_email_address((string) $value)
+                ? static fn($value) => social_email_address((string) $value)
                 : 'esc_url_raw',
         ]);
         $wp_customize->add_control($id, [
@@ -1200,7 +1216,7 @@ add_action('wp_head', function () {
         esc_attr($sage),
         esc_attr($paper),
         esc_attr($ink),
-        absint($width)
+        absint($width),
     );
 }, 20);
 
@@ -1254,7 +1270,7 @@ add_action('wp_head', function () {
     printf(
         '<style id="rv-logo-size">.rv-brand-logo-link .rv-logo{height:%1$dpx;width:auto}@media(max-width:600px){.rv-brand-logo-link .rv-logo{height:%2$dpx}}</style>' . "\n",
         $d,
-        $m
+        $m,
     );
 }, 22);
 
@@ -1273,7 +1289,7 @@ add_action('wp_head', function () {
     printf(
         '<style id="rv-social-size">.rv-social .rv-social-link{width:%1$dpx;height:%1$dpx}.rv-social .rv-social-link svg,.rv-social .rv-social-link .rv-icon{width:%2$dpx;height:%2$dpx}</style>' . "\n",
         $size,
-        $glyph
+        $glyph,
     );
 }, 22);
 
@@ -1297,7 +1313,7 @@ add_action('wp_head', function () {
         '<style id="rv-topbar-color">.rv-banner .rv-topbar{background:%1$s;color:%2$s}.rv-banner .rv-topbar-note,.rv-banner .rv-topbar a{color:%2$s}.rv-banner .rv-topbar-social{--social-color:%3$s}</style>' . "\n",
         $c[0],
         $c[1],
-        $c[2]
+        $c[2],
     );
 }, 23);
 
@@ -1315,7 +1331,7 @@ add_action('wp_head', function () {
     printf(
         '<style id="rv-topbar-type">.rv-banner .rv-topbar-note,.rv-banner .rv-topbar-note a{font-size:%1$dpx;font-weight:%2$s}</style>' . "\n",
         $size,
-        $weight
+        $weight,
     );
 }, 25);
 
@@ -1369,7 +1385,7 @@ add_action('wp_head', function () {
         $px,
         $weight,
         $tt,
-        $ls
+        $ls,
     );
 
     // Primary button.
@@ -1377,7 +1393,7 @@ add_action('wp_head', function () {
         'body .rv-btn-primary{background:%1$s;color:%2$s;border-color:transparent;box-shadow:0 6px 16px color-mix(in srgb,%1$s 30%%,transparent)}body .rv-btn-primary:hover{background:%3$s;color:%2$s}',
         $pc[0],
         $pc[1],
-        $pc[2]
+        $pc[2],
     );
 
     // Secondary button (.rv-btn-ghost).
@@ -1386,17 +1402,17 @@ add_action('wp_head', function () {
             'body .rv-btn-ghost{background:%1$s;color:%2$s;border-color:transparent}body .rv-btn-ghost:hover{background:%3$s;color:%2$s}',
             $sc[0],
             $sc[1],
-            $sc[2]
+            $sc[2],
         );
     } elseif ($sStyle === 'soft') {
         $css .= sprintf(
             'body .rv-btn-ghost{background:color-mix(in srgb,%1$s 14%%,transparent);color:%1$s;border-color:transparent}body .rv-btn-ghost:hover{background:color-mix(in srgb,%1$s 22%%,transparent);color:%1$s}',
-            $sc[0]
+            $sc[0],
         );
     } else { // outline
         $css .= sprintf(
             'body .rv-btn-ghost{background:transparent;color:%1$s;border-color:%1$s}body .rv-btn-ghost:hover{background:color-mix(in srgb,%1$s 10%%,transparent);color:%1$s;border-color:%1$s}',
-            $sc[0]
+            $sc[0],
         );
     }
 

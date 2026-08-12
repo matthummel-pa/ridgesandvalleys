@@ -298,7 +298,7 @@ function ai_default_provider(): string
     $registry = integrations();
     $aiKeys   = array_keys(array_filter(
         $registry['items'],
-        fn ($i) => ($i['group'] ?? '') === 'ai'
+        fn($i) => ($i['group'] ?? '') === 'ai',
     ));
 
     $chosen = (string) get_option('rv_integration_ai_default', $aiKeys[0] ?? '');
@@ -439,7 +439,7 @@ add_action('customize_register', function ($wp_customize) {
     $panelDesc = sprintf(
         /* translators: %s: URL of the Theme APIs admin page. */
         __('Enable the apps you use and set non-secret options here. 🔑 API keys and tokens are kept out of this screen for safety — they are hidden and stored encrypted on the <a href="%s">Theme APIs</a> page.', 'sage'),
-        esc_url($apisUrl)
+        esc_url($apisUrl),
     );
     if (integrations_locked()) {
         $panelDesc .= ' ' . __('🔒 Keys are currently locked to wp-config.php and cannot be changed from the admin.', 'sage');
@@ -455,7 +455,7 @@ add_action('customize_register', function ($wp_customize) {
     ]);
 
     /* AI default-provider picker (its own small section, shown first). */
-    $aiKeys = array_keys(array_filter($items, fn ($i) => ($i['group'] ?? '') === 'ai'));
+    $aiKeys = array_keys(array_filter($items, fn($i) => ($i['group'] ?? '') === 'ai'));
     if (! empty($aiKeys)) {
         $wp_customize->add_section('rv_int_ai_settings', [
             'title'       => __('AI — Preferences', 'sage'),
@@ -500,12 +500,12 @@ add_action('customize_register', function ($wp_customize) {
         $groupLabel = $groups[$group]['label'] ?? ucfirst($group);
 
         $sectionDesc = $item['help'] ?? '';
-        $hasSecret   = (bool) array_filter($item['fields'], fn ($d) => ! empty($d['secret']));
+        $hasSecret   = (bool) array_filter($item['fields'], fn($d) => ! empty($d['secret']));
         if ($hasSecret) {
             $sectionDesc = trim($sectionDesc . ' ' . sprintf(
                 /* translators: %s: URL of the Theme APIs admin page. */
                 __('🔑 This service’s key is hidden and stored securely on the <a href="%s">Theme APIs</a> page.', 'sage'),
-                esc_url($apisUrl)
+                esc_url($apisUrl),
             ));
         }
 
@@ -593,7 +593,7 @@ add_action('admin_menu', function () {
         __('Theme APIs', 'sage'),
         api_keys_capability(),
         'rv-theme-apis',
-        __NAMESPACE__ . '\\render_theme_apis_page'
+        __NAMESPACE__ . '\\render_theme_apis_page',
     );
 });
 
@@ -698,7 +698,7 @@ function render_theme_apis_page(): void
 
     $currentGroup = null;
     foreach ($items as $key => $item) {
-        $secretFields = array_filter($item['fields'], fn ($d) => ! empty($d['secret']));
+        $secretFields = array_filter($item['fields'], fn($d) => ! empty($d['secret']));
         if (empty($secretFields)) {
             continue;
         }
@@ -751,7 +751,7 @@ function render_theme_apis_page(): void
                 printf(
                     '<input type="password" class="rv-secret" name="%1$s" value="" autocomplete="new-password" spellcheck="false" placeholder="%2$s" />',
                     esc_attr($inputName),
-                    esc_attr($ph)
+                    esc_attr($ph),
                 );
                 if ($stored !== '') {
                     echo '<p><label><input type="checkbox" name="' . esc_attr($removeNm) . '" value="1" /> ' . esc_html__('Remove this key', 'sage') . '</label></p>';

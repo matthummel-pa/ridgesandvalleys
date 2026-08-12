@@ -23,9 +23,9 @@
 
   {{-- LIVE SEO CHECKER --}}
   <section id="seo" class="rv-shell rv-band">
-    {!! \App\eyebrow(__('Instant SEO audit', 'sage')) !!}
-    <h2 class="rv-section-title">{{ __('Grade a page for', 'sage') }} <em class="rv-accent">{{ __('search.', 'sage') }}</em></h2>
-    <p class="rv-page-intro">{{ __('Enter a URL — and, optionally, the phrase you want to rank for. Free, no email. This reads the page and its robots.txt to check what search engines see.', 'sage') }}</p>
+    {!! \App\eyebrow(\App\field('scan_eyebrow', __('Instant SEO audit', 'sage'))) !!}
+    <h2 class="rv-section-title">{{ \App\field('scan_title', __('Grade a page for', 'sage')) }} <em class="rv-accent">{{ \App\field('scan_accent', __('search.', 'sage')) }}</em></h2>
+    <p class="rv-page-intro">{{ \App\field('scan_intro', __('Enter a URL — and, optionally, the phrase you want to rank for. Free, no email. This reads the page and its robots.txt to check what search engines see.', 'sage')) }}</p>
 
     <div class="rv-scan" id="rv-seo" data-endpoint="{{ esc_url(rest_url('rv-tools/v1/seo')) }}" style="margin-top:2rem" aria-label="{{ __('SEO checker', 'sage') }}">
       <div class="rv-scan-head">
@@ -50,32 +50,31 @@
         <button type="button" class="rv-btn rv-btn-ghost" id="rv-seo-reset">{{ __('Reset', 'sage') }}</button>
       </div>
     </div>
-    <p class="rv-audit-note">{{ __('This audits on-page and technical SEO. It can\'t see your backlinks or Google rankings — want a full picture and a plan?', 'sage') }} <a href="{{ $ctaHref }}">{{ __('Talk to me', 'sage') }}</a>.</p>
+    <p class="rv-audit-note">{{ \App\field('scan_note', __('This audits on-page and technical SEO. It can\'t see your backlinks or Google rankings — want a full picture and a plan?', 'sage')) }} <a href="{{ $ctaHref }}">{{ \App\field('scan_note_link', __('Talk to me', 'sage')) }}</a>.</p>
   </section>
 
   {{-- WHAT WE CHECK --}}
   <section class="rv-band rv-band-alt">
     <div class="rv-shell">
-      {!! \App\eyebrow(__('What the audit covers', 'sage')) !!}
-      <h2 class="rv-section-title">{{ __('The SEO that a', 'sage') }} <em class="rv-accent">{{ __('local business', 'sage') }}</em> {{ __('can control.', 'sage') }}</h2>
+      {!! \App\eyebrow(\App\field('areas_eyebrow', __('What the audit covers', 'sage'))) !!}
+      <h2 class="rv-section-title">{{ \App\field('areas_title', __('The SEO that a', 'sage')) }} <em class="rv-accent">{{ \App\field('areas_accent', __('local business', 'sage')) }}</em> {{ \App\field('areas_title_end', __('can control.', 'sage')) }}</h2>
       <div class="rv-grid rv-grid-3" style="margin-top:2rem">
-        @php($areas = [
-          [__('Search snippet & meta', 'sage'), __('Title tag, meta description, lengths, and canonical URL.', 'sage'), __('This is your listing in Google — the headline and summary that decide whether someone clicks you or the shop next door.', 'sage')],
-          [__('Indexability & crawlability', 'sage'), __('noindex/nofollow, robots.txt, XML sitemap, clean URLs, and HTTPS.', 'sage'), __('If Google can\'t crawl or is told not to index a page, nothing else matters — it simply won\'t show up.', 'sage')],
-          [__('Content & keywords', 'sage'), __('Content depth, heading structure, alt text — and, with a keyword, its use in the title, H1, intro, URL, and density.', 'sage'), __('Search is about matching intent. Pages built clearly around a real phrase rank for it; vague pages rank for nothing.', 'sage')],
-          [__('Structured data & social', 'sage'), __('JSON-LD schema, breadcrumbs, Open Graph, and Twitter cards.', 'sage'), __('Schema can win rich results (ratings, hours, FAQs) and social tags make shared links look clickable instead of broken.', 'sage')],
-          [__('Link profile', 'sage'), __('Internal links, outbound links, and anchor-text quality.', 'sage'), __('Internal links pass ranking strength to your key pages and help visitors (and Google) navigate your site.', 'sage')],
-          [__('Technical SEO', 'sage'), __('Mobile viewport, response speed, page weight, language, and encoding.', 'sage'), __('Google indexes the mobile version first and rewards fast pages. The fundamentals quietly gate everything above.', 'sage')],
-          [__('Local SEO (beyond the page)', 'sage'), __('Google Business Profile, consistent name/address/phone, reviews, and town-specific pages.', 'sage'), __('For a local business this is where much of the real traffic comes from — I set it up as part of every build.', 'sage')],
-          [__('Off-page (not shown here)', 'sage'), __('Backlinks, domain authority, and how others link to you.', 'sage'), __('This audit reads your page; it can\'t see the wider web. Off-page strength is the other half of ranking — ask me about it.', 'sage')],
-          [__('The strategy layer', 'sage'), __('Which keywords are worth chasing, search intent, and content that answers real questions.', 'sage'), __('A technically perfect page targeting the wrong phrase still loses. Picking the right battles is the human part.', 'sage')],
-        ])
-        @foreach ($areas as $a)
+        @foreach (\App\field_rows('areas_items', [
+          ['title' => __('Search snippet & meta', 'sage'), 'text' => __('Title tag, meta description, lengths, and canonical URL.', 'sage'), 'why' => __('This is your listing in Google — the headline and summary that decide whether someone clicks you or the shop next door.', 'sage')],
+          ['title' => __('Indexability & crawlability', 'sage'), 'text' => __('noindex/nofollow, robots.txt, XML sitemap, clean URLs, and HTTPS.', 'sage'), 'why' => __('If Google can\'t crawl or is told not to index a page, nothing else matters — it simply won\'t show up.', 'sage')],
+          ['title' => __('Content & keywords', 'sage'), 'text' => __('Content depth, heading structure, alt text — and, with a keyword, its use in the title, H1, intro, URL, and density.', 'sage'), 'why' => __('Search is about matching intent. Pages built clearly around a real phrase rank for it; vague pages rank for nothing.', 'sage')],
+          ['title' => __('Structured data & social', 'sage'), 'text' => __('JSON-LD schema, breadcrumbs, Open Graph, and Twitter cards.', 'sage'), 'why' => __('Schema can win rich results (ratings, hours, FAQs) and social tags make shared links look clickable instead of broken.', 'sage')],
+          ['title' => __('Link profile', 'sage'), 'text' => __('Internal links, outbound links, and anchor-text quality.', 'sage'), 'why' => __('Internal links pass ranking strength to your key pages and help visitors (and Google) navigate your site.', 'sage')],
+          ['title' => __('Technical SEO', 'sage'), 'text' => __('Mobile viewport, response speed, page weight, language, and encoding.', 'sage'), 'why' => __('Google indexes the mobile version first and rewards fast pages. The fundamentals quietly gate everything above.', 'sage')],
+          ['title' => __('Local SEO (beyond the page)', 'sage'), 'text' => __('Google Business Profile, consistent name/address/phone, reviews, and town-specific pages.', 'sage'), 'why' => __('For a local business this is where much of the real traffic comes from — I set it up as part of every build.', 'sage')],
+          ['title' => __('Off-page (not shown here)', 'sage'), 'text' => __('Backlinks, domain authority, and how others link to you.', 'sage'), 'why' => __('This audit reads your page; it can\'t see the wider web. Off-page strength is the other half of ranking — ask me about it.', 'sage')],
+          ['title' => __('The strategy layer', 'sage'), 'text' => __('Which keywords are worth chasing, search intent, and content that answers real questions.', 'sage'), 'why' => __('A technically perfect page targeting the wrong phrase still loses. Picking the right battles is the human part.', 'sage')],
+        ]) as $a)
           <article class="rv-card rv-feature">
             <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-            <h3 class="rv-feature-title">{{ $a[0] }}</h3>
-            <p class="rv-feature-text" style="margin-bottom:.6rem">{{ $a[1] }}</p>
-            <p class="rv-feature-text" style="color:var(--color-muted);font-size:.9rem"><b style="color:var(--color-body)">{{ __('Why it matters:', 'sage') }}</b> {{ $a[2] }}</p>
+            <h3 class="rv-feature-title">{{ $a['title'] ?? '' }}</h3>
+            <p class="rv-feature-text" style="margin-bottom:.6rem">{{ $a['text'] ?? '' }}</p>
+            <p class="rv-feature-text" style="color:var(--color-muted);font-size:.9rem"><b style="color:var(--color-body)">{{ __('Why it matters:', 'sage') }}</b> {{ $a['why'] ?? '' }}</p>
           </article>
         @endforeach
       </div>
