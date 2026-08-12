@@ -10,7 +10,7 @@ cd "${REPO_ROOT}"
 THEME_DIR="web/app/themes/ridgesandvalleys-theme"
 WP_URL="http://localhost:8080"
 DATADIR=/var/lib/mysql
-SOCK=/var/run/mysqld/mysqld.sock
+SOCK=/run/mysqld/mysqld.sock
 
 # --- 1. Bring up a reliable MariaDB -----------------------------------------
 # A datadir captured while the server was running (e.g. from a VM snapshot)
