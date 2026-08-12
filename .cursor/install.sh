@@ -39,6 +39,15 @@ if ! command -v wp >/dev/null 2>&1; then
   sudo mv /tmp/wp-cli.phar /usr/local/bin/wp
 fi
 
+# PHP: allow large media uploads (500 MB) on the local dev host. `wp server`
+# uses the CLI SAPI, so the drop-in goes in the cli conf.d. Idempotent.
+sudo tee /etc/php/8.3/cli/conf.d/99-rv-uploads.ini >/dev/null <<'INI'
+; Ridges & Valleys local dev host — allow large media uploads (500 MB)
+upload_max_filesize = 500M
+post_max_size = 512M
+max_execution_time = 300
+INI
+
 # --- 1. Bring up a reliable MariaDB -----------------------------------------
 # A datadir captured while the server was running (e.g. from a VM snapshot)
 # leaves InnoDB needing crash recovery, which hangs in the Cloud Agent
