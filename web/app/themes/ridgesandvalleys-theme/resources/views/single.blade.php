@@ -61,8 +61,9 @@
   <style>
     .rv-single-trust{margin-top:2.25rem}
     .rv-author{align-items:flex-start}
-    .rv-author-kicker{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-clay);margin-bottom:.25rem}
+    .rv-author span.rv-author-kicker{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-clay);margin-bottom:.25rem}
     .rv-author strong{display:block;margin-bottom:.25rem}
+    .rv-author span.rv-author-bio{display:block;color:var(--color-muted);font-size:.9rem;line-height:1.5}
     .rv-author-more{display:inline-flex;align-items:center;gap:.4rem;margin-top:.7rem;font-weight:700;font-size:.85rem;color:var(--color-clay);text-decoration:none}
     .rv-author-more:hover{color:var(--color-pine)}
     .rv-author-more svg{width:15px;height:15px;transition:transform .2s ease}

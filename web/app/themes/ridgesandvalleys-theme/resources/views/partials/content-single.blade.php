@@ -75,13 +75,15 @@
   @endif
 
   {{-- Trust, not a competing CTA — the full closer sits full-width under the article. --}}
+  @php($authorName = (string) get_the_author_meta('display_name'))
+  @php($authorName = ($authorName !== '' && ! str_contains($authorName, '@')) ? $authorName : __('Matt Hummel', 'sage'))
   <div class="rv-entry rv-single-trust">
     <div class="rv-author">
       <span class="rv-author-avatar" aria-hidden="true"></span>
       <div>
         <span class="rv-author-kicker">{{ __('Written by a Gettysburg web designer', 'sage') }}</span>
-        <strong>{{ get_the_author_meta('display_name') ?: __('Matt Hummel', 'sage') }}</strong>
-        <span>{{ get_theme_mod('rv_post_author_bio', __('Founder of Ridges & Valleys Studio. 15 years as a WordPress developer, now building fast, accessible websites for Gettysburg and South Central PA.', 'sage')) }}</span>
+        <strong>{{ $authorName }}</strong>
+        <span class="rv-author-bio">{{ get_theme_mod('rv_post_author_bio', __('Founder of Ridges & Valleys Studio. 15 years as a WordPress developer, now building fast, accessible websites for Gettysburg and South Central PA.', 'sage')) }}</span>
         <a class="rv-author-more" href="{{ home_url('/gettysburg-web-design/') }}">{{ __('About the studio', 'sage') }} {!! \App\icon('arrow') !!}</a>
       </div>
     </div>
