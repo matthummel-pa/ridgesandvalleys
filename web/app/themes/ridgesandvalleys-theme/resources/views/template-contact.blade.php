@@ -20,13 +20,16 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
 @endphp
 
 @section('content')
-  <section class="rv-hero rv-contact-hero">
+  <section class="rv-hero rv-contact-hero" aria-labelledby="rv-contact-hero-title">
     <span class="rv-stripe" aria-hidden="true"></span>
     @include('partials.hero-bg', ['fallback' => ''])
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Get in touch', 'sage'))) !!}
-      <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Let\'s build something', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('local.', 'sage')) }}</em></h1>
-      <p class="rv-hero-sub">{{ \App\field('contact_intro', __('Tell me about your Gettysburg or Adams County business and I\'ll come back with a clear, fixed-scope idea — usually within a business day. No pressure, no jargon, and a real person (me) on the other end.', 'sage')) }}</p>
+      <h1 id="rv-contact-hero-title" class="rv-hero-title">{{ \App\field('hero_title', __('Let\'s build something', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('local.', 'sage')) }}</em></h1>
+      <p class="rv-hero-sub">{{ \App\field('contact_lede', __('Tell me about your Gettysburg or Adams County business — I’ll come back with a fixed-scope idea, usually within a business day.', 'sage')) }}</p>
+      <div class="rv-hero-actions">
+        <a class="rv-btn rv-btn-primary" href="#contact-form">{{ \App\field('contact_hero_btn', __('Send a note', 'sage')) }}</a>
+      </div>
     </div>
   </section>
 
@@ -126,8 +129,8 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
   <script type="application/ld+json">{!! wp_json_encode($contactSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 
   <style>
-    .rv-contact-hero{padding-bottom:calc(var(--section-y) * .55)}
     /* Quick ways to get in touch */
+    #contact-form{scroll-margin-top:6rem}
     .rv-cways{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:clamp(1.5rem,3vw,2.5rem);position:relative;z-index:3}
     .rv-cway{display:flex;align-items:center;gap:1rem;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.25rem 1.35rem;text-decoration:none;position:relative;overflow:hidden;transition:transform .15s ease,border-color .15s ease,box-shadow .2s ease}
     a.rv-cway:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--color-clay) 40%,var(--color-line));box-shadow:var(--shadow-lift)}

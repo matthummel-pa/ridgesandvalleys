@@ -26,7 +26,7 @@ $faqs = [
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Free website tools · No email required', 'sage'))) !!}
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Free tools to check your', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('website.', 'sage')) }}</em></h1>
-      <p class="rv-hero-sub">{{ \App\field('hero_sub', __('Grade your site, audit your SEO, test accessibility, and scan your security — in seconds, for free, with no signup. Built by a local developer for Gettysburg and South Central PA businesses who want to know where they really stand online.', 'sage')) }}</p>
+      <p class="rv-hero-sub">{{ \App\field('hero_lede', __('Grade your site, check SEO, accessibility, and security — free, in seconds, no signup.', 'sage')) }}</p>
       <div class="rv-hero-actions">
         <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style',''), 'rv-btn-primary') }}" href="#tools">{{ \App\field('hero_btn1', __('Browse the tools', 'sage')) }}</a>
         <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style',''), 'rv-btn-ghost') }}" href="{{ $ctaHref }}">{{ \App\field('hero_btn2', __('Talk to me', 'sage')) }}</a>

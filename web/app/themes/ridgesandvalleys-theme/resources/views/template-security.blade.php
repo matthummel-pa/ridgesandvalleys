@@ -13,7 +13,7 @@
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Free security checker', 'sage'))) !!}
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Is your website', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('locked up?', 'sage')) }}</em></h1>
-      <p class="rv-hero-sub">{{ \App\field('hero_sub', __('A plain-English security check of any page — HTTPS and HSTS, the modern browser security headers, information leaks, cookie safety, and front-end risks. Every result explains the risk and why it matters for your business.', 'sage')) }}</p>
+      <p class="rv-hero-sub">{{ \App\field('hero_lede', __('HTTPS, headers, leaks, cookies — each result in plain English, and why it matters.', 'sage')) }}</p>
       <div class="rv-hero-actions">
         <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style',''), 'rv-btn-primary') }}" href="#security">{{ \App\field('hero_btn1', __('Check my site', 'sage')) }}</a>
         <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style',''), 'rv-btn-ghost') }}" href="{{ $ctaHref }}">{{ \App\field('hero_btn2', __('Talk to me', 'sage')) }}</a>

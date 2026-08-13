@@ -56,7 +56,7 @@ foreach ($faqRows as $r) {
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('FAQ', 'sage'))) !!}
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Questions,', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('answered.', 'sage')) }}</em></h1>
-      <p class="rv-hero-sub">{{ \App\field('hero_sub', __('The things local owners actually ask before we start — every answer right here, no clicking around. Don\'t see yours? Just ask.', 'sage')) }}</p>
+      <p class="rv-hero-sub">{{ \App\field('hero_lede', __('What local owners ask before we start. Don\'t see yours? Ask.', 'sage')) }}</p>
       <div class="rv-hero-actions">
         <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style',''), 'rv-btn-primary') }}" href="{{ $ctaHref }}">{{ \App\field('hero_btn1', __('Ask your question', 'sage')) }}</a>
         <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style',''), 'rv-btn-ghost') }}" href="#faqs">{{ \App\field('hero_btn2', __('Jump to the FAQs', 'sage')) }} &darr;</a>
