@@ -6,31 +6,41 @@
 @section('content')
   @php($ctaHref = \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')))
 
-  {{-- HERO (standard full-bleed hero with the page's Featured Image behind it) --}}
-  <section class="rv-hero">
+  {{-- HERO — same pattern as home: kicker, short H1, one lede, CTA; proof in a ribbon. --}}
+  <section class="rv-hero" aria-labelledby="rv-about-hero-title">
     <span class="rv-stripe" aria-hidden="true"></span>
     @include('partials.hero-bg', ['fallback' => \App\stock_image('about')])
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Ridges & Valleys Studio', 'sage'))) !!}
-      <h1 class="rv-hero-title">{{ \App\field('hero_title', __('A family-owned web design studio for', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('South Central PA.', 'sage')) }}</em></h1>
-      <p class="rv-hero-sub">{{ \App\field('about_intro', __('We\'re a family-owned web studio in Gettysburg, building fast, accessible websites and local SEO for small businesses across Adams County and South Central PA — from Hanover and New Oxford to Littlestown, York, Chambersburg, and every town in between. If you\'re a local business, we\'d love to work with you.', 'sage')) }}</p>
-      @php($aboutInvite = \App\field('about_invite', __('We\'re just as happy to team up with other marketing and design studios, freelancers, and photographers on a project. We\'re new to the neighborhood and all in — so come say hello, and let\'s build something good, right here at home.', 'sage')))
-      @if ($aboutInvite)<p class="rv-hero-sub rv-hero-invite">{{ $aboutInvite }}</p>@endif
+      <h1 id="rv-about-hero-title" class="rv-hero-title">{{ \App\field('about_h1', __('A Gettysburg studio for', 'sage')) }} <em class="rv-accent">{{ \App\field('about_h1_accent', __('South Central PA.', 'sage')) }}</em></h1>
+      <p class="rv-hero-sub">{{ \App\field('about_lede', __('Family-owned web design in Gettysburg — accessible WordPress and local SEO for Adams County shops and firms, and a site you own.', 'sage')) }}</p>
       <div class="rv-hero-actions">
         <a class="rv-btn rv-btn-primary" href="{{ \App\cta_href(\App\field('hero_btn_url', get_theme_mod('rv_cta_url', '/contact/'))) }}">{{ \App\field('hero_btn', __('Work with us', 'sage')) }}</a>
       </div>
-      <p class="rv-hero-trust">{{ \App\field('about_meta', __('Family-owned · Accessibility-first · Serving Gettysburg & South Central PA', 'sage')) }}</p>
-      <ul class="rv-about-proof" aria-label="{{ __('What you can count on', 'sage') }}">
-        @foreach (\App\field_rows('about_proof', [
-          ['v' => __('15+ yrs', 'sage'), 'l' => __('building for the web', 'sage')],
-          ['v' => __('~7 days', 'sage'), 'l' => __('to your first draft', 'sage')],
-          ['v' => __('WCAG 2.2 AA', 'sage'), 'l' => __('on every page', 'sage')],
-          ['v' => __('You own it', 'sage'), 'l' => __('site, domain, hosting', 'sage')],
-        ]) as $pf)
-          <li><b>{{ $pf['v'] ?? '' }}</b><span>{{ $pf['l'] ?? '' }}</span></li>
-        @endforeach
-      </ul>
+      <p class="rv-hero-note">{{ \App\field('about_meta', __('Family-owned · Accessibility-first · Serving Gettysburg & South Central PA', 'sage')) }}</p>
     </div>
+    @php
+      $aboutProof = \App\field_rows('about_proof', [
+        ['v' => __('15+ yrs', 'sage'), 'l' => __('building for the web', 'sage')],
+        ['v' => __('~7 days', 'sage'), 'l' => __('to your first draft', 'sage')],
+        ['v' => __('WCAG 2.2 AA', 'sage'), 'l' => __('on every page', 'sage')],
+        ['v' => __('You own it', 'sage'), 'l' => __('site, domain, hosting', 'sage')],
+      ]);
+    @endphp
+    @if (count($aboutProof))
+      <div class="rv-hero-proof">
+        <div class="rv-shell">
+          <ul class="rv-hero-stats" aria-label="{{ __('What you can count on', 'sage') }}">
+            @foreach ($aboutProof as $pf)
+              <li>
+                <span class="rv-hero-stat-v">{{ $pf['v'] ?? '' }}</span>
+                @if (($pf['l'] ?? '') !== '')<span class="rv-hero-stat-l">{{ $pf['l'] }}</span>@endif
+              </li>
+            @endforeach
+          </ul>
+        </div>
+      </div>
+    @endif
   </section>
 
   {{-- THE STUDIO --}}
@@ -43,6 +53,10 @@
         <p>{!! \App\field('bio_p2', __('<strong>Every site is accessibility-first.</strong> Clean, standards-based WordPress, strong Core Web Vitals, and WCAG-minded builds, so the result works for everyone, on every device — and tends to rank better while it\'s at it.', 'sage')) !!}</p>
         <p>{!! \App\field('bio_p3', __('<strong>Modern tools for speed, human hands for the craft.</strong> AI helps with research and first drafts; the design decisions, the words, the accessibility, and the final build are done by a person. And when a project needs more than a website — a form that talks to your systems, an app, an automation — we can build that too.', 'sage')) !!}</p>
         <p>{!! \App\field('bio_p4', __('<strong>Fixed pricing, full ownership, no lock-in.</strong> You own your domain, your hosting, and your site. Take the keys and run it yourself, or keep us on a Care & Grow plan — either way, it\'s yours.', 'sage')) !!}</p>
+        @php($aboutInvite = \App\field('about_invite', __('We\'re just as happy to team up with other marketing and design studios, freelancers, and photographers on a project. We\'re new to the neighborhood and all in — so come say hello, and let\'s build something good, right here at home.', 'sage')))
+        @if (trim(\App\strip_field_markers($aboutInvite)) !== '')
+          <p>{{ $aboutInvite }}</p>
+        @endif
       </div>
       <div class="rv-about-bio-side">
         @foreach (\App\field_rows('bio_side', [
@@ -267,12 +281,6 @@
   </section>
 
   <style>
-    .rv-hero-invite{font-size:1.02rem;opacity:.9;margin-top:.6rem}
-    /* Proof strip (hero) */
-    .rv-about-proof{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem .75rem;margin:1.1rem 0 0;padding:0}
-    .rv-about-proof li{display:flex;flex-direction:column;gap:.1rem;background:color-mix(in srgb,#fff 12%,transparent);border:1px solid color-mix(in srgb,#fff 26%,transparent);border-radius:12px;padding:.55rem .9rem}
-    .rv-about-proof b{font-family:var(--font-display);font-size:1.02rem;font-weight:800;line-height:1.1}
-    .rv-about-proof span{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;opacity:.85}
     /* Free tools band */
     .rv-about-tools .rv-about-ind h3 a{color:inherit;text-decoration:none}
     .rv-about-tools .rv-about-ind h3 a:hover{text-decoration:underline}

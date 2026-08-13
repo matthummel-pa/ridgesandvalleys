@@ -86,7 +86,7 @@ $total = array_sum(array_map(fn ($g) => count($g[2]), $wcag));
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Accessibility · WCAG 2.2 AA · Section 508', 'sage'))) !!}
       <h1 class="rv-hero-title">{{ \App\field('hero_title', __('A front door that opens for', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('everyone.', 'sage')) }}</em></h1>
-      <p class="rv-hero-sub">{{ \App\field('hero_sub', __('An accessible website isn\'t a nice-to-have — it\'s how you reach more customers, rank better, and stay on the right side of the law. Here\'s the full federal standard, what it means, and how I build to it on every project.', 'sage')) }}</p>
+      <p class="rv-hero-sub">{{ \App\field('hero_lede', __('WCAG 2.2 AA on every build — more customers, better rankings, and a front door that opens for everyone.', 'sage')) }}</p>
       <div class="rv-hero-actions">
         <a class="rv-btn rv-btn-primary" href="#standards">{{ \App\field('a11y_hero_btn1', __('Run a live audit', 'sage')) }}</a>
         <a class="rv-btn rv-btn-ghost" href="{{ $ctaHref }}">{{ \App\field('a11y_hero_btn2', __('Talk to me', 'sage')) }}</a>

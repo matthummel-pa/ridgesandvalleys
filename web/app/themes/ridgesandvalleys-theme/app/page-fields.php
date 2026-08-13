@@ -697,7 +697,7 @@ function page_field_map(): array
             ['hero_eyebrow', __('Hero eyebrow', 'sage'), 'text', $eyebrow],
             ['hero_title', __('Hero title', 'sage'), 'text', $title],
             ['hero_accent', __('Hero accent word', 'sage'), 'text', $accent],
-            ['hero_sub', __('Hero subtitle', 'sage'), 'textarea', $sub],
+            ['hero_lede', __('Hero lede (one short paragraph)', 'sage'), 'textarea', $sub],
         ];
     };
     $cta = function (string $title, string $sub, string $button): array {
@@ -881,12 +881,21 @@ function page_field_map(): array
         'template-about.blade.php' => [
             __('Intro', 'sage') => [
                 ['hero_eyebrow', __('Eyebrow', 'sage'), 'text', __('Ridges & Valleys Studio', 'sage')],
-                ['hero_title', __('Heading', 'sage'), 'text', __('A family-owned web studio for', 'sage')],
-                ['hero_accent', __('Accent word', 'sage'), 'text', __('South Central PA.', 'sage')],
-                ['about_intro', __('Intro paragraph', 'sage'), 'textarea', __('We\'re a family-owned web studio in Gettysburg, building fast, accessible websites and local SEO for small businesses across Adams County and South Central PA — from Hanover and New Oxford to Littlestown, York, Chambersburg, and every town in between. If you\'re a local business, we\'d love to work with you.', 'sage')],
+                ['about_h1', __('Heading (before accent)', 'sage'), 'text', __('A Gettysburg studio for', 'sage')],
+                ['about_h1_accent', __('Accent phrase', 'sage'), 'text', __('South Central PA.', 'sage')],
+                ['about_lede', __('Hero lede (one short paragraph)', 'sage'), 'textarea', __('Family-owned web design in Gettysburg — accessible WordPress and local SEO for Adams County shops and firms, and a site you own.', 'sage')],
                 ['about_invite', __('Invitation paragraph (partners & welcome)', 'sage'), 'textarea', __('We\'re just as happy to team up with other marketing and design studios, freelancers, and photographers on a project. We\'re new to the neighborhood and all in — so come say hello, and let\'s build something good, right here at home.', 'sage')],
                 ['hero_btn', __('Hero button label', 'sage'), 'text', __('Work with us', 'sage')],
                 ['about_meta', __('Meta line (under the button)', 'sage'), 'text', __('Family-owned · Accessibility-first · Serving Gettysburg & South Central PA', 'sage')],
+                ['about_proof', __('Proof ribbon (four items)', 'sage'), 'repeater', [
+                    ['v' => __('15+ yrs', 'sage'), 'l' => __('building for the web', 'sage')],
+                    ['v' => __('~7 days', 'sage'), 'l' => __('to your first draft', 'sage')],
+                    ['v' => __('WCAG 2.2 AA', 'sage'), 'l' => __('on every page', 'sage')],
+                    ['v' => __('You own it', 'sage'), 'l' => __('site, domain, hosting', 'sage')],
+                ], [
+                    ['v', __('Value', 'sage'), 'text'],
+                    ['l', __('Label', 'sage'), 'text'],
+                ]],
             ],
             __('The studio', 'sage') => [
                 ['bio_eyebrow', __('Eyebrow', 'sage'), 'text', __('The studio', 'sage')],
@@ -1002,7 +1011,7 @@ function page_field_map(): array
                 __('Web design & local SEO · Gettysburg', 'sage'),
                 __('Gettysburg web design that earns its', 'sage'),
                 __('keep.', 'sage'),
-                __('Web design and local SEO packages for Gettysburg and Adams County businesses — each one built around a single outcome: more calls, more bookings, easier-to-find hours. Fixed scope, honest pricing, no jargon.', 'sage')
+                __('Fixed-scope packages for Gettysburg and Adams County — more calls, clearer hours, a site you own. Honest pricing, no jargon.', 'sage')
             ),
             __('Before pricing', 'sage') => [
                 ['svcvalue_eyebrow', __('Eyebrow', 'sage'), 'text', __('Before the pricing', 'sage')],
@@ -1149,7 +1158,7 @@ function page_field_map(): array
                 __('Selected work', 'sage'),
                 __('Business owners buy', 'sage'),
                 __('confidence.', 'sage'),
-                __('Most of what\'s here are concept sites I designed and built myself — clearly labeled, fully clickable demos of how I\'d solve a real business problem. As client projects launch, they\'ll appear here the same way: the problem, the approach, and the result.', 'sage')
+                __('Clickable concept sites for Gettysburg and Adams County businesses — the problem, the approach, and the result.', 'sage')
             ),
             __('Media & links', 'sage') => [
                 ['hero_bg', __('Hero background image', 'sage'), 'image', __('Built-in until you choose one.', 'sage')],
@@ -1256,7 +1265,7 @@ function page_field_map(): array
                 __('FAQ', 'sage'),
                 __('Questions,', 'sage'),
                 __('answered.', 'sage'),
-                __('The things local owners actually ask before we start — every answer right here, no clicking around. Don\'t see yours? Just ask.', 'sage')
+                __('What local owners ask before we start. Don\'t see yours? Ask.', 'sage')
             ),
             __('Process section', 'sage') => [
                 ['fproc_eyebrow', __('Eyebrow', 'sage'), 'text', __('How it works', 'sage')],
@@ -1315,7 +1324,8 @@ function page_field_map(): array
                 ['hero_eyebrow', __('Eyebrow', 'sage'), 'text', __('Get in touch', 'sage')],
                 ['hero_title', __('Heading', 'sage'), 'text', __('Let\'s build something', 'sage')],
                 ['hero_accent', __('Accent word', 'sage'), 'text', __('local.', 'sage')],
-                ['contact_intro', __('Intro paragraph', 'sage'), 'textarea', __('Tell me about your business and I\'ll come back with a clear, fixed-scope idea — usually within a business day. No pressure, no jargon, and a real person (me) on the other end.', 'sage')],
+                ['contact_lede', __('Hero lede (one short paragraph)', 'sage'), 'textarea', __('Tell me about your Gettysburg or Adams County business — I’ll come back with a fixed-scope idea, usually within a business day.', 'sage')],
+                ['contact_hero_btn', __('Hero button label', 'sage'), 'text', __('Send a note', 'sage')],
                 ['contact_note', __('Footnote', 'sage'), 'textarea', __('The project clock starts when this and your assets are complete. Feedback within two business days keeps launch on schedule.', 'sage')],
             ],
             __('Contact details', 'sage') => [
@@ -1438,7 +1448,7 @@ function page_field_map(): array
                 __('Accessibility · WCAG 2.1 AA · Section 508', 'sage'),
                 __('A front door that opens for', 'sage'),
                 __('everyone.', 'sage'),
-                __('An accessible website isn\'t a nice-to-have — it\'s how you reach more customers, rank better, and stay on the right side of the law. Here\'s the full federal standard, what it means, and how I build to it on every project.', 'sage')
+                __('WCAG 2.2 AA on every build — more customers, better rankings, and a front door that opens for everyone.', 'sage')
             ),
             __('Hero buttons', 'sage') => [
                 ['a11y_hero_btn1', __('Primary button label', 'sage'), 'text', __('Run a live audit', 'sage')],
@@ -1537,7 +1547,7 @@ function page_field_map(): array
                 __('Free website tools · No email required', 'sage'),
                 __('Free tools to check your', 'sage'),
                 __('website.', 'sage'),
-                __('Grade your site, audit your SEO, test accessibility, and scan your security — in seconds, for free, with no signup. Built by a local developer for Gettysburg and South Central PA businesses who want to know where they really stand online.', 'sage')
+                __('Grade your site, check SEO, accessibility, and security — free, in seconds, no signup.', 'sage')
             ),
             __('Call to action', 'sage') => $cta(
                 __('Want a hand with what the tools turned up?', 'sage'),
@@ -1551,7 +1561,7 @@ function page_field_map(): array
                 __('Free website grader', 'sage'),
                 __('How good is your website,', 'sage'),
                 __('really?', 'sage'),
-                __('Enter your URL for an instant, plain-English report card across seven areas — SEO, speed, mobile, readability, security, technical health, and social sharing. Every check explains what it found and why it matters for your business.', 'sage')
+                __('A plain-English report card across SEO, speed, mobile, readability, security, and more.', 'sage')
             ),
             __('Call to action', 'sage') => $cta(
                 __('Want the fixes, not just the grade?', 'sage'),
@@ -1565,7 +1575,7 @@ function page_field_map(): array
                 __('Free SEO checker', 'sage'),
                 __('Can Google actually', 'sage'),
                 __('find you?', 'sage'),
-                __('A deep, plain-English SEO audit of any page — snippet preview, crawlability, keyword usage, structured data, links, and the technical fundamentals. Add a target keyword to see how well the page is built around it.', 'sage')
+                __('A plain-English audit of any page — snippets, crawlability, keywords, and structured data.', 'sage')
             ),
             __('Call to action', 'sage') => $cta(
                 __('Want to actually rank, not just score well?', 'sage'),
@@ -1579,7 +1589,7 @@ function page_field_map(): array
                 __('Free security checker', 'sage'),
                 __('Is your website', 'sage'),
                 __('locked up?', 'sage'),
-                __('A plain-English security check of any page — HTTPS and HSTS, the modern browser security headers, information leaks, cookie safety, and front-end risks. Every result explains the risk and why it matters for your business.', 'sage')
+                __('HTTPS, headers, leaks, cookies — each result in plain English, and why it matters.', 'sage')
             ),
             __('Call to action', 'sage') => $cta(
                 __('Want your site locked down and kept that way?', 'sage'),
@@ -1593,7 +1603,7 @@ function page_field_map(): array
                 __('Free email deliverability checker', 'sage'),
                 __('Is your email landing in', 'sage'),
                 __('spam?', 'sage'),
-                __('Enter your domain to check the DNS records that decide whether your email is trusted — SPF, DKIM, and DMARC — and whether anyone can send phishing emails pretending to be your business. Plain English, no signup.', 'sage')
+                __('Check SPF, DKIM, and DMARC — and whether anyone can send mail as you. Plain English, no signup.', 'sage')
             ),
             __('Call to action', 'sage') => $cta(
                 __('Want your email trusted and spoof-proof?', 'sage'),
@@ -1607,7 +1617,7 @@ function page_field_map(): array
                 __('Free local SEO scorecard', 'sage'),
                 __('Do nearby customers', 'sage'),
                 __('find you?', 'sage'),
-                __('A scorecard for the signals that get a local business into Google\'s map pack and turn searchers into calls — your name, address, phone, hours, LocalBusiness schema, maps, and reviews. Built for Gettysburg and South Central PA businesses.', 'sage')
+                __('Name, address, hours, schema, maps, reviews — the signals that get Gettysburg businesses in the map pack.', 'sage')
             ),
             __('Call to action', 'sage') => $cta(
                 __('Want to own “near me” in Adams County?', 'sage'),
@@ -1670,12 +1680,12 @@ function field_group_hint(string $label): string
         __('Rooted section', 'sage')   => __('The local “built here” block — heading, paragraph, and the comma-separated list of region chips.', 'sage'),
         __('Testimonial', 'sage')      => __('The single highlighted client quote and who said it.', 'sage'),
         __('Call to action', 'sage')   => __('The closing banner that invites visitors to reach out — heading, subtext, and the button label.', 'sage'),
-        __('Intro', 'sage')            => __('The opening block: eyebrow, the heading with its accent word, and the introduction paragraph.', 'sage'),
+        __('Intro', 'sage')            => __('The About hero: eyebrow, heading, one short lede, button, meta line, and the four-item proof ribbon. The longer welcome note lives in The studio.', 'sage'),
         __('Intro section', 'sage')    => __('The block directly under the hero: a heading plus two cards (Who we are / How we work). This replaced the old page-body columns and photo — edit it here, not in the WordPress content editor.', 'sage'),
         __('Beliefs section', 'sage')  => __('The heading for the “how I work / a few things I believe” block. The three belief cards themselves are set in the template.', 'sage'),
         __('Quote', 'sage')            => __('The one-line studio quote and its attribution.', 'sage'),
         __('Founding offer', 'sage')   => __('The limited founding-offer banner: eyebrow, heading, the price accent, the paragraph, and the button. The “what’s included” checklist is set in the template.', 'sage'),
-        __('Header', 'sage')           => __('The top of the contact page: eyebrow, the heading with its accent word, the intro paragraph, and the small note shown under the form.', 'sage'),
+        __('Header', 'sage')           => __('The contact hero: eyebrow, heading, one short lede, the button into the form, and the small note shown under the form.', 'sage'),
         __('Contact details', 'sage')  => __('Where enquiries go and how people reach you. Leave the phone blank to hide the call/text option; add a number to show it.', 'sage'),
         __('Contact form — fields', 'sage') => __('Build the form itself: add, remove, and reorder fields. For each field set a label, a type, whether it’s required, and its column width (full, half, or third). For a Dropdown, list the options one per line. Remove every field to restore the default Name / Email / Phone / Message set.', 'sage'),
         __('Contact form — design', 'sage') => __('How the form looks: the submit button label and width, whether labels show above the fields or the placeholders stand in for them, the field style, and the message shown after a successful send.', 'sage'),
@@ -1686,7 +1696,7 @@ function field_group_hint(string $label): string
         __('Process timeline', 'sage') => __('The day-by-day timeline: its heading and each step (day label, title, and one line).', 'sage'),
         __('Towns served', 'sage')     => __('The local “towns served” block — heading, intro, and the list of town chips (one town per line).', 'sage'),
         __('Bio — how I got here', 'sage') => __('The longer story section: heading, the four paragraphs (basic HTML like <strong> is allowed), and the three skill highlight cards.', 'sage'),
-        __('The studio', 'sage') => __('The studio-story block: eyebrow, heading with its accent, four paragraphs (basic HTML like <strong> is allowed), and the three capability highlights.', 'sage'),
+        __('The studio', 'sage') => __('The studio-story block: eyebrow, heading with its accent, four paragraphs (basic HTML like <strong> is allowed), the partner welcome note, and the three capability highlights.', 'sage'),
         __('The team', 'sage') => __('The “who runs the studio” block. Add a card per person with their name, role, short bio, and an optional photo URL (upload the photo to the Media Library, then paste its URL). Leave the photo blank to show a person-silhouette placeholder. Leave a name blank to show role + bio only.', 'sage'),
         __('Credentials / skills', 'sage') => __('The “what’s under the hood” heading and its three skill cards.', 'sage'),
         __('Rooted locally', 'sage')   => __('The big local-story block: heading, three paragraphs, the button label, and the three highlight cards.', 'sage'),

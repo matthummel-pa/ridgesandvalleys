@@ -78,32 +78,8 @@
       /* Slightly larger base reading size for comfort (~18px). Headings, nav,
          and buttons keep their own sizes, so only body/paragraph text grows. */
       body { font-size: 1.125rem; }
-      /* Everything reads left-aligned for scannability. Heroes, closing CTA
-         bands, and pull-quotes shipped centered; left-align their text and drop
-         the auto side-margins so each block starts at the same left edge as its
-         heading. Intro paragraphs (rv-hero-sub) are auto-centered by app.css —
-         reset them everywhere, including inside the hero. */
-      .rv-hero-sub,
-      .rv-band .rv-hero-sub,
-      .rv-band-alt .rv-hero-sub,
-      .rv-band-pine .rv-hero-sub,
-      .rv-section .rv-hero-sub,
-      .rv-shell .rv-hero-sub,
-      .rv-shell-full .rv-hero-sub { margin-left: 0; margin-right: 0; text-align: left; }
-      .rv-hero-inner { text-align: left; }
-      /* Tighten interior-page heroes: the transparent header already reserves top
-         clearance, so the hero's own large top padding doubled up and pushed the
-         headline, subhead, and CTA low on the page. Pull them up (the home hero
-         keeps its own tuned spacing via the .home scope). */
-      body:not(.home) .rv-hero-inner { padding-block: clamp(1.25rem, 3vw, 2.25rem) clamp(2rem, 5vw, 3.25rem); }
-      /* Uniform interior-hero height so every page's Featured-Image background
-         reads the same size (sized to the Services hero); content is vertically
-         centered within the band. */
-      body:not(.home) .rv-hero { min-height: clamp(380px, 50vh, 480px); display: grid; align-content: center; }
-      /* Compact the headline so long titles (e.g. About) don't tower over the band. */
-      body:not(.home) .rv-hero-title { font-size: clamp(2.25rem, 4.5vw, 3.5rem); max-width: 26ch; }
-      .rv-hero-title { margin-inline: 0; }
-      .rv-hero-actions { justify-content: flex-start; }
+      /* Closing CTA bands and pull-quotes shipped centered; left-align them to
+         the same edge as their heading. Hero alignment lives in app.css. */
       .rv-cta-inner { text-align: left; }
       .rv-cta-sub { margin-left: 0; margin-right: 0; }
       .rv-quote-block { text-align: left; margin-inline-start: 0; }
