@@ -542,9 +542,9 @@ function breadcrumbs(): string
  * Related posts: up to $limit recent posts sharing a category with the current
  * post, excluding it. Falls back to recent posts if there aren't enough.
  */
-function related_posts(int $limit = 3): array
+function related_posts(int $limit = 3, ?int $post_id = null): array
 {
-    $post_id = get_the_ID();
+    $post_id = $post_id ?: (int) get_the_ID();
     if (! $post_id) {
         return [];
     }
@@ -783,9 +783,9 @@ function inline_cta_html(): string
         return '';
     }
 
-    $heading = get_theme_mod('rv_inline_cta_heading', __('Not sure where your site stands?', 'sage'));
-    $text    = get_theme_mod('rv_inline_cta_text', __('I’ll record a free 5-minute video walkthrough of your website — no pitch, just the first things I’d fix.', 'sage'));
-    $btn     = get_theme_mod('rv_inline_cta_btn', __('Get my free audit', 'sage'));
+    $heading = get_theme_mod('rv_inline_cta_heading', __('Ready to stop guessing?', 'sage'));
+    $text    = get_theme_mod('rv_inline_cta_text', __('Tell me about the business. I’ll come back with a fixed-scope idea — usually within a business day.', 'sage'));
+    $btn     = get_theme_mod('rv_inline_cta_btn', __('Get a quote', 'sage'));
     $url     = get_theme_mod('rv_inline_cta_url', get_theme_mod('rv_cta_url', '/contact/'));
     $href    = esc_url(cta_href($url ?: '/contact/'));
 

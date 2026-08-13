@@ -673,6 +673,59 @@ function work_why_item_defaults(): array
     ];
 }
 
+/**
+ * Journal-page hero proof ribbon. Same seam pattern as Home / About / Work.
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function journal_proof_defaults(): array
+{
+    return [
+        ['v' => __('Plain English', 'sage'), 'l' => __('written for owners, not developers', 'sage')],
+        ['v' => __('Local SEO', 'sage'), 'l' => __('Gettysburg & Adams County', 'sage')],
+        ['v' => __('Free tools', 'sage'), 'l' => __('grade your site in minutes', 'sage')],
+        ['v' => __('Then talk', 'sage'), 'l' => __('a fixed-price quote when you’re ready', 'sage')],
+    ];
+}
+
+/**
+ * @return list<array{v:string,l:string}>
+ */
+function journal_proof(?int $post_id = null): array
+{
+    $rows = field_rows('jnl_proof', journal_proof_defaults(), $post_id);
+
+    return is_array($rows) && $rows !== [] ? $rows : journal_proof_defaults();
+}
+
+/**
+ * Under-hero funnel steps on the Journal index.
+ *
+ * @return list<array{kicker:string,title:string,text:string}>
+ */
+function journal_why_item_defaults(): array
+{
+    return [
+        ['kicker' => __('Step 1', 'sage'), 'title' => __('Find the question you actually have', 'sage'), 'text' => __('Cost, Maps, Wix vs a local designer, “is my site working?” — pick a topic. These are buying guides, not blog musings.', 'sage')],
+        ['kicker' => __('Step 2', 'sage'), 'title' => __('Read the honest answer', 'sage'), 'text' => __('Plain English, written for Gettysburg and Adams County owners. No jargon, no “it depends” that leaves you stuck.', 'sage')],
+        ['kicker' => __('Step 3', 'sage'), 'title' => __('Then get a quote — or grade your site', 'sage'), 'text' => __('If it sounds like you, tell me about the business. Not ready? Use a free tool. Either way you leave with a next step.', 'sage')],
+    ];
+}
+
+/**
+ * “What happens next” after someone reaches out from the Journal closer.
+ *
+ * @return list<array{strong:string,text:string}>
+ */
+function journal_next_defaults(): array
+{
+    return [
+        ['strong' => __('I reply — usually within a business day.', 'sage'), 'text' => __('A real note from Matt, not an auto-reminder.', 'sage')],
+        ['strong' => __('A short, no-pressure chat.', 'sage'), 'text' => __('So I understand the business, the customers, and what a win looks like.', 'sage')],
+        ['strong' => __('A clear, fixed-scope plan.', 'sage'), 'text' => __('What I’d build, what it costs, and how long — in writing.', 'sage')],
+    ];
+}
+
 /** @return list<array{title:string,text:string}> */
 function about_promise_defaults(): array
 {
@@ -880,6 +933,9 @@ function page_template_key(int $post_id): string
 {
     if ($post_id && (int) get_option('page_on_front') === $post_id) {
         return 'front-page.blade.php';
+    }
+    if ($post_id && (int) get_option('page_for_posts') === $post_id) {
+        return 'index.blade.php';
     }
     return (string) get_post_meta($post_id, '_wp_page_template', true);
 }
@@ -1825,6 +1881,63 @@ function page_field_map(): array
                 __('Get found locally', 'sage')
             ),
         ],
+
+        'index.blade.php' => [
+            __('Hero', 'sage') => [
+                ['jnl_kicker', __('Eyebrow', 'sage'), 'text', __('Gettysburg web design journal', 'sage')],
+                ['jnl_h1', __('Heading (before accent)', 'sage'), 'text', __('Gettysburg web design advice you can', 'sage')],
+                ['jnl_h1_accent', __('Accent phrase', 'sage'), 'text', __('actually use.', 'sage')],
+                ['jnl_lede', __('Hero lede (one short paragraph)', 'sage'), 'textarea', __('Honest guides for Gettysburg and Adams County owners — cost, Google Maps, Wix vs a local designer, and whether your site is quietly costing you calls. Read one, then get a quote.', 'sage')],
+                ['jnl_cta', __('Primary button', 'sage'), 'text', __('Get a quote', 'sage')],
+                ['jnl_cta_url', __('Primary button link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
+                ['jnl_cta2', __('Secondary button', 'sage'), 'text', __('Read the latest', 'sage')],
+                ['jnl_note', __('Meta line (under the buttons)', 'sage'), 'text', __('Plain English · Local SEO · No fluff', 'sage')],
+                ['jnl_proof', __('Proof ribbon (four items)', 'sage'), 'repeater', journal_proof_defaults(), [
+                    ['v', __('Value', 'sage'), 'text'],
+                    ['l', __('Label', 'sage'), 'text'],
+                ]],
+            ],
+            __('Media & links', 'sage') => [
+                ['hero_bg', __('Hero background image', 'sage'), 'image', __('Built-in until you choose one.', 'sage')],
+            ],
+            __('How to use this journal', 'sage') => [
+                ['jnl_why_eyebrow', __('Eyebrow', 'sage'), 'text', __('How to use this journal', 'sage')],
+                ['jnl_why_title', __('Heading (before accent)', 'sage'), 'text', __('Not a blog.', 'sage')],
+                ['jnl_why_accent', __('Accent phrase', 'sage'), 'text', __('Buying guides.', 'sage')],
+                ['jnl_why_intro', __('Intro paragraph', 'sage'), 'html', __('<strong>These posts are here to help you decide.</strong> What a site should cost, whether you need one, how to show up on Maps — written for owners around Gettysburg, not developers. Pick a question, read the honest answer, then get a quote if it fits.', 'sage')],
+                ['jnl_why_jump', __('Jump link (to the posts)', 'sage'), 'text', __('Browse the guides', 'sage')],
+                ['jnl_why_cta', __('Quote button', 'sage'), 'text', __('Get a quote', 'sage')],
+                ['jnl_why_items', __('Three steps', 'sage'), 'repeater', journal_why_item_defaults(), [
+                    ['kicker', __('Kicker', 'sage'), 'text'],
+                    ['title', __('Card title', 'sage'), 'text'],
+                    ['text', __('Card text', 'sage'), 'textarea'],
+                ]],
+            ],
+            __('Posts header', 'sage') => [
+                ['jnl_list_eyebrow', __('Eyebrow', 'sage'), 'text', __('The journal', 'sage')],
+                ['jnl_list_title', __('Heading (before accent)', 'sage'), 'text', __('Guides for', 'sage')],
+                ['jnl_list_accent', __('Accent phrase', 'sage'), 'text', __('Adams County owners.', 'sage')],
+                ['jnl_list_intro', __('Intro paragraph', 'sage'), 'textarea', __('Filter by topic. Read the one that matches the snag you’re in. When you’re ready to stop diagnosing and start building, the quote is one click away.', 'sage')],
+                ['jnl_cats_label', __('Filter label', 'sage'), 'text', __('Show me', 'sage')],
+            ],
+            __('Closer', 'sage') => [
+                ['jnl_close_eyebrow', __('Eyebrow', 'sage'), 'text', __('Your next step', 'sage')],
+                ['jnl_close_title', __('Heading (before accent)', 'sage'), 'text', __('Done reading.', 'sage')],
+                ['jnl_close_accent', __('Accent phrase', 'sage'), 'text', __('Let’s build yours.', 'sage')],
+                ['jnl_close_intro', __('Intro paragraph', 'sage'), 'textarea', __('Tell me about your Gettysburg or Adams County business. I’ll come back with a fixed-scope idea — usually within a business day. No jargon, no pressure.', 'sage')],
+                ['jnl_close_quote', __('Primary path · title', 'sage'), 'text', __('Get a fixed-price quote', 'sage')],
+                ['jnl_close_quote_d', __('Primary path · description', 'sage'), 'text', __('The fastest way from this page to a real plan.', 'sage')],
+                ['jnl_close_email_t', __('Email path · title', 'sage'), 'text', __('Email me directly', 'sage')],
+                ['jnl_close_tools_t', __('Tools path · title', 'sage'), 'text', __('Grade your site first', 'sage')],
+                ['jnl_close_tools_d', __('Tools path · description', 'sage'), 'text', __('Free, no signup — see where you stand.', 'sage')],
+                ['jnl_close_next_eyebrow', __('What happens next · eyebrow', 'sage'), 'text', __('What happens next', 'sage')],
+                ['jnl_close_next', __('What happens next', 'sage'), 'repeater', journal_next_defaults(), [
+                    ['strong', __('Lead-in', 'sage'), 'text'],
+                    ['text', __('Follow-on', 'sage'), 'textarea'],
+                ]],
+                ['jnl_close_fine', __('Reassurance line', 'sage'), 'text', __('Fixed price agreed up front · You own the site · A real person answers.', 'sage')],
+            ],
+        ],
     ];
 
     // Roll the per-page hero styling onto every template that has a hero:
@@ -1839,7 +1952,6 @@ function page_field_map(): array
     // group placeholders + Blade defaults match what's on the page. These are the
     // templates whose hero buttons are wired to hero_btn1/hero_btn2 in Blade.
     $btnLabels = [
-        'index.blade.php'                 => ['Read the latest', 'Try the free tools'],
         'template-email.blade.php'        => ['Check my domain', 'Talk to me'],
         'template-faq.blade.php'          => ['Ask your question', 'Jump to the FAQs'],
         'template-grader.blade.php'       => ['Grade my site', 'Talk to me'],
@@ -1914,6 +2026,9 @@ function field_group_hint(string $label): string
         __('Value cards', 'sage')      => __('The “real work you can actually click” heading and its numbered cards.', 'sage'),
         __('Why these concepts', 'sage') => __('The split under-hero: how to use the page on the left, three funnel steps on the right, plus the jump and quote links.', 'sage'),
         __('Case studies header', 'sage') => __('The heading above the project grid, the industry filters, the honesty line, the note under the cards, and the after-grid quote strip.', 'sage'),
+        __('How to use this journal', 'sage') => __('The split under the Journal hero: why these posts exist, plus three steps that turn a reader into a quote.', 'sage'),
+        __('Posts header', 'sage') => __('The heading above the Journal grid and the filter label.', 'sage'),
+        __('Closer', 'sage') => __('The contact-style closer under the posts (and under each article): heading, three paths, what happens next, and the reassurance line.', 'sage'),
         __('Don\'t see your business', 'sage') => __('The heading, the business-type chips, the foundation panel, and its checklist.', 'sage'),
         __('How it goes', 'sage')      => __('The numbered build flow, plus the “what you walk away with” checklist and reassurance line.', 'sage'),
         __('The design craft', 'sage') => __('The heading, the numbered craft cards, and the closing paragraph.', 'sage'),

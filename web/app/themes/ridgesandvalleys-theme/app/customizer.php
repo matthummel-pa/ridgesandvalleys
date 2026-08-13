@@ -1084,13 +1084,13 @@ add_action('customize_register', function ($wp_customize) {
     $wp_customize->add_section('rv_blog', ['title' => __('Blog & Journal', 'sage'), 'panel' => 'rv_theme_options']);
 
     $blog_text = [
-        ['rv_inline_cta_heading', __('In-article CTA — heading', 'sage'), __('Not sure where your site stands?', 'sage'), 'text'],
-        ['rv_inline_cta_text', __('In-article CTA — text', 'sage'), __('I’ll record a free 5-minute video walkthrough of your website — no pitch, just the first things I’d fix.', 'sage'), 'textarea'],
-        ['rv_inline_cta_btn', __('In-article CTA — button label', 'sage'), __('Get my free audit', 'sage'), 'text'],
+        ['rv_inline_cta_heading', __('In-article CTA — heading', 'sage'), __('Ready to stop guessing?', 'sage'), 'text'],
+        ['rv_inline_cta_text', __('In-article CTA — text', 'sage'), __('Tell me about the business. I’ll come back with a fixed-scope idea — usually within a business day.', 'sage'), 'textarea'],
+        ['rv_inline_cta_btn', __('In-article CTA — button label', 'sage'), __('Get a quote', 'sage'), 'text'],
         ['rv_inline_cta_url', __('In-article CTA — button link', 'sage'), '/contact/', 'text'],
-        ['rv_float_cta_title', __('Floating CTA — title', 'sage'), __('Want a second set of eyes on your site?', 'sage'), 'text'],
-        ['rv_float_cta_btn', __('Floating CTA — button label', 'sage'), __('Get a free 5-min audit', 'sage'), 'text'],
-        ['rv_audit_btn_text', __('End-of-post button label', 'sage'), __('Get a free 5-minute audit', 'sage'), 'text'],
+        ['rv_float_cta_title', __('Floating CTA — title', 'sage'), __('Ready to stop guessing?', 'sage'), 'text'],
+        ['rv_float_cta_btn', __('Floating CTA — button label', 'sage'), __('Get a quote', 'sage'), 'text'],
+        ['rv_audit_btn_text', __('End-of-post button label (unused if closer is on)', 'sage'), __('Get a quote', 'sage'), 'text'],
         ['rv_post_author_bio', __('Post author bio', 'sage'), __('Founder of Ridges & Valleys Studio. 15 years as a WordPress developer, now building fast, accessible websites for Gettysburg and South Central PA.', 'sage'), 'textarea'],
     ];
     foreach ($blog_text as [$id, $label, $default, $type]) {
