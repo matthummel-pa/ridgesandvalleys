@@ -566,21 +566,31 @@ function page_field_map(): array
 
     $map = [
         'front-page.blade.php' => [
-            __('Hero', 'sage') => array_merge($hero(
-                __('Gettysburg Web Design Studio · Local Business Growth', 'sage'),
-                __('Websites that help Gettysburg businesses', 'sage'),
-                __('get found.', 'sage'),
-                __('Get a fast, accessible website designed to help your Gettysburg business get found and win more customers. Local SEO, clear pricing, and a first draft in about seven days. Serving Gettysburg and all of Adams County.', 'sage')
-            ), [
-                // Optional hero side columns. Fill either/both to make the hero 2- or
-                // 3-column; leave blank for the normal single-column hero.
+            __('Hero', 'sage') => [
+                ['home_kicker', __('Eyebrow', 'sage'), 'text', __('Web design & local SEO · Gettysburg', 'sage')],
+                ['home_headline', __('Headline (before accent)', 'sage'), 'text', __('Gettysburg web design that gets you', 'sage')],
+                ['home_headline_accent', __('Headline accent', 'sage'), 'text', __('found.', 'sage')],
+                ['home_lede', __('Lede (one short paragraph)', 'sage'), 'textarea', __('Fixed-scope WordPress sites for Adams County — local SEO baked in, a first draft in about seven days, and a site you own.', 'sage')],
+                ['home_cta1', __('Button 1 · label', 'sage'), 'text', __('Get a quote', 'sage')],
+                ['home_cta2', __('Button 2 · label', 'sage'), 'text', __('See packages', 'sage')],
+                ['home_byline', __('Byline under the buttons', 'sage'), 'text', __('Family-owned in Gettysburg · Led by Matt Hummel', 'sage')],
+                ['home_cta1_url', __('Button 1 · link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
+                ['home_cta2_url', __('Button 2 · link', 'sage'), 'url', __('e.g. /gettysburg-web-design-services/#packages', 'sage')],
+                ['hero_btn1_style', __('Button 1 · style', 'sage'), 'select', '', [
+                    ''        => __('Theme default', 'sage'),
+                    'primary' => __('Primary (filled)', 'sage'),
+                    'ghost'   => __('Ghost (outline)', 'sage'),
+                ]],
+                ['hero_btn2_style', __('Button 2 · style', 'sage'), 'select', '', [
+                    ''        => __('Theme default', 'sage'),
+                    'primary' => __('Primary (filled)', 'sage'),
+                    'ghost'   => __('Ghost (outline)', 'sage'),
+                ]],
                 ['hero_col2_title', __('Hero column 2 · heading (optional)', 'sage'), 'text', ''],
                 ['hero_col2_body', __('Hero column 2 · content (optional, HTML allowed)', 'sage'), 'html', ''],
                 ['hero_col3_title', __('Hero column 3 · heading (optional)', 'sage'), 'text', ''],
                 ['hero_col3_body', __('Hero column 3 · content (optional, HTML allowed)', 'sage'), 'html', ''],
-            ]),
-            __('Hero buttons', 'sage') => hero_button_rows(),
-            __('Hero typography', 'sage') => hero_typography_rows(),
+            ],
             __('Intro section', 'sage') => [
                 ['intro_eyebrow', __('Eyebrow', 'sage'), 'text', __('A local studio', 'sage')],
                 ['intro_title', __('Heading (before accent)', 'sage'), 'text', __('Gettysburg web design that', 'sage')],
@@ -648,13 +658,8 @@ function page_field_map(): array
             ),
             __('Media & links', 'sage') => [
                 ['hero_bg', __('Hero background image', 'sage'), 'image', __('Uses the built-in photo until you choose one.', 'sage')],
-                ['hero_btn1_url', __('Hero button 1 link (“Plan my site”)', 'sage'), 'url', __('e.g. /contact/', 'sage')],
-                ['hero_btn2_url', __('Hero button 2 link (“See the process”)', 'sage'), 'url', __('e.g. /gettysburg-web-design-services/', 'sage')],
                 ['cta_button_url', __('Closing CTA button link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
                 ['pkg_cta_url', __('“Compare all services” button link', 'sage'), 'url', __('e.g. /services/', 'sage')],
-            ],
-            __('Hero trust line', 'sage') => [
-                ['hero_trust', __('Trust line under the buttons', 'sage'), 'text', __('15+ yrs building for the web · Accessibility-first · WordPress · Local support', 'sage')],
             ],
             __('Included in every build', 'sage') => [
                 ['included_eyebrow', __('Eyebrow', 'sage'), 'text', __('No surprises', 'sage')],
@@ -1486,7 +1491,7 @@ function page_field_map(): array
 function field_group_hint(string $label): string
 {
     $hints = [
-        __('Hero', 'sage')             => __('The banner at the very top of the page: the small eyebrow label above the title, the main headline, the highlighted accent word, and the sentence beneath.', 'sage'),
+        __('Hero', 'sage')             => __('The banner at the top of the page: a short eyebrow, the headline with its accent word, one supporting sentence, and the buttons.', 'sage'),
         __('Problems section', 'sage') => __('The “if this sounds familiar” block — its heading and the three cards that name what’s frustrating about an outdated site.', 'sage'),
         __('Packages section', 'sage') => __('The pricing line-up: a heading plus four packages, each with a name, a price, and a one-line description.', 'sage'),
         __('Rooted section', 'sage')   => __('The local “built here” block — heading, paragraph, and the comma-separated list of region chips.', 'sage'),
