@@ -301,7 +301,7 @@
     .rv-svc-bound{padding:1.35rem 1.45rem;border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);background:color-mix(in srgb,var(--color-ink) 3.5%,var(--color-surface))}
     .rv-svc-bound h3{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-clay);font-weight:700;margin:0 0 .5rem}
     .rv-svc-bound p{margin:0;color:var(--color-body);font-size:.92rem;line-height:1.55}
-    /* Local SEO — same scan pattern as “what every build includes”, on pine */
+    /* Local SEO: same scan pattern as “what every build includes”, on pine */
     .rv-svc-seo-lead{max-width:68ch;margin:.85rem 0 0;color:#d3ddcf;font-size:1.05rem;line-height:1.6}
     .rv-svc-seo-lead strong{color:#fff}
     .rv-svc-seo-list{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0 0;padding:0;list-style:none}
