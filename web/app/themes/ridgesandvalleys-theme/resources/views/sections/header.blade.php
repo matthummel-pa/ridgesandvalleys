@@ -105,6 +105,7 @@
       if (!hero || !banner) {
         body.classList.remove('rv-nav-transparent'); // no hero — fall back to solid
       } else {
+        // Never shrink below the CSS fallback — banner+offset can sit under the overlay nav.
         var fit = function () {
           hero.style.paddingTop = '';
           var cssPad = parseFloat(window.getComputedStyle(hero).paddingTop) || 0;
