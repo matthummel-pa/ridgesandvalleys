@@ -76,6 +76,10 @@
 html[data-theme="dark"] .rv-brand-logo-link .rv-logo-light{display:none}
 html[data-theme="dark"] .rv-brand-logo-link .rv-logo-dark{display:block}
 @media(max-width:600px){.rv-brand-logo-link .rv-logo{height:38px}}
+@media(max-width:480px){
+  .rv-header .rv-brand{min-width:0}
+  .rv-header .rv-brand-logo-link .rv-logo,.rv-header .rv-brand img{height:32px;width:auto;max-width:min(46vw,11.5rem);object-fit:contain;object-position:left center}
+}
 /* Text-only wordmark fallback (no Media Library logo set) */
 .rv-brand-text-link{display:inline-flex;align-items:center;text-decoration:none}
 /* Footer logo (dark band): use a purpose-made dark logo as-is; invert a
