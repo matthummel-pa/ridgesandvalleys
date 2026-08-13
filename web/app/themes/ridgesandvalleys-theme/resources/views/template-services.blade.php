@@ -166,24 +166,34 @@
     <p class="rv-tool-hint" style="margin-top:1.25rem;max-width:70ch">{{ \App\field('aisplit_note', __('Your agreement discloses that AI may assist with drafts while all work is reviewed. Confidential information is never placed into a third-party model without permission.', 'sage')) }}</p>
   </section>
 
-  {{-- AFTER LAUNCH --}}
-  <section class="rv-band rv-band-alt">
+  {{-- AFTER LAUNCH — included support vs optional Care & Grow --}}
+  @php($carePkgs = \App\svc_care_packages())
+  <section id="after-launch" class="rv-band rv-band-alt rv-svc-after" aria-labelledby="rv-svc-after-title" style="scroll-margin-top:6rem">
     <div class="rv-shell">
-      {!! \App\eyebrow(\App\field('after_eyebrow', __('After launch', 'sage'))) !!}
-      <h2 class="rv-section-title">{{ \App\field('after_title', __('Launch day isn\'t', 'sage')) }} <em class="rv-accent">{{ \App\field('after_accent', __('goodbye.', 'sage')) }}</em></h2>
-      <div class="rv-grid rv-grid-3" style="margin-top:2rem">
-        @foreach (\App\field_rows('after_items', [
-          ['title' => __('A workmanship warranty', 'sage'), 'text' => __('If something I built breaks in the first 30 days, I fix it — no charge, no debate.', 'sage')],
-          ['title' => __('Optional care plans', 'sage'), 'text' => __('Updates, backups, security, small edits, and reporting from $179/mo — cancel anytime, and you keep the site.', 'sage')],
-          ['title' => __('You\'re never stuck', 'sage'), 'text' => __('You own the domain, hosting, and site. Want to take it in-house or hand it to someone else? It\'s yours to move.', 'sage')],
-        ]) as $a)
-          <article class="rv-card rv-feature">
-            <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-            <h3 class="rv-feature-title">{{ $a['title'] ?? '' }}</h3>
-            <p class="rv-feature-text">{{ $a['text'] ?? '' }}</p>
-          </article>
-        @endforeach
+      <div class="rv-svc-after-grid">
+        <div class="rv-svc-after-copy">
+          {!! \App\eyebrow(\App\field('after_kicker', __('Website care · Gettysburg', 'sage'))) !!}
+          <h2 id="rv-svc-after-title" class="rv-section-title">{{ \App\field('after_title', __('Launch day isn\'t', 'sage')) }} <em class="rv-accent">{{ \App\field('after_accent', __('goodbye.', 'sage')) }}</em></h2>
+          <p class="rv-page-intro">{{ \App\field('after_lede', __('Every Gettysburg website I build includes a 30-day workmanship warranty and a training handoff. Need hosting, backups, and small edits after that? Care & Grow is optional — and you still own the site if you cancel.', 'sage')) }}</p>
+        </div>
+        <ul class="rv-svc-after-list">
+          @foreach (\App\field_rows('after_points', \App\svc_after_point_defaults()) as $a)
+            <li class="rv-svc-after-item">
+              @if (($a['kicker'] ?? '') !== '')<span class="rv-svc-after-kicker">{{ $a['kicker'] }}</span>@endif
+              @if (($a['title'] ?? '') !== '')<h3>{{ $a['title'] }}</h3>@endif
+              @if (($a['text'] ?? '') !== '')<p>{{ $a['text'] }}</p>@endif
+            </li>
+          @endforeach
+        </ul>
       </div>
+      <aside class="rv-svc-after-care" aria-labelledby="rv-svc-after-care-title">
+        <div class="rv-svc-after-care-copy">
+          <span class="rv-svc-after-kicker">{{ \App\field('after_care_kicker', __('Optional', 'sage')) }}</span>
+          <h3 id="rv-svc-after-care-title">{{ \App\field('after_care_title', __('Care & Grow — website care from $179/mo', 'sage')) }}</h3>
+          <p>{{ \App\field('after_care_text', __('Hosting, backups, security, monthly edits, and a look at search. Cancel anytime. You keep the site.', 'sage')) }}</p>
+        </div>
+        <a class="rv-btn rv-btn-primary" href="{{ $carePkgs !== [] ? '#care' : $ctaHref }}">{{ \App\field('after_care_btn', __('See Care & Grow', 'sage')) }}</a>
+      </aside>
     </div>
   </section>
 
@@ -302,6 +312,23 @@
     .rv-svc-faq .rv-faq-answer{font-size:1rem;line-height:1.65;max-width:52ch}
     @media(max-width:820px){.rv-svc-faq-layout{grid-template-columns:1fr}}
     @media(prefers-reduced-motion:reduce){.rv-svc-faq-more svg{transition:none}}
+    /* After launch — included vs optional care */
+    .rv-svc-after-grid{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.18fr);gap:clamp(1.75rem,4vw,3rem);align-items:start}
+    .rv-svc-after-copy .rv-section-title{margin:.35rem 0 .8rem}
+    .rv-svc-after-copy .rv-page-intro{margin:0}
+    .rv-svc-after-list{list-style:none;margin:0;padding:0;display:grid;gap:.8rem}
+    .rv-svc-after-item{position:relative;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.1rem 1.3rem 1.1rem 1.5rem;overflow:hidden}
+    .rv-svc-after-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ridgeline)}
+    .rv-svc-after-kicker{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-clay)}
+    .rv-svc-after-item h3{font-family:var(--font-display);font-size:1.12rem;font-weight:700;color:var(--color-ink);margin:.2rem 0 .35rem;line-height:1.2}
+    .rv-svc-after-item p{margin:0;color:var(--color-body);font-size:.95rem;line-height:1.55}
+    .rv-svc-after-care{margin-top:clamp(1.5rem,3vw,2.25rem);display:grid;grid-template-columns:1fr auto;gap:1.25rem 2rem;align-items:center;background:var(--color-surface);border:1.5px solid var(--color-line);border-radius:var(--radius-lg,18px);padding:clamp(1.35rem,3vw,1.85rem) clamp(1.4rem,3vw,2rem);position:relative;overflow:hidden}
+    .rv-svc-after-care::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--ridgeline)}
+    .rv-svc-after-care-copy h3{font-family:var(--font-display);font-size:clamp(1.2rem,2.4vw,1.55rem);font-weight:800;color:var(--color-ink);margin:.25rem 0 .45rem;line-height:1.2;letter-spacing:-.02em}
+    .rv-svc-after-care-copy p{margin:0;color:var(--color-body);font-size:.98rem;line-height:1.55;max-width:52ch}
+    .rv-svc-after-care .rv-btn{white-space:nowrap}
+    @media(max-width:820px){.rv-svc-after-grid{grid-template-columns:1fr}.rv-svc-after-care{grid-template-columns:1fr}.rv-svc-after-care .rv-btn{width:100%;justify-content:center}}
+    #care{scroll-margin-top:6rem}
     /* Founding offer — inclusions as a scannable checklist (on the dark pine band) */
     .rv-founding-list{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem;margin:1.5rem 0 0;padding:0}
     .rv-founding-list li{position:relative;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:.5rem 1.05rem .5rem 2.1rem;color:#fff;font-weight:600;font-size:.92rem}

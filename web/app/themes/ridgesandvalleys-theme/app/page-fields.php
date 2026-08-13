@@ -796,6 +796,20 @@ function svc_faq_pairs(?int $post_id = null): array
     return $pairs;
 }
 
+/**
+ * “Launch day isn’t goodbye” — included support vs optional care.
+ *
+ * @return list<array{kicker:string,title:string,text:string}>
+ */
+function svc_after_point_defaults(): array
+{
+    return [
+        ['kicker' => __('Included', 'sage'), 'title' => __('30-day workmanship warranty', 'sage'), 'text' => __('If something I built breaks in the first month, I fix it. No charge, no debate, no ticket queue — you call Matt.', 'sage')],
+        ['kicker' => __('Included', 'sage'), 'title' => __('A training handoff', 'sage'), 'text' => __('A short walkthrough so you can change hours, prices, and photos yourself. You are not waiting on me to open the shop.', 'sage')],
+        ['kicker' => __('Always', 'sage'), 'title' => __('You own the Gettysburg website', 'sage'), 'text' => __('Domain, hosting, and every page stay in your name. Take it in-house, hand it off, or keep a care plan. No lock-in.', 'sage')],
+    ];
+}
+
 /** Which field set applies to a page (front page detected via the reading setting). */
 function page_template_key(int $post_id): string
 {
@@ -1235,17 +1249,19 @@ function page_field_map(): array
                 ['aisplit_note', __('Disclosure note', 'sage'), 'textarea', __('Your agreement discloses that AI may assist with drafts while all work is reviewed. Confidential information is never placed into a third-party model without permission.', 'sage')],
             ],
             __('After launch', 'sage') => [
-                ['after_eyebrow', __('Eyebrow', 'sage'), 'text', __('After launch', 'sage')],
+                ['after_kicker', __('Eyebrow', 'sage'), 'text', __('Website care · Gettysburg', 'sage')],
                 ['after_title', __('Heading (before accent)', 'sage'), 'text', __('Launch day isn\'t', 'sage')],
                 ['after_accent', __('Accent word', 'sage'), 'text', __('goodbye.', 'sage')],
-                ['after_items', __('Cards', 'sage'), 'repeater', [
-                    ['title' => __('A workmanship warranty', 'sage'), 'text' => __('If something I built breaks in the first 30 days, I fix it — no charge, no debate.', 'sage')],
-                    ['title' => __('Optional care plans', 'sage'), 'text' => __('Updates, backups, security, small edits, and reporting from $179/mo — cancel anytime, and you keep the site.', 'sage')],
-                    ['title' => __('You\'re never stuck', 'sage'), 'text' => __('You own the domain, hosting, and site. Want to take it in-house or hand it to someone else? It\'s yours to move.', 'sage')],
-                ], [
-                    ['title', __('Card title', 'sage'), 'text'],
-                    ['text', __('Card text', 'sage'), 'textarea'],
+                ['after_lede', __('Intro paragraph', 'sage'), 'textarea', __('Every Gettysburg website I build includes a 30-day workmanship warranty and a training handoff. Need hosting, backups, and small edits after that? Care & Grow is optional — and you still own the site if you cancel.', 'sage')],
+                ['after_points', __('What’s included (kickers + titles)', 'sage'), 'repeater', svc_after_point_defaults(), [
+                    ['kicker', __('Kicker', 'sage'), 'text'],
+                    ['title', __('Heading', 'sage'), 'text'],
+                    ['text', __('Text', 'sage'), 'textarea'],
                 ]],
+                ['after_care_kicker', __('Care panel kicker', 'sage'), 'text', __('Optional', 'sage')],
+                ['after_care_title', __('Care panel heading', 'sage'), 'text', __('Care & Grow — website care from $179/mo', 'sage')],
+                ['after_care_text', __('Care panel text', 'sage'), 'textarea', __('Hosting, backups, security, monthly edits, and a look at search. Cancel anytime. You keep the site.', 'sage')],
+                ['after_care_btn', __('Care panel button', 'sage'), 'text', __('See Care & Grow', 'sage')],
             ],
             __('Helpful to know (FAQ)', 'sage') => [
                 ['sfaq_eyebrow', __('Eyebrow', 'sage'), 'text', __('Before you pick a package', 'sage')],

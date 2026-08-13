@@ -24,9 +24,9 @@
   @endforeach
 </div>
 
-@foreach ($care as $s)
+@foreach ($care as $i => $s)
   @php($isFeatured = trim(\App\strip_field_markers((string) ($s['flag'] ?? ''))) !== '')
-  <article class="rv-card rv-plan rv-plan-care{{ $isFeatured ? ' is-featured' : '' }}">
+  <article class="rv-card rv-plan rv-plan-care{{ $isFeatured ? ' is-featured' : '' }}" @if ($i === 0) id="care" @endif>
     <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
     <div class="rv-plan-care-copy">
       @if ($isFeatured)<span class="rv-plan-flag rv-plan-flag-inline">{{ $s['flag'] }}</span>@endif
