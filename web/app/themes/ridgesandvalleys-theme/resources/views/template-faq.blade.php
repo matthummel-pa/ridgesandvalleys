@@ -119,16 +119,7 @@ foreach ($faqRows as $r) {
     .rv-process-t{margin:.9rem 0 .3rem;font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--color-ink)}
     .rv-process-d{margin:0 auto;max-width:22ch;font-size:.86rem;color:var(--color-muted);line-height:1.45}
     .rv-process-note{margin:clamp(2rem,4vw,2.75rem) 0 0;text-align:left;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.04em;text-transform:uppercase;color:var(--color-pine)}
-    @media(max-width:860px){
-      .rv-faqproc .rv-process{grid-template-columns:1fr;gap:1.6rem;position:relative;max-width:34rem}
-      .rv-faqproc .rv-process::before{content:"";position:absolute;left:31px;top:32px;bottom:32px;width:4px;background:var(--ridgeline);opacity:.4;border-radius:2px}
-      .rv-process-step{display:grid;grid-template-columns:auto 1fr;gap:.15rem 1.15rem;text-align:left;align-items:center}
-      .rv-process-step:not(:first-child)::before{display:none}
-      .rv-process-node{grid-row:span 2}
-      .rv-process-t{margin:0;align-self:end}
-      .rv-process-d{margin:0;align-self:start;max-width:none}
-      .rv-process-note{text-align:left}
-    }
+    @media(max-width:860px){.rv-faqproc .rv-process{grid-template-columns:1fr;gap:1.6rem;position:relative;max-width:34rem}.rv-faqproc .rv-process::before{content:"";position:absolute;left:31px;top:32px;bottom:32px;width:4px;background:var(--ridgeline);opacity:.4;border-radius:2px}.rv-process-step{display:grid;grid-template-columns:auto 1fr;gap:.15rem 1.15rem;text-align:left;align-items:center}.rv-process-step:not(:first-child)::before{display:none}.rv-process-node{grid-row:span 2}.rv-process-t{margin:0;align-self:end}.rv-process-d{margin:0;align-self:start;max-width:none}.rv-process-note{text-align:left}}
     @media(prefers-reduced-motion:no-preference){.rv-process-node{transition:transform .15s ease}.rv-process-step:hover .rv-process-node{transform:translateY(-3px)}}
 
     /* FAQ groups — all open */

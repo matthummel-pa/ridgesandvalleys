@@ -45,11 +45,7 @@
   .rv-fnews-status[data-state="ok"]{color:#7CF3C9}
   .rv-fnews-status[data-state="err"]{color:#FFC9C2}
   .rv-fnews-status[data-state="pending"]{color:var(--color-wheat)}
-  @media (max-width:760px){
-    .rv-fnews{flex-direction:column;align-items:stretch;gap:.7rem;padding:1.15rem 1.2rem}
-    .rv-fnews-form{flex-basis:auto}
-    .rv-fnews-btn{width:100%}
-  }
+  @media(max-width:760px){.rv-fnews{flex-direction:column;align-items:stretch;gap:.7rem;padding:1.15rem 1.2rem}.rv-fnews-form{flex-basis:auto}.rv-fnews-btn{width:100%}}
 
 </style>
 
