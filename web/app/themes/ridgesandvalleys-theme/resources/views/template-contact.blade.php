@@ -144,6 +144,8 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
     @media(max-width:900px){.rv-contact-grid{grid-template-columns:1fr}}
     .rv-contact-intro-body{margin-top:1rem;max-width:60ch}
     .rv-contact-wrap{margin-top:1.5rem}
+    .rv-form-pkg{margin:0 0 1rem;padding:.85rem 1rem;border-left:3px solid var(--color-pine);background:color-mix(in srgb,var(--color-sage) 18%,var(--color-surface));border-radius:0 12px 12px 0;color:var(--color-body);font-size:.95rem;line-height:1.45}
+    .rv-form-pkg strong{color:var(--color-ink);font-weight:700}
     .rv-contact-side{display:grid;gap:1.25rem;position:sticky;top:6rem}
     @media(max-width:900px){.rv-contact-side{position:static}}
     .rv-cside-block{background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.5rem 1.6rem;position:relative;overflow:hidden}

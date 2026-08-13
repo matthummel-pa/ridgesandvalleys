@@ -25,7 +25,13 @@ function contact_field_defaults(): array
     return [
         ['label' => __('Your name', 'sage'),          'type' => 'text',     'placeholder' => '',                       'required' => '1', 'width' => 'half', 'choices' => []],
         ['label' => __('Email', 'sage'),              'type' => 'email',    'placeholder' => '',                       'required' => '1', 'width' => 'half', 'choices' => []],
-        ['label' => __('Phone', 'sage'),              'type' => 'tel',      'placeholder' => __('Optional', 'sage'),   'required' => '',  'width' => 'full', 'choices' => []],
+        ['label' => __('Phone', 'sage'),              'type' => 'tel',      'placeholder' => __('Optional', 'sage'),   'required' => '',  'width' => 'half', 'choices' => []],
+        ['label' => __('Which package?', 'sage'),     'type' => 'select',   'placeholder' => __('Not sure yet', 'sage'), 'required' => '', 'width' => 'half', 'choices' => [
+            __('Website Rescue', 'sage'),
+            __('Local Launch', 'sage'),
+            __('Growth Site', 'sage'),
+            __('Care & Grow', 'sage'),
+        ]],
         ['label' => __('What can I help with?', 'sage'), 'type' => 'textarea', 'placeholder' => '',                     'required' => '1', 'width' => 'full', 'choices' => []],
     ];
 }
@@ -76,6 +82,27 @@ function contact_fields(?int $post_id = null): array
     }
 
     return $out ?: contact_fields_normalize(contact_field_defaults());
+}
+
+/**
+ * Package name from a services-page CTA (?package= or posted rv_package).
+ * Empty when the visitor arrived at contact without picking a plan.
+ */
+function contact_inquiry_package(): string
+{
+    $raw = '';
+    if (isset($_POST['rv_package'])) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+        $raw = (string) wp_unslash($_POST['rv_package']);
+    } elseif (isset($_GET['package'])) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+        $raw = (string) wp_unslash($_GET['package']);
+    }
+    $raw = sanitize_text_field($raw);
+    $raw = trim($raw);
+    if ($raw === '' || strlen($raw) > 80 || preg_match('~https?://|www\.~i', $raw)) {
+        return '';
+    }
+
+    return $raw;
 }
 
 /** Normalize a raw default set (used as the ultimate fallback). */
@@ -260,6 +287,11 @@ add_action('init', function () {
         exit;
     }
 
+    $inquiry = contact_inquiry_package();
+    if ($inquiry !== '') {
+        array_unshift($lines, __('Package', 'sage') . ': ' . $inquiry);
+    }
+
     // Consent / GDPR gate.
     if (field('cform_consent_enable', '0', $page_id) === '1'
         && field('cform_consent_required', '1', $page_id) === '1') {
@@ -288,6 +320,9 @@ add_action('init', function () {
     $to = get_theme_mod('rv_contact_email', get_option('admin_email'));
     /* translators: %s: site name. */
     $subject = sprintf(__('[%s] New message from the website', 'sage'), wp_specialchars_decode(get_bloginfo('name')));
+    if ($inquiry !== '') {
+        $subject .= ' — ' . $inquiry;
+    }
     $body    = implode("\n", $lines) . "\n";
 
     $headers = ['Content-Type: text/plain; charset=UTF-8'];
@@ -352,6 +387,7 @@ function contact_form(?int $post_id = null): void
     }
 
     $status = isset($_GET['contact']) ? sanitize_key(wp_unslash($_GET['contact'])) : ''; // phpcs:ignore
+    $inquiry = contact_inquiry_package();
 
     if ($status === 'success') {
         echo '<div class="rv-note rv-note-ok" role="status">' . esc_html($success_msg) . '</div>';
@@ -359,6 +395,12 @@ function contact_form(?int $post_id = null): void
         echo '<div class="rv-note rv-note-err" role="alert">' . esc_html__('Something went wrong. Please check the fields and try again.', 'sage') . '</div>';
     } elseif ($status === 'spam') {
         echo '<div class="rv-note rv-note-err" role="alert">' . esc_html__('Please wait a moment before sending again.', 'sage') . '</div>';
+    } elseif ($inquiry !== '') {
+        echo '<p class="rv-form-pkg" role="status">' . sprintf(
+            /* translators: %s: package name, e.g. Local Launch */
+            esc_html__('Inquiring about %s — add a few details and I’ll send a fixed-scope quote.', 'sage'),
+            '<strong>' . esc_html($inquiry) . '</strong>'
+        ) . '</p>';
     }
 
     $form_class = 'rv-form rv-form--dynamic rv-form--' . $field_style . ($nolabels ? ' rv-form--nolabels' : '');
@@ -371,10 +413,29 @@ function contact_form(?int $post_id = null): void
     );
     wp_nonce_field('rv_contact', 'rv_contact_nonce');
     printf('<input type="hidden" name="rv_form_page" value="%d">', (int) $post_id);
+    if ($inquiry !== '') {
+        printf('<input type="hidden" name="rv_package" value="%s">', esc_attr($inquiry));
+    }
     // Signed render-time token for the server-side time-trap.
     $t = time();
     printf('<input type="hidden" name="rv_t" value="%s">', esc_attr($t . '.' . wp_hash((string) $t)));
 
+    $prefilled_message = false;
+    $inquiry_slug = sanitize_title($inquiry);
+    $has_pkg_select = false;
+    if ($inquiry_slug !== '') {
+        foreach ($fields as $cf) {
+            if (($cf['type'] ?? '') !== 'select') {
+                continue;
+            }
+            foreach ($cf['choices'] as $opt) {
+                if (sanitize_title((string) $opt) === $inquiry_slug) {
+                    $has_pkg_select = true;
+                    break 2;
+                }
+            }
+        }
+    }
     foreach ($fields as $i => $f) {
         $id    = 'rvf_' . $i;
         $req   = $f['required'];
@@ -406,18 +467,26 @@ function contact_form(?int $post_id = null): void
 
         switch ($f['type']) {
             case 'textarea':
+                $ta_val = '';
+                if ($inquiry !== '' && $status !== 'success' && ! $prefilled_message && ! $has_pkg_select) {
+                    $ta_val = sprintf(__("I'm interested in %s.", 'sage'), $inquiry);
+                    $prefilled_message = true;
+                }
                 printf(
-                    '<textarea id="%1$s" name="%1$s" rows="6"%2$s placeholder="%3$s"></textarea>',
+                    '<textarea id="%1$s" name="%1$s" rows="6"%2$s placeholder="%3$s">%4$s</textarea>',
                     esc_attr($id),
                     $reqAttr . $reqAria,
-                    esc_attr($ph)
+                    esc_attr($ph),
+                    esc_textarea($ta_val)
                 );
                 break;
             case 'select':
                 printf('<select id="%1$s" name="%1$s"%2$s>', esc_attr($id), $reqAttr . $reqAria);
                 printf('<option value="">%s</option>', esc_html($ph !== '' ? $ph : __('Choose…', 'sage')));
+                $inquiry_slug = sanitize_title($inquiry);
                 foreach ($f['choices'] as $opt) {
-                    printf('<option value="%1$s">%1$s</option>', esc_attr($opt));
+                    $sel = ($inquiry_slug !== '' && (sanitize_title((string) $opt) === $inquiry_slug || strcasecmp((string) $opt, $inquiry) === 0));
+                    printf('<option value="%1$s"%2$s>%1$s</option>', esc_attr($opt), selected($sel, true, false));
                 }
                 echo '</select>';
                 break;

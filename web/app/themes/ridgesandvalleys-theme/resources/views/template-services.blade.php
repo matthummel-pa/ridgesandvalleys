@@ -63,7 +63,7 @@
             <ul class="rv-service-list">
               @foreach (\App\lines($s['features'] ?? []) as $item)<li>{{ $item }}</li>@endforeach
             </ul>
-            <a class="rv-btn {{ $isFeatured ? 'rv-btn-primary' : 'rv-btn-ghost' }} rv-plan-btn" href="{{ $ctaHref }}">{{ $s['cta'] ?? __('Get a quote', 'sage') }}</a>
+            <a class="rv-btn {{ $isFeatured ? 'rv-btn-primary' : 'rv-btn-ghost' }} rv-plan-btn" href="{{ \App\svc_package_href($s) }}">{{ $s['cta'] ?? __('Get a quote', 'sage') }}</a>
           </div>
         </article>
       @endforeach
@@ -85,7 +85,7 @@
         <ul class="rv-service-list">
           @foreach (\App\lines($s['features'] ?? []) as $item)<li>{{ $item }}</li>@endforeach
         </ul>
-        <a class="rv-btn {{ $isFeatured ? 'rv-btn-primary' : 'rv-btn-ghost' }} rv-plan-btn" href="{{ $ctaHref }}">{{ $s['cta'] ?? __('Get a quote', 'sage') }}</a>
+        <a class="rv-btn {{ $isFeatured ? 'rv-btn-primary' : 'rv-btn-ghost' }} rv-plan-btn" href="{{ \App\svc_package_href($s) }}">{{ $s['cta'] ?? __('Get a quote', 'sage') }}</a>
       </article>
     @endforeach
 

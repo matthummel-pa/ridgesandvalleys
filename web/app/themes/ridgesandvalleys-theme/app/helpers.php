@@ -420,7 +420,7 @@ function offer_schema(array $packages, string $url = ''): string
             '@type'       => 'Offer',
             'name'        => $name,
             'description' => $desc,
-            'url'         => $url !== '' ? $url : (string) get_permalink(),
+            'url'         => svc_package_href($p) ?: ($url !== '' ? $url : (string) get_permalink()),
             'availability' => 'https://schema.org/InStock',
             'priceSpecification' => [
                 '@type'         => 'PriceSpecification',

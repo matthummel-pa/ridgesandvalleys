@@ -194,7 +194,7 @@ function lines($val): array
  * defaults and the Page content repeater. Three project packages plus a monthly
  * care plan. Keep each feature list to three lines so the cards stay scannable.
  *
- * @return list<array{name:string,price:string,flag:string,for:string,desc:string,features:list<string>,cta:string,kind:string}>
+ * @return list<array{name:string,price:string,flag:string,for:string,desc:string,features:list<string>,cta:string,kind:string,url:string}>
  */
 function svc_package_defaults(): array
 {
@@ -263,7 +263,7 @@ function svc_package_defaults(): array
  * win; missing keys (new fields like “Best for” / layout) fill from the matching
  * default by index, then from shared fallbacks so older saved cards still render.
  *
- * @return list<array{name:string,price:string,flag:string,for:string,desc:string,features:list<string>,cta:string,kind:string}>
+ * @return list<array{name:string,price:string,flag:string,for:string,desc:string,features:list<string>,cta:string,kind:string,url:string}>
  */
 function svc_packages(?int $post_id = null): array
 {
@@ -300,10 +300,34 @@ function svc_packages(?int $post_id = null): array
             $kind = 'project';
         }
         $row['kind'] = $kind === 'care' ? 'care' : 'project';
+        $row['url']  = strip_field_markers((string) ($row['url'] ?? ''));
     }
     unset($row);
 
     return array_values($rows);
+}
+
+/**
+ * Button href for a services package. A saved URL wins; otherwise the contact
+ * form with this package named in the query string, so each card goes to a
+ * distinct destination and the form can pre-fill.
+ */
+function svc_package_href(array $pkg): string
+{
+    $custom = strip_field_markers((string) ($pkg['url'] ?? ''));
+    if ($custom !== '') {
+        return cta_href($custom);
+    }
+    $base = cta_href((string) get_theme_mod('rv_cta_url', '/contact/'));
+    $name = trim(strip_field_markers((string) ($pkg['name'] ?? '')));
+    if ($name !== '') {
+        $base = add_query_arg('package', $name, $base);
+    }
+    if (! str_contains($base, '#')) {
+        $base .= '#contact-form';
+    }
+
+    return $base;
 }
 
 /** Project packages (comparison grid) for the services page. */
@@ -656,6 +680,7 @@ function page_field_map(): array
                     ['desc', __('One-line outcome', 'sage'), 'textarea'],
                     ['features', __('What’s included (one per line — keep to three)', 'sage'), 'lines'],
                     ['cta', __('Button label (blank = default button above)', 'sage'), 'text', null, 'wide'],
+                    ['url', __('Button link (blank = contact form for this package)', 'sage'), 'url', null, 'wide'],
                 ]],
             ],
             __('Package detail cards', 'sage') => [
