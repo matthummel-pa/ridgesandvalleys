@@ -29,3 +29,6 @@ npm-debug.log
 
 # Local scratch — files staged for manual deletion (see README)
 _to_delete/
+
+# Staged copies of concept sites before they are pushed to named repos
+.concept-repo-stage/

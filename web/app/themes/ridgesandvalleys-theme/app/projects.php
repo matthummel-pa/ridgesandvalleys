@@ -261,15 +261,46 @@ add_action('manage_project_posts_custom_column', function ($col, $post_id) {
 }, 10, 2);
 
 /**
+ * GitHub Pages origin for a concept's named repo.
+ * Filter `rv/concept_pages_origin` to override (e.g. a custom domain host).
+ */
+function concept_pages_origin(): string
+{
+    return apply_filters('rv/concept_pages_origin', 'https://matthummel-pa.github.io');
+}
+
+/**
+ * Named GitHub repo that holds one Work-page concept for independent updates.
+ */
+function concept_repo_name(string $folder): string
+{
+    return $folder . '-theme';
+}
+
+/**
+ * Live demo URL for a concept after it is published to its named GitHub repo.
+ * Filter `rv/concept_demo_url` to override a single site.
+ */
+function concept_demo_url(string $folder, string $file = ''): string
+{
+    $url = rtrim(concept_pages_origin(), '/') . '/' . rawurlencode(concept_repo_name($folder)) . '/';
+    if ($file !== '') {
+        $url .= ltrim($file, '/');
+    }
+
+    return apply_filters('rv/concept_demo_url', $url, $folder, $file);
+}
+
+/**
  * The concept-site portfolio, seeded once as Project posts so it populates the
- * Projects admin list and the Work grid. Each links to its live HTML mockup in
- * /concept/. Safe + idempotent: skips any project whose slug already exists.
+ * Projects admin list and the Work grid. Each live demo lives in its own
+ * GitHub repo (`{folder}-theme`) and deploys to GitHub Pages.
  */
 function concept_project_seeds(): array
 {
     return [
         [
-            'folder' => 'gettysburg-hotel', 'title' => 'The Lantern & Laurel Inn', 'type' => 'Hotels',
+            'folder' => 'gettysburg-hotel', 'repo' => 'gettysburg-hotel-theme', 'title' => 'The Lantern & Laurel Inn', 'type' => 'Hotels',
             'eyebrow' => 'Concept · Boutique inn', 'industry' => 'Hospitality · Boutique inn',
             'summary' => 'A nine-room heritage inn concept with a direct booking bar and a warm forest-and-brass identity.',
             'services' => 'Web design, Reservations UX, Copywriting, Accessibility',
@@ -281,7 +312,7 @@ function concept_project_seeds(): array
             'tech' => 'WordPress, Sage, Cloudflare',
         ],
         [
-            'folder' => 'hotel-cupola-field', 'title' => 'The Cupola & Field Hotel', 'type' => 'Hotels',
+            'folder' => 'hotel-cupola-field', 'repo' => 'hotel-cupola-field-theme', 'title' => 'The Cupola & Field Hotel', 'type' => 'Hotels',
             'eyebrow' => 'Concept · Modern hotel', 'industry' => 'Hospitality · Hotel',
             'summary' => 'A modern boutique hotel concept with a live reservation engine and concierge + guest-request tools.',
             'services' => 'Web design, Booking engine, Customer-service tools',
@@ -293,7 +324,7 @@ function concept_project_seeds(): array
             'tech' => 'WordPress, Sage, custom JS',
         ],
         [
-            'folder' => 'gettysburg-restaurant', 'title' => 'Field & Musket Tavern', 'type' => 'Restaurants',
+            'folder' => 'gettysburg-restaurant', 'repo' => 'gettysburg-restaurant-theme', 'title' => 'Field & Musket Tavern', 'type' => 'Restaurants',
             'eyebrow' => 'Concept · Farm-to-table tavern', 'industry' => 'Food & drink · Restaurant',
             'summary' => 'A seasonal tavern concept with an editorial, always-current menu and a clear reservation path.',
             'services' => 'Web design, Menu design, Reservations',
@@ -305,7 +336,7 @@ function concept_project_seeds(): array
             'tech' => 'WordPress, Sage',
         ],
         [
-            'folder' => 'restaurant-cannon-and-crumb', 'title' => 'Cannon & Crumb', 'type' => 'Restaurants',
+            'folder' => 'restaurant-cannon-and-crumb', 'repo' => 'restaurant-cannon-and-crumb-theme', 'title' => 'Cannon & Crumb', 'type' => 'Restaurants',
             'eyebrow' => 'Concept · Cafe & bakery', 'industry' => 'Food & drink · Cafe',
             'summary' => 'An all-day cafe concept with a tabbed, filterable menu and a real online-ordering cart.',
             'services' => 'Web design, Online ordering, Menu tools',
@@ -317,7 +348,7 @@ function concept_project_seeds(): array
             'tech' => 'WordPress, Sage, custom JS',
         ],
         [
-            'folder' => 'gettysburg-retail', 'title' => 'Diamond & Ridge Mercantile', 'type' => 'Retail',
+            'folder' => 'gettysburg-retail', 'repo' => 'gettysburg-retail-theme', 'title' => 'Diamond & Ridge Mercantile', 'type' => 'Retail',
             'eyebrow' => 'Concept · Boutique retail', 'industry' => 'Retail · E-commerce',
             'summary' => 'A downtown mercantile concept with a full product shop, slide-in cart, and checkout.',
             'services' => 'Web design, E-commerce, Cart & checkout',
@@ -329,7 +360,7 @@ function concept_project_seeds(): array
             'tech' => 'WordPress, WooCommerce-ready',
         ],
         [
-            'folder' => 'retail-ridgeline-outfitters', 'title' => 'Ridgeline Outfitters', 'type' => 'Retail',
+            'folder' => 'retail-ridgeline-outfitters', 'repo' => 'retail-ridgeline-outfitters-theme', 'title' => 'Ridgeline Outfitters', 'type' => 'Retail',
             'eyebrow' => 'Concept · Outdoor gear shop', 'industry' => 'Retail · E-commerce',
             'summary' => 'An outdoor gear shop concept with filters, quick-view, wishlist, and a cart with a free-shipping bar.',
             'services' => 'Web design, E-commerce, Product filtering',
@@ -341,7 +372,7 @@ function concept_project_seeds(): array
             'tech' => 'WordPress, WooCommerce-ready, custom JS',
         ],
         [
-            'folder' => 'tour-hallowed-ground-tours', 'title' => 'Hallowed Ground Battlefield Tours', 'type' => 'Tours',
+            'folder' => 'tour-hallowed-ground-tours', 'repo' => 'tour-hallowed-ground-tours-theme', 'title' => 'Hallowed Ground Battlefield Tours', 'type' => 'Tours',
             'eyebrow' => 'Concept · Guided tours', 'industry' => 'Tourism · Guided tours',
             'summary' => 'A battlefield-tour concept with a five-step, book-and-pay ticketing flow.',
             'services' => 'Web design, Ticketing, Payments UX',
@@ -353,7 +384,7 @@ function concept_project_seeds(): array
             'tech' => 'WordPress, Sage, Stripe-ready',
         ],
         [
-            'folder' => 'tour-first-shot-food-tours', 'title' => 'First Shot Food & History Tours', 'type' => 'Tours',
+            'folder' => 'tour-first-shot-food-tours', 'repo' => 'tour-first-shot-food-tours-theme', 'title' => 'First Shot Food & History Tours', 'type' => 'Tours',
             'eyebrow' => 'Concept · Walking tours', 'industry' => 'Tourism · Walking tours',
             'summary' => 'A walking-tour concept with a calendar booking flow, add-ons, and demo payment.',
             'services' => 'Web design, Calendar booking, Payments UX',
@@ -365,7 +396,7 @@ function concept_project_seeds(): array
             'tech' => 'WordPress, Sage, Stripe-ready',
         ],
         [
-            'folder' => 'realtor-ridgeline-realty', 'title' => 'Ridgeline Realty', 'type' => 'Real Estate',
+            'folder' => 'realtor-ridgeline-realty', 'repo' => 'realtor-ridgeline-realty-theme', 'title' => 'Ridgeline Realty', 'type' => 'Real Estate',
             'eyebrow' => 'Concept · Real estate agency', 'industry' => 'Real estate · Agency',
             'summary' => 'A realty concept with filterable listings, a live mortgage calculator, and support tools.',
             'services' => 'Web design, Listing search, Lead capture',
@@ -377,7 +408,7 @@ function concept_project_seeds(): array
             'tech' => 'WordPress, Sage, IDX-ready',
         ],
         [
-            'folder' => 'realtor-keystone-homes-and-land', 'title' => 'Keystone Homes & Land', 'type' => 'Real Estate',
+            'folder' => 'realtor-keystone-homes-and-land', 'repo' => 'realtor-keystone-homes-and-land-theme', 'title' => 'Keystone Homes & Land', 'type' => 'Real Estate',
             'eyebrow' => 'Concept · Land & farms agency', 'industry' => 'Real estate · Land & rural',
             'summary' => 'A land-and-farms concept with grid/map listings, acreage filters, and financing tools.',
             'services' => 'Web design, Map listings, Support tools',
@@ -422,7 +453,7 @@ function seed_concept_projects(): void
         update_post_meta($post_id, '_rv_industry', $c['industry']);
         update_post_meta($post_id, '_rv_location', 'Gettysburg, PA');
         update_post_meta($post_id, '_rv_services', $c['services']);
-        update_post_meta($post_id, '_rv_url', get_theme_file_uri('concept/' . $c['folder'] . '/index.html'));
+        update_post_meta($post_id, '_rv_url', concept_demo_url($c['folder']));
         update_post_meta($post_id, '_rv_preview', get_theme_file_uri('concept/' . $c['folder'] . '/preview.jpg'));
         update_post_meta($post_id, '_rv_is_concept', '1');
         update_post_meta($post_id, '_rv_challenge', $c['challenge']);
@@ -446,14 +477,14 @@ function seed_concept_projects(): void
  * or add newly-created concepts.
  */
 add_action('admin_init', function () {
-    if (get_option('rv_concepts_seed_v') === '3') {
+    if (get_option('rv_concepts_seed_v') === '5') {
         return;
     }
     if (! current_user_can('edit_posts')) {
         return;
     }
     seed_concept_projects();
-    update_option('rv_concepts_seed_v', '3');
+    update_option('rv_concepts_seed_v', '5');
 });
 
 /**

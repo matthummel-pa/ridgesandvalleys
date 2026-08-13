@@ -1,0 +1,53 @@
+name: Publish concept repos
+
+# Copies each Work-page concept site into its named GitHub repo
+# (`{folder}-theme`) and pushes to main so GitHub Pages can serve the live demo.
+#
+# Pushing requires a PAT (or fine-grained token) with Contents + Pages write on
+# those repos, stored as Actions secret CONCEPT_REPOS_TOKEN. The Cursor GitHub
+# App for this marketing repo cannot push to the other repositories.
+on:
+  workflow_dispatch:
+  pull_request:
+    paths:
+      - "web/app/themes/ridgesandvalleys-theme/concept/**"
+      - "scripts/publish-concept-repos.sh"
+      - "scripts/concept-repos.tsv"
+      - "scripts/concept-repo-files/**"
+      - ".github/workflows/publish-concept-repos.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  stage:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Stage all ten concept repos (no push)
+        run: |
+          chmod +x scripts/publish-concept-repos.sh
+          ./scripts/publish-concept-repos.sh --stage-only
+          test -f .concept-repo-stage/gettysburg-hotel-theme/index.html
+          ! grep -R --include='*.html' -q 'example-concept.test' .concept-repo-stage
+
+  publish:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Publish each concept to its named repo
+        env:
+          CONCEPT_REPOS_TOKEN: ${{ secrets.CONCEPT_REPOS_TOKEN }}
+          GH_TOKEN: ${{ secrets.CONCEPT_REPOS_TOKEN }}
+        run: |
+          if [ -z "${CONCEPT_REPOS_TOKEN}" ]; then
+            echo "Missing secret CONCEPT_REPOS_TOKEN."
+            echo "Create a fine-grained PAT with Contents + Pages write on the ten *-theme repos,"
+            echo "add it as that secret, and re-run this workflow."
+            echo "Or grant the Cursor GitHub App access to those repos and ask the agent to push."
+            exit 1
+          fi
+          chmod +x scripts/publish-concept-repos.sh
+          ./scripts/publish-concept-repos.sh
