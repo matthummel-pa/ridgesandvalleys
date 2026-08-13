@@ -105,7 +105,11 @@
       if (!hero || !banner) {
         body.classList.remove('rv-nav-transparent'); // no hero — fall back to solid
       } else {
-        var fit = function () { hero.style.paddingTop = (banner.offsetHeight + 40) + 'px'; };
+        var fit = function () {
+          hero.style.paddingTop = '';
+          var cssPad = parseFloat(window.getComputedStyle(hero).paddingTop) || 0;
+          hero.style.paddingTop = Math.max(banner.offsetHeight + 56, cssPad) + 'px';
+        };
         fit();
         window.addEventListener('resize', fit, { passive: true });
       }
