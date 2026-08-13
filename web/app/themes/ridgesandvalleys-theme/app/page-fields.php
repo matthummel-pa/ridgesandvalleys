@@ -696,7 +696,7 @@ function page_field_map(): array
                 ['pkg_cta_url', __('“Compare all services” button link', 'sage'), 'url', __('e.g. /services/', 'sage')],
                 ['proof_cta_url', __('Featured work · primary button (no Project post)', 'sage'), 'url', '/work/'],
                 ['proof_cta2_url', __('Featured work · “See all work” link', 'sage'), 'url', '/work/'],
-                ['rooted_cta_url', __('Rooted section · “More about us” link', 'sage'), 'url', '/about/'],
+                ['rooted_cta_url', __('Rooted section · “More about us” link', 'sage'), 'url', '/gettysburg-web-design/'],
                 ['rooted_cta2_url', __('Rooted section · “Get a quote” link', 'sage'), 'url', '/contact/'],
             ],
             __('Hero trust line', 'sage') => [

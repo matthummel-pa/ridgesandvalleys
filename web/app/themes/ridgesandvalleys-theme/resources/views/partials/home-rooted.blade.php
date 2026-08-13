@@ -36,7 +36,7 @@
           </div>
         @endif
         <div class="rv-rooted-actions">
-          <a class="rv-btn rv-btn-primary" href="{{ \App\cta_href(\App\field('rooted_cta_url', '/about/', $homeId)) }}">{{ \App\field('rooted_cta', __('More about us', 'sage'), $homeId) }} {!! \App\icon('arrow') !!}</a>
+          <a class="rv-btn rv-btn-primary" href="{{ \App\about_href(\App\field('rooted_cta_url', '', $homeId)) }}">{{ \App\field('rooted_cta', __('More about us', 'sage'), $homeId) }} {!! \App\icon('arrow') !!}</a>
           <a class="rv-btn rv-btn-ghost" href="{{ \App\cta_href(\App\field('rooted_cta2_url', '/contact/', $homeId)) }}">{{ \App\field('rooted_cta2', __('Get a quote', 'sage'), $homeId) }}</a>
         </div>
       </div>

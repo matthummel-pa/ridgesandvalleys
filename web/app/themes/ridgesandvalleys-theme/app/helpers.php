@@ -220,6 +220,43 @@ function cta_href(string $url): string
 }
 
 /**
+ * Published About page path. The live slug is /gettysburg-web-design/ (not /about/).
+ */
+function about_path(): string
+{
+    $pages = get_posts([
+        'post_type'              => 'page',
+        'post_status'            => 'publish',
+        'posts_per_page'         => 1,
+        'no_found_rows'          => true,
+        'update_post_meta_cache' => false,
+        'update_post_term_cache' => false,
+        'meta_key'               => '_wp_page_template',
+        'meta_value'             => 'template-about.blade.php',
+    ]);
+    if ($pages) {
+        $path = wp_parse_url(get_permalink($pages[0]->ID), PHP_URL_PATH);
+
+        return is_string($path) && $path !== '' ? $path : '/gettysburg-web-design/';
+    }
+
+    return '/gettysburg-web-design/';
+}
+
+/**
+ * About-page href. Blank or the common /about/ stub maps to the real About slug.
+ */
+function about_href(string $saved = ''): string
+{
+    $saved = trim($saved);
+    if ($saved === '' || $saved === '/about/' || $saved === '/about') {
+        return cta_href(about_path());
+    }
+
+    return cta_href($saved);
+}
+
+/**
  * Attachment IDs for the brand logos, both pulled from the Media Library:
  *  - 'light' is the core Site Identity logo (Customize → Site Identity → Logo)
  *  - 'dark'  is the optional dark-mode / on-dark logo (rv_logo_dark, registered
