@@ -44,7 +44,20 @@ jobs:
           mkdir -p ~/.ssh
           printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          ssh-keyscan -p "${{ secrets.SSH_PORT }}" "${{ secrets.SSH_HOST }}" >> ~/.ssh/known_hosts 2>/dev/null
+          host="${{ secrets.SSH_HOST }}"
+          port="${{ secrets.SSH_PORT }}"
+          ok=0
+          for i in 1 2 3 4 5 6; do
+            if ssh-keyscan -T 10 -p "$port" "$host" >> ~/.ssh/known_hosts 2>/dev/null; then
+              ok=1
+              break
+            fi
+            sleep $((i * 3))
+          done
+          if [ "$ok" -ne 1 ]; then
+            echo "ssh-keyscan failed after retries"
+            exit 1
+          fi
 
       - name: Deploy theme via rsync
         run: |
