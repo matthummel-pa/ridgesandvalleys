@@ -26,12 +26,9 @@ body:not(.home) { --section-y: clamp(2.25rem, 4.5vw, 3.5rem); }
    .rv-main is a sibling of the sticky header, so this never affects the header. */
 body:not(.home) .rv-main { overflow-x: hidden; }
 
-/* ---- 2. Interior heroes: shorter, no forced full-screen height ---------- */
-body:not(.home) .rv-hero,
-body:not(.home) .rv-hero > .rv-hero-inner { min-height: 0; }
-body:not(.home) .rv-hero-inner {
-	padding-block: clamp(2.5rem, 5.5vw, 3.75rem) clamp(1.75rem, 4vw, 2.75rem);
-}
+/* ---- 2. Interior heroes: one shared height, always above the fold ------- */
+/* Height lives in app.css (loads last). Do not zero min-height here — that
+   made each page's hero a different, content-sized band. */
 body:not(.home) .rv-hero .rv-hero-title {
 	font-size: clamp(2rem, 4.4vw, 3.15rem);
 	line-height: 1.08;

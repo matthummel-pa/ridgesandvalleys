@@ -244,9 +244,29 @@ pre code { background: none; padding: 0; color: inherit; }
 .home .rv-hero-inner { padding-block: clamp(5.25rem, 11vw, 7.25rem) clamp(1.75rem, 4vw, 2.5rem); }
 .home .rv-hero-title { max-width: 22ch; font-size: clamp(2.35rem, 5vw, 3.55rem); }
 
-/* Interior pages: content sizes the band. Transparent header pads .rv-hero;
-   keep inner top padding so the H1 sits below the overlay nav, not under it. */
-body:not(.home) .rv-hero-inner { padding-block: clamp(2.5rem, 5.5vw, 3.75rem) clamp(1.75rem, 4vw, 2.75rem); }
+/* Interior pages: one shared hero height, always above the fold.
+   Homepage keeps its own taller, content-sized hero. Overlay-nav padding-top
+   is included (border-box) so copy stays below the menu. */
+body:not(.home) .rv-hero {
+  box-sizing: border-box;
+  height: min(36rem, 72svh);
+  min-height: min(36rem, 72svh);
+  max-height: min(36rem, 72svh);
+}
+@media (max-width: 700px) {
+  body:not(.home) .rv-hero {
+    height: min(34rem, 86svh);
+    min-height: min(34rem, 86svh);
+    max-height: min(34rem, 86svh);
+  }
+}
+body:not(.home) .rv-hero > .rv-hero-inner {
+  flex: 1 1 auto;
+  min-height: 0;
+  justify-content: flex-end;
+  padding-block: clamp(1.25rem, 2.5vw, 2rem) clamp(1.5rem, 3.5vw, 2.25rem);
+}
+body:not(.home) .rv-hero-proof { flex: 0 0 auto; }
 body:not(.home) .rv-hero-title { font-size: clamp(2.05rem, 4.2vw, 3.05rem); max-width: 16ch; }
 body:not(.home) .rv-hero-sub { max-width: 42ch; }
 
