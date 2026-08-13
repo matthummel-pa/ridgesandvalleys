@@ -6,61 +6,58 @@
 @section('content')
   @php($ctaHref = \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')))
 
-  <section class="rv-hero">
+  <section class="rv-hero" aria-labelledby="rv-work-hero-title">
     <span class="rv-stripe" aria-hidden="true"></span>
     @include('partials.hero-bg', ['fallback' => \App\stock_image('hero-work')])
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Selected work · Gettysburg & Adams County', 'sage'))) !!}
-      <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Business owners buy', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('confidence.', 'sage')) }}</em></h1>
+      <h1 id="rv-work-hero-title" class="rv-hero-title">{{ \App\field('hero_title', __('Business owners buy', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('confidence.', 'sage')) }}</em></h1>
       <p class="rv-hero-sub">{{ \App\field('hero_lede', __('Clickable concept sites for Gettysburg and Adams County businesses — the problem, the approach, and the result.', 'sage')) }}</p>
       <div class="rv-hero-actions">
         <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style',''), 'rv-btn-primary') }}" href="{{ \App\cta_href(\App\field('hero_btn1_url', get_theme_mod('rv_cta_url', '/contact/'))) }}">{{ \App\field('hero_btn1', __('Start your project', 'sage')) }}</a>
         <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style',''), 'rv-btn-ghost') }}" href="#case-studies">{{ \App\field('hero_btn2', __('Explore the concepts', 'sage')) }} &darr;</a>
       </div>
     </div>
+    @php($workStats = \App\work_stats())
+    @if (! empty($workStats))
+      <div class="rv-hero-proof">
+        <div class="rv-shell">
+          <ul class="rv-hero-stats" aria-label="{{ __('At a glance', 'sage') }}">
+            @foreach ($workStats as $ws)
+              <li>
+                <span class="rv-hero-stat-v">{{ $ws['v'] ?? '' }}</span>
+                @if (($ws['l'] ?? '') !== '')<span class="rv-hero-stat-l">{{ $ws['l'] }}</span>@endif
+              </li>
+            @endforeach
+          </ul>
+        </div>
+      </div>
+    @endif
   </section>
 
-  {{-- BOLD PROOF STRIP --}}
-  <section class="rv-band rv-band-pine rv-work-stats">
-    <div class="rv-shell">
-      <div class="rv-work-stats-grid">
-        @foreach (\App\field_rows('work_stats', [
-          ['value' => '15+', 'unit' => '', 'label' => __('years building for the web', 'sage')],
-          ['value' => '10', 'unit' => '', 'label' => __('full concept sites to explore', 'sage')],
-          ['value' => '7–10', 'unit' => __('days', 'sage'), 'label' => __('typical launch, start to live', 'sage')],
-          ['value' => '100%', 'unit' => '', 'label' => __('yours — domain, hosting, content', 'sage')],
-        ]) as $ws)
-          <div class="rv-work-stat"><span class="rv-work-stat-v">{{ $ws['value'] ?? '' }}@if(($ws['unit'] ?? '') !== '')<span class="rv-work-stat-u">{{ $ws['unit'] }}</span>@endif</span><span class="rv-work-stat-l">{{ $ws['label'] ?? '' }}</span></div>
+  {{-- Why these concepts — split: honesty on the left, what they prove on the right. --}}
+  <section class="rv-band rv-band-alt rv-work-why" aria-labelledby="rv-work-why-title">
+    <div class="rv-shell rv-work-why-grid">
+      <div class="rv-work-why-copy">
+        {!! \App\eyebrow(\App\field('work_why_eyebrow', __('Honest by default', 'sage'))) !!}
+        <h2 id="rv-work-why-title" class="rv-section-title">{{ \App\field('work_why_title', __('Real work you can', 'sage')) }} <em class="rv-accent">{{ \App\field('work_why_accent', __('actually click.', 'sage')) }}</em></h2>
+        <p class="rv-page-intro">{!! \App\field('work_why_intro', __('<strong>I built these myself — one per industry.</strong> Each is a live, working demo you can click around, so you can see exactly how I think, not just a pretty screenshot. No fake clients, no borrowed templates, no stock mockups dressed up as real projects.', 'sage')) !!}</p>
+        <a class="rv-work-why-jump" href="#case-studies">{{ __('Browse the concepts', 'sage') }} {!! \App\icon('arrow') !!}</a>
+      </div>
+      <div class="rv-work-why-list">
+        @foreach (\App\field_rows('work_why_items', \App\work_why_item_defaults()) as $v)
+          <article class="rv-work-why-item">
+            @if (($v['kicker'] ?? '') !== '')<span class="rv-work-why-kicker">{{ $v['kicker'] }}</span>@endif
+            @if (($v['title'] ?? '') !== '')<h3>{{ $v['title'] }}</h3>@endif
+            @if (($v['text'] ?? '') !== '')<p>{{ $v['text'] }}</p>@endif
+          </article>
         @endforeach
       </div>
     </div>
   </section>
 
-  {{-- WHY THESE ARE WORTH YOUR TIME --}}
-  <section class="rv-shell rv-band">
-    <div class="rv-headstack">
-      {!! \App\eyebrow(\App\field('work_why_eyebrow', __('Honest by default', 'sage'))) !!}
-      <h2 class="rv-section-title">{{ \App\field('work_why_title', __('Real work you can', 'sage')) }} <em class="rv-accent">{{ \App\field('work_why_accent', __('actually click.', 'sage')) }}</em></h2>
-      <p class="rv-page-intro">{!! \App\field('work_why_intro', __('<strong>I built these myself — one per industry.</strong> Each is a live, working demo you can click around, so you can see exactly how I think, not just a pretty screenshot. No fake clients, no borrowed templates, no stock mockups dressed up as real projects.', 'sage')) !!}</p>
-    </div>
-    <div class="rv-vgrid">
-      @foreach (\App\field_rows('work_why_items', [
-        ['kicker' => __('Get found', 'sage'), 'title' => __('Show up when it counts', 'sage'), 'text' => __('Google Business Profile, local SEO, and fast, clean pages so the right people in Adams County find you first — not three competitors down.', 'sage')],
-        ['kicker' => __('Earn trust', 'sage'), 'title' => __('Look as good as you are', 'sage'), 'text' => __('Clear copy, real photos, mobile-first layouts, and accessibility built in — a site that makes a first-time visitor feel safe picking up the phone.', 'sage')],
-        ['kicker' => __('Stay in control', 'sage'), 'title' => __('You own everything', 'sage'), 'text' => __('Your domain, your hosting, your content — and a short training video so you can update hours and prices yourself. No lock-in, no ransom.', 'sage')],
-      ]) as $i => $v)
-        <article class="rv-vcard">
-          <span class="rv-vcard-num">{{ sprintf('%02d', $i + 1) }}</span>
-          <span class="rv-vcard-kicker">{{ $v['kicker'] ?? '' }}</span>
-          <h3 class="rv-vcard-title">{{ $v['title'] ?? '' }}</h3>
-          <p>{{ $v['text'] ?? '' }}</p>
-        </article>
-      @endforeach
-    </div>
-  </section>
-
   @php($work = new WP_Query(['post_type' => 'project', 'posts_per_page' => 12, 'no_found_rows' => true]))
-  <section class="rv-shell rv-band" id="case-studies">
+  <section class="rv-shell rv-band" id="case-studies" style="scroll-margin-top:6rem">
     @if ($work->have_posts())
       <div class="rv-headstack">
         {!! \App\eyebrow(\App\field('work_cs_eyebrow', __('The work', 'sage'))) !!}
@@ -330,13 +327,23 @@
     .rv-area-tags{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2.25rem}
     .rv-area-tag{background:var(--color-surface);border:1px solid var(--color-line);border-radius:999px;padding:.5rem 1rem;font-weight:600;font-size:.9rem;color:var(--color-ink)}
     .rv-area-tag:hover{border-color:var(--color-sage)}
-    /* Bold proof strip (always-dark pine band) */
-    .rv-work-stats{padding-block:clamp(2.25rem,4vw,3.25rem)}
-    .rv-work-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem 2rem;text-align:left}
-    .rv-work-stat{display:flex;flex-direction:column;gap:.3rem}
-    .rv-work-stat-v{font-family:var(--font-display);font-weight:800;font-size:clamp(2.4rem,5.5vw,3.4rem);line-height:1;color:#fff;letter-spacing:-.02em}
-    .rv-work-stat-u{font-size:.42em;font-weight:700;margin-left:.15em;color:var(--color-wheat);letter-spacing:0}
-    .rv-work-stat-l{font-family:var(--font-mono);font-size:.76rem;letter-spacing:.05em;text-transform:uppercase;color:#c3cfc0;line-height:1.35}
+    /* Why these concepts — split under the hero */
+    .rv-work-why{padding-block:clamp(2.25rem,4.5vw,3.5rem)}
+    .rv-work-why-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:clamp(1.5rem,4vw,2.75rem);align-items:start}
+    .rv-work-why-copy .rv-section-title{margin:.35rem 0 .8rem}
+    .rv-work-why-copy .rv-page-intro{margin:0}
+    .rv-work-why-jump{display:inline-flex;align-items:center;gap:.4rem;margin-top:1.2rem;font-weight:700;font-size:.9rem;color:var(--color-clay);text-decoration:none}
+    .rv-work-why-jump:hover{color:var(--color-pine)}
+    .rv-work-why-jump svg{width:15px;height:15px;transition:transform .2s ease}
+    .rv-work-why-jump:hover svg{transform:translateX(3px)}
+    .rv-work-why-list{display:grid;gap:.8rem}
+    .rv-work-why-item{position:relative;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.1rem 1.3rem 1.1rem 1.5rem;overflow:hidden}
+    .rv-work-why-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ridgeline)}
+    .rv-work-why-kicker{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-clay)}
+    .rv-work-why-item h3{font-family:var(--font-display);font-size:1.12rem;font-weight:700;color:var(--color-ink);margin:.2rem 0 .35rem;line-height:1.2}
+    .rv-work-why-item p{margin:0;color:var(--color-body);font-size:.95rem;line-height:1.55}
+    @media(max-width:820px){.rv-work-why-grid{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.rv-work-why-jump svg{transition:none}}
     /* Built-for range chips */
     .rv-work-cats{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:1.75rem}
     .rv-work-cats-label{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin-right:.35rem}
@@ -361,15 +368,6 @@
     .rv-work-midcta-actions{display:flex;flex-direction:column;align-items:flex-start;gap:.6rem}
     .rv-work-midcta-fine{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.03em;color:var(--color-muted)}
     @media(max-width:720px){.rv-work-midcta{grid-template-columns:1fr}}
-    /* Bold value cards */
-    .rv-vgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-top:2.25rem}
-    .rv-vcard{position:relative;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,18px);padding:1.9rem 1.6rem 1.7rem;overflow:hidden;transition:transform .15s ease,border-color .15s ease,box-shadow .2s ease}
-    .rv-vcard:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--color-clay) 40%,var(--color-line));box-shadow:var(--shadow-lift)}
-    .rv-vcard::before{content:"";position:absolute;left:0;top:0;right:0;height:5px;background:var(--ridgeline)}
-    .rv-vcard-num{font-family:var(--font-display);font-weight:800;font-size:2.4rem;line-height:1;color:color-mix(in srgb,var(--color-clay) 55%,transparent);letter-spacing:-.02em}
-    .rv-vcard-kicker{display:block;margin-top:.5rem;font-family:var(--font-mono);font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-clay)}
-    .rv-vcard-title{font-family:var(--font-display);font-size:1.35rem;font-weight:800;color:var(--color-ink);margin:.3rem 0 .5rem;line-height:1.12}
-    .rv-vcard p{margin:0;color:var(--color-body);line-height:1.6}
     /* Bold dark flow (how it goes) */
     .rv-work-flow .rv-flow{list-style:none;margin:2.5rem 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.1rem}
     .rv-flow-step{position:relative;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);border-radius:var(--radius-lg,16px);padding:1.5rem 1.4rem;transition:transform .15s ease,background-color .15s ease}

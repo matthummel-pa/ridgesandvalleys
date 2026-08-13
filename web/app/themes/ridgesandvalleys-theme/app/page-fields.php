@@ -567,6 +567,65 @@ function about_proof(?int $post_id = null): array
     return is_array($rows) ? $rows : about_proof_defaults();
 }
 
+/**
+ * Work-page hero proof ribbon. Same seam pattern as Home / About — Blade
+ * calls this with a one-line @php(...) so nested default arrays don't
+ * get compiled away.
+ *
+ * @return list<array{value:string,unit:string,label:string}>
+ */
+function work_stats_defaults(): array
+{
+    return [
+        ['value' => '15+', 'unit' => '', 'label' => __('years building for the web', 'sage')],
+        ['value' => '10', 'unit' => '', 'label' => __('concept sites to click through', 'sage')],
+        ['value' => '7–10', 'unit' => __('days', 'sage'), 'label' => __('typical launch, start to live', 'sage')],
+        ['value' => '100%', 'unit' => '', 'label' => __('yours — domain, hosting, content', 'sage')],
+    ];
+}
+
+/**
+ * Work hero proof rows, normalized to the shared ribbon shape (v + l).
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function work_stats(?int $post_id = null): array
+{
+    $rows = field_rows('work_stats', work_stats_defaults(), $post_id);
+    if (! is_array($rows) || $rows === []) {
+        $rows = work_stats_defaults();
+    }
+
+    $out = [];
+    foreach ($rows as $row) {
+        if (! is_array($row)) {
+            continue;
+        }
+        $value = trim((string) ($row['value'] ?? $row['v'] ?? ''));
+        $unit  = trim((string) ($row['unit'] ?? ''));
+        $label = trim((string) ($row['label'] ?? $row['l'] ?? ''));
+        if ($value === '' && $label === '') {
+            continue;
+        }
+        $out[] = [
+            'v' => trim($value . ($unit !== '' ? ' ' . $unit : '')),
+            'l' => $label,
+        ];
+    }
+
+    return $out !== [] ? $out : [];
+}
+
+/** @return list<array{kicker:string,title:string,text:string}> */
+function work_why_item_defaults(): array
+{
+    return [
+        ['kicker' => __('Get found', 'sage'), 'title' => __('Show up when it counts', 'sage'), 'text' => __('Google Business Profile, local SEO, and fast, clean pages so the right people in Adams County find you first — not three competitors down.', 'sage')],
+        ['kicker' => __('Earn trust', 'sage'), 'title' => __('Look as good as you are', 'sage'), 'text' => __('Clear copy, real photos, mobile-first layouts, and accessibility built in — a site that makes a first-time visitor feel safe picking up the phone.', 'sage')],
+        ['kicker' => __('Stay in control', 'sage'), 'title' => __('You own everything', 'sage'), 'text' => __('Your domain, your hosting, your content — and a short training video so you can update hours and prices yourself. No lock-in, no ransom.', 'sage')],
+    ];
+}
+
 /** @return list<array{title:string,text:string}> */
 function about_promise_defaults(): array
 {
@@ -1238,28 +1297,19 @@ function page_field_map(): array
                 ['hero_bg', __('Hero background image', 'sage'), 'image', __('Built-in until you choose one.', 'sage')],
                 ['hero_btn1_url', __('Hero button link (“Start your project”)', 'sage'), 'url', __('e.g. /contact/', 'sage')],
             ],
-            __('Proof stats strip', 'sage') => [
-                ['work_stats', __('Stats', 'sage'), 'repeater', [
-                    ['value' => '15+', 'unit' => '', 'label' => __('years building for the web', 'sage')],
-                    ['value' => '10', 'unit' => '', 'label' => __('full concept sites to explore', 'sage')],
-                    ['value' => '7–10', 'unit' => __('days', 'sage'), 'label' => __('typical launch, start to live', 'sage')],
-                    ['value' => '100%', 'unit' => '', 'label' => __('yours — domain, hosting, content', 'sage')],
-                ], [
-                    ['value', __('Big number', 'sage'), 'text'],
-                    ['unit', __('Small unit (optional)', 'sage'), 'text'],
+            __('Hero proof ribbon', 'sage') => [
+                ['work_stats', __('Stats', 'sage'), 'repeater', work_stats_defaults(), [
+                    ['value', __('Value (shown large)', 'sage'), 'text'],
+                    ['unit', __('Small unit (optional, appended to the value)', 'sage'), 'text'],
                     ['label', __('Label', 'sage'), 'text'],
                 ]],
             ],
-            __('Value cards', 'sage') => [
+            __('Why these concepts', 'sage') => [
                 ['work_why_eyebrow', __('Eyebrow', 'sage'), 'text', __('Honest by default', 'sage')],
                 ['work_why_title', __('Heading (before accent)', 'sage'), 'text', __('Real work you can', 'sage')],
                 ['work_why_accent', __('Accent phrase', 'sage'), 'text', __('actually click.', 'sage')],
                 ['work_why_intro', __('Intro paragraph', 'sage'), 'html', __('<strong>I built these myself — one per industry.</strong> Each is a live, working demo you can click around, so you can see exactly how I think, not just a pretty screenshot. No fake clients, no borrowed templates, no stock mockups dressed up as real projects.', 'sage')],
-                ['work_why_items', __('Cards (numbered automatically)', 'sage'), 'repeater', [
-                    ['kicker' => __('Get found', 'sage'), 'title' => __('Show up when it counts', 'sage'), 'text' => __('Google Business Profile, local SEO, and fast, clean pages so the right people in Adams County find you first — not three competitors down.', 'sage')],
-                    ['kicker' => __('Earn trust', 'sage'), 'title' => __('Look as good as you are', 'sage'), 'text' => __('Clear copy, real photos, mobile-first layouts, and accessibility built in — a site that makes a first-time visitor feel safe picking up the phone.', 'sage')],
-                    ['kicker' => __('Stay in control', 'sage'), 'title' => __('You own everything', 'sage'), 'text' => __('Your domain, your hosting, your content — and a short training video so you can update hours and prices yourself. No lock-in, no ransom.', 'sage')],
-                ], [
+                ['work_why_items', __('Reasons (shown as a compact list)', 'sage'), 'repeater', work_why_item_defaults(), [
                     ['kicker', __('Kicker', 'sage'), 'text'],
                     ['title', __('Card title', 'sage'), 'text'],
                     ['text', __('Card text', 'sage'), 'textarea'],
