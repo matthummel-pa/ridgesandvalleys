@@ -1,0 +1,321 @@
+{{--
+  Template Name: Visit Us in Downtown Gettysburg, PA
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "Restaurant",
+  "@@id": "{{ home_url('/') }}#restaurant",
+  "name": "Field & Musket Tavern & Kitchen",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/visit/') }}",
+  "telephone": "+1-717-555-0119",
+  "email": "table@@fieldandmusket.test",
+  "priceRange": "$$",
+  "servesCuisine": ["Farm-to-table American", "Seasonal", "Tavern"],
+  "menu": "{{ home_url('/menu/') }}",
+  "hasMenu": "{{ home_url('/menu/') }}",
+  "acceptsReservations": "True",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "19 Chambersburg Street",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8314, "longitude": -77.2310 },
+  "hasMap": "https://www.google.com/maps?q=19+Chambersburg+Street,+Gettysburg,+PA+17325",
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Tuesday", "Wednesday", "Thursday"], "opens": "16:00", "closes": "21:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": "Friday", "opens": "16:00", "closes": "22:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "22:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "10:00", "closes": "20:00" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg" },
+    { "@@type": "City", "name": "Biglerville" },
+    { "@@type": "City", "name": "Littlestown" },
+    { "@@type": "City", "name": "New Oxford" },
+    { "@@type": "City", "name": "McSherrystown" },
+    { "@@type": "City", "name": "Fairfield" },
+    { "@@type": "City", "name": "Cashtown" },
+    { "@@type": "City", "name": "Hanover" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, Pennsylvania" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "Visit Us & The Area", "item": "{{ home_url('/visit/') }}" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header" id="siteHeader">
+  <div class="wrap header-inner">
+    <a href="{{ home_url('/') }}" class="wordmark" aria-label="Field &amp; Musket — home">
+      <svg width="40" height="40" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="23" stroke="#dfa23f" stroke-width="1.5"/>
+        <path d="M24 10c-5 4-8 9-8 15 0 4.4 3.6 8 8 8s8-3.6 8-8c0-6-3-11-8-15Z" stroke="#f4ede1" stroke-width="1.6" fill="none"/>
+        <path d="M24 17v16M18 25h12" stroke="#dfa23f" stroke-width="1.4"/>
+      </svg>
+      <span class="wordmark-text">
+        <strong>Field &amp; Musket</strong>
+        <span>Tavern &amp; Kitchen</span>
+      </span>
+    </a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="{{ home_url('/menu/') }}">Menu</a></li>
+        <li><a href="{{ home_url('/story/') }}">Our Story</a></li>
+        <li><a href="{{ home_url('/visit/') }}" class="is-active" aria-current="page">Visit</a></li>
+        <li><a href="{{ home_url('/reserve/') }}">Reservations</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-cta">
+      <a class="header-phone" href="tel:+17175550119">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M6.6 10.8c1.4 2.8 3.8 5.2 6.6 6.6l2.2-2.2c.3-.3.7-.4 1-.2 1.1.4 2.3.6 3.6.6.6 0 1 .4 1 1V20c0 .6-.4 1-1 1C10.9 21 3 13.1 3 3c0-.6.4-1 1-1h3.5c.6 0 1 .4 1 1 0 1.3.2 2.5.6 3.6.1.4 0 .8-.2 1L6.6 10.8Z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg>
+        (717) 555-0119
+      </a>
+      <a href="{{ home_url('/reserve/') }}" class="btn btn-primary btn-sm">Reserve a Table</a>
+      <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+        <svg id="hamburgerIcon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+    <a href="{{ home_url('/') }}">Home</a>
+    <a href="{{ home_url('/menu/') }}">Menu</a>
+    <a href="{{ home_url('/story/') }}">Our Story</a>
+    <a href="{{ home_url('/visit/') }}" class="is-active" aria-current="page">Visit</a>
+    <a href="{{ home_url('/reserve/') }}">Reservations</a>
+    <a href="tel:+17175550119">Call (717) 555-0119</a>
+    <a href="{{ home_url('/reserve/') }}" class="btn btn-primary btn-block">Reserve a Table</a>
+  </nav>
+</header>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="wrap">
+    <ol>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li aria-current="page">Visit Us &amp; The Area</li>
+    </ol>
+  </div>
+</nav>
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="wrap">
+      <p class="eyebrow">Visit Us · Downtown Gettysburg, PA</p>
+      <h1>A short walk west of Lincoln Square.</h1>
+      <p class="lede">Field &amp; Musket sits at 19 Chambersburg Street, right in the heart of the Gettysburg Historic District &mdash; walkable from the square, easy to reach from US-15 and US-30, and minutes from the battlefield.</p>
+    </div>
+  </section>
+
+  <!-- Hours + map -->
+  <section class="visit section-pad" id="visit">
+    <div class="wrap">
+      <div class="visit-grid">
+        <div class="visit-card reveal">
+          <h3>Hours of Operation</h3>
+          <table class="hours-table">
+            <tbody>
+              <tr><td>Monday</td><td>Closed</td></tr>
+              <tr><td>Tuesday &ndash; Thursday</td><td>4:00pm &ndash; 9:00pm</td></tr>
+              <tr><td>Friday</td><td>4:00pm &ndash; 10:00pm</td></tr>
+              <tr><td>Saturday</td><td>10:00am &ndash; 10:00pm</td></tr>
+              <tr><td>Sunday</td><td>10:00am &ndash; 8:00pm</td></tr>
+            </tbody>
+          </table>
+          <div class="addr-block">
+            <p><strong>Field &amp; Musket Tavern &amp; Kitchen</strong></p>
+            <p>19 Chambersburg Street<br>Gettysburg, PA 17325</p>
+            <p><a href="tel:+17175550119">(717) 555-0119</a> &middot; <a href="mailto:table@@fieldandmusket.test">table@@fieldandmusket.test</a></p>
+          </div>
+          <div class="addr-actions">
+            <a href="tel:+17175550119" class="btn btn-ghost-dark btn-sm">Call the Tavern</a>
+            <a href="{{ home_url('/reserve/') }}" class="btn btn-primary btn-sm">Reserve a Table</a>
+          </div>
+        </div>
+
+        <div class="map-block reveal" role="img" aria-label="Stylized map showing Field &amp; Musket's location on Chambersburg Street, just west of Lincoln Square in downtown Gettysburg">
+          <div class="map-grid-lines" aria-hidden="true"></div>
+          <svg class="map-roads" viewBox="0 0 400 340" fill="none" aria-hidden="true">
+            <path d="M0 90 L400 130" stroke="#dfa23f" stroke-width="3" stroke-opacity="0.55"/>
+            <path d="M60 0 L120 340" stroke="#dfa23f" stroke-width="3" stroke-opacity="0.55"/>
+            <path d="M0 250 L400 210" stroke="#f4ede1" stroke-width="2" stroke-opacity="0.25"/>
+            <path d="M260 0 L300 340" stroke="#f4ede1" stroke-width="2" stroke-opacity="0.25"/>
+          </svg>
+          <div class="map-pin">
+            <svg width="34" height="46" viewBox="0 0 34 46" fill="none" aria-hidden="true">
+              <path d="M17 2C9 2 3 8 3 16c0 11 14 27 14 27s14-16 14-27c0-8-6-14-14-14Z" fill="#dfa23f"/>
+              <circle cx="17" cy="16" r="6" fill="#0f1a13"/>
+            </svg>
+            <span class="map-pin-pulse" aria-hidden="true"></span>
+          </div>
+          <div class="map-caption">
+            <span>19 Chambersburg St &middot; near Lincoln Square</span>
+            <span class="map-compass">N &uarr;</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The Area: local content -->
+  <section class="section-pad" style="background:var(--color-surface);">
+    <div class="wrap info-two">
+      <div class="prose reveal">
+        <h3>Getting here &amp; parking</h3>
+        <p>We&rsquo;re on Chambersburg Street (the westbound leg of US-30 through downtown), just a block and a half west of Lincoln Square &mdash; roughly a three-minute walk, or about 400 feet, from the center of town. Most visitors arrive one of two ways. From the north or south, take <strong>US-15</strong> to the US-30 / Gettysburg exit and follow York Street west through Lincoln Square; Chambersburg Street begins on the far side of the square and we&rsquo;re a few doors down on your right. From the east or west, <strong>US-30 (Lincoln Highway)</strong> runs straight to our door.</p>
+        <p>There is metered on-street parking along Chambersburg and Carlisle Streets, and two public parking lots &mdash; the Race Horse Alley garage and the lot off Stratton Street &mdash; are each a short walk away. On busy summer weekends we recommend parking once near the square and exploring on foot; almost everything downtown is within a few blocks.</p>
+
+        <h3>What&rsquo;s nearby</h3>
+        <p>Our block sits at the crossroads of Gettysburg&rsquo;s history and its everyday life. <strong>Lincoln Square</strong> and the <strong>David Wills House</strong> &mdash; where Abraham Lincoln finished the Gettysburg Address &mdash; are a two-minute walk east. <strong>Steinwehr Avenue</strong> and <strong>Baltimore Street</strong>, with their shops and monuments, are a few blocks south, leading straight into <strong>Gettysburg National Military Park</strong>. Drive or bike a little farther and you reach <strong>Seminary Ridge</strong>, <strong>Little Round Top</strong>, and the covered <strong>Sachs Covered Bridge</strong> southwest of town. Whether you&rsquo;re here for a full day on the battlefield or an evening downtown, we&rsquo;re an easy walk back to a hot hearth dinner.</p>
+        <p>Make a night of it: tour the park in the afternoon, walk the square at golden hour, and land at our table for dinner. <a href="{{ home_url('/reserve/') }}">Reserve ahead</a> and we&rsquo;ll have your seat ready.</p>
+
+        <h3>Towns we serve</h3>
+        <p>Field &amp; Musket is a downtown Gettysburg restaurant, but our guests &mdash; and our farms &mdash; come from all over Adams County and the York County line. We regularly welcome neighbors from <strong>Biglerville</strong> and <strong>Cashtown</strong> to the north and west, <strong>Fairfield</strong> to the southwest, <strong>Littlestown</strong> and <strong>McSherrystown</strong> to the south and east, and <strong>New Oxford</strong> and <strong>Hanover</strong> out toward the York County border. If you&rsquo;re driving in from any of them, the fastest route almost always funnels through Lincoln Square &mdash; and we&rsquo;re the first good dinner on the far side of it.</p>
+
+        <div class="chip-row">
+          <span class="chip">Gettysburg 17325</span>
+          <span class="chip">Adams County</span>
+          <span class="chip">1 block from Lincoln Square</span>
+          <span class="chip">Off US-15 &amp; US-30</span>
+        </div>
+      </div>
+
+      <aside class="side-card reveal">
+        <h3>Walking Distances</h3>
+        <div class="landmark-list">
+          <div class="lm"><span class="lm-name">Lincoln Square<small>Center of downtown</small></span><span class="lm-dist">3 min walk</span></div>
+          <div class="lm"><span class="lm-name">David Wills House<small>Gettysburg Address site</small></span><span class="lm-dist">3 min walk</span></div>
+          <div class="lm"><span class="lm-name">Baltimore Street<small>Shops &amp; monuments</small></span><span class="lm-dist">6 min walk</span></div>
+          <div class="lm"><span class="lm-name">Steinwehr Avenue<small>Visitor corridor</small></span><span class="lm-dist">10 min walk</span></div>
+          <div class="lm"><span class="lm-name">Gettysburg Nat&rsquo;l Military Park<small>Battlefield &amp; visitor center</small></span><span class="lm-dist">5 min drive</span></div>
+          <div class="lm"><span class="lm-name">Seminary Ridge<small>Lutheran Seminary</small></span><span class="lm-dist">5 min drive</span></div>
+          <div class="lm"><span class="lm-name">Little Round Top<small>Battlefield overlook</small></span><span class="lm-dist">10 min drive</span></div>
+          <div class="lm"><span class="lm-name">Sachs Covered Bridge<small>Historic covered bridge</small></span><span class="lm-dist">12 min drive</span></div>
+        </div>
+        <div class="side-actions">
+          <a href="https://www.google.com/maps?q=19+Chambersburg+Street,+Gettysburg,+PA+17325" class="btn btn-primary btn-sm btn-block" target="_blank" rel="noopener">Open in Maps</a>
+          <a href="{{ home_url('/reserve/') }}" class="btn btn-ghost-dark btn-sm btn-block">Reserve a Table</a>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- Visit FAQ -->
+  <section class="section-pad" style="background:var(--bone-100);">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <p class="eyebrow">Before You Come</p>
+        <h2>Visiting questions.</h2>
+      </div>
+      <div class="faq reveal">
+        <div class="faq-item">
+          <h3>Where exactly are you located?</h3>
+          <p>19 Chambersburg Street, Gettysburg, PA 17325 &mdash; on the westbound side of downtown, about a block and a half west of Lincoln Square, inside the Gettysburg Historic District.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Is there parking?</h3>
+          <p>Yes &mdash; metered on-street parking on Chambersburg and Carlisle Streets, plus the Race Horse Alley garage and the Stratton Street lot within a short walk. Weekends are busiest; arrive a little early in summer.</p>
+        </div>
+        <div class="faq-item">
+          <h3>How far is the battlefield?</h3>
+          <p>The Gettysburg National Military Park visitor center is about a five-minute drive, and the Steinwehr Avenue park entrance is a ten-minute walk. Many guests tour in the afternoon and join us for dinner after.</p>
+        </div>
+        <div class="faq-item">
+          <h3>Do you take walk-ins?</h3>
+          <p>We hold a limited number of walk-in seats nightly, but the dining room and heated patio fill fast on weekends. We strongly recommend a <a href="{{ home_url('/reserve/') }}">reservation</a>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA band -->
+  <section class="cta-band section-pad">
+    <div class="wrap">
+      <p class="eyebrow">See You Downtown</p>
+      <h2>End your Gettysburg day at our hearth.</h2>
+      <p>You&rsquo;ve walked the square and the battlefield &mdash; now let us feed you. Reserve a table on Chambersburg Street.</p>
+      <div class="hero-actions">
+        <a href="{{ home_url('/reserve/') }}" class="btn btn-primary">Reserve a Table</a>
+        <a href="{{ home_url('/menu/') }}" class="btn btn-outline">View the Menu</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="{{ home_url('/') }}" class="wordmark" aria-label="Field &amp; Musket — home">
+          <svg width="34" height="34" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="23" stroke="#dfa23f" stroke-width="1.5"/>
+            <path d="M24 10c-5 4-8 9-8 15 0 4.4 3.6 8 8 8s8-3.6 8-8c0-6-3-11-8-15Z" stroke="#f4ede1" stroke-width="1.6" fill="none"/>
+          </svg>
+          <span class="wordmark-text"><strong>Field &amp; Musket</strong><span>Tavern &amp; Kitchen</span></span>
+        </a>
+        <p>A seasonal farm-to-table tavern in the heart of downtown Gettysburg, serving Adams County harvests over an open hearth from our restored storefront on Chambersburg Street.</p>
+        <div class="footer-social">
+          <a href="#" aria-label="Field &amp; Musket on Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="Field &amp; Musket on Facebook"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M14 9h3V6h-3c-2.2 0-4 1.8-4 4v2H8v3h2v6h3v-6h3l1-3h-4v-2c0-.6.4-1 1-1Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg></a>
+          <a href="#" aria-label="Field &amp; Musket on TripAdvisor"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="8" cy="13" r="4" stroke="currentColor" stroke-width="1.4"/><circle cx="16" cy="13" r="4" stroke="currentColor" stroke-width="1.4"/><path d="M2 9h6M16 9h6M8 9c1.5-2 4.5-2 6 0" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Visit</h4>
+        <p>Field &amp; Musket Tavern &amp; Kitchen<br>19 Chambersburg Street<br>Gettysburg, PA 17325</p>
+        <p style="margin-top:0.75rem;"><a href="tel:+17175550119">(717) 555-0119</a><br><a href="mailto:table@@fieldandmusket.test">table@@fieldandmusket.test</a></p>
+        <p style="margin-top:0.75rem;">Serving Gettysburg &amp; Adams County — Biglerville, New Oxford, Littlestown, McSherrystown, Fairfield &amp; Cashtown.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <p>Mon: Closed<br>Tue&ndash;Thu: 4&ndash;9pm<br>Fri: 4&ndash;10pm<br>Sat: 10am&ndash;10pm<br>Sun: 10am&ndash;8pm</p>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li><a href="{{ home_url('/menu/') }}">Menu</a></li>
+          <li><a href="{{ home_url('/story/') }}">Our Story &amp; Sourcing</a></li>
+          <li><a href="{{ home_url('/visit/') }}">Visit / The Area</a></li>
+          <li><a href="{{ home_url('/reserve/') }}">Reservations</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span data-year>2026</span> Field &amp; Musket Tavern &amp; Kitchen · 19 Chambersburg Street, Gettysburg, PA 17325.</span>
+      <span>Design concept by Ridges &amp; Valleys Studio &mdash; a fictional business shown for demonstration.</span>
+    </div>
+  </div>
+</footer>
+
+<a href="#" class="concept-badge" onclick="return false;" aria-label="This is a design concept by Ridges and Valleys Studio">
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2 2 7l10 5 10-5-10-5Z" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/><path d="M2 12l10 5 10-5M2 17l10 5 10-5" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round"/></svg>
+  <span class="long">Concept &middot; Ridges &amp; Valleys Studio</span>
+</a>
+@endsection

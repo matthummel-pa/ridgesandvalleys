@@ -1,0 +1,310 @@
+{{--
+  Template Name: The Area
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "Hotel",
+  "@@id": "{{ home_url('/') }}#hotel",
+  "name": "The Lantern & Laurel Inn",
+  "url": "{{ home_url('/area/') }}",
+  "image": "https://commons.wikimedia.org/wiki/Special:FilePath/DowntownGettysburgPA.jpg?width=1600",
+  "description": "A boutique historic inn on Baltimore Street in downtown Gettysburg, Pennsylvania — walking distance to Gettysburg National Military Park, Lincoln Square, and Steinwehr Avenue.",
+  "telephone": "+1-717-555-0142",
+  "email": "stay@@lanternandlaurel.test",
+  "priceRange": "$179–$309",
+  "numberOfRooms": 9,
+  "petsAllowed": false,
+  "checkinTime": "15:00",
+  "checkoutTime": "11:00",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "42 Baltimore Street",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8311, "longitude": -77.2309 },
+  "hasMap": "https://www.openstreetmap.org/?mlat=39.8311&mlon=-77.2309#map=17/39.8311/-77.2309",
+  "openingHoursSpecification": [
+    {
+      "@@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "07:00",
+      "closes": "22:00"
+    }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg, PA" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, PA" },
+    { "@@type": "City", "name": "Biglerville, PA" },
+    { "@@type": "City", "name": "New Oxford, PA" },
+    { "@@type": "City", "name": "Littlestown, PA" },
+    { "@@type": "City", "name": "McSherrystown, PA" },
+    { "@@type": "City", "name": "Fairfield, PA" },
+    { "@@type": "City", "name": "Cashtown, PA" },
+    { "@@type": "City", "name": "Hanover, PA" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "The Area", "item": "{{ home_url('/area/') }}" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site">
+  <div class="nav-bar">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="The Lantern &amp; Laurel Inn — home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d9ad5f" stroke-width="1.4">
+          <path d="M12 3c-3 3-3 6-3 9a3 3 0 0 0 6 0c0-3 0-6-3-9Z"/>
+          <path d="M12 15v6"/>
+          <path d="M8 21h8"/>
+        </svg>
+      </span>
+      <span class="brand-word">
+        <span class="name">Lantern &amp; Laurel</span>
+        <span class="place">Gettysburg, Pennsylvania</span>
+      </span>
+    </a>
+
+    <nav class="primary" aria-label="Primary">
+      <a href="{{ home_url('/') }}">Home</a>
+      <a href="{{ home_url('/rooms/') }}">Rooms</a>
+      <a href="{{ home_url('/amenities/') }}">Amenities</a>
+      <a href="{{ home_url('/area/') }}" class="is-active" aria-current="page">The Area</a>
+      <a href="{{ home_url('/gallery/') }}">Gallery</a>
+      <a href="{{ home_url('/contact/') }}">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="{{ home_url('/contact/') }}#book" class="btn btn-brass desktop-only btn-sm">Book a Stay</a>
+      <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="mobilePanel" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="{{ home_url('/') }}">Home</a>
+    <a href="{{ home_url('/rooms/') }}">Rooms</a>
+    <a href="{{ home_url('/amenities/') }}">Amenities</a>
+    <a href="{{ home_url('/area/') }}" class="is-active" aria-current="page">The Area</a>
+    <a href="{{ home_url('/gallery/') }}">Gallery</a>
+    <a href="{{ home_url('/contact/') }}">Contact</a>
+    <a href="{{ home_url('/contact/') }}#book" class="btn btn-brass btn-block">Book a Stay</a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">The Area &middot; Downtown Gettysburg</span>
+    <h1>Everything worth walking to.</h1>
+    <p class="lead">From our front porch at 42 Baltimore Street, the heart of Gettysburg — the square, the shops, and the battlefield's northern edge — is a flat ten-minute walk.</p>
+  </div>
+</div>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="wrap">
+    <ol>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li aria-current="page">The Area</li>
+    </ol>
+  </div>
+</nav>
+
+<main id="main">
+
+  <section class="section-paper">
+    <div class="wrap split">
+      <div class="prose reveal">
+
+        <p><b>The Lantern &amp; Laurel Inn</b> sits on Baltimore Street in downtown Gettysburg, roughly midway between Lincoln Square and the northern entrance to Gettysburg National Military Park. It's one of the few corners of Adams County where you can leave the car parked all weekend and still reach the square, a dozen restaurants, and the edge of the battlefield on foot. This page is our honest local guide to what's nearby — walking distances, driving directions, parking, and the smaller towns worth a day trip.</p>
+
+        <h2>What's walkable from Baltimore Street</h2>
+        <p>Baltimore Street runs north into <b>Lincoln Square</b>, the traffic circle at the center of town where Lincoln lodged at the David Wills House the night before the Gettysburg Address. The square is about a three-minute walk from our door and anchors the town's bookstores, galleries, coffee shops, and the Adams County courthouse. Most of downtown radiates out from here.</p>
+        <p>Head the other direction — south down Baltimore Street — and within a quarter mile you reach the top of <b>Cemetery Hill</b> and the Baltimore Street entrance to the <b>Gettysburg National Military Park</b> and <b>Soldiers' National Cemetery</b>, where the Gettysburg Address was delivered. Continue toward <b>Steinwehr Avenue</b> and you'll find the cluster of restaurants, taverns, and shops nearest the park, along with the walking route toward the <b>Museum &amp; Visitor Center</b> and the Cyclorama. The historic <b>Dobbin House Tavern</b>, one of the oldest buildings in town, is a short stroll from the inn.</p>
+
+        <table class="data-table">
+          <caption>Walking distances from 42 Baltimore Street</caption>
+          <thead>
+            <tr><th scope="col">Destination</th><th scope="col">On foot</th><th scope="col">Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Lincoln Square &amp; David Wills House</td><td class="mi">0.3 mi</td><td>Shops, cafes, and the heart of downtown.</td></tr>
+            <tr><td>Gettysburg National Military Park (Baltimore St. entrance)</td><td class="mi">0.4 mi</td><td>Soldiers' National Cemetery &amp; Cemetery Hill.</td></tr>
+            <tr><td>Steinwehr Avenue restaurants</td><td class="mi">0.5 mi</td><td>The dining strip closest to the park.</td></tr>
+            <tr><td>Museum &amp; Visitor Center / Cyclorama</td><td class="mi">0.6 mi</td><td>Ticketed film, museum, and the Cyclorama painting.</td></tr>
+            <tr><td>Shriver House Museum</td><td class="mi">0.2 mi</td><td>A restored 1860 civilian home on Baltimore Street.</td></tr>
+            <tr><td>Seminary Ridge Museum</td><td class="mi">1.0 mi</td><td>West of town along the first-day battle lines.</td></tr>
+          </tbody>
+        </table>
+
+        <h2>Driving directions</h2>
+        <p><b>From US-15:</b> Exit at Steinwehr Avenue / Business Route 15 and follow the signs toward the historic district. Steinwehr becomes Baltimore Street as you climb Cemetery Hill toward Lincoln Square — the inn is on your left before you reach the square. From the north (Harrisburg), take US-15 South; from the south (Frederick, MD), take US-15 North.</p>
+        <p><b>From US-30 (Lincoln Highway):</b> US-30 runs straight through Lincoln Square as York Street from the east and Chambersburg Street from the west. At the square, turn south onto Baltimore Street; we're a short block down on the right. If you're coming from York or Hanover, US-30 West brings you right into the center of town.</p>
+        <p>When you arrive, pull around to our <b>gated lot behind the inn</b> off Baltimore Street. Parking is included with every room — no meters and no permits, which matters in a town where on-street spaces near the square fill quickly on weekends. If you'd rather not drive at all, the Gettysburg battlefield's auto tour and the downtown trolley both begin within a few blocks.</p>
+
+        <h2>Beyond town: nearby Adams County</h2>
+        <p>Gettysburg makes an easy base for the rest of Adams County. A short drive north on PA-34 reaches <b>Biglerville</b> and the surrounding apple country, home to orchards and the fruit-belt farm stands. West on US-30 sits <b>Cashtown</b> and its historic inn, on the road the Confederate army marched in on. South and east you'll find <b>Littlestown</b>, <b>McSherrystown</b>, and <b>Hanover</b>, and to the southwest, quiet <b>Fairfield</b> with its covered-bridge country — <b>Sachs Covered Bridge</b> is a favorite short drive for photographers. <b>New Oxford</b>, just east on US-30, is known for its antique shops around the town green. We're glad to sketch out a day's loop for any of them at breakfast.</p>
+
+        <p>Wherever you're headed, we'll help you plan the route and time your morning so you beat the crowds to the battlefield. Ask us anything on the <a href="{{ home_url('/contact/') }}">contact page</a> — we answer every message ourselves.</p>
+      </div>
+
+      <div class="reveal">
+        <div class="aside-card aside-sticky">
+          <h3>Find Us</h3>
+          <address style="font-style:normal;color:var(--ink-soft);font-size:0.95rem;margin-bottom:14px;">
+            The Lantern &amp; Laurel Inn<br>
+            42 Baltimore Street<br>
+            Gettysburg, PA 17325
+          </address>
+          <ul>
+            <li><b>Phone</b> <a href="tel:+17175550142" style="color:var(--ember);">(717) 555-0142</a></li>
+            <li><b>Email</b> <a href="mailto:stay@@lanternandlaurel.test" style="color:var(--ember);">stay@@lanternandlaurel.test</a></li>
+            <li><b>Parking</b> Free gated lot behind the inn</li>
+            <li><b>Nearest highways</b> US-15 &amp; US-30</li>
+          </ul>
+          <a href="https://www.openstreetmap.org/?mlat=39.8311&mlon=-77.2309#map=17/39.8311/-77.2309"
+             class="btn btn-forest btn-sm btn-block" style="margin-top:18px;" target="_blank" rel="noopener">Open map</a>
+        </div>
+        <div class="aside-card">
+          <h3>Best Times to Visit</h3>
+          <p>Spring and fall bring the mildest weather for walking the fields. Anniversary weekends — the battle in early July and the Dedication Day address in mid-November — are the busiest; book early and expect a two-night minimum.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section-cream">
+    <div class="wrap">
+      <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+        <span class="eyebrow">Getting Around</span>
+        <h2>Location questions.</h2>
+      </div>
+      <div class="faq-list reveal">
+        <details class="faq">
+          <summary>Can I walk to the battlefield from the inn?</summary>
+          <div class="faq-body">Yes. The Baltimore Street entrance to Gettysburg National Military Park and the Soldiers' National Cemetery is about a 0.4-mile walk south — under ten minutes on flat sidewalks.</div>
+        </details>
+        <details class="faq">
+          <summary>How do I get here from US-15 or US-30?</summary>
+          <div class="faq-body">From US-15, exit at Steinwehr Avenue and follow Baltimore Street up Cemetery Hill toward Lincoln Square. From US-30, come into Lincoln Square and turn south onto Baltimore Street — we're a short block down. Full directions are above.</div>
+        </details>
+        <details class="faq">
+          <summary>Is parking a problem downtown?</summary>
+          <div class="faq-body">Not for our guests. Every reservation includes a space in our gated lot behind the inn, so you can leave the car and walk to the square, the shops, and the battlefield's northern edge.</div>
+        </details>
+        <details class="faq">
+          <summary>What's worth a day trip in Adams County?</summary>
+          <div class="faq-body">The Biglerville apple country to the north, Sachs Covered Bridge near Fairfield to the southwest, and the antique shops of New Oxford to the east are all easy drives. Ask us at breakfast and we'll map a loop.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA BAND ============ -->
+  <section class="cta-band">
+    <div class="wrap cta-inner">
+      <span class="eyebrow">Plan Your Visit</span>
+      <h2>Stay in the middle of it all.</h2>
+      <p>Park once, walk everywhere. Reserve a room on Baltimore Street and let us help you plan the rest.</p>
+      <div class="cta-row">
+        <a href="{{ home_url('/contact/') }}#book" class="btn btn-brass">Check Availability</a>
+        <a href="{{ home_url('/rooms/') }}" class="btn btn-outline">See the Rooms</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ SHARED FOOTER ============ -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="{{ home_url('/') }}" class="brand" aria-label="The Lantern &amp; Laurel Inn — home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d9ad5f" stroke-width="1.4">
+              <path d="M12 3c-3 3-3 6-3 9a3 3 0 0 0 6 0c0-3 0-6-3-9Z"/>
+              <path d="M12 15v6"/>
+              <path d="M8 21h8"/>
+            </svg>
+          </span>
+          <span class="brand-word"><span class="name">Lantern &amp; Laurel</span></span>
+        </a>
+        <p>A nine-room historic inn on Baltimore Street, five minutes from Lincoln Square and the Gettysburg battlefield.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Lantern &amp; Laurel Inn on Instagram">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          </a>
+          <a href="#" aria-label="Lantern &amp; Laurel Inn on Facebook">
+            <svg viewBox="0 0 24 24"><path d="M15 8h2V4h-2a5 5 0 0 0-5 5v2H8v4h2v7h4v-7h3l1-4h-4V9a1 1 0 0 1 1-1Z"/></svg>
+          </a>
+          <a href="#" aria-label="Lantern &amp; Laurel Inn on Pinterest">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 18c1-3 1.5-5.5 1.5-7.5a2.5 2.5 0 0 1 5 0c0 2-1.2 4-3 4"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/rooms/') }}">Rooms &amp; Rates</a></li>
+          <li><a href="{{ home_url('/amenities/') }}">Amenities</a></li>
+          <li><a href="{{ home_url('/area/') }}">The Area</a></li>
+          <li><a href="{{ home_url('/gallery/') }}">Gallery</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact &amp; Booking</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Visit</h4>
+        <address>
+          <p>The Lantern &amp; Laurel Inn</p>
+          <p>42 Baltimore Street</p>
+          <p>Gettysburg, PA 17325</p>
+        </address>
+        <p style="margin-top:10px;">Check-in 3:00pm</p>
+        <p>Check-out 11:00am</p>
+      </div>
+
+      <div class="foot-col">
+        <h4>Contact &amp; Hours</h4>
+        <p><a href="tel:+17175550142">(717) 555-0142</a></p>
+        <p><a href="mailto:stay@@lanternandlaurel.test">stay@@lanternandlaurel.test</a></p>
+        <p style="margin-top:10px;">Front desk 7:00am&ndash;10:00pm daily</p>
+        <p>Breakfast 7:30&ndash;10:00am</p>
+        <p style="margin-top:10px;">Serving Gettysburg &amp; Adams County — Biglerville, New Oxford, Littlestown &amp; Fairfield.</p>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>&copy; <span class="js-year">2026</span> The Lantern &amp; Laurel Inn, Gettysburg PA. Concept for demonstration.</span>
+      <span>Design concept by Ridges &amp; Valleys Studio</span>
+    </div>
+  </div>
+</footer>
+
+<a href="#" class="concept-badge" aria-label="This is a design concept by Ridges &amp; Valleys Studio">
+  <span class="dot" aria-hidden="true"></span>
+  Concept &middot; Ridges &amp; Valleys Studio
+</a>
+@endsection

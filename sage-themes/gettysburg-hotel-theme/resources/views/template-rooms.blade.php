@@ -1,0 +1,401 @@
+{{--
+  Template Name: Rooms & Rates
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "Hotel",
+  "@@id": "{{ home_url('/') }}#hotel",
+  "name": "The Lantern & Laurel Inn",
+  "url": "{{ home_url('/rooms/') }}",
+  "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Gettysburg,_Pennsylvania_(6286097408).jpg?width=1600",
+  "description": "Nine individually restored guest rooms at a boutique historic inn on Baltimore Street in downtown Gettysburg, Pennsylvania.",
+  "telephone": "+1-717-555-0142",
+  "email": "stay@@lanternandlaurel.test",
+  "priceRange": "$179–$309",
+  "numberOfRooms": 9,
+  "petsAllowed": false,
+  "checkinTime": "15:00",
+  "checkoutTime": "11:00",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "42 Baltimore Street",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8310, "longitude": -77.2312 },
+  "openingHoursSpecification": [
+    {
+      "@@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "07:00",
+      "closes": "22:00"
+    }
+  ],
+  "makesOffer": [
+    { "@@type": "Offer", "name": "The Chamberlain Room", "priceCurrency": "USD", "price": "219", "category": "King room" },
+    { "@@type": "Offer", "name": "The Steinwehr Suite", "priceCurrency": "USD", "price": "289", "category": "Suite" },
+    { "@@type": "Offer", "name": "The Carlisle Garden Room", "priceCurrency": "USD", "price": "239", "category": "Queen room" },
+    { "@@type": "Offer", "name": "The Culp Hill Room", "priceCurrency": "USD", "price": "179", "category": "Single room" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg, PA" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, PA" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "Rooms & Rates", "item": "{{ home_url('/rooms/') }}" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site">
+  <div class="nav-bar">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="The Lantern &amp; Laurel Inn — home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d9ad5f" stroke-width="1.4">
+          <path d="M12 3c-3 3-3 6-3 9a3 3 0 0 0 6 0c0-3 0-6-3-9Z"/>
+          <path d="M12 15v6"/>
+          <path d="M8 21h8"/>
+        </svg>
+      </span>
+      <span class="brand-word">
+        <span class="name">Lantern &amp; Laurel</span>
+        <span class="place">Gettysburg, Pennsylvania</span>
+      </span>
+    </a>
+
+    <nav class="primary" aria-label="Primary">
+      <a href="{{ home_url('/') }}">Home</a>
+      <a href="{{ home_url('/rooms/') }}" class="is-active" aria-current="page">Rooms</a>
+      <a href="{{ home_url('/amenities/') }}">Amenities</a>
+      <a href="{{ home_url('/area/') }}">The Area</a>
+      <a href="{{ home_url('/gallery/') }}">Gallery</a>
+      <a href="{{ home_url('/contact/') }}">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="{{ home_url('/contact/') }}#book" class="btn btn-brass desktop-only btn-sm">Book a Stay</a>
+      <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="mobilePanel" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="{{ home_url('/') }}">Home</a>
+    <a href="{{ home_url('/rooms/') }}" class="is-active" aria-current="page">Rooms</a>
+    <a href="{{ home_url('/amenities/') }}">Amenities</a>
+    <a href="{{ home_url('/area/') }}">The Area</a>
+    <a href="{{ home_url('/gallery/') }}">Gallery</a>
+    <a href="{{ home_url('/contact/') }}">Contact</a>
+    <a href="{{ home_url('/contact/') }}#book" class="btn btn-brass btn-block">Book a Stay</a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">Rooms &amp; Suites</span>
+    <h1>Nine rooms, each with its own story.</h1>
+    <p class="lead">Rates are per night, double occupancy, and include our full country breakfast and a private off-street parking pass — a real convenience in downtown Gettysburg.</p>
+  </div>
+</div>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="wrap">
+    <ol>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li aria-current="page">Rooms &amp; Rates</li>
+    </ol>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ============ ROOM GRID ============ -->
+  <section class="rooms">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">The Rooms</span>
+        <h2>Restored, not staged.</h2>
+        <p>Every room keeps something original — a mantel, a floorboard, a transom window — paired with a genuinely comfortable bed, blackout drapes, and reliable Wi-Fi.</p>
+      </div>
+
+      <div class="room-grid">
+
+        <article class="room-card reveal">
+          <div class="room-photo p1"><span class="room-tag">Second Floor</span></div>
+          <div class="room-body">
+            <h3>The Chamberlain Room</h3>
+            <p class="desc">Corner room with two windows facing Baltimore Street, an original 1863 mantel, and a reading nook under the eave.</p>
+            <div class="chip-row">
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v4M16 3v4M3 9h18"/><rect x="3" y="5" width="18" height="16" rx="2"/></svg>King Bed</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M6 4l2 3M18 4l-2 3M4 12h4M20 12h-4M12 22v-4"/><circle cx="12" cy="12" r="4"/></svg>Fireplace</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14 0M8.5 16a6 6 0 0 1 7 0M2 8.82a16 16 0 0 1 20 0"/><circle cx="12" cy="20" r="1"/></svg>Wi-Fi</span>
+            </div>
+            <div class="room-foot">
+              <div class="price">$219<span> / night</span></div>
+              <a href="{{ home_url('/contact/') }}#book" class="btn btn-forest btn-sm">Reserve</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="room-card reveal">
+          <div class="room-photo p2"><span class="room-tag">Third Floor</span></div>
+          <div class="room-body">
+            <h3>The Steinwehr Suite</h3>
+            <p class="desc">Our largest room, with a separate sitting area, clawfoot tub, and skylight over the bed for stargazing on clear nights.</p>
+            <div class="chip-row">
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v4M16 3v4M3 9h18"/><rect x="3" y="5" width="18" height="16" rx="2"/></svg>Queen Bed</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 9V7a5 5 0 0 1 10 0v2M5 9h14l-1 11H6L5 9Z"/></svg>Soaking Tub</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14 0M8.5 16a6 6 0 0 1 7 0M2 8.82a16 16 0 0 1 20 0"/><circle cx="12" cy="20" r="1"/></svg>Wi-Fi</span>
+            </div>
+            <div class="room-foot">
+              <div class="price">$289<span> / night</span></div>
+              <a href="{{ home_url('/contact/') }}#book" class="btn btn-forest btn-sm">Reserve</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="room-card reveal">
+          <div class="room-photo p3"><span class="room-tag">First Floor</span></div>
+          <div class="room-body">
+            <h3>The Carlisle Garden Room</h3>
+            <p class="desc">Ground-floor room with a private door onto the courtyard garden — our most requested room for anniversary stays.</p>
+            <div class="chip-row">
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v4M16 3v4M3 9h18"/><rect x="3" y="5" width="18" height="16" rx="2"/></svg>Queen Bed</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg>Garden Access</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14 0M8.5 16a6 6 0 0 1 7 0M2 8.82a16 16 0 0 1 20 0"/><circle cx="12" cy="20" r="1"/></svg>Wi-Fi</span>
+            </div>
+            <div class="room-foot">
+              <div class="price">$239<span> / night</span></div>
+              <a href="{{ home_url('/contact/') }}#book" class="btn btn-forest btn-sm">Reserve</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="room-card reveal">
+          <div class="room-photo p4"><span class="room-tag">Second Floor</span></div>
+          <div class="room-body">
+            <h3>The Culp Hill Room</h3>
+            <p class="desc">A cozy twin-bed room tucked at the back of the house, ideal for solo travelers and researchers visiting the archives.</p>
+            <div class="chip-row">
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v4M16 3v4M3 9h18"/><rect x="3" y="5" width="18" height="16" rx="2"/></svg>Twin Bed</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>Writing Desk</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14 0M8.5 16a6 6 0 0 1 7 0M2 8.82a16 16 0 0 1 20 0"/><circle cx="12" cy="20" r="1"/></svg>Wi-Fi</span>
+            </div>
+            <div class="room-foot">
+              <div class="price">$179<span> / night</span></div>
+              <a href="{{ home_url('/contact/') }}#book" class="btn btn-forest btn-sm">Reserve</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="room-card reveal">
+          <div class="room-photo p5"><span class="room-tag">Second Floor</span></div>
+          <div class="room-body">
+            <h3>The Seminary Room</h3>
+            <p class="desc">A bright west-facing room named for Seminary Ridge, with a queen bed, a bay window seat, and an original brass transom.</p>
+            <div class="chip-row">
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v4M16 3v4M3 9h18"/><rect x="3" y="5" width="18" height="16" rx="2"/></svg>Queen Bed</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v4M6 4l2 3M18 4l-2 3M4 12h4M20 12h-4M12 22v-4"/><circle cx="12" cy="12" r="4"/></svg>Fireplace</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14 0M8.5 16a6 6 0 0 1 7 0M2 8.82a16 16 0 0 1 20 0"/><circle cx="12" cy="20" r="1"/></svg>Wi-Fi</span>
+            </div>
+            <div class="room-foot">
+              <div class="price">$229<span> / night</span></div>
+              <a href="{{ home_url('/contact/') }}#book" class="btn btn-forest btn-sm">Reserve</a>
+            </div>
+          </div>
+        </article>
+
+        <article class="room-card reveal">
+          <div class="room-photo p6"><span class="room-tag">Third Floor</span></div>
+          <div class="room-body">
+            <h3>The Wills House Room</h3>
+            <p class="desc">A quiet top-floor king with dormer windows over the rooftops, a deep armchair, and a coffee station stocked with local roast.</p>
+            <div class="chip-row">
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 3v4M16 3v4M3 9h18"/><rect x="3" y="5" width="18" height="16" rx="2"/></svg>King Bed</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h18M3 6h18M3 18h18"/></svg>Coffee Station</span>
+              <span class="chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14 0M8.5 16a6 6 0 0 1 7 0M2 8.82a16 16 0 0 1 20 0"/><circle cx="12" cy="20" r="1"/></svg>Wi-Fi</span>
+            </div>
+            <div class="room-foot">
+              <div class="price">$249<span> / night</span></div>
+              <a href="{{ home_url('/contact/') }}#book" class="btn btn-forest btn-sm">Reserve</a>
+            </div>
+          </div>
+        </article>
+
+      </div>
+
+      <p style="text-align:center;color:var(--ink-soft);font-size:0.95rem;margin-top:34px;">
+        Three additional rooms — <b>The Reynolds</b>, <b>The Cashtown</b>, and <b>The Round Top Loft</b> — round out our nine.
+        Tell us your dates and party size on the <a href="{{ home_url('/contact/') }}#book" style="color:var(--ember);">booking page</a> and we'll match you to the right room.
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ RATES / POLICY ============ -->
+  <section class="section-paper">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Rates &amp; Policies</span>
+        <h2>Simple, all-in pricing.</h2>
+        <p>No resort fees, no parking surcharge, no surprise line items at checkout.</p>
+      </div>
+
+      <div class="rate-strip reveal">
+        <div class="cell"><b>$179&ndash;$309</b><span>Nightly range</span></div>
+        <div class="cell"><b>Included</b><span>Full breakfast daily</span></div>
+        <div class="cell"><b>Included</b><span>Private off-street parking</span></div>
+        <div class="cell"><b>2 nights</b><span>Minimum on anniversary weekends</span></div>
+      </div>
+
+      <table class="data-table reveal" style="margin-top:36px;">
+        <caption>Stay policies</caption>
+        <thead>
+          <tr><th scope="col">Policy</th><th scope="col">Details</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>Check-in / Check-out</td><td>Arrive after 3:00pm; depart by 11:00am. Early drop-off of bags is welcome.</td></tr>
+          <tr><td>Cancellation</td><td>Full refund up to 7 days before arrival; 50% within 7 days. Anniversary weekends are non-refundable within 14 days.</td></tr>
+          <tr><td>Occupancy</td><td>Rates shown are double occupancy. Rooms sleep 1&ndash;2 guests; the Steinwehr Suite sleeps up to 3.</td></tr>
+          <tr><td>Children &amp; pets</td><td>Children 10+ welcome. We are not able to accommodate pets, with the exception of service animals.</td></tr>
+          <tr><td>Payment</td><td>A one-night deposit reserves your dates; the balance is due at arrival.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section-cream">
+    <div class="wrap">
+      <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+        <span class="eyebrow">Good to Know</span>
+        <h2>Room questions, answered.</h2>
+      </div>
+      <div class="faq-list reveal">
+        <details class="faq">
+          <summary>Which rooms have working fireplaces?</summary>
+          <div class="faq-body">Five of our nine rooms — including the Chamberlain and Seminary rooms — have original wood-burning fireplaces, laid and lit each evening from October through March.</div>
+        </details>
+        <details class="faq">
+          <summary>Is parking really included?</summary>
+          <div class="faq-body">Yes. Every reservation includes a pass to our gated lot behind the house on Baltimore Street — no meters, no permits, and no circling downtown Gettysburg for a spot.</div>
+        </details>
+        <details class="faq">
+          <summary>How far is the inn from the battlefield?</summary>
+          <div class="faq-body">The Baltimore Street entrance to Gettysburg National Military Park is about a 0.4-mile walk. See the <a href="{{ home_url('/area/') }}">The Area</a> page for walking distances and driving directions.</div>
+        </details>
+        <details class="faq">
+          <summary>Do you serve breakfast every day?</summary>
+          <div class="faq-body">We do — a full country breakfast is served 7:30&ndash;10:00am daily in the dining room or on the porch, and it's included with every room. Details are on the <a href="{{ home_url('/amenities/') }}">Amenities</a> page.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA BAND ============ -->
+  <section class="cta-band">
+    <div class="wrap cta-inner">
+      <span class="eyebrow">Reserve Your Room</span>
+      <h2>Find the right room for your dates.</h2>
+      <p>Tell us when you're coming and how many are in your party — we'll confirm availability and hold your room within one business day.</p>
+      <div class="cta-row">
+        <a href="{{ home_url('/contact/') }}#book" class="btn btn-brass">Check Availability</a>
+        <a href="tel:+17175550142" class="btn btn-outline">Call (717) 555-0142</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ SHARED FOOTER ============ -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="{{ home_url('/') }}" class="brand" aria-label="The Lantern &amp; Laurel Inn — home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d9ad5f" stroke-width="1.4">
+              <path d="M12 3c-3 3-3 6-3 9a3 3 0 0 0 6 0c0-3 0-6-3-9Z"/>
+              <path d="M12 15v6"/>
+              <path d="M8 21h8"/>
+            </svg>
+          </span>
+          <span class="brand-word"><span class="name">Lantern &amp; Laurel</span></span>
+        </a>
+        <p>A nine-room historic inn on Baltimore Street, five minutes from Lincoln Square and the Gettysburg battlefield.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Lantern &amp; Laurel Inn on Instagram">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          </a>
+          <a href="#" aria-label="Lantern &amp; Laurel Inn on Facebook">
+            <svg viewBox="0 0 24 24"><path d="M15 8h2V4h-2a5 5 0 0 0-5 5v2H8v4h2v7h4v-7h3l1-4h-4V9a1 1 0 0 1 1-1Z"/></svg>
+          </a>
+          <a href="#" aria-label="Lantern &amp; Laurel Inn on Pinterest">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 18c1-3 1.5-5.5 1.5-7.5a2.5 2.5 0 0 1 5 0c0 2-1.2 4-3 4"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/rooms/') }}">Rooms &amp; Rates</a></li>
+          <li><a href="{{ home_url('/amenities/') }}">Amenities</a></li>
+          <li><a href="{{ home_url('/area/') }}">The Area</a></li>
+          <li><a href="{{ home_url('/gallery/') }}">Gallery</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact &amp; Booking</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Visit</h4>
+        <address>
+          <p>The Lantern &amp; Laurel Inn</p>
+          <p>42 Baltimore Street</p>
+          <p>Gettysburg, PA 17325</p>
+        </address>
+        <p style="margin-top:10px;">Check-in 3:00pm</p>
+        <p>Check-out 11:00am</p>
+      </div>
+
+      <div class="foot-col">
+        <h4>Contact &amp; Hours</h4>
+        <p><a href="tel:+17175550142">(717) 555-0142</a></p>
+        <p><a href="mailto:stay@@lanternandlaurel.test">stay@@lanternandlaurel.test</a></p>
+        <p style="margin-top:10px;">Front desk 7:00am&ndash;10:00pm daily</p>
+        <p>Breakfast 7:30&ndash;10:00am</p>
+        <p style="margin-top:10px;">Serving Gettysburg &amp; Adams County — Biglerville, New Oxford, Littlestown &amp; Fairfield.</p>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>&copy; <span class="js-year">2026</span> The Lantern &amp; Laurel Inn, Gettysburg PA. Concept for demonstration.</span>
+      <span>Design concept by Ridges &amp; Valleys Studio</span>
+    </div>
+  </div>
+</footer>
+
+<a href="#" class="concept-badge" aria-label="This is a design concept by Ridges &amp; Valleys Studio">
+  <span class="dot" aria-hidden="true"></span>
+  Concept &middot; Ridges &amp; Valleys Studio
+</a>
+@endsection

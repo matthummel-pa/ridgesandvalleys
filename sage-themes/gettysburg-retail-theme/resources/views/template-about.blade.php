@@ -1,0 +1,334 @@
+{{--
+  Template Name: Local Makers & Our Story
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "Store",
+  "@@id": "{{ home_url('/') }}#store",
+  "name": "Diamond & Ridge Mercantile",
+  "description": "Downtown Gettysburg gift shop and boutique stocked by local Adams County makers — candles, apparel, home goods and locally made gifts, available in-store and online.",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/about/') }}",
+  "telephone": "+1-717-555-0133",
+  "email": "shop@@diamondandridge.test",
+  "priceRange": "$$",
+  "currenciesAccepted": "USD",
+  "paymentAccepted": "Cash, Visa, Mastercard, American Express, Apple Pay",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "33 York Street",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8312, "longitude": -77.2299 },
+  "hasMap": "https://www.google.com/maps?q=33+York+Street+Gettysburg+PA+17325",
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday"], "opens": "10:00", "closes": "18:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday","Saturday"], "opens": "10:00", "closes": "20:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "11:00", "closes": "17:00" }
+  ],
+  "department": [
+    { "@@type": "Store", "name": "Candles & Soap" },
+    { "@@type": "Store", "name": "Apparel" },
+    { "@@type": "Store", "name": "Home Goods" },
+    { "@@type": "Store", "name": "Local Gifts & Pantry" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, Pennsylvania" },
+    { "@@type": "City", "name": "Biglerville" },
+    { "@@type": "City", "name": "New Oxford" },
+    { "@@type": "City", "name": "Littlestown" },
+    { "@@type": "City", "name": "McSherrystown" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "Local Makers", "item": "{{ home_url('/about/') }}" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="Diamond & Ridge Mercantile home">
+      <span class="brand-mark" aria-hidden="true">D&amp;R</span>
+      <span class="brand-word">
+        <strong>Diamond &amp; Ridge</strong>
+        <span>Mercantile Co.</span>
+      </span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="{{ home_url('/shop/') }}">Shop</a></li>
+        <li><a href="{{ home_url('/collections/') }}">Collections</a></li>
+        <li><a href="{{ home_url('/about/') }}" class="is-active" aria-current="page">About</a></li>
+        <li><a href="{{ home_url('/visit/') }}">Visit</a></li>
+        <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="{{ home_url('/shop/') }}" class="btn btn-primary btn-sm header-cta">Shop online</a>
+      <button class="icon-btn" id="cartToggle" aria-label="Open cart, 0 items" aria-haspopup="dialog" aria-controls="cartDrawer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="9" cy="21" r="1.3" fill="currentColor" stroke="none"/>
+          <circle cx="18" cy="21" r="1.3" fill="currentColor" stroke="none"/>
+          <path d="M3 4h2l2.2 11.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L20.5 8H6.2"/>
+        </svg>
+        <span class="cart-badge" id="cartBadge" aria-hidden="true">0</span>
+      </button>
+      <button class="icon-btn hamburger" id="menuToggle" aria-label="Open menu" aria-haspopup="true" aria-expanded="false" aria-controls="mobileMenu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<div class="scrim" id="scrim"></div>
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile" aria-hidden="true">
+  <div class="mobile-menu-head">
+    <span class="brand-word"><strong>Menu</strong></span>
+    <button class="icon-btn" id="menuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <ul>
+    <li><a href="{{ home_url('/shop/') }}" class="mobile-link">Shop</a></li>
+    <li><a href="{{ home_url('/collections/') }}" class="mobile-link">Collections</a></li>
+    <li><a href="{{ home_url('/about/') }}" class="mobile-link is-active">About / Local Makers</a></li>
+    <li><a href="{{ home_url('/visit/') }}" class="mobile-link">Visit Us</a></li>
+    <li><a href="{{ home_url('/contact/') }}" class="mobile-link">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Cart drawer -->
+<aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
+  <div class="cart-head">
+    <h2 id="cartTitle">Your Bag</h2>
+    <button class="icon-btn" id="cartClose" aria-label="Close cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="cart-empty" id="cartEmptyMsg">Your bag is empty — browse the shop to add something local &amp; lovely.</p>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-total-row"><span>Subtotal</span><span id="cartTotal">$0.00</span></div>
+    <button class="btn btn-primary btn-block" id="checkoutBtn">Checkout</button>
+    <p class="cart-checkout-msg" id="checkoutMsg" aria-live="polite"></p>
+  </div>
+</aside>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastText">Added to cart</span>
+</div>
+
+<main id="main">
+  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li aria-current="page">Local Makers</li>
+    </ol>
+  </nav>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Local Makers · Our Story</span>
+      <h1>Everything here is <em>locally made</em></h1>
+      <p>Diamond &amp; Ridge Mercantile exists to put Adams County makers on one shelf. If it's on our floor at 33 York Street, someone near Gettysburg made it — and we can usually tell you their name and their street.</p>
+    </div>
+  </section>
+
+  <section class="story">
+    <div class="wrap story-grid">
+      <div class="story-photo reveal">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Two_Buildings_in_the_Gettysburg_Historic_District.jpg?width=1600" alt="Historic brick storefronts in the Gettysburg Historic District, like the Diamond & Ridge Mercantile building on York Street" loading="lazy" onerror="this.style.display='none'">
+      </div>
+      <div class="story-copy reveal">
+        <span class="eyebrow">Why we opened</span>
+        <h2>A storefront on York Street, stocked by neighbors</h2>
+        <p>We opened in an 1899 storefront a short walk east of Lincoln Square with a simple idea: the best souvenir of Adams County isn't a mass-produced magnet — it's something someone here actually made. We started with three candle makers and a potter; today more than thirty local makers share the shelves.</p>
+        <p>Every order, whether it's picked up at the counter or shipped from our back room, is packed by the same few people who greet you at the door. When you buy a candle here, the money stays close to home.</p>
+        <div class="story-makers">
+          <div class="maker-chip"><span class="maker-dot c1"></span> 12 candle &amp; soap makers</div>
+          <div class="maker-chip"><span class="maker-dot c2"></span> 8 apparel &amp; textile artists</div>
+          <div class="maker-chip"><span class="maker-dot c3"></span> 10 food &amp; ceramics producers</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal"><span class="eyebrow">Meet A Few Makers</span><h2>The people behind the shelves</h2><p style="color:var(--ink-soft);">A sample of the Adams County makers we carry. (Makers shown are illustrative for this concept.)</p></div>
+      <div class="maker-grid">
+        <article class="maker-card reveal">
+          <div class="maker-band pm-1"></div>
+          <div class="maker-body">
+            <span class="maker-tag">Candles · Gettysburg</span>
+            <h3>Ridgeline Candle Co.</h3>
+            <p>Soy candles hand-poured in a garage studio off Baltimore Street, scented after autumn on the ridge.</p>
+          </div>
+        </article>
+        <article class="maker-card reveal">
+          <div class="maker-band pm-2"></div>
+          <div class="maker-body">
+            <span class="maker-tag">Apparel · Gettysburg</span>
+            <h3>Chambersburg Street Print Shop</h3>
+            <p>A two-person screen-print shop pressing our tees and totes a few doors from Lincoln Square.</p>
+          </div>
+        </article>
+        <article class="maker-card reveal">
+          <div class="maker-band pm-3"></div>
+          <div class="maker-body">
+            <span class="maker-tag">Ceramics · Biglerville</span>
+            <h3>Biglerville Clay Works</h3>
+            <p>A potter north of town throwing the stoneware mugs and bud vases on our home-goods shelf.</p>
+          </div>
+        </article>
+        <article class="maker-card reveal">
+          <div class="maker-band pm-4"></div>
+          <div class="maker-body">
+            <span class="maker-tag">Pantry · Cashtown</span>
+            <h3>Round Barn Apiary</h3>
+            <p>Wildflower honey from hives kept along the orchards west of Gettysburg toward Cashtown.</p>
+          </div>
+        </article>
+        <article class="maker-card reveal">
+          <div class="maker-band pm-5"></div>
+          <div class="maker-body">
+            <span class="maker-tag">Pantry · Aspers</span>
+            <h3>Orchard Row Kitchen</h3>
+            <p>Apple butter and preserves cooked from fruit picked in the Adams County orchards along Route 34.</p>
+          </div>
+        </article>
+        <article class="maker-card reveal">
+          <div class="maker-band pm-6"></div>
+          <div class="maker-body">
+            <span class="maker-tag">Pantry · New Oxford</span>
+            <h3>Cannonball Coffee Roasters</h3>
+            <p>A small roaster in New Oxford supplying our cold brew concentrate and whole-bean bags.</p>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--cream-deep);border-block:1px solid var(--line);">
+    <div class="wrap feature-split">
+      <div class="reveal">
+        <span class="eyebrow">How It Works</span>
+        <h2>How something gets onto our shelf</h2>
+        <p style="color:var(--ink-soft);">We keep it simple and local. If you make something in Adams County, here's the path from your kitchen table to our York Street window.</p>
+      </div>
+      <div class="reveal">
+        <ul class="bullets" style="list-style:none;">
+          <li><strong>1. You're local.</strong> Makers are based in Gettysburg or an Adams County town — Biglerville, New Oxford, Littlestown, Fairfield, Cashtown and beyond.</li>
+          <li><strong>2. We taste, smell &amp; test.</strong> Everything is sampled in person before it earns a spot on the floor.</li>
+          <li><strong>3. Fair split.</strong> We buy wholesale or split consignment so makers are paid fairly for small runs.</li>
+          <li><strong>4. Your name stays on it.</strong> Shelf tags credit the maker and the town it came from.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <h2>Make something in Adams County?</h2>
+        <p>We're always looking for the next candle, print, jar or mug. Send us a note and tell us what you make.</p>
+        <div class="hero-ctas"><a href="{{ home_url('/contact/') }}" class="btn btn-light">Pitch your goods</a><a href="{{ home_url('/shop/') }}" class="btn btn-outline" style="color:var(--cream);border-color:var(--cream);">Shop the makers</a></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark" aria-hidden="true" style="width:36px;height:36px;font-size:1.1rem;">D&amp;R</span>
+          <strong>Diamond &amp; Ridge Mercantile</strong>
+        </div>
+        <p class="footer-desc">Locally-made candles, apparel, home goods &amp; gifts from a storefront on York Street in downtown Gettysburg, PA.</p>
+        <div class="payment-icons" aria-label="Accepted payment methods">
+          <svg viewBox="0 0 48 32" role="img" aria-label="Visa"><rect width="48" height="32" rx="4" fill="#1a1f71"/><text x="24" y="21" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">VISA</text></svg>
+          <svg viewBox="0 0 48 32" role="img" aria-label="Mastercard"><rect width="48" height="32" rx="4" fill="#252525"/><circle cx="20" cy="16" r="9" fill="#eb001b"/><circle cx="28" cy="16" r="9" fill="#f79e1b" fill-opacity="0.9"/></svg>
+          <svg viewBox="0 0 48 32" role="img" aria-label="American Express"><rect width="48" height="32" rx="4" fill="#2e77bc"/><text x="24" y="21" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">AMEX</text></svg>
+          <svg viewBox="0 0 48 32" role="img" aria-label="Apple Pay"><rect width="48" height="32" rx="4" fill="#000"/><text x="24" y="21" font-family="Arial, sans-serif" font-size="9" font-weight="600" fill="#fff" text-anchor="middle"> Pay</text></svg>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/shop/') }}">Shop</a></li>
+          <li><a href="{{ home_url('/collections/') }}">Collections</a></li>
+          <li><a href="{{ home_url('/about/') }}">Local Makers</a></li>
+          <li><a href="{{ home_url('/visit/') }}">Visit Us</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Store</h4>
+        <ul>
+          <li><a href="{{ home_url('/visit/') }}">Hours &amp; Directions</a></li>
+          <li><a href="{{ home_url('/visit/') }}">The Area</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Shipping &amp; Returns</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Wholesale &amp; Gift Boxes</a></li>
+        </ul>
+        <p style="margin-top:1rem;font-size:0.85rem;color:#b7a98c;">Free shipping over $75. Returns accepted within 30 days on unused items — in-store or by mail.</p>
+      </div>
+      <div>
+        <h4>Find Us</h4>
+        <address class="footer-nap">
+          Diamond &amp; Ridge Mercantile<br>
+          33 York Street<br>
+          Gettysburg, PA 17325<br>
+          <a href="tel:+17175550133">(717) 555-0133</a><br>
+          <a href="mailto:shop@@diamondandridge.test">shop@@diamondandridge.test</a>
+        </address>
+        <div class="social-row">
+          <a href="#" aria-label="Diamond & Ridge Mercantile on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Diamond & Ridge Mercantile on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 9h3V6h-3a4 4 0 0 0-4 4v2H7v3h3v6h3v-6h3l1-3h-4v-2a1 1 0 0 1 1-1z"/></svg></a>
+          <a href="#" aria-label="Diamond & Ridge Mercantile on Pinterest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 17c1-4 1.5-6.5 1.5-8a2.5 2.5 0 0 1 5 0c0 1.5-1 4.5-1.5 6a2 2 0 0 0 4 .5"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:2rem;font-size:0.85rem;color:#b7a98c;max-width:60ch;">Proudly serving Gettysburg and the towns of Adams County — Biglerville, New Oxford, Littlestown, McSherrystown, Fairfield, Cashtown and Hanover nearby.</p>
+    <div class="footer-bottom">
+      <span>© <span class="js-year">2026</span> Diamond &amp; Ridge Mercantile. Design concept by Ridges &amp; Valleys Studio.</span>
+      <span>Concept for demonstration — not a live store.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Concept badge -->
+<a href="#" class="concept-badge">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2L12 16.5 5.7 21l2.3-7.2-6-4.6h7.6z"/></svg>
+  Concept · Ridges &amp; Valleys Studio
+</a>
+@endsection

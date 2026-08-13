@@ -1,0 +1,7 @@
+/node_modules
+/vendor
+/public/build
+/public/hot
+.env
+npm-debug.log
+.DS_Store

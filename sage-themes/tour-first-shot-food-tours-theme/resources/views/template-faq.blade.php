@@ -1,0 +1,278 @@
+{{--
+  Template Name: FAQ
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "TravelAgency",
+  "@@id": "{{ home_url('/') }}#business",
+  "name": "First Shot Food & History Tours",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/faq/') }}",
+  "telephone": "+1-717-555-0105",
+  "email": "book@@firstshottours.test",
+  "priceRange": "$$",
+  "description": "Frequently asked questions about First Shot food and history walking tours in Gettysburg, Pennsylvania.",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "5 Chambersburg Street",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8313, "longitude": -77.2311 },
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "17:00" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, Pennsylvania" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "FAQ", "item": "{{ home_url('/faq/') }}" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "FAQPage",
+  "mainEntity": [
+    {
+      "@@type": "Question",
+      "name": "What if someone in our group has dietary restrictions?",
+      "acceptedAnswer": { "@@type": "Answer", "text": "Let us know at booking (or email us 24 hours ahead) and we'll arrange vegetarian or gluten-aware swaps at every tasting stop. We can't guarantee a fully allergen-free kitchen at every partner eatery, so guests with severe allergies should flag it directly with our guide before the walk begins." }
+    },
+    {
+      "@@type": "Question",
+      "name": "How much walking is involved?",
+      "acceptedAnswer": { "@@type": "Answer", "text": "Most routes cover about 1.2 to 1.8 miles at an easy pace, with frequent stops to sit or stand while we talk and taste. All routes are on sidewalks and paved streets in downtown Gettysburg, no battlefield terrain, but comfortable shoes are strongly recommended." }
+    },
+    {
+      "@@type": "Question",
+      "name": "Where do the tours meet?",
+      "acceptedAnswer": { "@@type": "Answer", "text": "Every tour meets at Lincoln Square in the center of Gettysburg, a two-minute walk from our booking desk at 5 Chambersburg Street, Gettysburg, PA 17325. Your confirmation email includes the exact meeting spot and what to look for." }
+    },
+    {
+      "@@type": "Question",
+      "name": "Where should we park?",
+      "acceptedAnswer": { "@@type": "Answer", "text": "The Gettysburg Transit Center garage on Carlisle Street is one block north of Lincoln Square and is the easiest all-day option. Metered street parking rings the square along Baltimore and Steinwehr, and free lots open up a few blocks out on Stratton Street. Arrive about fifteen minutes early." }
+    },
+    {
+      "@@type": "Question",
+      "name": "What happens if it rains?",
+      "acceptedAnswer": { "@@type": "Answer", "text": "Tours run rain or shine. Gettysburg's covered porches and awnings give us plenty of cover between stops. In the rare case of severe weather such as thunderstorms, extreme heat, or winter ice, we'll contact you to reschedule or refund, no questions asked." }
+    },
+    {
+      "@@type": "Question",
+      "name": "Are the tours accessible?",
+      "acceptedAnswer": { "@@type": "Answer", "text": "The downtown routes are flat, on sidewalks with curb cuts, and stroller and wheelchair friendly. A couple of partner eateries have a single step at the entrance; tell us your needs when you book and we'll adjust the route or the tasting location so everyone is included." }
+    },
+    {
+      "@@type": "Question",
+      "name": "What's your cancellation and refund policy?",
+      "acceptedAnswer": { "@@type": "Answer", "text": "Full refund for cancellations made at least 48 hours before your tour time. Inside 48 hours we're happy to move you to another available date instead of a refund, space permitting. No-shows are non-refundable." }
+    },
+    {
+      "@@type": "Question",
+      "name": "Can you host a private or large group?",
+      "acceptedAnswer": { "@@type": "Answer", "text": "Yes. Add the private group upgrade at checkout for just your party, or contact us directly for parties larger than twelve, corporate outings, and reunions. We regularly host visitors coming in from Hanover, New Oxford, Littlestown, and across Adams County." }
+    }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site">
+  <div class="container nav-wrap">
+    <a class="brand" href="{{ home_url('/') }}" aria-label="First Shot Food &amp; History Tours, home">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" fill="#C1592C"/>
+        <path d="M24 10 L30 22 L24 20 L18 22 Z" fill="#FBF2E4"/>
+        <rect x="22.5" y="20" width="3" height="16" rx="1.5" fill="#FBF2E4"/>
+        <circle cx="24" cy="34" r="3.4" fill="#E3A93F"/>
+      </svg>
+      <span class="brand-text"><strong>First Shot</strong><span>Food &amp; History Tours</span></span>
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="{{ home_url('/') }}">Home</a></li>
+        <li><a href="{{ home_url('/tours/') }}">Tours</a></li>
+        <li><a href="{{ home_url('/book/') }}">Book a Date</a></li>
+        <li><a href="{{ home_url('/route/') }}">The Route</a></li>
+        <li><a href="{{ home_url('/faq/') }}" class="is-active" aria-current="page">FAQ</a></li>
+        <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-primary btn-sm" href="{{ home_url('/book/') }}">Book a Date</a>
+      <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <nav aria-label="Mobile">
+    <ul>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li><a href="{{ home_url('/tours/') }}">Tours</a></li>
+      <li><a href="{{ home_url('/book/') }}">Book a Date</a></li>
+      <li><a href="{{ home_url('/route/') }}">The Route</a></li>
+      <li><a href="{{ home_url('/faq/') }}" class="is-active" aria-current="page">FAQ</a></li>
+      <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+    </ul>
+    <a class="btn btn-primary btn-block" href="{{ home_url('/book/') }}">Book a Date</a>
+  </nav>
+</div>
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li class="sep" aria-hidden="true">/</li>
+          <li aria-current="page">FAQ</li>
+        </ol>
+      </nav>
+      <span class="eyebrow" style="color:var(--mustard);">Good to Know</span>
+      <h1>Frequently asked <em>questions</em>.</h1>
+      <p>Everything guests ask before a First Shot walk through downtown Gettysburg, PA &mdash; from dietary swaps to parking near Lincoln Square. Still stuck? The booking desk is a phone call away.</p>
+    </div>
+  </section>
+
+  <section class="bg-cream-dim">
+    <div class="container">
+      <div class="faq-list reveal">
+        <div class="faq-item" data-open="false">
+          <button type="button" class="faq-q" id="faq-q-0" aria-expanded="false" aria-controls="faq-a-0"><span>What if someone in our group has dietary restrictions?</span><span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a" id="faq-a-0" role="region" aria-labelledby="faq-q-0">Let us know at booking (or email us 24 hours ahead) and we&rsquo;ll arrange vegetarian or gluten-aware swaps at every tasting stop. We can&rsquo;t guarantee a fully allergen-free kitchen at every partner eatery, so guests with severe allergies should flag it directly with our guide before the walk begins.</div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button type="button" class="faq-q" id="faq-q-1" aria-expanded="false" aria-controls="faq-a-1"><span>How much walking is involved?</span><span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a" id="faq-a-1" role="region" aria-labelledby="faq-q-1">Most routes cover about 1.2 to 1.8 miles at an easy pace, with frequent stops to sit or stand while we talk and taste. All routes are on sidewalks and paved streets in downtown Gettysburg &mdash; no battlefield terrain &mdash; but comfortable shoes are strongly recommended.</div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button type="button" class="faq-q" id="faq-q-2" aria-expanded="false" aria-controls="faq-a-2"><span>Where do the tours meet?</span><span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a" id="faq-a-2" role="region" aria-labelledby="faq-q-2">Every tour meets at Lincoln Square in the center of Gettysburg, a two-minute walk from our booking desk at 5 Chambersburg Street, Gettysburg, PA 17325. Your confirmation email includes the exact meeting spot and what to look for.</div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button type="button" class="faq-q" id="faq-q-3" aria-expanded="false" aria-controls="faq-a-3"><span>Where should we park?</span><span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a" id="faq-a-3" role="region" aria-labelledby="faq-q-3">The Gettysburg Transit Center garage on Carlisle Street is one block north of Lincoln Square and is the easiest all-day option. Metered street parking rings the square along Baltimore and Steinwehr, and free lots open up a few blocks out on Stratton Street. Arrive about fifteen minutes early.</div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button type="button" class="faq-q" id="faq-q-4" aria-expanded="false" aria-controls="faq-a-4"><span>What happens if it rains?</span><span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a" id="faq-a-4" role="region" aria-labelledby="faq-q-4">Tours run rain or shine &mdash; Gettysburg&rsquo;s covered porches and awnings give us plenty of cover between stops. In the rare case of severe weather (thunderstorms, extreme heat, or winter ice), we&rsquo;ll contact you to reschedule or refund, no questions asked.</div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button type="button" class="faq-q" id="faq-q-5" aria-expanded="false" aria-controls="faq-a-5"><span>Are the tours accessible?</span><span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a" id="faq-a-5" role="region" aria-labelledby="faq-q-5">The downtown routes are flat, on sidewalks with curb cuts, and stroller and wheelchair friendly. A couple of partner eateries have a single step at the entrance; tell us your needs when you book and we&rsquo;ll adjust the route or the tasting location so everyone is included.</div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button type="button" class="faq-q" id="faq-q-6" aria-expanded="false" aria-controls="faq-a-6"><span>What&rsquo;s your cancellation and refund policy?</span><span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a" id="faq-a-6" role="region" aria-labelledby="faq-q-6">Full refund for cancellations made at least 48 hours before your tour time. Inside 48 hours, we&rsquo;re happy to move you to another available date instead of a refund, space permitting. No-shows are non-refundable.</div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button type="button" class="faq-q" id="faq-q-7" aria-expanded="false" aria-controls="faq-a-7"><span>Can you host a private or large group?</span><span class="plus" aria-hidden="true"></span></button>
+          <div class="faq-a" id="faq-a-7" role="region" aria-labelledby="faq-q-7">Yes. Add the private group upgrade at checkout for just your party, or contact us directly for parties larger than twelve, corporate outings, and reunions. We regularly host visitors coming in from Hanover, New Oxford, Littlestown, and across Adams County.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div>
+        <h2>Still have a question?</h2>
+        <p>Call the booking desk at (717) 555-0105 or send us a note &mdash; we answer every one.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-ghost" href="{{ home_url('/contact/') }}">Contact us</a>
+        <a class="btn btn-primary" href="{{ home_url('/book/') }}">Book a date</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="{{ home_url('/') }}" style="color:#fff;">
+          <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="22" fill="#C1592C"/>
+            <path d="M24 10 L30 22 L24 20 L18 22 Z" fill="#FBF2E4"/>
+            <rect x="22.5" y="20" width="3" height="16" rx="1.5" fill="#FBF2E4"/>
+            <circle cx="24" cy="34" r="3.4" fill="#E3A93F"/>
+          </svg>
+          <span class="brand-text"><strong style="color:#fff;">First Shot</strong><span style="color:var(--teal-light);">Food &amp; History Tours</span></span>
+        </a>
+        <p>Small-group walking tours through downtown Gettysburg &mdash; real history, real food, real local eateries. Est. 2018.</p>
+        <div class="social-row">
+          <a href="#" aria-label="First Shot Tours on Instagram"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="First Shot Tours on Facebook"><svg viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-2 0-3.5 1.5-3.5 3.5V11H8v3h2.5v6h3v-6H16l.5-3h-3V9.8c0-.5.2-.8.7-.8z" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="First Shot Tours on TripAdvisor"><svg viewBox="0 0 24 24" fill="none"><circle cx="8" cy="13" r="3.2" stroke="currentColor" stroke-width="1.6"/><circle cx="16" cy="13" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M8 7h8M12 13a4 4 0 0 1 0-6M12 13a4 4 0 0 0 0-6" stroke="currentColor" stroke-width="1.4"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li><a href="{{ home_url('/tours/') }}">Tours</a></li>
+          <li><a href="{{ home_url('/book/') }}">Book a date</a></li>
+          <li><a href="{{ home_url('/route/') }}">The route &amp; local eats</a></li>
+          <li><a href="{{ home_url('/faq/') }}">FAQ</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Visit / Book</h4>
+        <address class="footer-nap">
+          <strong style="color:#fff;">First Shot Food &amp; History Tours</strong><br>
+          5 Chambersburg Street<br>
+          Gettysburg, PA 17325<br>
+          <a href="tel:+17175550105">(717) 555-0105</a><br>
+          <a href="mailto:book@@firstshottours.test">book@@firstshottours.test</a>
+        </address>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <ul>
+          <li>Booking desk: Mon&ndash;Fri, 9am&ndash;5pm</li>
+          <li>Tours depart: Thu&ndash;Mon</li>
+          <li>Season: April&ndash;November</li>
+          <li>Closed Tue &amp; Wed</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-family:var(--font-mono); font-size:0.75rem; color:rgba(251,242,228,0.55); margin-top:2rem;">Serving Gettysburg and the wider Adams County area &mdash; Biglerville, New Oxford, Littlestown, McSherrystown, Fairfield, Cashtown, and Hanover.</p>
+    <div class="footer-bottom">
+      <span>&copy; <span id="footerYear"></span> First Shot Food &amp; History Tours. All rights reserved.</span>
+      <span>Design concept by Ridges &amp; Valleys Studio, Gettysburg PA &mdash; not a live booking system.</span>
+    </div>
+  </div>
+</footer>
+
+<a class="concept-badge" href="#" onclick="event.preventDefault();" aria-label="This is a design concept by Ridges and Valleys Studio">
+  <span class="dot" aria-hidden="true"></span> Concept &middot; Ridges &amp; Valleys Studio
+</a>
+@endsection

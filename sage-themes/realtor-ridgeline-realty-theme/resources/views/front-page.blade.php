@@ -1,0 +1,413 @@
+{{-- Front page: concept home --}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "RealEstateAgent",
+  "@@id": "{{ home_url('/') }}#business",
+  "name": "Ridgeline Realty",
+  "description": "Residential real estate agency serving Gettysburg and Adams County, Pennsylvania.",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/') }}",
+  "telephone": "+1-717-555-0210",
+  "email": "info@@ridgelinerealty.test",
+  "priceRange": "$$",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "210 Chambersburg Road",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8309, "longitude": -77.2311 },
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "18:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "15:00" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg, PA" },
+    { "@@type": "City", "name": "Biglerville, PA" },
+    { "@@type": "City", "name": "Littlestown, PA" },
+    { "@@type": "City", "name": "New Oxford, PA" },
+    { "@@type": "City", "name": "McSherrystown, PA" },
+    { "@@type": "City", "name": "Fairfield, PA" },
+    { "@@type": "Place", "name": "Cashtown, PA" },
+    { "@@type": "Place", "name": "Straban Township, PA" },
+    { "@@type": "Place", "name": "Cumberland Township, PA" },
+    { "@@type": "Place", "name": "Mount Joy Township, PA" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, PA" }
+  ],
+  "sameAs": [
+    "https://www.facebook.com/",
+    "https://www.instagram.com/",
+    "https://www.linkedin.com/"
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="Ridgeline Realty home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0c1c2c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l5-9 4 6 3-5 6 8"/><path d="M3 20h18"/></svg>
+      </span>
+      <span class="brand-text"><strong>Ridgeline Realty</strong><span>Gettysburg &amp; Adams County</span></span>
+    </a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="{{ home_url('/listings/') }}">Listings</a></li>
+        <li><a href="{{ home_url('/areas/') }}">Areas We Serve</a></li>
+        <li><a href="{{ home_url('/sell/') }}">Sell Your Home</a></li>
+        <li><a href="{{ home_url('/agents/') }}">Our Agents</a></li>
+        <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-cta">
+      <a class="header-phone" href="tel:+17175550210">(717) 555-0210</a>
+      <a class="btn btn-primary btn-sm" href="{{ home_url('/contact/') }}#schedule">Schedule a Showing</a>
+    </div>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+      <span></span>
+    </button>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+    <a href="{{ home_url('/listings/') }}">Listings</a>
+    <a href="{{ home_url('/areas/') }}">Areas We Serve</a>
+    <a href="{{ home_url('/sell/') }}">Sell Your Home</a>
+    <a href="{{ home_url('/agents/') }}">Our Agents</a>
+    <a href="{{ home_url('/contact/') }}">Contact</a>
+    <div class="mobile-cta">
+      <a class="btn btn-primary" style="width:100%" href="{{ home_url('/contact/') }}#schedule">Schedule a Showing</a>
+    </div>
+  </nav>
+</header>
+
+<main id="main">
+
+  <!-- ===== HERO ===== -->
+  <section class="hero" id="top">
+    <div class="container hero-inner">
+      <span class="eyebrow">Adams County, Pennsylvania</span>
+      <h1>Find your place among <em>the ridges and valleys</em> of Gettysburg.</h1>
+      <p class="hero-sub">In-town Victorians, historic farmhouses, and new-construction homes across Gettysburg, Biglerville, Cashtown, and the surrounding townships — guided by agents who grew up here.</p>
+      <div class="hero-actions">
+        <a href="{{ home_url('/listings/') }}" class="btn btn-primary">Browse Listings</a>
+        <a href="{{ home_url('/sell/') }}" class="btn btn-outline">What's My Home Worth?</a>
+      </div>
+
+      <form class="search-panel" id="heroSearchForm" aria-label="Property search" action="listings.html" method="get">
+        <div class="field">
+          <label for="heroLocation">Location or keyword</label>
+          <input type="text" id="heroLocation" name="q" placeholder="e.g. Baltimore Street, Cumberland Twp">
+        </div>
+        <div class="field">
+          <label for="heroBeds">Bedrooms</label>
+          <select id="heroBeds" name="beds">
+            <option value="0">Any</option>
+            <option value="1">1+</option>
+            <option value="2">2+</option>
+            <option value="3">3+</option>
+            <option value="4">4+</option>
+          </select>
+        </div>
+        <div class="field">
+          <label for="heroPrice">Max price</label>
+          <select id="heroPrice" name="max">
+            <option value="0">Any</option>
+            <option value="250000">Under $250k</option>
+            <option value="400000">Under $400k</option>
+            <option value="550000">Under $550k</option>
+            <option value="800000">Under $800k</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Search Homes</button>
+      </form>
+
+      <div class="hero-stats">
+        <div class="stat"><strong>19</strong><span>Avg. days on market</span></div>
+        <div class="stat"><strong>412</strong><span>Adams Co. closings since 2016</span></div>
+        <div class="stat"><strong>4.9/5</strong><span>Average client rating</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== WHY RIDGELINE ===== -->
+  <section id="why" class="why-section">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Why Ridgeline</span>
+        <h2>Local roots. Real numbers.</h2>
+        <p>We're not a national franchise guessing at Adams County. We're three generations deep in this market — from the Baltimore Street rowhomes to the orchard roads north of Biglerville.</p>
+      </div>
+
+      <div class="why-grid">
+        <div class="why-card reveal">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/></svg>
+          </div>
+          <h3>Historic-property specialists</h3>
+          <p>We know the difference between a Certificate of Appropriateness and a headache — dozens of successful sales inside Gettysburg's historic district.</p>
+        </div>
+        <div class="why-card reveal">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg>
+          </div>
+          <h3>Priced right, the first time</h3>
+          <p>Our Adams County listings sell in an average of 19 days versus the regional average of 41 — because we price from real comps, not wishful thinking.</p>
+        </div>
+        <div class="why-card reveal">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          </div>
+          <h3>A team, not a solo act</h3>
+          <p>Three full-time agents plus a transaction coordinator, so you always reach a person — not voicemail — from offer to closing table.</p>
+        </div>
+      </div>
+
+      <div class="about-photo-row">
+        <div class="about-photo reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/DowntownGettysburgPA.jpg?width=1600" alt="Downtown Gettysburg, Pennsylvania streetscape near Lincoln Square" loading="lazy" onerror="this.style.display='none'">
+          <div class="about-caption">Downtown Gettysburg — near our Chambersburg Road office</div>
+        </div>
+        <div class="about-photo reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Journey_Through_Hallowed_Ground_Byway_-_The_Shriver_House_Museum_-_NARA_-_7719712.jpg?width=1200" alt="Historic Shriver House, an example of Gettysburg's preserved architecture" loading="lazy" onerror="this.style.display='none'">
+          <div class="about-caption">Preserving Gettysburg's historic character, one closing at a time</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TEASERS: link to every page ===== -->
+  <section class="listings" id="explore">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Explore Ridgeline</span>
+        <h2>Everything you need to buy or sell in Adams County</h2>
+        <p>From live listings to a free home valuation, here's how we help Gettysburg-area buyers and sellers move with confidence.</p>
+      </div>
+
+      <div class="teaser-grid">
+        <a class="teaser-card reveal" href="{{ home_url('/listings/') }}" style="text-decoration:none;">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+          </div>
+          <h3>Browse Listings</h3>
+          <p>Filter homes across Gettysburg and Adams County by price, beds, baths, and property type — then estimate the payment with our live mortgage calculator.</p>
+          <span class="teaser-link">View homes for sale &rarr;</span>
+        </a>
+
+        <a class="teaser-card reveal" href="{{ home_url('/areas/') }}" style="text-decoration:none;">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 12-9 12s-9-5-9-12a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          </div>
+          <h3>Areas We Serve</h3>
+          <p>Gettysburg Borough plus Biglerville, Littlestown, New Oxford, McSherrystown, Fairfield, Cashtown, and the surrounding townships — a guide to each community.</p>
+          <span class="teaser-link">See our service area &rarr;</span>
+        </a>
+
+        <a class="teaser-card reveal" href="{{ home_url('/sell/') }}" style="text-decoration:none;">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          </div>
+          <h3>Sell Your Home</h3>
+          <p>Find out what your Adams County home is worth today with a free, no-obligation valuation from an agent who knows your street — not an algorithm three states away.</p>
+          <span class="teaser-link">Get a free home valuation &rarr;</span>
+        </a>
+
+        <a class="teaser-card reveal" href="{{ home_url('/agents/') }}" style="text-decoration:none;">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H7a4 4 0 0 0-4 4v2"/><circle cx="10" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/></svg>
+          </div>
+          <h3>Our Agents</h3>
+          <p>Meet the three licensed agents behind Ridgeline Realty — historic-property, new-construction, and first-time-buyer specialists, all based here in Gettysburg.</p>
+          <span class="teaser-link">Meet the team &rarr;</span>
+        </a>
+
+        <a class="teaser-card reveal" href="{{ home_url('/listings/') }}#mortgage" style="text-decoration:none;">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h8M8 14h4"/></svg>
+          </div>
+          <h3>Mortgage Calculator</h3>
+          <p>Estimate your monthly payment before you fall in love with a listing. Adjust price, down payment, rate, and term to see the numbers update instantly.</p>
+          <span class="teaser-link">Estimate a payment &rarr;</span>
+        </a>
+
+        <a class="teaser-card reveal" href="{{ home_url('/contact/') }}" style="text-decoration:none;">
+          <div class="icon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          </div>
+          <h3>Contact &amp; Showings</h3>
+          <p>Schedule a showing, ask a question, or reach an agent directly. We answer the phone at (717) 555-0210 and reply to messages the same day.</p>
+          <span class="teaser-link">Get in touch &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== TESTIMONIALS ===== -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Client Stories</span>
+        <h2>What Adams County families say</h2>
+        <p>Illustrative sample testimonials for this concept site.</p>
+      </div>
+      <div class="t-grid">
+        <div class="t-card reveal">
+          <div class="stars" aria-label="5 out of 5 stars">
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+          </div>
+          <p class="t-quote">"We viewed six houses on Baltimore Street alone before Karen found the one with good bones under the ugly carpet. She was right."</p>
+          <span class="t-author">— The Ott Family, Gettysburg</span>
+        </div>
+        <div class="t-card reveal">
+          <div class="stars" aria-label="5 out of 5 stars">
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+          </div>
+          <p class="t-quote">"Selling our farmhouse near Cashtown felt overwhelming until Dave laid out exactly what buyers of acreage actually want. Offer in eleven days."</p>
+          <span class="t-author">— R. Topper, Franklin Township</span>
+        </div>
+        <div class="t-card reveal">
+          <div class="stars" aria-label="5 out of 5 stars">
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+            <svg viewBox="0 0 20 20"><polygon points="10,1 12.6,7 19,7.6 14.2,11.9 15.6,18.2 10,14.8 4.4,18.2 5.8,11.9 1,7.6 7.4,7"/></svg>
+          </div>
+          <p class="t-quote">"Priya walked us through the historic-district approval process line by line. First-time buyers, zero surprises — that's rare."</p>
+          <span class="t-author">— M. &amp; S. Reever, Gettysburg Historic District</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BAND ===== -->
+  <section class="cta-band">
+    <div class="container">
+      <span class="eyebrow">Ready When You Are</span>
+      <h2>Let's talk about your next move in Gettysburg</h2>
+      <p>Whether you're browsing in-town Victorians or wondering what your Adams County home is worth, a real Ridgeline agent is a phone call away.</p>
+      <div class="cta-actions">
+        <a href="{{ home_url('/contact/') }}#schedule" class="btn btn-primary">Schedule a Showing</a>
+        <a href="{{ home_url('/sell/') }}" class="btn btn-outline">Get a Free Valuation</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="{{ home_url('/') }}" class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0c1c2c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l5-9 4 6 3-5 6 8"/><path d="M3 20h18"/></svg>
+          </span>
+          <span class="brand-text"><strong>Ridgeline Realty</strong><span>Gettysburg &amp; Adams County</span></span>
+        </a>
+        <p>Locally owned and operated, connecting Adams County families with in-town homes, historic properties, and new builds since 2016.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Ridgeline Realty on Facebook"><svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M14 9h3V6h-3a4 4 0 0 0-4 4v2H8v3h2v6h3v-6h3l1-3h-4v-1a1 1 0 0 1 1-2z"/></svg></a>
+          <a href="#" aria-label="Ridgeline Realty on Instagram"><svg viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Ridgeline Realty on LinkedIn"><svg viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 10v7"/><path d="M7 7v.01"/><path d="M11 17v-4a2 2 0 0 1 4 0v4"/><path d="M11 13v4"/></svg></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Office</h4>
+        <address>
+          Ridgeline Realty<br>
+          210 Chambersburg Road<br>
+          Gettysburg, PA 17325<br>
+          <a href="tel:+17175550210">(717) 555-0210</a><br>
+          <a href="mailto:info@@ridgelinerealty.test">info@@ridgelinerealty.test</a>
+        </address>
+      </div>
+
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <address>
+          Mon–Fri: 9:00am–6:00pm<br>
+          Sat: 10:00am–3:00pm<br>
+          Sun: By appointment
+        </address>
+        <h4 style="margin-top:22px;">Quick Links</h4>
+        <ul>
+          <li><a href="{{ home_url('/listings/') }}">Listings</a></li>
+          <li><a href="{{ home_url('/sell/') }}">Sell Your Home</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li><a href="{{ home_url('/listings/') }}">Listings</a></li>
+          <li><a href="{{ home_url('/areas/') }}">Areas We Serve</a></li>
+          <li><a href="{{ home_url('/agents/') }}">Our Agents</a></li>
+          <li><a href="{{ home_url('/sell/') }}">Sell Your Home</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer-service-note">Proudly serving Gettysburg plus Biglerville, Littlestown, New Oxford, McSherrystown, Fairfield, Cashtown, and the surrounding Adams County townships, Pennsylvania.</p>
+
+    <div class="footer-bottom">
+      <div class="equal-housing">
+        <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+        <span>Equal Housing Opportunity</span>
+      </div>
+      <p>&copy; <span data-current-year>2026</span> Ridgeline Realty. Design concept by Ridges &amp; Valleys Studio — a Gettysburg, PA web studio — created to show a prospective client their future site. Not a licensed real-estate brokerage. All listings, prices, and testimonials are illustrative.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== CHAT WIDGET ===== -->
+<div class="chat-widget">
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-head">
+      <div><strong>Ridgeline Assistant</strong><br><span>Usually replies in minutes</span></div>
+      <button class="chat-close" id="chatCloseBtn" aria-label="Close chat">&times;</button>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg">Hi! I'm the Ridgeline assistant (demo). Ask me something below.</div>
+    </div>
+    <div class="chat-quick">
+      <button type="button" data-reply="worth">What's my home worth?</button>
+      <button type="button" data-reply="showing">Schedule a showing</button>
+      <button type="button" data-reply="agent">Talk to an agent</button>
+      <button type="button" data-reply="areas">Areas you serve?</button>
+    </div>
+  </div>
+  <button class="chat-toggle" id="chatToggleBtn" aria-label="Open chat assistant" aria-expanded="false">
+    <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  </button>
+</div>
+
+<a href="#" class="concept-badge">Concept &middot; Ridges &amp; Valleys Studio</a>
+@endsection

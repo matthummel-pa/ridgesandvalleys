@@ -1,0 +1,341 @@
+{{--
+  Template Name: Amenities & Services
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "Hotel",
+  "@@id": "{{ home_url('/') }}#hotel",
+  "name": "The Lantern & Laurel Inn",
+  "url": "{{ home_url('/amenities/') }}",
+  "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Gettysburg,_Pennsylvania_(6286097408).jpg?width=1600",
+  "description": "Amenities and services at a boutique historic inn on Baltimore Street in downtown Gettysburg, Pennsylvania.",
+  "telephone": "+1-717-555-0142",
+  "email": "stay@@lanternandlaurel.test",
+  "priceRange": "$179–$309",
+  "numberOfRooms": 9,
+  "petsAllowed": false,
+  "checkinTime": "15:00",
+  "checkoutTime": "11:00",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "42 Baltimore Street",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8308, "longitude": -77.2310 },
+  "openingHoursSpecification": [
+    {
+      "@@type": "OpeningHoursSpecification",
+      "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+      "opens": "07:00",
+      "closes": "22:00"
+    }
+  ],
+  "amenityFeature": [
+    { "@@type": "LocationFeatureSpecification", "name": "Full country breakfast", "value": true },
+    { "@@type": "LocationFeatureSpecification", "name": "Working wood-burning fireplaces", "value": true },
+    { "@@type": "LocationFeatureSpecification", "name": "Guided battlefield walks", "value": true },
+    { "@@type": "LocationFeatureSpecification", "name": "House-wide WiFi", "value": true },
+    { "@@type": "LocationFeatureSpecification", "name": "Free private off-street parking", "value": true },
+    { "@@type": "LocationFeatureSpecification", "name": "Courtyard garden", "value": true }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg, PA" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, PA" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "Amenities & Services", "item": "{{ home_url('/amenities/') }}" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site">
+  <div class="nav-bar">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="The Lantern &amp; Laurel Inn — home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#d9ad5f" stroke-width="1.4">
+          <path d="M12 3c-3 3-3 6-3 9a3 3 0 0 0 6 0c0-3 0-6-3-9Z"/>
+          <path d="M12 15v6"/>
+          <path d="M8 21h8"/>
+        </svg>
+      </span>
+      <span class="brand-word">
+        <span class="name">Lantern &amp; Laurel</span>
+        <span class="place">Gettysburg, Pennsylvania</span>
+      </span>
+    </a>
+
+    <nav class="primary" aria-label="Primary">
+      <a href="{{ home_url('/') }}">Home</a>
+      <a href="{{ home_url('/rooms/') }}">Rooms</a>
+      <a href="{{ home_url('/amenities/') }}" class="is-active" aria-current="page">Amenities</a>
+      <a href="{{ home_url('/area/') }}">The Area</a>
+      <a href="{{ home_url('/gallery/') }}">Gallery</a>
+      <a href="{{ home_url('/contact/') }}">Contact</a>
+    </nav>
+
+    <div class="nav-actions">
+      <a href="{{ home_url('/contact/') }}#book" class="btn btn-brass desktop-only btn-sm">Book a Stay</a>
+      <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="mobilePanel" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+
+  <div class="mobile-panel" id="mobilePanel">
+    <a href="{{ home_url('/') }}">Home</a>
+    <a href="{{ home_url('/rooms/') }}">Rooms</a>
+    <a href="{{ home_url('/amenities/') }}" class="is-active" aria-current="page">Amenities</a>
+    <a href="{{ home_url('/area/') }}">The Area</a>
+    <a href="{{ home_url('/gallery/') }}">Gallery</a>
+    <a href="{{ home_url('/contact/') }}">Contact</a>
+    <a href="{{ home_url('/contact/') }}#book" class="btn btn-brass btn-block">Book a Stay</a>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="wrap">
+    <span class="eyebrow">What's Included</span>
+    <h1>Comfort, without the fuss.</h1>
+    <p class="lead">Everything a good inn should have — nothing it shouldn't. Every amenity below is included with your stay in downtown Gettysburg.</p>
+  </div>
+</div>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="wrap">
+    <ol>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li aria-current="page">Amenities &amp; Services</li>
+    </ol>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ============ AMENITIES GRID ============ -->
+  <section class="amenities">
+    <div class="wrap">
+      <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+        <span class="eyebrow">In Every Stay</span>
+        <h2>Included with your room.</h2>
+        <p>No resort fees and no add-ons — the rate you see is the stay you get.</p>
+      </div>
+
+      <div class="amen-grid">
+        <div class="amen-card reveal">
+          <div class="amen-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M4 13h16v3a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5v-3Z"/><path d="M4 13a8 8 0 0 1 16 0"/><path d="M2 21h20"/></svg></div>
+          <h3>Full Country Breakfast</h3>
+          <p>Buttermilk biscuits, local sausage, and seasonal fruit served 7:30&ndash;10:00am in the dining room or on the porch.</p>
+        </div>
+        <div class="amen-card reveal">
+          <div class="amen-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 2c-3 3-3 6-3 9a3 3 0 0 0 6 0c0-3 0-6-3-9Z"/><path d="M12 15v6"/><path d="M8 21h8"/></svg></div>
+          <h3>Working Fireplaces</h3>
+          <p>Five of our nine rooms have original wood-burning fireplaces, laid and lit each evening October through March.</p>
+        </div>
+        <div class="amen-card reveal">
+          <div class="amen-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></div>
+          <h3>Guided Battlefield Walks</h3>
+          <p>Complimentary 90-minute walking tours with a licensed battlefield guide, offered every Saturday morning at 8am.</p>
+        </div>
+        <div class="amen-card reveal">
+          <div class="amen-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M5 12.55a11 11 0 0 1 14 0M8.5 16a6 6 0 0 1 7 0M2 8.82a16 16 0 0 1 20 0"/><circle cx="12" cy="20" r="1"/></svg></div>
+          <h3>House-Wide Wi-Fi</h3>
+          <p>Reinforced signal reaching every floor, plus a quiet wired desk in the second-floor library for remote work.</p>
+        </div>
+        <div class="amen-card reveal">
+          <div class="amen-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><rect x="3" y="9" width="18" height="10" rx="2"/><path d="M7 9V6a5 5 0 0 1 10 0v3"/></svg></div>
+          <h3>Private Off-Street Parking</h3>
+          <p>A gated lot behind the house — no permits, no meters, no circling downtown Gettysburg for a spot.</p>
+        </div>
+        <div class="amen-card reveal">
+          <div class="amen-icon"><svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M12 22s7-6.5 7-12a7 7 0 0 0-14 0c0 5.5 7 12 7 12Z"/><circle cx="12" cy="10" r="2.5"/></svg></div>
+          <h3>Courtyard Garden</h3>
+          <p>A walled garden with a koi pond and Adirondack chairs — open to all guests from dawn until 10pm.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ SERVICES SPLIT ============ -->
+  <section class="section-cream">
+    <div class="wrap split">
+      <div class="reveal">
+        <div class="section-head">
+          <span class="eyebrow">Services</span>
+          <h2>The little things that make a stay.</h2>
+          <p>We're a small house, so we can do the sort of things a big hotel can't — like holding your bags before check-in or pointing you to the quiet spot on the battlefield at sunrise.</p>
+        </div>
+
+        <h3 style="color:var(--forest);font-size:1.15rem;margin:8px 0 8px;">Before you arrive</h3>
+        <ul class="prose bul" style="margin-bottom:22px;">
+          <li>Early bag drop and late-afternoon check-in by arrangement.</li>
+          <li>Restaurant reservations on Steinwehr Avenue and around Lincoln Square.</li>
+          <li>Licensed Battlefield Guide bookings for private auto tours.</li>
+          <li>Dietary needs for breakfast — just let us know when you book.</li>
+        </ul>
+
+        <h3 style="color:var(--forest);font-size:1.15rem;margin:8px 0 8px;">During your stay</h3>
+        <ul class="prose bul">
+          <li>Complimentary Saturday guided walk from the front porch at 8am.</li>
+          <li>Evening fireplaces laid in cold-weather months.</li>
+          <li>Loaner umbrellas, trail maps, and a shelf of Gettysburg history.</li>
+          <li>Local roast coffee and afternoon lemonade in the parlor.</li>
+        </ul>
+      </div>
+
+      <div class="reveal">
+        <div class="aside-card">
+          <h3>House Hours</h3>
+          <ul>
+            <li><b>Front desk</b> 7:00am&ndash;10:00pm daily</li>
+            <li><b>Breakfast</b> 7:30&ndash;10:00am daily</li>
+            <li><b>Check-in</b> from 3:00pm</li>
+            <li><b>Check-out</b> by 11:00am</li>
+            <li><b>Garden</b> dawn&ndash;10:00pm</li>
+            <li><b>Guided walk</b> Saturdays 8:00am</li>
+          </ul>
+        </div>
+        <div class="aside-card">
+          <h3>Accessibility</h3>
+          <p>One ground-floor room (the Carlisle Garden Room) is step-free from the rear parking lot. The historic upper floors are reached by stairs only. Call us and we'll talk through what will work for your visit.</p>
+          <p style="margin-bottom:0;"><a href="tel:+17175550142" style="color:var(--ember);">(717) 555-0142</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FAQ ============ -->
+  <section class="section-paper">
+    <div class="wrap">
+      <div class="section-head center reveal" style="margin-left:auto;margin-right:auto;">
+        <span class="eyebrow">Good to Know</span>
+        <h2>Amenity questions.</h2>
+      </div>
+      <div class="faq-list reveal">
+        <details class="faq">
+          <summary>Is breakfast included for every guest?</summary>
+          <div class="faq-body">Yes — a full country breakfast is included with every room, served 7:30&ndash;10:00am. We're glad to accommodate vegetarian, gluten-free, and other dietary needs with a little notice.</div>
+        </details>
+        <details class="faq">
+          <summary>How do the guided battlefield walks work?</summary>
+          <div class="faq-body">Our complimentary 90-minute walk leaves the front porch every Saturday at 8am with a licensed battlefield guide. For weekday or private auto tours, we're happy to book a guide for you — see the <a href="{{ home_url('/area/') }}">The Area</a> page for what's nearby.</div>
+        </details>
+        <details class="faq">
+          <summary>Do you have parking on site?</summary>
+          <div class="faq-body">We do. Every reservation includes a pass to our gated lot directly behind the inn off Baltimore Street — a genuine convenience in downtown Gettysburg, where street parking is limited.</div>
+        </details>
+        <details class="faq">
+          <summary>Can I work remotely from the inn?</summary>
+          <div class="faq-body">Absolutely. Wi-Fi reaches every floor, and there's a quiet wired desk in the second-floor library if you need a reliable connection for calls.</div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ CTA BAND ============ -->
+  <section class="cta-band">
+    <div class="wrap cta-inner">
+      <span class="eyebrow">Plan Your Stay</span>
+      <h2>Settle in on Baltimore Street.</h2>
+      <p>Breakfast, parking, and a warm fire are already part of the rate. Pick your dates and we'll take care of the rest.</p>
+      <div class="cta-row">
+        <a href="{{ home_url('/contact/') }}#book" class="btn btn-brass">Check Availability</a>
+        <a href="{{ home_url('/rooms/') }}" class="btn btn-outline">See the Rooms</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ SHARED FOOTER ============ -->
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="{{ home_url('/') }}" class="brand" aria-label="The Lantern &amp; Laurel Inn — home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#d9ad5f" stroke-width="1.4">
+              <path d="M12 3c-3 3-3 6-3 9a3 3 0 0 0 6 0c0-3 0-6-3-9Z"/>
+              <path d="M12 15v6"/>
+              <path d="M8 21h8"/>
+            </svg>
+          </span>
+          <span class="brand-word"><span class="name">Lantern &amp; Laurel</span></span>
+        </a>
+        <p>A nine-room historic inn on Baltimore Street, five minutes from Lincoln Square and the Gettysburg battlefield.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Lantern &amp; Laurel Inn on Instagram">
+            <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          </a>
+          <a href="#" aria-label="Lantern &amp; Laurel Inn on Facebook">
+            <svg viewBox="0 0 24 24"><path d="M15 8h2V4h-2a5 5 0 0 0-5 5v2H8v4h2v7h4v-7h3l1-4h-4V9a1 1 0 0 1 1-1Z"/></svg>
+          </a>
+          <a href="#" aria-label="Lantern &amp; Laurel Inn on Pinterest">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9 18c1-3 1.5-5.5 1.5-7.5a2.5 2.5 0 0 1 5 0c0 2-1.2 4-3 4"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div class="foot-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/rooms/') }}">Rooms &amp; Rates</a></li>
+          <li><a href="{{ home_url('/amenities/') }}">Amenities</a></li>
+          <li><a href="{{ home_url('/area/') }}">The Area</a></li>
+          <li><a href="{{ home_url('/gallery/') }}">Gallery</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact &amp; Booking</a></li>
+        </ul>
+      </div>
+
+      <div class="foot-col">
+        <h4>Visit</h4>
+        <address>
+          <p>The Lantern &amp; Laurel Inn</p>
+          <p>42 Baltimore Street</p>
+          <p>Gettysburg, PA 17325</p>
+        </address>
+        <p style="margin-top:10px;">Check-in 3:00pm</p>
+        <p>Check-out 11:00am</p>
+      </div>
+
+      <div class="foot-col">
+        <h4>Contact &amp; Hours</h4>
+        <p><a href="tel:+17175550142">(717) 555-0142</a></p>
+        <p><a href="mailto:stay@@lanternandlaurel.test">stay@@lanternandlaurel.test</a></p>
+        <p style="margin-top:10px;">Front desk 7:00am&ndash;10:00pm daily</p>
+        <p>Breakfast 7:30&ndash;10:00am</p>
+        <p style="margin-top:10px;">Serving Gettysburg &amp; Adams County — Biglerville, New Oxford, Littlestown &amp; Fairfield.</p>
+      </div>
+    </div>
+
+    <div class="foot-bottom">
+      <span>&copy; <span class="js-year">2026</span> The Lantern &amp; Laurel Inn, Gettysburg PA. Concept for demonstration.</span>
+      <span>Design concept by Ridges &amp; Valleys Studio</span>
+    </div>
+  </div>
+</footer>
+
+<a href="#" class="concept-badge" aria-label="This is a design concept by Ridges &amp; Valleys Studio">
+  <span class="dot" aria-hidden="true"></span>
+  Concept &middot; Ridges &amp; Valleys Studio
+</a>
+@endsection

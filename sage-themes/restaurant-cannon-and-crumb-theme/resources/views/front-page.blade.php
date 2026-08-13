@@ -1,0 +1,343 @@
+{{-- Front page: concept home --}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "CafeOrCoffeeShop",
+  "@@id": "{{ home_url('/') }}#business",
+  "name": "Cannon & Crumb",
+  "description": "All-day cafe and scratch bakery on Lincoln Square in downtown Gettysburg, PA, serving breakfast, brunch, lunch, pastries, and single-origin coffee.",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/') }}",
+  "telephone": "+1-717-555-0107",
+  "email": "hello@@cannonandcrumb.test",
+  "priceRange": "$$",
+  "servesCuisine": ["Cafe", "Bakery", "Breakfast", "Brunch", "Coffee", "American"],
+  "menu": "{{ home_url('/menu/') }}",
+  "hasMenu": "{{ home_url('/menu/') }}",
+  "acceptsReservations": "False",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "7 Lincoln Square",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8312, "longitude": -77.2310 },
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday"], "opens": "07:00", "closes": "15:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday", "Saturday"], "opens": "07:00", "closes": "20:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "08:00", "closes": "14:00" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, Pennsylvania" }
+  ],
+  "sameAs": ["https://www.instagram.com/", "https://www.facebook.com/"]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="Cannon & Crumb home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fdf6ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M4 12h16M4 12a8 8 0 0 1 16 0M4 12v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/>
+          <path d="M9 21v-3M15 21v-3"/>
+        </svg>
+      </span>
+      <span class="brand-name">Cannon <span class="amp">&amp;</span> Crumb</span>
+    </a>
+
+    <nav class="main-nav" id="main-nav" aria-label="Primary">
+      <a href="{{ home_url('/menu/') }}">Menu</a>
+      <a href="{{ home_url('/order/') }}">Order Online</a>
+      <a href="{{ home_url('/catering/') }}">Catering</a>
+      <a href="{{ home_url('/visit/') }}">Visit</a>
+      <a href="{{ home_url('/contact/') }}">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="icon-btn" id="cart-btn" href="{{ home_url('/order/') }}" aria-label="Order online">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/>
+          <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/>
+        </svg>
+        <span class="count-badge" id="cart-count" aria-hidden="true">0</span>
+      </a>
+      <button class="hamburger" id="hamburger" aria-expanded="false" aria-controls="main-nav" aria-label="Toggle menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+  <!-- HERO -->
+  <section class="hero" id="top">
+    <div class="hero-bg" aria-hidden="true">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/DowntownGettysburgPA.jpg?width=1600"
+           alt=""
+           onerror="this.style.display='none'">
+    </div>
+    <div class="hero-content">
+      <span class="hero-eyebrow">Right on Lincoln Square · Gettysburg, PA</span>
+      <h1>Good mornings start on<span class="serif">Lincoln Square.</span></h1>
+      <p class="hero-sub">Cannon &amp; Crumb is a bright, all-day cafe &amp; bakery in the heart of downtown Gettysburg — scratch pastries, single-origin coffee, and honest food from Adams County farms, seven days a week.</p>
+      <div class="hero-actions">
+        <a href="{{ home_url('/order/') }}" class="btn btn-primary">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" aria-hidden="true"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg>
+          Order Online
+        </a>
+        <a href="{{ home_url('/menu/') }}" class="btn btn-outline" style="color:#fff; border-color:rgba(255,255,255,0.7);">See the Menu</a>
+      </div>
+      <div class="hero-meta">
+        <div><strong>7 Lincoln Square</strong>Gettysburg, PA 17325</div>
+        <div><strong>(717) 555-0107</strong>Call or order ahead</div>
+        <div><strong>Open Daily · 7am–3pm</strong>Late Fri &amp; Sat</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEASERS TO EVERY PAGE -->
+  <section>
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Everything Cannon &amp; Crumb</span>
+        <h2>One little corner of Gettysburg, all day long</h2>
+        <p>From the first pour-over to a boxed-lunch catering run, here's where to go next.</p>
+      </div>
+      <div class="teaser-grid">
+
+        <a class="teaser-card reveal" href="{{ home_url('/menu/') }}">
+          <span class="teaser-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 2v7c0 1.1.9 2 2 2h0a2 2 0 0 0 2-2V2M5 2v20M15 2v20M15 8c0-3 2-6 4-6v20"/></svg></span>
+          <h3>The Menu</h3>
+          <p>Breakfast &amp; brunch, a scratch bakery case, lunch, and coffee — filter by vegetarian, vegan, or gluten-free.</p>
+          <span class="teaser-link">Browse the menu →</span>
+        </a>
+
+        <a class="teaser-card reveal" href="{{ home_url('/order/') }}">
+          <span class="teaser-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="21" r="1"/><circle cx="20" cy="21" r="1"/><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"/></svg></span>
+          <h3>Order Online</h3>
+          <p>Build your order for pickup on the Square or delivery around downtown Gettysburg — with a live running total.</p>
+          <span class="teaser-link">Start an order →</span>
+        </a>
+
+        <a class="teaser-card reveal" href="{{ home_url('/catering/') }}">
+          <span class="teaser-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3c0 1.5 3 5 3 5s3-3.5 3-5a3 3 0 0 0-3-3zM4 22h16M6 22l1-6h10l1 6"/></svg></span>
+          <h3>Catering &amp; Events</h3>
+          <p>Pastry boxes, coffee carafes, and boxed lunches for tour groups, reunions, offices, and rehearsal dinners.</p>
+          <span class="teaser-link">Plan an event →</span>
+        </a>
+
+        <a class="teaser-card reveal" href="{{ home_url('/visit/') }}">
+          <span class="teaser-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <h3>Visit Us &amp; The Area</h3>
+          <p>We're steps from the Lincoln Square fountain. Parking, walking distances, directions, and nearby towns.</p>
+          <span class="teaser-link">Find &amp; visit us →</span>
+        </a>
+
+        <a class="teaser-card reveal" href="{{ home_url('/contact/') }}">
+          <span class="teaser-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4zM4 4l8 7 8-7"/></svg></span>
+          <h3>Contact</h3>
+          <p>Questions about hours, allergens, or a large order? Send a note and we'll get right back to you.</p>
+          <span class="teaser-link">Get in touch →</span>
+        </a>
+
+        <a class="teaser-card reveal" href="{{ home_url('/visit/') }}#hours">
+          <span class="teaser-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <h3>Hours</h3>
+          <p>Open daily from 7am (8am Sundays), with later hours Friday &amp; Saturday. See the full weekly schedule.</p>
+          <span class="teaser-link">View hours →</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY TEASER -->
+  <section class="story">
+    <div class="container">
+      <div class="story-grid">
+        <div class="story-photo reveal">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Two_Buildings_in_the_Gettysburg_Historic_District.jpg?width=1600"
+               alt="Historic brick storefronts in downtown Gettysburg's historic district near Lincoln Square"
+               onerror="this.style.display='none'">
+          <span class="badge-corner">Est. in a 1907 storefront</span>
+        </div>
+        <div class="story-text reveal">
+          <span class="eyebrow">Our Story</span>
+          <h2>Small-batch baking, big local roots.</h2>
+          <p>Cannon &amp; Crumb opened right on Lincoln Square with one idea: bake everything from scratch, source as close to home as possible, and make a cafe this town would actually gather in.</p>
+          <p>Our flour comes from a mill outside Biglerville, our produce from Adams County orchards and farm stands, and our coffee is roasted in small batches just up the road.</p>
+          <div class="story-stats">
+            <div><strong>100%</strong><span>Scratch-made bakery</span></div>
+            <div><strong>12+</strong><span>Local farm partners</span></div>
+            <div><strong>7AM</strong><span>Fresh dough, every day</span></div>
+          </div>
+          <div style="margin-top:1.75rem;">
+            <a href="{{ home_url('/visit/') }}" class="btn btn-outline">More about visiting us</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATERING CALLOUT -->
+  <section style="padding-top:0;">
+    <div class="callout reveal">
+      <div class="callout-text">
+        <span class="eyebrow">Grab &amp; Go / Catering</span>
+        <h2>Feeding a battlefield tour group or an office meeting?</h2>
+        <p>Pastry boxes, coffee carafes, and boxed lunches ready for pickup on the Square — or ask about full catering for reunions, rehearsal dinners, and Gettysburg group tours.</p>
+      </div>
+      <div class="callout-actions">
+        <a href="{{ home_url('/catering/') }}" class="btn btn-teal">Explore Catering</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- TESTIMONIALS -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">What Folks Are Saying</span>
+        <h2>Loved by locals &amp; visitors alike</h2>
+        <p class="mono" style="font-size:0.8rem; color:var(--espresso-soft);">Sample reviews shown for this design concept.</p>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card reveal">
+          <div class="stars" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+          </div>
+          <p class="quote">"The sticky bun alone is worth the walk to the Square. We order ahead every Saturday now."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:var(--raspberry);">JM</div>
+            <div><strong>Jenna M.</strong><span>Gettysburg resident</span></div>
+          </div>
+        </div>
+        <div class="testi-card reveal">
+          <div class="stars" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+          </div>
+          <p class="quote">"Stopped in during a battlefield tour and ended up ordering the grain bowl to go — one of the best lunches we've had on a trip."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:var(--teal);">RP</div>
+            <div><strong>Ray P.</strong><span>Visiting from Harrisburg</span></div>
+          </div>
+        </div>
+        <div class="testi-card reveal">
+          <div class="stars" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87L18.18 21 12 17.77 5.82 21 7 14.14l-5-4.87 6.91-1.01z"/></svg>
+          </div>
+          <p class="quote">"We used them for our rehearsal dinner catering and every box was gone within minutes. Warm, easy to work with, and excellent food."</p>
+          <div class="testi-author">
+            <div class="testi-avatar" style="background:var(--butter); color:var(--espresso);">SD</div>
+            <div><strong>Sarah D.</strong><span>Local event planner</span></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA BAND -->
+  <section class="cta-band">
+    <div class="container">
+      <h2>Coffee's on. Come find us on the Square.</h2>
+      <p>Order ahead for a quick pickup, or plan a catering spread for your next Gettysburg gathering.</p>
+      <div class="hero-actions">
+        <a href="{{ home_url('/order/') }}" class="btn btn-primary" style="background:var(--espresso);">Order Online</a>
+        <a href="{{ home_url('/visit/') }}" class="btn btn-outline">Plan Your Visit</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!--#footer-->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid cols-4">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#fdf6ea" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 12h16M4 12a8 8 0 0 1 16 0M4 12v6a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-6"/>
+              <path d="M9 21v-3M15 21v-3"/>
+            </svg>
+          </span>
+          Cannon &amp; Crumb
+        </div>
+        <p>An all-day cafe &amp; bakery in the heart of downtown Gettysburg. Scratch pastries, local sourcing, and coffee worth the walk to the Square.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Cannon & Crumb on Instagram">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg>
+          </a>
+          <a href="#" aria-label="Cannon & Crumb on Facebook">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/></svg>
+          </a>
+          <a href="#" aria-label="Cannon & Crumb on TikTok">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 12a4 4 0 1 0 4 4V4a5 5 0 0 0 5 5"/></svg>
+          </a>
+        </div>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <address class="footer-nap">
+          <p>Cannon &amp; Crumb</p>
+          <p>7 Lincoln Square<br>Gettysburg, PA 17325</p>
+          <a href="tel:+17175550107">(717) 555-0107</a>
+          <a href="mailto:hello@@cannonandcrumb.test">hello@@cannonandcrumb.test</a>
+        </address>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <ul class="footer-hours">
+          <li><span>Mon–Thu</span><span>7a–3p</span></li>
+          <li><span>Fri</span><span>7a–8p</span></li>
+          <li><span>Sat</span><span>7a–8p</span></li>
+          <li><span>Sun</span><span>8a–2p</span></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/menu/') }}">Menu</a></li>
+          <li><a href="{{ home_url('/order/') }}">Order Online</a></li>
+          <li><a href="{{ home_url('/catering/') }}">Catering &amp; Events</a></li>
+          <li><a href="{{ home_url('/visit/') }}">Visit Us / The Area</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-service-area">Proudly serving Gettysburg and the surrounding Adams County communities — Biglerville, New Oxford, Littlestown, McSherrystown, Fairfield, Cashtown, and Hanover.</p>
+    <div class="footer-bottom">
+      <span>© <span data-year>2026</span> Cannon &amp; Crumb. All rights reserved.</span>
+      <span>Design concept by Ridges &amp; Valleys Studio, Gettysburg PA.</span>
+    </div>
+  </div>
+</footer>
+
+<a href="#" class="concept-badge" id="concept-badge">Concept · Ridges &amp; Valleys Studio</a>
+@endsection
