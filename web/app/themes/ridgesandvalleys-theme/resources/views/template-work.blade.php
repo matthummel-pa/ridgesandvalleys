@@ -5,18 +5,21 @@
 
 @section('content')
   @php($ctaHref = \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')))
+  @php($heroCtaHref = \App\cta_href(\App\field('work_cta_url', get_theme_mod('rv_cta_url', '/contact/'))))
 
+  {{-- HERO — same pattern as Home / About: keyword H1, two CTAs, note, proof ribbon. --}}
   <section class="rv-hero" aria-labelledby="rv-work-hero-title">
     <span class="rv-stripe" aria-hidden="true"></span>
     @include('partials.hero-bg', ['fallback' => \App\stock_image('hero-work')])
     <div class="rv-shell rv-hero-inner">
-      {!! \App\eyebrow(\App\field('hero_eyebrow', __('Selected work · Gettysburg & Adams County', 'sage'))) !!}
-      <h1 id="rv-work-hero-title" class="rv-hero-title">{{ \App\field('hero_title', __('Business owners buy', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('confidence.', 'sage')) }}</em></h1>
-      <p class="rv-hero-sub">{{ \App\field('hero_lede', __('Clickable concept sites for Gettysburg and Adams County businesses — the problem, the approach, and the result.', 'sage')) }}</p>
+      {!! \App\eyebrow(\App\field('work_kicker', __('Gettysburg web design work', 'sage'))) !!}
+      <h1 id="rv-work-hero-title" class="rv-hero-title">{{ \App\field('work_h1', __('Gettysburg web design you can', 'sage')) }} <em class="rv-accent">{{ \App\field('work_h1_accent', __('actually click.', 'sage')) }}</em></h1>
+      <p class="rv-hero-sub">{{ \App\field('work_lede', __('Live concept sites for restaurants, inns, shops, and tours around Gettysburg and Adams County. Filter by industry, click the working demo, then get a quote.', 'sage')) }}</p>
       <div class="rv-hero-actions">
-        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn1_style',''), 'rv-btn-primary') }}" href="{{ \App\cta_href(\App\field('hero_btn1_url', get_theme_mod('rv_cta_url', '/contact/'))) }}">{{ \App\field('hero_btn1', __('Start your project', 'sage')) }}</a>
-        <a class="rv-btn {{ \App\hero_btn_class(\App\field('hero_btn2_style',''), 'rv-btn-ghost') }}" href="#case-studies">{{ \App\field('hero_btn2', __('Explore the concepts', 'sage')) }} &darr;</a>
+        <a class="rv-btn rv-btn-primary" href="{{ $heroCtaHref }}">{{ \App\field('work_cta', __('Get a quote', 'sage')) }}</a>
+        <a class="rv-btn rv-btn-ghost" href="#case-studies">{{ \App\field('work_cta2', __('Browse the work', 'sage')) }} &darr;</a>
       </div>
+      <p class="rv-hero-note">{{ \App\field('work_note', __('Honest concepts · Live demos · No fake clients', 'sage')) }}</p>
     </div>
     @php($workStats = \App\work_stats())
     @if (! empty($workStats))
@@ -35,17 +38,20 @@
     @endif
   </section>
 
-  {{-- Why these concepts — split: honesty on the left, what they prove on the right. --}}
+  {{-- How to use this page — split: honesty on the left, funnel steps on the right. --}}
   <section class="rv-band rv-band-alt rv-work-why" aria-labelledby="rv-work-why-title">
     <div class="rv-shell rv-work-why-grid">
       <div class="rv-work-why-copy">
-        {!! \App\eyebrow(\App\field('work_why_eyebrow', __('Honest by default', 'sage'))) !!}
-        <h2 id="rv-work-why-title" class="rv-section-title">{{ \App\field('work_why_title', __('Real work you can', 'sage')) }} <em class="rv-accent">{{ \App\field('work_why_accent', __('actually click.', 'sage')) }}</em></h2>
-        <p class="rv-page-intro">{!! \App\field('work_why_intro', __('<strong>I built these myself — one per industry.</strong> Each is a live, working demo you can click around, so you can see exactly how I think, not just a pretty screenshot. No fake clients, no borrowed templates, no stock mockups dressed up as real projects.', 'sage')) !!}</p>
-        <a class="rv-work-why-jump" href="#case-studies">{{ __('Browse the concepts', 'sage') }} {!! \App\icon('arrow') !!}</a>
+        {!! \App\eyebrow(\App\field('wwhy_eyebrow', __('How to use this page', 'sage'))) !!}
+        <h2 id="rv-work-why-title" class="rv-section-title">{{ \App\field('wwhy_title', __('Pick your industry.', 'sage')) }} <em class="rv-accent">{{ \App\field('wwhy_accent', __('Click the demo.', 'sage')) }}</em></h2>
+        <p class="rv-page-intro">{!! \App\field('wwhy_intro', __('<strong>I built these myself — one live site per industry.</strong> Filter to a business like yours, click around the working demo, then get a quote if it feels like a fit. No fake clients, no borrowed templates, no stock mockups dressed up as case studies.', 'sage')) !!}</p>
+        <div class="rv-work-why-actions">
+          <a class="rv-btn rv-btn-ghost" href="#case-studies">{{ \App\field('wwhy_jump', __('Browse the concepts', 'sage')) }}</a>
+          <a class="rv-work-why-jump" href="{{ $ctaHref }}">{{ \App\field('wwhy_cta', __('Get a quote', 'sage')) }} {!! \App\icon('arrow') !!}</a>
+        </div>
       </div>
       <div class="rv-work-why-list">
-        @foreach (\App\field_rows('work_why_items', \App\work_why_item_defaults()) as $v)
+        @foreach (\App\field_rows('wwhy_items', \App\work_why_item_defaults()) as $v)
           <article class="rv-work-why-item">
             @if (($v['kicker'] ?? '') !== '')<span class="rv-work-why-kicker">{{ $v['kicker'] }}</span>@endif
             @if (($v['title'] ?? '') !== '')<h3>{{ $v['title'] }}</h3>@endif
@@ -57,96 +63,73 @@
   </section>
 
   @php($work = new WP_Query(['post_type' => 'project', 'posts_per_page' => 12, 'no_found_rows' => true]))
-  <section class="rv-shell rv-band" id="case-studies" style="scroll-margin-top:6rem">
+  <section class="rv-shell rv-band rv-work-index" id="case-studies" style="scroll-margin-top:6rem">
     @if ($work->have_posts())
+      {!! \App\work_itemlist_jsonld($work->posts) !!}
       <div class="rv-headstack">
-        {!! \App\eyebrow(\App\field('work_cs_eyebrow', __('The work', 'sage'))) !!}
-        <h2 class="rv-section-title">{{ \App\field('work_cs_title', __('Concepts, built', 'sage')) }} <em class="rv-accent">{{ \App\field('work_cs_accent', __('in full.', 'sage')) }}</em></h2>
-        <p class="rv-page-intro">{{ \App\field('work_cs_intro', __('These are concept sites I designed and coded from scratch — one for each kind of local business I work with. Anything marked “Concept” is my own self-initiated demo, not a client project. Click any one for the problem it solves, my approach, and a live, working preview.', 'sage')) }}</p>
+        {!! \App\eyebrow(\App\field('wcs_eyebrow', __('The work', 'sage'))) !!}
+        <h2 class="rv-section-title">{{ \App\field('wcs_title', __('Concepts for', 'sage')) }} <em class="rv-accent">{{ \App\field('wcs_accent', __('Adams County businesses.', 'sage')) }}</em></h2>
+        <p class="rv-page-intro">{{ \App\field('wcs_intro', __('Filter by industry, open a live demo, then read the problem → approach → result. Anything marked “Concept” is my own self-initiated demo, not a client project — so you can click the real site, not a screenshot.', 'sage')) }}</p>
       </div>
-      {{-- Derive a canonical category per project from its meta/title so the
-           filter pills always match the work that's actually shown. --}}
-      @php($rvCatDefs = [
-        ['slug' => 'restaurants', 'label' => __('Restaurants', 'sage'), 'kw' => ['restaurant', 'kitchen', 'tavern', 'bistro', 'eatery', 'dining', 'food & drink', 'bakery', 'cafe', 'café', 'coffee', 'pizzeria', 'grill', 'pub', 'brewery']],
-        ['slug' => 'inns', 'label' => __('Hotels & inns', 'sage'), 'kw' => ['inn', 'hotel', 'b&b', 'bed and breakfast', 'bed & breakfast', 'lodging', 'lodge', 'cottage', 'guesthouse', 'motel', 'hospitality', 'stay']],
-        ['slug' => 'retail', 'label' => __('Retail & shops', 'sage'), 'kw' => ['retail', 'shop', 'store', 'mercantile', 'boutique', 'goods', 'market', 'thread', 'apparel', 'gift']],
-        ['slug' => 'tours', 'label' => __('Tours', 'sage'), 'kw' => ['tour', 'tours', 'battlefield', 'history', 'guide', 'trail', 'experience', 'sightseeing']],
-        ['slug' => 'realestate', 'label' => __('Real estate', 'sage'), 'kw' => ['real estate', 'realty', 'realtor', 'property', 'properties', 'homes for sale', 'broker']],
-        ['slug' => 'services', 'label' => __('Professional services', 'sage'), 'kw' => ['law', 'legal', 'attorney', 'lawyer', 'accountant', 'accounting', 'dental', 'dentist', 'medical', 'clinic', 'consult', 'agency', 'financial', 'insurance', 'professional service']],
-      ])
-      @php($rvCat = function ($id) use ($rvCatDefs) {
-        $hay = strtolower(trim(
-          (string) get_post_meta($id, '_rv_industry', true) . ' ' .
-          (string) get_post_meta($id, '_rv_eyebrow', true) . ' ' .
-          (string) get_post_meta($id, '_rv_client', true) . ' ' .
-          (string) get_the_title($id)
-        ));
-        foreach ($rvCatDefs as $d) {
-          foreach ($d['kw'] as $k) {
-            if ($k !== '' && strpos($hay, $k) !== false) {
-              return ['slug' => $d['slug'], 'label' => $d['label']];
-            }
-          }
-        }
-        return ['slug' => 'other', 'label' => __('Other', 'sage')];
-      })
-      @php($rvPresent = [])
-      @foreach ($work->posts as $rvP)
-        @php($rvC = $rvCat($rvP->ID))
-        @php($rvPresent[$rvC['slug']] = $rvC['label'])
-      @endforeach
-      {{-- Keep pills in the studio's preferred order; any extras (e.g. Other) fall to the end. --}}
-      @php($rvOrdered = [])
-      @foreach ($rvCatDefs as $d)
-        @if (isset($rvPresent[$d['slug']]))
-          @php($rvOrdered[$d['slug']] = $rvPresent[$d['slug']])
-        @endif
-      @endforeach
-      @foreach ($rvPresent as $rvSlug => $rvLabel)
-        @if (! isset($rvOrdered[$rvSlug]))
-          @php($rvOrdered[$rvSlug] = $rvLabel)
-        @endif
-      @endforeach
+      @php($rvOrdered = \App\work_filter_categories($work->posts))
+      @php($rvTotal = count($work->posts))
 
       @if (count($rvOrdered) > 1)
-        <div class="rv-work-cats rv-work-filters" role="group" aria-label="{{ __('Filter work by category', 'sage') }}">
-          <span class="rv-work-cats-label">{{ \App\field('work_cats_label', __('Show me', 'sage')) }}</span>
-          <button type="button" class="rv-work-cat rv-filter" data-filter="all" aria-pressed="true">{{ __('Show all', 'sage') }}</button>
-          @foreach ($rvOrdered as $rvSlug => $rvLabel)
-            <button type="button" class="rv-work-cat rv-filter" data-filter="{{ esc_attr($rvSlug) }}" aria-pressed="false">{{ $rvLabel }}</button>
+        <div class="rv-work-cats rv-work-filters" role="group" aria-label="{{ __('Filter work by industry', 'sage') }}">
+          <span class="rv-work-cats-label">{{ \App\field('wcs_cats_label', __('Show me', 'sage')) }}</span>
+          <button type="button" class="rv-work-cat rv-filter" data-filter="all" aria-pressed="true">{{ __('Show all', 'sage') }} <span class="rv-work-cat-n">{{ $rvTotal }}</span></button>
+          @foreach ($rvOrdered as $rvSlug => $rvRow)
+            <button type="button" class="rv-work-cat rv-filter" data-filter="{{ esc_attr($rvSlug) }}" aria-pressed="false">{{ $rvRow['label'] }} <span class="rv-work-cat-n">{{ $rvRow['count'] }}</span></button>
           @endforeach
         </div>
       @endif
-      <div class="rv-grid rv-work-grid" id="rv-work-grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr));margin-top:2rem">
+      <p class="rv-work-count" id="rv-work-count" aria-live="polite">{{ sprintf(_n('Showing %d concept', 'Showing %d concepts', $rvTotal, 'sage'), $rvTotal) }}</p>
+      <p class="rv-work-honest">{{ \App\field('wcs_honest', __('Concept means I built it to show my approach — not a paid client. That’s the point: you can click the working site.', 'sage')) }}</p>
+      <div class="rv-grid rv-work-grid" id="rv-work-grid">
+        @php($rvI = 0)
         @while($work->have_posts()) @php($work->the_post())
-          @php($peyebrow = get_post_meta(get_the_ID(), '_rv_eyebrow', true) ?: (get_post_meta(get_the_ID(), '_rv_client', true) ?: __('Case study', 'sage')))
-          @php($psummary = get_post_meta(get_the_ID(), '_rv_summary', true) ?: get_the_excerpt())
-          @php($ppreview = get_post_meta(get_the_ID(), '_rv_preview', true))
-          @php($pconcept = get_post_meta(get_the_ID(), '_rv_is_concept', true) === '1')
-          @php($pcat = $rvCat(get_the_ID()))
-          <article data-cat="{{ esc_attr($pcat['slug']) }}" @php(post_class('rv-card rv-work-card'))>
-            <a class="rv-work-link" href="{{ get_permalink() }}">
+          @php($pid = (int) get_the_ID())
+          @php($p = \App\work_card_data($pid))
+          @php($psummary = $p['summary'] !== '' ? $p['summary'] : get_the_excerpt())
+          <article data-cat="{{ esc_attr($p['cat']['slug']) }}" @php(post_class('rv-card rv-work-card' . ($rvI === 0 ? ' rv-work-card--lead' : '')))>
+            <a class="rv-work-shot" href="{{ get_permalink() }}">
               @if (has_post_thumbnail())
-                <span class="rv-work-thumb">@php(the_post_thumbnail('rv-card', ['loading' => 'lazy']))@if ($pconcept)<span class="rv-work-badge">{{ __('Concept', 'sage') }}</span>@endif</span>
-              @elseif ($ppreview)
-                <span class="rv-work-thumb rv-media-photo"><img src="{{ esc_url($ppreview) }}" alt="{{ esc_attr(get_the_title()) }}" loading="lazy" onerror="this.closest('.rv-work-thumb').classList.add('rv-work-thumb-placeholder')">@if ($pconcept)<span class="rv-work-badge">{{ __('Concept', 'sage') }}</span>@endif</span>
+                <span class="rv-work-thumb">@php(the_post_thumbnail('rv-card', ['loading' => 'lazy']))</span>
+              @elseif ($p['preview'])
+                <span class="rv-work-thumb rv-media-photo"><img src="{{ esc_url($p['preview']) }}" alt="{{ esc_attr(get_the_title()) }}" loading="lazy" onerror="this.closest('.rv-work-thumb').classList.add('rv-work-thumb-placeholder')"></span>
               @else
-                <span class="rv-work-thumb rv-work-thumb-placeholder" aria-hidden="true">@if ($pconcept)<span class="rv-work-badge">{{ __('Concept', 'sage') }}</span>@endif</span>
+                <span class="rv-work-thumb rv-work-thumb-placeholder" aria-hidden="true"></span>
               @endif
-              <span class="rv-work-body">
-                <span class="rv-eyebrow">{{ $peyebrow }}</span>
-                <span class="rv-work-title">{!! get_the_title() !!}</span>
-                @if ($psummary)<span class="rv-work-excerpt">{{ $psummary }}</span>@endif
-                <span class="rv-work-more">{{ __('Read the case study', 'sage') }} {!! \App\icon('arrow') !!}</span>
+              <span class="rv-work-badges">
+                @if ($p['concept'])<span class="rv-work-badge">{{ __('Concept', 'sage') }}</span>@endif
+                @if ($p['url'] !== '')<span class="rv-work-badge rv-work-badge-live">{{ __('Live demo', 'sage') }}</span>@endif
               </span>
             </a>
+            <div class="rv-work-body">
+              <span class="rv-work-meta">
+                <span class="rv-work-industry">{{ $p['industry'] }}</span>
+                @if ($p['location'] !== '')<span class="rv-work-loc">{{ $p['location'] }}</span>@endif
+              </span>
+              <span class="rv-eyebrow">{{ $p['eyebrow'] }}</span>
+              <a class="rv-work-title" href="{{ get_permalink() }}">{!! get_the_title() !!}</a>
+              @if ($psummary)<p class="rv-work-excerpt">{{ $psummary }}</p>@endif
+              @if ($p['metric'] !== '')<p class="rv-work-metric">{{ $p['metric'] }}</p>@endif
+              <div class="rv-work-actions">
+                <a class="rv-work-more" href="{{ get_permalink() }}">{{ __('Read the story', 'sage') }} {!! \App\icon('arrow') !!}</a>
+                @if ($p['url'] !== '')
+                  <a class="rv-work-live" href="{{ esc_url($p['url']) }}" target="_blank" rel="noopener noreferrer">{{ $p['concept'] ? __('Open live demo', 'sage') : __('Visit live site', 'sage') }} &nearr;</a>
+                @endif
+              </div>
+            </div>
           </article>
+          @php($rvI++)
         @endwhile
       </div>
+      <p class="rv-work-empty" id="rv-work-empty" hidden>{{ __('Nothing in this category yet.', 'sage') }} <button type="button" class="rv-work-empty-all">{{ __('Show all', 'sage') }}</button> {{ __('or', 'sage') }} <a href="{{ $ctaHref }}">{{ __('tell me about your business', 'sage') }}</a>.</p>
       @php(wp_reset_postdata())
     @else
       {{-- Static case cards (mockup content) until Projects are added in the dashboard --}}
-      <div class="rv-grid" style="grid-template-columns:repeat(auto-fit,minmax(320px,1fr))">
+      <div class="rv-grid rv-work-grid">
         @php($cases = [
           [__('Concept · Professional services', 'sage'), __('A local law office (concept)', 'sage'), __('A self-initiated concept showing a clearer path from visitor to consultation.', 'sage'), 'work-1', __('Wentz farm buildings near Gettysburg', 'sage')],
           [__('Product · Process', 'sage'), __('Groundwork to Launch', 'sage'), __('The delivery engine behind the studio — a productized website workflow I built.', 'sage'), 'work-2', __('Workspace desk with a laptop', 'sage')],
@@ -155,21 +138,32 @@
         ])
         @foreach ($cases as $c)
           <article class="rv-card rv-work-card">
-            <a class="rv-work-link" href="{{ \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')) }}">
+            <a class="rv-work-shot" href="{{ $ctaHref }}">
               <span class="rv-work-thumb rv-media-photo">
                 <img src="{{ \App\stock_image($c[3]) }}" alt="{{ $c[4] }}" loading="lazy" onerror="this.style.display='none'">
               </span>
-              <span class="rv-work-body">
-                <span class="rv-eyebrow">{{ $c[0] }}</span>
-                <span class="rv-work-title">{{ $c[1] }}</span>
-                <span class="rv-work-excerpt">{{ $c[2] }}</span>
-              </span>
             </a>
+            <div class="rv-work-body">
+              <span class="rv-eyebrow">{{ $c[0] }}</span>
+              <a class="rv-work-title" href="{{ $ctaHref }}">{{ $c[1] }}</a>
+              <p class="rv-work-excerpt">{{ $c[2] }}</p>
+            </div>
           </article>
         @endforeach
       </div>
     @endif
-    <p class="rv-tool-hint" style="margin-top:1.5rem">{{ \App\field('work_hint', __('Each write-up follows: Problem → Approach → What it does → Design goals. On concepts these goals are illustrative; on client projects they become measured results.', 'sage')) }}</p>
+    <p class="rv-tool-hint rv-work-hint">{{ \App\field('wcs_hint', __('Each write-up follows Problem → Approach → Result. On concepts those goals are illustrative; on client projects they become measured results.', 'sage')) }}</p>
+    <div class="rv-work-midcta">
+      <div class="rv-work-midcta-copy">
+        {!! \App\eyebrow(\App\field('wcs_cta_kicker', __('Your turn', 'sage'))) !!}
+        <h3 class="rv-work-midcta-h">{{ \App\field('wcs_cta_h', __('See something close to your business?', 'sage')) }}</h3>
+        <p>{{ \App\field('wcs_cta_p', __('Tell me what you do in Adams County. I’ll point you to the closest concept and a fixed price — usually a reply within a business day.', 'sage')) }}</p>
+      </div>
+      <div class="rv-work-midcta-actions">
+        <a class="rv-btn rv-btn-primary" href="{{ $ctaHref }}">{{ \App\field('wcs_cta_btn', __('Get a quote', 'sage')) }}</a>
+        <span class="rv-work-midcta-fine">{{ __('No jargon, no pressure.', 'sage') }}</span>
+      </div>
+    </div>
   </section>
 
   {{-- DON'T SEE YOUR BUSINESS? (bigger, more info) --}}
@@ -314,11 +308,78 @@
     .rv-check-list li{position:relative;padding-left:1.6rem;margin:.55rem 0}
     .rv-check-list li::before{content:"";position:absolute;left:0;top:.55em;width:.6rem;height:.6rem;border-radius:50%;background:var(--ridgeline)}
     .rv-work-reassure{margin-top:1.5rem;font-family:var(--font-mono);font-size:.8rem;letter-spacing:.03em;color:var(--color-muted)}
-    .rv-work-more{margin-top:.85rem;display:inline-flex;align-items:center;gap:.4rem;font-weight:700;font-size:.85rem;color:var(--color-clay)}
+    .rv-work-why-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.85rem 1.25rem;margin-top:1.25rem}
+    .rv-work-why-jump{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;font-size:.9rem;color:var(--color-clay);text-decoration:none}
+    .rv-work-why-jump:hover{color:var(--color-pine)}
+    .rv-work-why-jump svg{width:15px;height:15px;transition:transform .2s ease}
+    .rv-work-why-jump:hover svg{transform:translateX(3px)}
+    .rv-work-why{padding-block:clamp(2.25rem,4.5vw,3.5rem)}
+    .rv-work-why-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:clamp(1.5rem,4vw,2.75rem);align-items:start}
+    .rv-work-why-copy .rv-section-title{margin:.35rem 0 .8rem}
+    .rv-work-why-copy .rv-page-intro{margin:0}
+    .rv-work-why-list{display:grid;gap:.8rem}
+    .rv-work-why-item{position:relative;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.1rem 1.3rem 1.1rem 1.5rem;overflow:hidden}
+    .rv-work-why-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ridgeline)}
+    .rv-work-why-kicker{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-clay)}
+    .rv-work-why-item h3{font-family:var(--font-display);font-size:1.12rem;font-weight:700;color:var(--color-ink);margin:.2rem 0 .35rem;line-height:1.2}
+    .rv-work-why-item p{margin:0;color:var(--color-body);font-size:.95rem;line-height:1.55}
+    @media(max-width:820px){.rv-work-why-grid{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.rv-work-why-jump svg,.rv-work-more svg{transition:none}}
+    /* Project grid */
+    .rv-work-index .rv-headstack{margin-bottom:0}
+    .rv-work-cats{display:flex;flex-wrap:wrap;align-items:center;gap:.55rem;margin-top:1.5rem}
+    .rv-work-cats-label{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin-right:.2rem}
+    .rv-work-cat{background:color-mix(in srgb,var(--color-clay) 10%,var(--color-surface));border:1px solid color-mix(in srgb,var(--color-clay) 30%,var(--color-line));border-radius:999px;padding:.45rem .95rem;font-family:var(--font-display);font-weight:700;font-size:.92rem;color:var(--color-ink)}
+    .rv-work-cat-n{font-family:var(--font-mono);font-size:.68rem;font-weight:600;letter-spacing:.02em;opacity:.7;margin-left:.2rem}
+    .rv-filter[aria-pressed="true"] .rv-work-cat-n{opacity:.85}
+    .rv-work-filters{position:sticky;top:5.5rem;z-index:6;margin-top:1.5rem;padding:.7rem 0;background:color-mix(in srgb,var(--color-paper) 92%,transparent);backdrop-filter:blur(10px)}
+    .rv-filter{cursor:pointer;line-height:1.2;-webkit-appearance:none;appearance:none;transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .15s ease}
+    .rv-filter:hover{transform:translateY(-1px);border-color:var(--color-clay);color:var(--color-clay)}
+    .rv-filter:focus-visible{outline:2px solid var(--color-clay);outline-offset:2px}
+    .rv-filter[aria-pressed="true"]{background:var(--color-pine);border-color:var(--color-pine);color:#fff}
+    .rv-filter[aria-pressed="true"]:hover{background:var(--color-pine);border-color:var(--color-pine);color:#fff;transform:none}
+    .rv-work-count{margin:.9rem 0 0;font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--color-muted)}
+    .rv-work-honest{margin:.45rem 0 0;max-width:58ch;font-size:.92rem;line-height:1.55;color:var(--color-body)}
+    .rv-work-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:clamp(1.25rem,3vw,1.75rem);margin-top:1.5rem;transition:opacity .25s ease}
+    .rv-work-grid.is-filtering{opacity:0}
+    .rv-work-card.is-hidden{display:none}
+    .rv-work-card{display:flex;flex-direction:column}
+    .rv-work-shot{display:block;position:relative;text-decoration:none;color:inherit}
+    .rv-work-shot::after{content:"";position:absolute;inset:auto 0 0;height:42%;background:linear-gradient(transparent,rgba(12,15,11,.4));pointer-events:none}
+    .rv-work-badges{position:absolute;top:.7rem;left:.7rem;z-index:2;display:flex;flex-wrap:wrap;gap:.35rem}
+    .rv-work-badge{position:static;background:color-mix(in srgb,var(--color-pine) 90%,transparent);color:var(--color-paper);font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .6rem;border-radius:999px}
+    .rv-work-badge-live{background:color-mix(in srgb,var(--color-clay) 92%,transparent)}
+    .rv-work-body{display:flex;flex-direction:column;flex:1 1 auto;padding:1.2rem 1.35rem 1.4rem}
+    .rv-work-meta{display:flex;flex-wrap:wrap;gap:.35rem .7rem;margin-bottom:.35rem;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.06em;text-transform:uppercase;color:var(--color-clay)}
+    .rv-work-title{display:block;text-decoration:none;color:var(--color-ink)}
+    .rv-work-title:hover{color:var(--color-pine)}
+    .rv-work-excerpt{margin:.45rem 0 0;color:var(--color-muted);font-size:.95rem;line-height:1.55}
+    .rv-work-metric{margin:.55rem 0 0;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.03em;color:var(--color-pine);font-weight:600}
+    .rv-work-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.35rem 1.1rem;margin-top:auto;padding-top:.95rem}
+    .rv-work-more{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;font-size:.85rem;color:var(--color-clay);text-decoration:none}
     .rv-work-more svg{width:15px;height:15px;transition:transform .2s ease}
     .rv-work-card:hover .rv-work-more svg{transform:translateX(3px)}
-    .rv-work-thumb{position:relative}
-    .rv-work-badge{position:absolute;top:.7rem;left:.7rem;z-index:2;background:color-mix(in srgb,var(--color-pine) 90%,transparent);color:var(--color-paper);font-family:var(--font-mono);font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;padding:.3rem .6rem;border-radius:999px}
+    .rv-work-live{font-weight:700;font-size:.85rem;color:var(--color-pine);text-decoration:none}
+    .rv-work-live:hover{color:var(--color-clay)}
+    .rv-work-card--lead{grid-column:1/-1;display:grid;grid-template-columns:1.15fr minmax(0,1fr);align-items:stretch}
+    .rv-work-card--lead .rv-work-shot{height:100%}
+    .rv-work-card--lead .rv-work-thumb{height:100%;min-height:16rem;aspect-ratio:16/10}
+    .rv-work-card--lead .rv-work-body{padding:clamp(1.4rem,3vw,2.1rem)}
+    .rv-work-card--lead .rv-work-title{font-size:clamp(1.35rem,2.4vw,1.75rem)}
+    .rv-work-empty{margin:1.25rem 0 0;color:var(--color-body)}
+    .rv-work-empty[hidden]{display:none}
+    .rv-work-empty-all{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--color-clay);cursor:pointer;text-decoration:underline}
+    .rv-work-hint{margin-top:1.5rem}
+    .rv-work-midcta{margin-top:clamp(1.75rem,3.5vw,2.5rem);display:grid;grid-template-columns:1.5fr auto;gap:2rem;align-items:center;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,18px);padding:clamp(1.75rem,3.5vw,2.75rem);position:relative;overflow:hidden}
+    .rv-work-midcta::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--ridgeline)}
+    .rv-work-midcta-h{font-family:var(--font-display);font-weight:800;font-size:clamp(1.6rem,3.4vw,2.4rem);line-height:1.08;letter-spacing:-.02em;color:var(--color-ink);margin:.4rem 0 .6rem}
+    .rv-work-midcta-copy p{margin:0;color:var(--color-body);max-width:58ch;line-height:1.6}
+    .rv-work-midcta-actions{display:flex;flex-direction:column;align-items:flex-start;gap:.6rem}
+    .rv-work-midcta-fine{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.03em;color:var(--color-muted)}
+    @media(max-width:820px){.rv-work-grid{grid-template-columns:1fr}.rv-work-card--lead{grid-template-columns:1fr}.rv-work-card--lead .rv-work-thumb{min-height:12rem;aspect-ratio:3/2}}
+    @media(max-width:720px){.rv-work-midcta{grid-template-columns:1fr}}
+    @media(max-width:700px){.rv-work-filters{top:4.75rem}}
+    @media(prefers-reduced-motion:reduce){.rv-work-grid{transition:none}.rv-filter{transition:none}}
     .rv-craft-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.25rem;margin-top:2.5rem}
     .rv-craft-card{background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-card);padding:1.5rem 1.6rem;position:relative}
     .rv-craft-num{font-family:var(--font-mono);font-size:.85rem;font-weight:700;color:var(--color-clay);letter-spacing:.05em}
@@ -327,47 +388,6 @@
     .rv-area-tags{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2.25rem}
     .rv-area-tag{background:var(--color-surface);border:1px solid var(--color-line);border-radius:999px;padding:.5rem 1rem;font-weight:600;font-size:.9rem;color:var(--color-ink)}
     .rv-area-tag:hover{border-color:var(--color-sage)}
-    /* Why these concepts — split under the hero */
-    .rv-work-why{padding-block:clamp(2.25rem,4.5vw,3.5rem)}
-    .rv-work-why-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:clamp(1.5rem,4vw,2.75rem);align-items:start}
-    .rv-work-why-copy .rv-section-title{margin:.35rem 0 .8rem}
-    .rv-work-why-copy .rv-page-intro{margin:0}
-    .rv-work-why-jump{display:inline-flex;align-items:center;gap:.4rem;margin-top:1.2rem;font-weight:700;font-size:.9rem;color:var(--color-clay);text-decoration:none}
-    .rv-work-why-jump:hover{color:var(--color-pine)}
-    .rv-work-why-jump svg{width:15px;height:15px;transition:transform .2s ease}
-    .rv-work-why-jump:hover svg{transform:translateX(3px)}
-    .rv-work-why-list{display:grid;gap:.8rem}
-    .rv-work-why-item{position:relative;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.1rem 1.3rem 1.1rem 1.5rem;overflow:hidden}
-    .rv-work-why-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ridgeline)}
-    .rv-work-why-kicker{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-clay)}
-    .rv-work-why-item h3{font-family:var(--font-display);font-size:1.12rem;font-weight:700;color:var(--color-ink);margin:.2rem 0 .35rem;line-height:1.2}
-    .rv-work-why-item p{margin:0;color:var(--color-body);font-size:.95rem;line-height:1.55}
-    @media(max-width:820px){.rv-work-why-grid{grid-template-columns:1fr}}
-    @media(prefers-reduced-motion:reduce){.rv-work-why-jump svg{transition:none}}
-    /* Built-for range chips */
-    .rv-work-cats{display:flex;flex-wrap:wrap;align-items:center;gap:.6rem;margin-top:1.75rem}
-    .rv-work-cats-label{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin-right:.35rem}
-    .rv-work-cat{background:color-mix(in srgb,var(--color-clay) 10%,var(--color-surface));border:1px solid color-mix(in srgb,var(--color-clay) 30%,var(--color-line));border-radius:999px;padding:.45rem 1rem;font-family:var(--font-display);font-weight:700;font-size:.92rem;color:var(--color-ink)}
-    /* Clickable filter tabs (pills) + smooth crossfade */
-    .rv-work-filters{margin-top:1.75rem}
-    .rv-filter{cursor:pointer;line-height:1.2;-webkit-appearance:none;appearance:none;transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .15s ease}
-    .rv-filter:hover{transform:translateY(-1px);border-color:var(--color-clay);color:var(--color-clay)}
-    .rv-filter:focus-visible{outline:2px solid var(--color-clay);outline-offset:2px}
-    .rv-filter[aria-pressed="true"]{background:var(--color-pine);border-color:var(--color-pine);color:#fff}
-    .rv-filter[aria-pressed="true"]:hover{background:var(--color-pine);border-color:var(--color-pine);color:#fff;transform:none}
-    .rv-work-grid{transition:opacity .25s ease}
-    .rv-work-grid.is-filtering{opacity:0}
-    .rv-work-card.is-hidden{display:none}
-    @media(prefers-reduced-motion:reduce){.rv-work-grid{transition:none}.rv-filter{transition:none}}
-    /* Mid-page CTA */
-    .rv-work-midcta-wrap{padding-top:var(--section-y)}
-    .rv-work-midcta{display:grid;grid-template-columns:1.5fr auto;gap:2rem;align-items:center;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,18px);padding:clamp(1.75rem,3.5vw,2.75rem);position:relative;overflow:hidden}
-    .rv-work-midcta::before{content:"";position:absolute;left:0;top:0;bottom:0;width:6px;background:var(--ridgeline)}
-    .rv-work-midcta-h{font-family:var(--font-display);font-weight:800;font-size:clamp(1.6rem,3.4vw,2.4rem);line-height:1.08;letter-spacing:-.02em;color:var(--color-ink);margin:.4rem 0 .6rem}
-    .rv-work-midcta-copy p{margin:0;color:var(--color-body);max-width:58ch;line-height:1.6}
-    .rv-work-midcta-actions{display:flex;flex-direction:column;align-items:flex-start;gap:.6rem}
-    .rv-work-midcta-fine{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.03em;color:var(--color-muted)}
-    @media(max-width:720px){.rv-work-midcta{grid-template-columns:1fr}}
     /* Bold dark flow (how it goes) */
     .rv-work-flow .rv-flow{list-style:none;margin:2.5rem 0 0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.1rem}
     .rv-flow-step{position:relative;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);border-radius:var(--radius-lg,16px);padding:1.5rem 1.4rem;transition:transform .15s ease,background-color .15s ease}
@@ -420,13 +440,27 @@
 
       var cards = Array.prototype.slice.call(grid.querySelectorAll('.rv-work-card'));
       var buttons = Array.prototype.slice.call(bar.querySelectorAll('.rv-filter'));
+      var countEl = document.getElementById('rv-work-count');
+      var emptyEl = document.getElementById('rv-work-empty');
+      var emptyAll = emptyEl ? emptyEl.querySelector('.rv-work-empty-all') : null;
       var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var total = cards.length;
+
+      function noun(n) {
+        return n === 1 ? 'concept' : 'concepts';
+      }
 
       function applyFilter(filter) {
+        var shown = 0;
         cards.forEach(function (card) {
           var show = filter === 'all' || card.getAttribute('data-cat') === filter;
           card.classList.toggle('is-hidden', !show);
+          if (show) shown += 1;
         });
+        if (countEl) {
+          countEl.textContent = 'Showing ' + shown + ' ' + noun(shown);
+        }
+        if (emptyEl) emptyEl.hidden = shown !== 0;
       }
 
       function setActive(active) {
@@ -435,22 +469,30 @@
         });
       }
 
+      function run(btn) {
+        if (!btn || btn.getAttribute('aria-pressed') === 'true') return;
+        setActive(btn);
+        var filter = btn.getAttribute('data-filter');
+        if (reduce) { applyFilter(filter); return; }
+        grid.classList.add('is-filtering');
+        window.setTimeout(function () {
+          applyFilter(filter);
+          requestAnimationFrame(function () {
+            grid.classList.remove('is-filtering');
+          });
+        }, 250);
+      }
+
       buttons.forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          if (btn.getAttribute('aria-pressed') === 'true') return;
-          setActive(btn);
-          var filter = btn.getAttribute('data-filter');
-          if (reduce) { applyFilter(filter); return; }
-          // Fade the grid out, swap which cards show, then fade back in.
-          grid.classList.add('is-filtering');
-          window.setTimeout(function () {
-            applyFilter(filter);
-            requestAnimationFrame(function () {
-              grid.classList.remove('is-filtering');
-            });
-          }, 250);
-        });
+        btn.addEventListener('click', function () { run(btn); });
       });
+      if (emptyAll) {
+        emptyAll.addEventListener('click', function () {
+          var all = bar.querySelector('[data-filter="all"]');
+          if (all) run(all);
+        });
+      }
+      if (countEl) countEl.textContent = 'Showing ' + total + ' ' + noun(total);
     })();
   </script>
 

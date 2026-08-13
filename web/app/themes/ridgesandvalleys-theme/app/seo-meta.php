@@ -53,8 +53,8 @@ function rv_seo_meta_map(): array
         ],
         // kw: web design portfolio gettysburg
         'work' => [
-            "Web Design Portfolio for Adams County | Ridges & Valleys",
-            "See web design work and concept sites for Gettysburg & Adams County businesses — restaurants, inns, shops, and trades. Fast builds you own. View the work.",
+            "Gettysburg Web Design Work & Concept Sites | Ridges & Valleys",
+            "Clickable Gettysburg web design concepts for restaurants, inns, shops, and tours in Adams County. Filter by industry, open the live demo, then get a quote.",
         ],
         // kw: gettysburg web design faq
         'faq-2' => [
