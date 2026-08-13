@@ -289,9 +289,15 @@ function svc_packages(?int $post_id = null): array
         if ($cta === '') {
             $row['cta'] = $shared;
         }
-        $kind = sanitize_key(strip_field_markers((string) ($row['kind'] ?? '')));
-        if ($kind === '') {
-            $kind = str_contains(strip_field_markers((string) ($row['price'] ?? '')), '/mo') ? 'care' : 'project';
+        $kind  = sanitize_key(strip_field_markers((string) ($row['kind'] ?? '')));
+        $price = strip_field_markers((string) ($row['price'] ?? ''));
+        // Monthly retainers always use the care bar. The Layout select’s first
+        // option is “project”, so older saved rows (and a save right after the
+        // field shipped) often stored kind=project even on Care & Grow.
+        if (str_contains(strtolower($price), '/mo')) {
+            $kind = 'care';
+        } elseif ($kind === '') {
+            $kind = 'project';
         }
         $row['kind'] = $kind === 'care' ? 'care' : 'project';
     }

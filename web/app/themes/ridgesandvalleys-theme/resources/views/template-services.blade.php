@@ -270,7 +270,8 @@
     .rv-plan-flag-inline{position:static;display:inline-block;border-radius:999px;margin-bottom:.55rem;border-bottom-left-radius:999px}
     html[data-theme="dark"] .rv-svc-plans .rv-plan.is-featured,html[data-theme="dark"] .rv-plan-care.is-featured{border-color:var(--color-sage)}
     /* Care plan — full-width bar under the project cards */
-    .rv-plan-care{position:relative;display:grid;grid-template-columns:minmax(16rem,1.1fr) minmax(14rem,1fr) auto;gap:1.5rem 2rem;align-items:center;margin-top:1.15rem;padding:1.55rem 1.7rem 1.5rem;overflow:hidden;border-radius:var(--radius-lg,18px)}
+    .rv-plan-care{position:relative;display:grid;grid-template-columns:minmax(16rem,1.1fr) minmax(14rem,1fr) auto;gap:1.5rem 2rem;align-items:center;width:100%;margin-top:1.15rem;padding:1.55rem 1.7rem 1.5rem;overflow:hidden;border-radius:var(--radius-lg,18px)}
+    .rv-svc-plans .rv-plan-care{grid-column:1/-1;width:100%}
     .rv-plan-care .rv-service-name{font-family:var(--font-display);font-weight:800;font-size:1.28rem;color:var(--color-ink);margin:0;line-height:1.15}
     .rv-plan-care .rv-service-tag{font-family:var(--font-display);font-weight:800;font-size:1.45rem;letter-spacing:-.02em;color:var(--color-clay);margin:.3rem 0 0;text-transform:none}
     .rv-plan-care .rv-service-desc{color:var(--color-body);font-size:.95rem;line-height:1.5;margin:.55rem 0 0;padding:0;border:0}
