@@ -1001,7 +1001,7 @@ function page_field_map(): array
                 ['about_local_kicker', __('Eyebrow', 'sage'), 'text', __('Gettysburg & Adams County', 'sage')],
                 ['about_local_h', __('Heading (before accent)', 'sage'), 'text', __('This isn’t a market we', 'sage')],
                 ['about_local_accent', __('Accent phrase', 'sage'), 'text', __('picked off a map.', 'sage')],
-                ['about_local_lede', __('Story paragraph', 'sage'), 'html', __('<strong>Matt moved his family home to Gettysburg</strong> after years in Virginia. The studio is staying. We know the summer rush on Steinwehr from a year-round shop in Biglerville — and we build your site for the customers you actually get.', 'sage')],
+                ['about_local_lede', __('Story paragraph', 'sage'), 'html', __('<strong>I\'m originally from Pennsylvania.</strong> After fifteen years in Virginia, I wanted to come home — and I chose Gettysburg to raise my family. The studio is staying. We know the summer rush on Steinwehr from a year-round shop in Biglerville, and we build your site for the customers you actually get.', 'sage')],
                 ['local_button', __('Button label', 'sage'), 'text', __('Get a quote', 'sage')],
                 ['local_highlights', __('Highlight cards', 'sage'), 'repeater', [
                     ['title' => __('In person, not a ticket queue', 'sage'), 'text' => __('A real local you can reach — a call, a screen share, or a meeting around Adams County.', 'sage')],

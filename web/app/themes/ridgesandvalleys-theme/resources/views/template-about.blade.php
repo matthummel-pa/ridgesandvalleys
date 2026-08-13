@@ -113,7 +113,7 @@
           {!! \App\eyebrow(\App\field('about_local_kicker', __('Gettysburg & Adams County', 'sage'))) !!}
           <h2 id="rv-about-local-title" class="rv-about-local-h">{{ \App\field('about_local_h', __('This isn’t a market we', 'sage')) }} <em class="rv-accent">{{ \App\field('about_local_accent', __('picked off a map.', 'sage')) }}</em></h2>
         </div>
-        <p class="rv-feature-text">{!! \App\field('about_local_lede', __('<strong>Matt moved his family home to Gettysburg</strong> after years in Virginia. The studio is staying. We know the summer rush on Steinwehr from a year-round shop in Biglerville — and we build your site for the customers you actually get.', 'sage')) !!}</p>
+        <p class="rv-feature-text">{!! \App\field('about_local_lede', __('<strong>I\'m originally from Pennsylvania.</strong> After fifteen years in Virginia, I wanted to come home — and I chose Gettysburg to raise my family. The studio is staying. We know the summer rush on Steinwehr from a year-round shop in Biglerville, and we build your site for the customers you actually get.', 'sage')) !!}</p>
         <div class="rv-hero-actions rv-about-inline-actions">
           <a class="rv-btn rv-btn-primary" href="{{ $ctaHref }}">{{ \App\field('local_button', __('Get a quote', 'sage')) }}</a>
         </div>
