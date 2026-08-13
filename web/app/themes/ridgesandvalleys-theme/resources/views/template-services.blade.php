@@ -287,7 +287,7 @@
     .rv-plan-care .rv-service-list{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
     .rv-plan-care .rv-plan-btn{width:auto;min-width:12rem}
     @media(max-width:900px){.rv-plan-care{grid-template-columns:1fr;gap:1.1rem;padding:1.45rem 1.35rem 1.35rem}.rv-plan-care .rv-plan-btn{width:100%}}
-    /* What every build includes — scannable checklist, then quieter boundaries */
+    /* What every build includes: scannable checklist, then quieter boundaries */
     .rv-svc-incl{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0 0;padding:0;list-style:none}
     @media(max-width:900px){.rv-svc-incl{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:620px){.rv-svc-incl{grid-template-columns:1fr}}
