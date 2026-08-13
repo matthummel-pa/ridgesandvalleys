@@ -1,0 +1,396 @@
+{{--
+  Template Name: Contact Keystone Homes & Land
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context":"https://schema.org",
+  "@@type":"RealEstateAgent",
+  "@@id":"{{ home_url('/') }}#agency",
+  "name":"Keystone Homes & Land",
+  "url":"{{ home_url('/contact/') }}",
+  "image":"{{ home_url('/preview.jpg/') }}",
+  "telephone":"+1-717-555-0455",
+  "email":"land@@keystonehomesandland.test",
+  "priceRange":"$$",
+  "address":{
+    "@@type":"PostalAddress",
+    "streetAddress":"455 Old Harrisburg Road",
+    "addressLocality":"Gettysburg",
+    "addressRegion":"PA",
+    "postalCode":"17325",
+    "addressCountry":"US"
+  },
+  "geo":{"@@type":"GeoCoordinates","latitude":39.8322,"longitude":-77.2303},
+  "openingHoursSpecification":[
+    {"@@type":"OpeningHoursSpecification","dayOfWeek":["Monday","Tuesday","Wednesday","Thursday","Friday"],"opens":"08:30","closes":"17:30"},
+    {"@@type":"OpeningHoursSpecification","dayOfWeek":"Saturday","opens":"09:00","closes":"13:00"}
+  ],
+  "areaServed":[
+    {"@@type":"City","name":"Gettysburg, PA"},
+    {"@@type":"AdministrativeArea","name":"Adams County, PA"},
+    {"@@type":"AdministrativeArea","name":"Franklin Township, PA"},
+    {"@@type":"AdministrativeArea","name":"Menallen Township, PA"},
+    {"@@type":"AdministrativeArea","name":"Butler Township, PA"},
+    {"@@type":"AdministrativeArea","name":"Tyrone Township, PA"},
+    {"@@type":"AdministrativeArea","name":"Hamiltonban Township, PA"},
+    {"@@type":"AdministrativeArea","name":"Liberty Township, PA"}
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context":"https://schema.org",
+  "@@type":"BreadcrumbList",
+  "itemListElement":[
+    {"@@type":"ListItem","position":1,"name":"Home","item":"{{ home_url('/') }}"},
+    {"@@type":"ListItem","position":2,"name":"Contact","item":"{{ home_url('/contact/') }}"}
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- ============================= HEADER ============================= -->
+<header class="site-header">
+  <div class="header-inner">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="Keystone Homes & Land, home">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <path d="M24 4 L44 20 V44 H4 V20 Z" fill="#9a3324"/>
+        <path d="M24 4 L44 20 H4 Z" fill="#6f2015"/>
+        <rect x="19" y="28" width="10" height="16" fill="#f2d98f"/>
+        <circle cx="24" cy="18" r="3.4" fill="#f2d98f"/>
+      </svg>
+      <span class="brand-text">
+        <strong>Keystone Homes &amp; Land</strong>
+        <span>Gettysburg, PA</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="{{ home_url('/') }}">Home</a></li>
+        <li><a href="{{ home_url('/listings/') }}">Listings</a></li>
+        <li><a href="{{ home_url('/areas/') }}">Areas We Serve</a></li>
+        <li><a href="{{ home_url('/guide/') }}">Land Buyer's Guide</a></li>
+        <li><a href="{{ home_url('/agents/') }}">Our Agents</a></li>
+        <li><a href="{{ home_url('/contact/') }}" class="is-active" aria-current="page">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-cta">
+      <a class="header-phone" href="tel:+17175550455">(717) 555-0455</a>
+      <a class="btn btn-primary btn-sm" href="{{ home_url('/guide/') }}#schedule">Book a Call</a>
+    </div>
+
+    <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+    <a href="{{ home_url('/') }}">Home</a>
+    <a href="{{ home_url('/listings/') }}">Listings</a>
+    <a href="{{ home_url('/areas/') }}">Areas We Serve</a>
+    <a href="{{ home_url('/guide/') }}">Land Buyer's Guide</a>
+    <a href="{{ home_url('/agents/') }}">Our Agents</a>
+    <a href="{{ home_url('/contact/') }}" class="is-active" aria-current="page">Contact</a>
+    <a class="header-phone" href="tel:+17175550455">Call (717) 555-0455</a>
+    <a class="btn btn-primary" href="{{ home_url('/guide/') }}#schedule">Book a Call</a>
+  </nav>
+</header>
+
+<!-- ============================= BREADCRUMB ============================= -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <ol>
+    <li><a href="{{ home_url('/') }}">Home</a></li>
+    <li><span aria-current="page">Contact</span></li>
+  </ol>
+</nav>
+
+<!-- ============================= PAGE HERO ============================= -->
+<section class="page-hero">
+  <div class="page-hero-inner">
+    <p class="hero-eyebrow">Get In Touch</p>
+    <h1>Talk to a local agent <em>on Old Harrisburg Road</em></h1>
+    <p>Our office sits just north of Lincoln Square in Gettysburg. Call, email, stop in, or send a message below — a Keystone agent will get back to you, usually the same business day.</p>
+  </div>
+</section>
+
+<main id="main">
+  <!-- ============================= CONTACT INFO + FORM ============================= -->
+  <section class="section">
+    <div class="wrap">
+      <div class="contact-grid">
+        <div class="contact-info reveal">
+          <p class="eyebrow">Our Office</p>
+          <h2>Keystone Homes &amp; Land</h2>
+          <dl>
+            <div>
+              <dt>Address</dt>
+              <dd>455 Old Harrisburg Road<br>Gettysburg, PA 17325</dd>
+            </div>
+            <div>
+              <dt>Phone</dt>
+              <dd><a href="tel:+17175550455">(717) 555-0455</a></dd>
+            </div>
+            <div>
+              <dt>Email</dt>
+              <dd><a href="mailto:land@@keystonehomesandland.test">land@@keystonehomesandland.test</a></dd>
+            </div>
+            <div>
+              <dt>Hours</dt>
+              <dd>Mon–Fri: 8:30am – 5:30pm<br>Saturday: 9:00am – 1:00pm<br>Sunday: By appointment</dd>
+            </div>
+            <div>
+              <dt>Directions</dt>
+              <dd>About a mile north of Lincoln Square. From US-15, take the Gettysburg exits toward town; from US-30, head north on Old Harrisburg Road. Visitor parking on site.</dd>
+            </div>
+          </dl>
+
+          <div class="map-embed" role="img" aria-label="Illustrative map showing the Keystone Homes & Land office north of downtown Gettysburg, PA">
+            <div class="map-roads"></div>
+            <div class="map-road-3"></div>
+            <span class="pin-static">
+              <svg viewBox="0 0 24 24"><path fill="#9a3324" stroke="#fffdf8" stroke-width="1.5" d="M12 2C7.6 2 4 5.6 4 10c0 6 8 12 8 12s8-6 8-12c0-4.4-3.6-8-8-8z"/><circle cx="12" cy="10" r="3" fill="#fffdf8"/></svg>
+            </span>
+            <div class="map-legend"><span>455 Old Harrisburg Rd · Gettysburg, PA</span></div>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <div class="tool-card">
+            <h3><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 4h16v12H5.17L4 17.17z"/></svg> Send us a message</h3>
+            <p style="color:var(--ink-soft);font-size:.92rem;margin-top:6px;">Tell us what you're looking for — or what you're thinking of selling — and we'll be in touch.</p>
+            <form id="contactForm">
+              <div class="form-grid two">
+                <div class="field">
+                  <label for="cName">Full name</label>
+                  <input type="text" id="cName" required placeholder="Jordan Weikert">
+                </div>
+                <div class="field">
+                  <label for="cPhone">Phone</label>
+                  <input type="tel" id="cPhone" required placeholder="(717) 555-0142">
+                </div>
+                <div class="field">
+                  <label for="cEmail">Email</label>
+                  <input type="email" id="cEmail" required placeholder="you@@example.com">
+                </div>
+                <div class="field">
+                  <label for="cTopic">I'm interested in</label>
+                  <select id="cTopic">
+                    <option>Buying land or a farm</option>
+                    <option>Buying a home</option>
+                    <option>Selling my property</option>
+                    <option>A free valuation</option>
+                    <option>Something else</option>
+                  </select>
+                </div>
+              </div>
+              <div class="field" style="margin-top:14px;">
+                <label for="cMessage">Message</label>
+                <textarea id="cMessage" rows="4" placeholder="e.g. Looking for 10+ acres near Franklin Township with a well already in."></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary" style="margin-top:16px;">Send Message</button>
+            </form>
+            <div class="confirm-msg" id="contactConfirm">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg>
+              <span>Thanks! This is a concept demo — on your live site, this message would be emailed straight to the Keystone team.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= FREE VALUATION (SELL) ============================= -->
+  <section class="section section-alt" id="valuation">
+    <div class="wrap">
+      <div class="sell-section reveal">
+        <div class="sell-copy">
+          <p class="eyebrow">Thinking Of Selling</p>
+          <h2>What's your farm or land worth right now?</h2>
+          <p>Ground values around Adams County have moved in the last two years. Get a free, no-obligation estimate before you list — we'll factor in acreage, tillable ground, outbuildings and recent township sales.</p>
+          <ul>
+            <li><svg viewBox="0 0 24 24" stroke-width="2" fill="none"><path d="M20 6L9 17l-5-5"/></svg>Local comps from actual Adams County closings</li>
+            <li><svg viewBox="0 0 24 24" stroke-width="2" fill="none"><path d="M20 6L9 17l-5-5"/></svg>Guidance on ag preservation &amp; easements</li>
+            <li><svg viewBox="0 0 24 24" stroke-width="2" fill="none"><path d="M20 6L9 17l-5-5"/></svg>No pressure — just numbers you can trust</li>
+          </ul>
+        </div>
+        <div class="val-card">
+          <h3>Free Land &amp; Farm Valuation</h3>
+          <p style="font-size:.85rem;color:var(--ink-soft);">Demo estimate — a Keystone agent will follow up with an accurate market analysis.</p>
+          <form id="valForm">
+            <div class="val-grid">
+              <div class="field">
+                <label for="valType">Property type</label>
+                <select id="valType">
+                  <option value="home">Home</option>
+                  <option value="farm">Farm</option>
+                  <option value="land">Land / Acreage</option>
+                  <option value="historic">Historic Home</option>
+                </select>
+              </div>
+              <div class="field">
+                <label for="valAcres">Total acreage</label>
+                <input type="number" id="valAcres" min="0" step="0.1" placeholder="e.g. 14.5" required>
+              </div>
+              <div class="field">
+                <label for="valSqft">House sq ft (0 if land)</label>
+                <input type="number" id="valSqft" min="0" step="10" placeholder="e.g. 2200">
+              </div>
+              <div class="field">
+                <label for="valTownship">Township</label>
+                <select id="valTownship">
+                  <option value="Cumberland">Cumberland Twp</option>
+                  <option value="Straban">Straban Twp</option>
+                  <option value="Franklin">Franklin Twp</option>
+                  <option value="Menallen">Menallen Twp</option>
+                  <option value="Butler">Butler Twp</option>
+                  <option value="Tyrone">Tyrone Twp</option>
+                  <option value="Hamiltonban">Hamiltonban Twp</option>
+                  <option value="Liberty">Liberty Twp</option>
+                </select>
+              </div>
+            </div>
+            <button type="submit" class="btn btn-gold" style="margin-top:16px;width:100%;">Estimate My Value</button>
+          </form>
+          <div class="val-result" id="valResult">
+            <span style="font-size:.78rem;color:var(--ink-soft);">Estimated market range</span>
+            <strong id="valResultAmount">$0 – $0</strong>
+            <p style="margin:8px 0 0;font-size:.82rem;color:var(--ink-soft);">Based on recent township comps. A licensed Keystone agent will refine this with a full walkthrough.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ============================= FOOTER (SHARED) ============================= -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <svg width="34" height="34" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <path d="M24 4 L44 20 V44 H4 V20 Z" fill="#9a3324"/>
+            <path d="M24 4 L44 20 H4 Z" fill="#6f2015"/>
+            <rect x="19" y="28" width="10" height="16" fill="#f2d98f"/>
+            <circle cx="24" cy="18" r="3.4" fill="#f2d98f"/>
+          </svg>
+          <strong>Keystone Homes &amp; Land</strong>
+        </div>
+        <p>Gettysburg's farm, land &amp; historic property specialists since 2009. Rooted in rural Adams County, PA.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Keystone Homes & Land on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+          <a href="#" aria-label="Keystone Homes & Land on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Keystone Homes & Land on YouTube"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="3"/><path d="M10 9l6 3-6 3z"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h5>Office</h5>
+        <address>
+          Keystone Homes &amp; Land<br>
+          455 Old Harrisburg Road<br>
+          Gettysburg, PA 17325<br>
+          <a href="tel:+17175550455">(717) 555-0455</a><br>
+          <a href="mailto:land@@keystonehomesandland.test">land@@keystonehomesandland.test</a>
+        </address>
+      </div>
+      <div>
+        <h5>Hours</h5>
+        <p>Mon–Fri: 8:30am – 5:30pm<br>Saturday: 9:00am – 1:00pm<br>Sunday: By appointment</p>
+      </div>
+      <div>
+        <h5>Quick Links</h5>
+        <ul class="footer-links">
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li><a href="{{ home_url('/listings/') }}">Listings</a></li>
+          <li><a href="{{ home_url('/areas/') }}">Areas We Serve</a></li>
+          <li><a href="{{ home_url('/guide/') }}">Land Buyer's Guide</a></li>
+          <li><a href="{{ home_url('/agents/') }}">Our Agents</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-service-area">Proudly serving Gettysburg and rural Adams County — including Franklin, Menallen, Butler, Tyrone, Hamiltonban, Liberty, Cumberland and Straban Townships, plus Biglerville, Fairfield, Cashtown, New Oxford and Littlestown.</p>
+    <div class="footer-bottom">
+      <div class="equal-housing">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h14V10"/><path d="M9 21v-6h6v6"/></svg>
+        <span>Equal Housing Opportunity</span>
+      </div>
+      <p>&copy; <span data-year>2026</span> Keystone Homes &amp; Land · Design concept by Ridges &amp; Valleys Studio. Property data is illustrative, not a live MLS feed.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ============================= CHAT WIDGET (SHARED) ============================= -->
+<button class="chat-fab" id="chatFab" aria-label="Open chat assistant" aria-expanded="false" aria-controls="chatWidget">
+  <svg viewBox="0 0 24 24" stroke-width="2"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z"/></svg>
+</button>
+<div class="chat-widget" id="chatWidget" role="dialog" aria-label="Keystone chat assistant" aria-hidden="true">
+  <div class="chat-head">
+    <div><strong>Keystone Assistant</strong><br><span>Usually replies in minutes</span></div>
+    <button class="chat-close" id="chatCloseBtn" aria-label="Close chat">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+  </div>
+  <div class="chat-body" id="chatBody">
+    <div class="chat-msg bot">Hi! I'm the Keystone concept assistant. Ask me about listings, financing, or booking a tour.</div>
+  </div>
+  <div class="chat-quick" id="chatQuick">
+    <button type="button" data-q="land">Land prices?</button>
+    <button type="button" data-q="historic">Historic homes?</button>
+    <button type="button" data-q="tour">Book a tour</button>
+    <button type="button" data-q="financing">Financing help?</button>
+  </div>
+</div>
+
+<a href="#" class="concept-badge">Concept · Ridges &amp; Valleys Studio</a>
+<script>
+/* Contact page tools: free valuation demo + contact form (concept demos) */
+(function(){
+  "use strict";
+  var currency = function(n){ return "$" + Math.round(n).toLocaleString("en-US"); };
+
+  var valForm = document.getElementById("valForm");
+  if(valForm){
+    valForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      var type = document.getElementById("valType").value;
+      var acres = Number(document.getElementById("valAcres").value) || 0;
+      var sqft = Number(document.getElementById("valSqft").value) || 0;
+      var township = document.getElementById("valTownship").value;
+
+      var perAcre = { home:9000, farm:8500, land:7000, historic:8000 }[type] || 7500;
+      var perSqft = type === "land" ? 0 : 155;
+      var townshipMult = {
+        Cumberland:1.08, Straban:1.0, Franklin:1.05,
+        Menallen:1.02, Butler:0.98, Tyrone:0.96, Hamiltonban:1.0, Liberty:0.97
+      }[township] || 1;
+
+      var base = (acres * perAcre + sqft * perSqft) * townshipMult;
+      var low = base * 0.9;
+      var high = base * 1.15;
+
+      document.getElementById("valResultAmount").textContent = currency(low) + " – " + currency(high);
+      document.getElementById("valResult").classList.add("show");
+    });
+  }
+
+  var contactForm = document.getElementById("contactForm");
+  if(contactForm){
+    contactForm.addEventListener("submit", function(e){
+      e.preventDefault();
+      document.getElementById("contactConfirm").classList.add("show");
+      this.reset();
+    });
+  }
+})();
+</script>
+@endsection

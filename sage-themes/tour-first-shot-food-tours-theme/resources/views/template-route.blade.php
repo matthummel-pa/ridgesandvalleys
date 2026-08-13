@@ -1,0 +1,301 @@
+{{--
+  Template Name: The Gettysburg Walking Route & Local Eats
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "TravelAgency",
+  "@@id": "{{ home_url('/') }}#business",
+  "name": "First Shot Food & History Tours",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/route/') }}",
+  "telephone": "+1-717-555-0105",
+  "email": "book@@firstshottours.test",
+  "priceRange": "$$",
+  "description": "The downtown Gettysburg walking route for First Shot food and history tours, from Lincoln Square to the first-shot marker on Chambersburg Road.",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "5 Chambersburg Street",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8313, "longitude": -77.2311 },
+  "hasMap": "https://www.openstreetmap.org/#map=16/39.8309/-77.2311",
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "17:00" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, Pennsylvania" },
+    { "@@type": "City", "name": "Biglerville" },
+    { "@@type": "City", "name": "New Oxford" },
+    { "@@type": "City", "name": "Littlestown" },
+    { "@@type": "City", "name": "McSherrystown" },
+    { "@@type": "City", "name": "Fairfield" },
+    { "@@type": "City", "name": "Cashtown" },
+    { "@@type": "City", "name": "Hanover" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "The Route & Local Eats", "item": "{{ home_url('/route/') }}" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site">
+  <div class="container nav-wrap">
+    <a class="brand" href="{{ home_url('/') }}" aria-label="First Shot Food &amp; History Tours, home">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" fill="#C1592C"/>
+        <path d="M24 10 L30 22 L24 20 L18 22 Z" fill="#FBF2E4"/>
+        <rect x="22.5" y="20" width="3" height="16" rx="1.5" fill="#FBF2E4"/>
+        <circle cx="24" cy="34" r="3.4" fill="#E3A93F"/>
+      </svg>
+      <span class="brand-text"><strong>First Shot</strong><span>Food &amp; History Tours</span></span>
+    </a>
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="{{ home_url('/') }}">Home</a></li>
+        <li><a href="{{ home_url('/tours/') }}">Tours</a></li>
+        <li><a href="{{ home_url('/book/') }}">Book a Date</a></li>
+        <li><a href="{{ home_url('/route/') }}" class="is-active" aria-current="page">The Route</a></li>
+        <li><a href="{{ home_url('/faq/') }}">FAQ</a></li>
+        <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a class="btn btn-primary btn-sm" href="{{ home_url('/book/') }}">Book a Date</a>
+      <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <nav aria-label="Mobile">
+    <ul>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li><a href="{{ home_url('/tours/') }}">Tours</a></li>
+      <li><a href="{{ home_url('/book/') }}">Book a Date</a></li>
+      <li><a href="{{ home_url('/route/') }}" class="is-active" aria-current="page">The Route</a></li>
+      <li><a href="{{ home_url('/faq/') }}">FAQ</a></li>
+      <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+    </ul>
+    <a class="btn btn-primary btn-block" href="{{ home_url('/book/') }}">Book a Date</a>
+  </nav>
+</div>
+
+<main id="main">
+
+  <section class="page-hero">
+    <div class="container">
+      <nav class="breadcrumb" aria-label="Breadcrumb">
+        <ol>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li class="sep" aria-hidden="true">/</li>
+          <li aria-current="page">The Route &amp; Local Eats</li>
+        </ol>
+      </nav>
+      <span class="eyebrow" style="color:var(--mustard);">The Route &amp; Local Eats</span>
+      <h1>From Lincoln Square to the <em>first shot</em> on Chambersburg Road.</h1>
+      <p>Our walk threads the heart of the Gettysburg Historic District on foot &mdash; about a mile and a half of sidewalks, storefronts, and taverns that lived through July 1863. Here's the full route, stop by stop, with the local eateries and the walking distances between them.</p>
+    </div>
+  </section>
+
+  <section class="bg-paper">
+    <div class="container">
+      <div class="prose reveal">
+        <span class="eyebrow">Where We Walk</span>
+        <h2>Downtown Gettysburg, on foot and at eye level.</h2>
+        <p>Most visitors drive straight to Gettysburg National Military Park and never see the town the battle was named for. First Shot fixes that. Our routes stay entirely within the walkable core of Gettysburg, Pennsylvania &mdash; on sidewalks and paved streets, never on battlefield terrain &mdash; so you spend the whole tour among the buildings, shops, and kitchens that were here in 1863 and are still open today.</p>
+        <p>Every walk begins at <strong>Lincoln Square</strong>, the roundabout at the center of town where Chambersburg Street, York Street, Baltimore Street, and Carlisle Street all meet. It's a two-minute stroll from our booking desk at <strong>5 Chambersburg Street</strong>, and it's where Abraham Lincoln stayed at the David Wills House the night before delivering the Gettysburg Address. From the square we head south and west, tracing the same blocks soldiers and townspeople crossed during the three days of fighting, then out toward the marker on <strong>Chambersburg Road (US-30 West)</strong> where the battle's first shot is remembered.</p>
+
+        <h2>The route, stop by stop</h2>
+      </div>
+
+      <div class="route-list reveal">
+        <div class="route-stop">
+          <span class="route-num">1</span>
+          <div>
+            <h3>Lincoln Square &amp; the David Wills House</h3>
+            <p>Where Lincoln put the finishing touches on the Gettysburg Address the night before he delivered it. We gather on the square, get oriented, and set the scene for the three days that changed the town.</p>
+            <span class="route-dist">Meeting point &middot; 0.0 mi</span>
+          </div>
+        </div>
+        <div class="route-stop">
+          <span class="route-num">2</span>
+          <div>
+            <h3>Chambersburg Street bakeries</h3>
+            <p>A short block west to a restored 1858 storefront for house-roasted coffee and a warm maple scone &mdash; the kind of ground-floor bakery that fed a town under occupation.</p>
+            <span class="route-dist">About 0.2 mi from the square</span>
+          </div>
+        </div>
+        <div class="route-stop">
+          <span class="route-num">3</span>
+          <div>
+            <h3>Baltimore Street &amp; the Dobbin House</h3>
+            <p>South from the square to Gettysburg's oldest standing building (1776), a documented Underground Railroad stop, for a tasting of colonial-style bread pudding in the stone cellar.</p>
+            <span class="route-dist">About 0.4 mi &middot; 8-minute walk</span>
+          </div>
+        </div>
+        <div class="route-stop">
+          <span class="route-num">4</span>
+          <div>
+            <h3>Steinwehr Avenue tasting row</h3>
+            <p>Steinwehr Avenue is Gettysburg's restaurant spine, steps from the National Cemetery. We stop for a savory course &mdash; often scrapple biscuits or a farm-cheese plate &mdash; from a family-run kitchen.</p>
+            <span class="route-dist">About 0.7 mi from Stop 3</span>
+          </div>
+        </div>
+        <div class="route-stop">
+          <span class="route-num">5</span>
+          <div>
+            <h3>The first-shot marker, Chambersburg Road</h3>
+            <p>Our namesake finish: the monument on Chambersburg Road (US-30, about three miles northwest of the square) marking where the battle's opening shot was fired on July 1, 1863. On longer tours we drive or shuttle this leg; the Founders Walk closes back downtown with the story.</p>
+            <span class="route-dist">Marker sits ~3 mi NW on US-30</span>
+          </div>
+        </div>
+        <div class="route-stop">
+          <span class="route-num">6</span>
+          <div>
+            <h3>Adams County farm stand (seasonal)</h3>
+            <p>On the Farm-to-Table tour we add a final course built from produce grown north of town toward Biglerville &mdash; apples, cider, and preserves from the orchards that ring Gettysburg.</p>
+            <span class="route-dist">Farm-to-Table tour only</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-cream-dim">
+    <div class="container">
+      <div class="prose reveal">
+        <span class="eyebrow">Getting Here</span>
+        <h2>Directions, parking &amp; how far you'll walk.</h2>
+        <p><strong>From the north or south (US-15):</strong> take the US-30 / York Street exit and follow York Street west straight into Lincoln Square &mdash; about five minutes to the center of town. <strong>From the east or west (US-30, the Lincoln Highway):</strong> US-30 becomes York Street coming in from Hanover and New Oxford, and Chambersburg Street heading out toward Cashtown, meeting at the square. Our desk at 5 Chambersburg Street is on that western spoke, half a block off the roundabout.</p>
+        <p><strong>Parking:</strong> the Gettysburg Transit Center garage on Carlisle Street sits one block north of Lincoln Square and is the easiest all-day option. Metered street parking rings the square and runs along Baltimore and Steinwehr; free lots open up a few blocks out on Stratton Street. Arrive fifteen minutes early and you'll have no trouble making the 0.1-mile walk to the meeting point.</p>
+        <p><strong>How far you'll walk:</strong> the downtown routes cover roughly <strong>1.2 to 1.8 miles</strong> total at an easy, frequently-paused pace &mdash; think of it as a long, delicious stroll rather than a hike. Everything is on flat sidewalks with curb cuts. The Sweet Street Stroll is the shortest at about 0.9 miles; the Farm-to-Table Founders Tour is the longest.</p>
+      </div>
+
+      <div class="info-grid reveal">
+        <div class="info-card">
+          <h3>Landmarks on the way</h3>
+          <p>Lincoln Square, the David Wills House, the Shriver House, the Gettysburg National Cemetery gate on Steinwehr, and the Wills mural &mdash; all pointed out as we pass.</p>
+        </div>
+        <div class="info-card">
+          <h3>Just beyond downtown</h3>
+          <p>Seminary Ridge, Little Round Top, and the wider Gettysburg National Military Park sit a short drive southwest &mdash; easy to fold into the same day as your tour.</p>
+        </div>
+        <div class="info-card">
+          <h3>Worth the detour</h3>
+          <p>Sachs Covered Bridge southwest of town and the orchards toward Biglerville and Cashtown make a scenic loop once you've earned your appetite downtown.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper">
+    <div class="container">
+      <div class="prose reveal">
+        <span class="eyebrow">Beyond Gettysburg</span>
+        <h2>Local eaters from across Adams County.</h2>
+        <p>First Shot is proud to be Gettysburg-owned, and our guests come from all over Adams County and the towns that ring it. If you're driving in from <strong>Biglerville</strong> or <strong>Cashtown</strong> to the north and west, <strong>Fairfield</strong> to the southwest, <strong>Littlestown</strong> or <strong>McSherrystown</strong> to the south, or <strong>New Oxford</strong> and <strong>Hanover</strong> to the east, downtown Gettysburg is a straightforward drive on US-30 or PA-116 &mdash; almost always under half an hour.</p>
+        <p>We partner only with independently owned eateries inside the Historic District, so every tasting on the route puts money back into the same few blocks you're walking. That's the whole idea: a walk that treats a meal like a primary source, and a town that's still very much open for business.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div>
+        <h2>Ready to walk it for yourself?</h2>
+        <p>Pick a tour and a date, and we'll see you on Lincoln Square, Gettysburg PA.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-ghost" href="{{ home_url('/tours/') }}">See the tours</a>
+        <a class="btn btn-primary" href="{{ home_url('/book/') }}">Book a date</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="{{ home_url('/') }}" style="color:#fff;">
+          <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="22" fill="#C1592C"/>
+            <path d="M24 10 L30 22 L24 20 L18 22 Z" fill="#FBF2E4"/>
+            <rect x="22.5" y="20" width="3" height="16" rx="1.5" fill="#FBF2E4"/>
+            <circle cx="24" cy="34" r="3.4" fill="#E3A93F"/>
+          </svg>
+          <span class="brand-text"><strong style="color:#fff;">First Shot</strong><span style="color:var(--teal-light);">Food &amp; History Tours</span></span>
+        </a>
+        <p>Small-group walking tours through downtown Gettysburg &mdash; real history, real food, real local eateries. Est. 2018.</p>
+        <div class="social-row">
+          <a href="#" aria-label="First Shot Tours on Instagram"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="First Shot Tours on Facebook"><svg viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-2 0-3.5 1.5-3.5 3.5V11H8v3h2.5v6h3v-6H16l.5-3h-3V9.8c0-.5.2-.8.7-.8z" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="First Shot Tours on TripAdvisor"><svg viewBox="0 0 24 24" fill="none"><circle cx="8" cy="13" r="3.2" stroke="currentColor" stroke-width="1.6"/><circle cx="16" cy="13" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M8 7h8M12 13a4 4 0 0 1 0-6M12 13a4 4 0 0 0 0-6" stroke="currentColor" stroke-width="1.4"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li><a href="{{ home_url('/tours/') }}">Tours</a></li>
+          <li><a href="{{ home_url('/book/') }}">Book a date</a></li>
+          <li><a href="{{ home_url('/route/') }}">The route &amp; local eats</a></li>
+          <li><a href="{{ home_url('/faq/') }}">FAQ</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Visit / Book</h4>
+        <address class="footer-nap">
+          <strong style="color:#fff;">First Shot Food &amp; History Tours</strong><br>
+          5 Chambersburg Street<br>
+          Gettysburg, PA 17325<br>
+          <a href="tel:+17175550105">(717) 555-0105</a><br>
+          <a href="mailto:book@@firstshottours.test">book@@firstshottours.test</a>
+        </address>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <ul>
+          <li>Booking desk: Mon&ndash;Fri, 9am&ndash;5pm</li>
+          <li>Tours depart: Thu&ndash;Mon</li>
+          <li>Season: April&ndash;November</li>
+          <li>Closed Tue &amp; Wed</li>
+        </ul>
+      </div>
+    </div>
+    <p style="font-family:var(--font-mono); font-size:0.75rem; color:rgba(251,242,228,0.55); margin-top:2rem;">Serving Gettysburg and the wider Adams County area &mdash; Biglerville, New Oxford, Littlestown, McSherrystown, Fairfield, Cashtown, and Hanover.</p>
+    <div class="footer-bottom">
+      <span>&copy; <span id="footerYear"></span> First Shot Food &amp; History Tours. All rights reserved.</span>
+      <span>Design concept by Ridges &amp; Valleys Studio, Gettysburg PA &mdash; not a live booking system.</span>
+    </div>
+  </div>
+</footer>
+
+<a class="concept-badge" href="#" onclick="event.preventDefault();" aria-label="This is a design concept by Ridges and Valleys Studio">
+  <span class="dot" aria-hidden="true"></span> Concept &middot; Ridges &amp; Valleys Studio
+</a>
+@endsection

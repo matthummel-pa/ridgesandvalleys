@@ -1,0 +1,342 @@
+{{--
+  Template Name: Contact
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "Hotel",
+  "@@id": "{{ home_url('/') }}#hotel",
+  "name": "The Cupola & Field Hotel",
+  "url": "{{ home_url('/contact/') }}",
+  "image": "https://commons.wikimedia.org/wiki/Special:FilePath/DowntownGettysburgPA.jpg?width=1600",
+  "description": "A modern 28-room boutique hotel on Steinwehr Avenue in Gettysburg, Pennsylvania, walkable to Lincoln Square and the Gettysburg National Military Park.",
+  "telephone": "+1-717-555-0188",
+  "email": "desk@@cupolafield.test",
+  "priceRange": "$189\u2013$299",
+  "numberOfRooms": 28,
+  "checkinTime": "16:00",
+  "checkoutTime": "11:00",
+  "petsAllowed": true,
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "88 Steinwehr Avenue",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8288, "longitude": -77.2312 },
+  "openingHoursSpecification": [{
+    "@@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"],
+    "opens": "00:00", "closes": "23:59"
+  }],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg, PA" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, PA" },
+    { "@@type": "City", "name": "Biglerville, PA" },
+    { "@@type": "City", "name": "New Oxford, PA" },
+    { "@@type": "City", "name": "Fairfield, PA" },
+    { "@@type": "City", "name": "Cashtown, PA" }
+  ],
+  "amenityFeature": [
+    { "@@type": "LocationFeatureSpecification", "name": "Free Wi-Fi", "value": true },
+    { "@@type": "LocationFeatureSpecification", "name": "Complimentary breakfast", "value": true },
+    { "@@type": "LocationFeatureSpecification", "name": "Valet parking", "value": true },
+    { "@@type": "LocationFeatureSpecification", "name": "Pet-friendly rooms", "value": true }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "Contact", "item": "{{ home_url('/contact/') }}" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<!-- ============ SPRITE ============ -->
+<svg xmlns="http://www.w3.org/2000/svg" class="visually-hidden" aria-hidden="true">
+  <defs>
+    <symbol id="i-cupola" viewBox="0 0 24 24"><path d="M12 2v3M9 5h6l1.5 3h-9L9 5Z"/><rect x="7" y="8" width="10" height="9" rx="1"/><path d="M4 21h16M9 21v-4h6v4"/></symbol>
+    <symbol id="i-wifi" viewBox="0 0 24 24"><path d="M2 8.5a16 16 0 0 1 20 0"/><path d="M5.5 12.3a11 11 0 0 1 13 0"/><path d="M9 16a5.5 5.5 0 0 1 6 0"/><circle cx="12" cy="19.2" r="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-coffee" viewBox="0 0 24 24"><path d="M4 9h13v5a5 5 0 0 1-5 5H9a5 5 0 0 1-5-5V9Z"/><path d="M17 10h1.5a2.5 2.5 0 0 1 0 5H17"/><path d="M8 4c0 1-1.2 1-1.2 2S8 8 8 8M12 4c0 1-1.2 1-1.2 2S12 8 12 8"/></symbol>
+    <symbol id="i-dumbbell" viewBox="0 0 24 24"><path d="M2 12h2M20 12h2M5 8v8M19 8v8M5 12h14M8 9.5v5M16 9.5v5"/></symbol>
+    <symbol id="i-paw" viewBox="0 0 24 24"><circle cx="6" cy="10" r="1.6"/><circle cx="10.2" cy="7" r="1.6"/><circle cx="14.6" cy="7" r="1.6"/><circle cx="18.4" cy="10" r="1.6"/><path d="M12.3 12.2c2.6 0 5.7 2 5.7 4.6a2.4 2.4 0 0 1-2.4 2.4c-1.1 0-1.7-.6-3.3-.6s-2.2.6-3.3.6a2.4 2.4 0 0 1-2.4-2.4c0-2.6 3.1-4.6 5.7-4.6Z"/></symbol>
+    <symbol id="i-valet" viewBox="0 0 24 24"><path d="M3 16h18M5 16l1.5-5.5A2 2 0 0 1 8.4 9h7.2a2 2 0 0 1 1.9 1.5L19 16"/><circle cx="7.5" cy="18.5" r="1.5"/><circle cx="16.5" cy="18.5" r="1.5"/><path d="M5 13h14"/></symbol>
+    <symbol id="i-wine" viewBox="0 0 24 24"><path d="M7 3h10l-1 6a4 4 0 0 1-8 0L7 3Z"/><path d="M12 13v6M8 21h8"/></symbol>
+    <symbol id="i-bike" viewBox="0 0 24 24"><circle cx="6" cy="17" r="3.2"/><circle cx="18" cy="17" r="3.2"/><path d="M6 17l4-9h4l3 6M10 8h3M9.5 17H14l2.2-6"/></symbol>
+    <symbol id="i-tub" viewBox="0 0 24 24"><path d="M4 12h16v3a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4v-3Z"/><path d="M4 12V9a2 2 0 0 1 2-2M20 19v1M4 19v1"/><circle cx="8" cy="8" r="1"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 2.5l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.7l-5.9 2.9 1.3-6.6-4.9-4.6 6.6-.8L12 2.5Z"/></symbol>
+    <symbol id="i-chevron" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-3-6-7-2Z"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4 5h16v11H9l-5 4V5Z"/></symbol>
+    <symbol id="i-phone" viewBox="0 0 24 24"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v3a2 2 0 0 1-2 2A15 15 0 0 1 3 6a2 2 0 0 1 2-2Z"/></symbol>
+    <symbol id="i-mail" viewBox="0 0 24 24"><path d="M3 5h18v14H3V5Z"/><path d="M3 6l9 7 9-7"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 22s7-7.4 7-12.6A7 7 0 0 0 5 9.4C5 14.6 12 22 12 22Z"/><circle cx="12" cy="9.4" r="2.3"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4 12l5 5L20 6"/></symbol>
+    <symbol id="i-instagram" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></symbol>
+    <symbol id="i-facebook" viewBox="0 0 24 24"><path d="M14 21v-8h3l.5-4H14V6.5c0-1.2.4-2 2.2-2H17.5V1.2A29 29 0 0 0 15 1c-3 0-4.8 1.8-4.8 5.1V9H7v4h3.2v8H14Z"/></symbol>
+    <symbol id="i-pinterest" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 20c.5-2 1.4-6.3 1.4-6.3M8.3 12.6a3.7 3.7 0 1 1 6.7 2.6c-1 1.3-2.6 1.2-3.2.4M11.5 9.5c-1 3-1.4 4.3-2.2 7"/></symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24"><path d="M12 2l8 3v6c0 5-3.4 8.4-8 11-4.6-2.6-8-6-8-11V5l8-3Z"/><path d="M9 12l2 2 4-4"/></symbol>
+    <symbol id="i-bed" viewBox="0 0 24 24"><path d="M3 18v-7a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v7M3 18v2M21 18v2M3 13h18"/><rect x="5" y="9" width="6" height="4" rx="1"/></symbol>
+    <symbol id="i-users" viewBox="0 0 24 24"><circle cx="9" cy="8" r="3"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="8" r="2.4"/><path d="M17 12.2c2.3.3 4 2.4 4 4.8v3"/></symbol>
+    <symbol id="i-map" viewBox="0 0 24 24"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2Z"/><path d="M9 4v14M15 6v14"/></symbol>
+  </defs>
+</svg>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header" id="siteHeader">
+  <div class="container header-inner">
+    <a href="{{ home_url('/') }}" class="brand">
+      <span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-cupola"></use></svg></span>
+      <span class="brand-text">
+        <strong>Cupola &amp; Field</strong>
+        <span>Gettysburg, PA</span>
+      </span>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="{{ home_url('/') }}">Home</a></li>
+        <li><a href="{{ home_url('/rooms/') }}">Rooms</a></li>
+        <li><a href="{{ home_url('/reservations/') }}">Reservations</a></li>
+        <li><a href="{{ home_url('/amenities/') }}">Amenities</a></li>
+        <li><a href="{{ home_url('/area/') }}">The Area</a></li>
+        <li><a href="{{ home_url('/contact/') }}" aria-current="page" class="is-active">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a class="header-phone" href="tel:+17175550188">
+        <svg class="icon" aria-hidden="true"><use href="#i-phone"></use></svg>
+        (717) 555-0188
+      </a>
+      <a class="btn btn-gold btn-sm" href="{{ home_url('/reservations/') }}">Book Now</a>
+      <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+        <svg class="icon icon-open" aria-hidden="true"><use href="#i-menu"></use></svg>
+        <svg class="icon icon-close" aria-hidden="true"><use href="#i-close"></use></svg>
+      </button>
+    </div>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+    <a href="{{ home_url('/') }}">Home</a>
+    <a href="{{ home_url('/rooms/') }}">Rooms</a>
+    <a href="{{ home_url('/reservations/') }}">Reservations</a>
+    <a href="{{ home_url('/amenities/') }}">Amenities</a>
+    <a href="{{ home_url('/area/') }}">The Area</a>
+    <a href="{{ home_url('/contact/') }}" aria-current="page">Contact</a>
+    <a href="tel:+17175550188">Call (717) 555-0188</a>
+    <a class="btn btn-gold btn-block" href="{{ home_url('/reservations/') }}">Book Now</a>
+  </nav>
+</header>
+
+<main id="main">
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="container">
+    <ol>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li aria-current="page">Contact</li>
+    </ol>
+  </div>
+</nav>
+
+  <section class="page-hero">
+    <div class="hero-media">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gettysburg,_Pennsylvania_(6286097408).jpg?width=1600"
+           alt="Historic storefronts and streetscape in downtown Gettysburg, Pennsylvania"
+           onerror="this.style.display='none'">
+    </div>
+    <div class="container">
+      <div class="page-hero-inner">
+        <span class="hero-badge">
+          <svg class="icon" aria-hidden="true" style="color:var(--gold-light)"><use href="#i-pin"></use></svg>
+          88 Steinwehr Avenue · Gettysburg, PA 17325
+        </span>
+        <h1>Contact The Cupola &amp; Field Hotel</h1>
+        <p class="lede">Questions before you book, or need something during your stay? Our front desk on Steinwehr Avenue is staffed 24/7. Call, email, or send a note below and we typically reply within an hour during front-desk hours.</p>
+        
+      </div>
+    </div>
+  </section>
+
+  <section id="contact-main">
+    <div class="container">
+      <div class="split-panels">
+        <div class="panel reveal">
+          <h3>Message the front desk</h3>
+          <p>Have a question before you book? Send us a note — we typically reply within an hour during front-desk hours.</p>
+          <form id="contactForm" novalidate>
+            <div class="two-col">
+              <div class="form-row"><label for="cName">Name</label><input type="text" id="cName" name="cName" required autocomplete="name"></div>
+              <div class="form-row"><label for="cEmail">Email</label><input type="email" id="cEmail" name="cEmail" required autocomplete="email"></div>
+            </div>
+            <div class="form-row"><label for="cSubject">Subject</label>
+              <select id="cSubject" name="cSubject">
+                <option>Question about a room</option>
+                <option>Group or event booking</option>
+                <option>Accessibility question</option>
+                <option>Something else</option>
+              </select>
+            </div>
+            <div class="form-row"><label for="cMessage">Message</label><textarea id="cMessage" name="cMessage" required></textarea></div>
+            <button type="submit" class="btn btn-gold btn-block">Send Message</button>
+            <div class="inline-success" id="contactSuccess" role="status">
+              <svg aria-hidden="true"><use href="#i-check"></use></svg>
+              <span>Message sent — demo only. In the live site, this would reach our front desk inbox directly.</span>
+            </div>
+          </form>
+        </div>
+
+        <div class="panel reveal">
+          <h3>Visit us</h3>
+          <p>We're on Steinwehr Avenue, a short walk from Lincoln Square and the Gettysburg National Military Park.</p>
+          <div class="nearby-list" style="margin-top:16px;">
+            <div class="nearby-item"><svg class="icon" aria-hidden="true" style="width:22px;height:22px;color:var(--gold-deep);margin-top:2px;"><use href="#i-pin"></use></svg>
+              <div><h4>Address</h4><address style="font-style:normal;color:var(--ink-soft);font-size:.9rem;line-height:1.7;">The Cupola &amp; Field Hotel<br>88 Steinwehr Avenue<br>Gettysburg, PA 17325</address></div></div>
+            <div class="nearby-item"><svg class="icon" aria-hidden="true" style="width:22px;height:22px;color:var(--gold-deep);margin-top:2px;"><use href="#i-phone"></use></svg>
+              <div><h4>Phone</h4><p><a href="tel:+17175550188" style="text-decoration:none;color:var(--gold-deep);font-family:var(--font-mono);">(717) 555-0188</a> · front desk, 24/7</p></div></div>
+            <div class="nearby-item"><svg class="icon" aria-hidden="true" style="width:22px;height:22px;color:var(--gold-deep);margin-top:2px;"><use href="#i-mail"></use></svg>
+              <div><h4>Email</h4><p><a href="mailto:desk@@cupolafield.test" style="text-decoration:none;color:var(--gold-deep);font-family:var(--font-mono);">desk@@cupolafield.test</a></p></div></div>
+            <div class="nearby-item"><svg class="icon" aria-hidden="true" style="width:22px;height:22px;color:var(--gold-deep);margin-top:2px;"><use href="#i-clock"></use></svg>
+              <div><h4>Hours</h4><p>Front Desk 24/7 · Concierge 7am–10pm · Breakfast 7–10:30am · Rooftop Lounge Thu–Sun 4–11pm</p></div></div>
+          </div>
+          <a class="btn btn-outline btn-block" href="{{ home_url('/area/') }}" style="margin-top:20px;">Directions &amp; parking</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt" id="contact-faq">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Good to Know</span>
+        <h2>Frequently asked questions</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item reveal"><button class="faq-q" aria-expanded="false" aria-controls="cfaq-1">What time is check-in and check-out? <svg class="icon" aria-hidden="true"><use href="#i-chevron"></use></svg></button><div class="faq-a" id="cfaq-1" data-open="false"><p>Check-in begins at 4:00pm and check-out is at 11:00am. Early check-in and late check-out can be requested from the amenities page and are granted based on availability, at no charge when possible.</p></div></div>
+        <div class="faq-item reveal"><button class="faq-q" aria-expanded="false" aria-controls="cfaq-2">Is parking available? <svg class="icon" aria-hidden="true"><use href="#i-chevron"></use></svg></button><div class="faq-a" id="cfaq-2" data-open="false"><p>Yes. On-site valet parking is $28/night just off Steinwehr Avenue. A self-park municipal lot two blocks away runs about $12/night if you'd rather walk a little further.</p></div></div>
+        <div class="faq-item reveal"><button class="faq-q" aria-expanded="false" aria-controls="cfaq-3">Are pets allowed? <svg class="icon" aria-hidden="true"><use href="#i-chevron"></use></svg></button><div class="faq-a" id="cfaq-3" data-open="false"><p>We welcome well-behaved dogs in our Heritage Double rooms for a $35 nightly pet fee. Please let us know in advance so we can prepare a pet-friendly room and a water bowl.</p></div></div>
+        <div class="faq-item reveal"><button class="faq-q" aria-expanded="false" aria-controls="cfaq-4">What's your cancellation policy? <svg class="icon" aria-hidden="true"><use href="#i-chevron"></use></svg></button><div class="faq-a" id="cfaq-4" data-open="false"><p>Cancel up to 48 hours before check-in for a full refund. Cancellations within 48 hours are charged one night's rate. Full refunds are always available in the case of a documented emergency.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="container">
+      <div class="cta-band reveal">
+        <span class="eyebrow" style="justify-content:center; color:var(--gold-light);">Book Direct</span>
+        <h2>Come stay in Gettysburg</h2>
+        <p>Check live rates for your dates, or call the front desk at (717) 555-0188. We're at 88 Steinwehr Avenue, staffed around the clock.</p>
+        <div class="hero-actions">
+          <a href="{{ home_url('/reservations/') }}" class="btn btn-gold">Check Availability</a>
+          <a href="{{ home_url('/rooms/') }}" class="btn btn-outline">View Rooms</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="{{ home_url('/') }}" class="brand">
+          <span class="brand-mark"><svg class="icon" aria-hidden="true"><use href="#i-cupola"></use></svg></span>
+          <span class="brand-text">
+            <strong>Cupola &amp; Field</strong>
+            <span>Gettysburg, PA</span>
+          </span>
+        </a>
+        <p>A modern boutique hotel on Steinwehr Avenue — 28 rooms, a rooftop lounge, and a front desk that knows Adams County.</p>
+        <div class="social-row">
+          <a class="icon-btn" href="#" aria-label="The Cupola & Field Hotel on Instagram"><svg class="icon" aria-hidden="true"><use href="#i-instagram"></use></svg></a>
+          <a class="icon-btn" href="#" aria-label="The Cupola & Field Hotel on Facebook"><svg class="icon" aria-hidden="true"><use href="#i-facebook"></use></svg></a>
+          <a class="icon-btn" href="#" aria-label="The Cupola & Field Hotel on Pinterest"><svg class="icon" aria-hidden="true"><use href="#i-pinterest"></use></svg></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Visit</h4>
+        <address>
+          The Cupola &amp; Field Hotel<br>
+          88 Steinwehr Avenue<br>
+          Gettysburg, PA 17325<br><br>
+          <a href="tel:+17175550188">(717) 555-0188</a><br>
+          <a href="mailto:desk@@cupolafield.test">desk@@cupolafield.test</a>
+        </address>
+      </div>
+
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <ul>
+          <li>Front Desk: 24 / 7</li>
+          <li>Concierge: 7am – 10pm</li>
+          <li>Breakfast: 7am – 10:30am</li>
+          <li>Rooftop Lounge: Thu–Sun, 4pm – 11pm</li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li><a href="{{ home_url('/rooms/') }}">Rooms &amp; Suites</a></li>
+          <li><a href="{{ home_url('/reservations/') }}">Reservations</a></li>
+          <li><a href="{{ home_url('/amenities/') }}">Amenities &amp; Concierge</a></li>
+          <li><a href="{{ home_url('/area/') }}">The Area</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer-service-area">
+      <strong>Proudly serving Gettysburg and Adams County</strong> — including Biglerville, Littlestown, New Oxford, McSherrystown, Fairfield, Cashtown, and Hanover.
+    </p>
+
+    <div class="footer-bottom">
+      <span>&copy; <span data-year>2026</span> The Cupola &amp; Field Hotel. All rights reserved.</span>
+      <span>Design concept by Ridges &amp; Valleys Studio, Gettysburg, PA.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- ============ CONCEPT BADGE ============ -->
+<a class="concept-badge" href="#">
+  <svg aria-hidden="true"><use href="#i-shield"></use></svg>
+  Concept · Ridges &amp; Valleys Studio
+</a>
+<script>
+(function(){
+  "use strict";
+  var contactForm = document.getElementById('contactForm');
+  if (!contactForm) return;
+  var contactSuccess = document.getElementById('contactSuccess');
+  contactForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    if (!contactForm.checkValidity()){ contactForm.reportValidity(); return; }
+    contactSuccess.classList.add('is-visible');
+    contactForm.querySelectorAll('input, textarea').forEach(function(f){ f.value=''; });
+    contactForm.querySelector('select').selectedIndex = 0;
+  });
+})();
+</script>
+@endsection

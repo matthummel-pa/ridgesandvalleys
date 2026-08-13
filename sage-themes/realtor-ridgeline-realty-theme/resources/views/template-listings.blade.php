@@ -1,0 +1,663 @@
+{{--
+  Template Name: Homes for Sale in Gettysburg & Adams County
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "RealEstateAgent",
+  "@@id": "{{ home_url('/') }}#business",
+  "name": "Ridgeline Realty",
+  "description": "Residential real estate listings across Gettysburg and Adams County, Pennsylvania.",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/listings/') }}",
+  "telephone": "+1-717-555-0210",
+  "email": "info@@ridgelinerealty.test",
+  "priceRange": "$$",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "210 Chambersburg Road",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8309, "longitude": -77.2311 },
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "18:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": "Saturday", "opens": "10:00", "closes": "15:00" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg, PA" },
+    { "@@type": "City", "name": "Biglerville, PA" },
+    { "@@type": "City", "name": "Littlestown, PA" },
+    { "@@type": "City", "name": "New Oxford, PA" },
+    { "@@type": "City", "name": "McSherrystown, PA" },
+    { "@@type": "City", "name": "Fairfield, PA" },
+    { "@@type": "Place", "name": "Cashtown, PA" },
+    { "@@type": "Place", "name": "Straban Township, PA" },
+    { "@@type": "Place", "name": "Cumberland Township, PA" },
+    { "@@type": "Place", "name": "Mount Joy Township, PA" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, PA" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "Listings", "item": "{{ home_url('/listings/') }}" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<header class="site-header">
+  <div class="nav-wrap">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="Ridgeline Realty home">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#0c1c2c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l5-9 4 6 3-5 6 8"/><path d="M3 20h18"/></svg>
+      </span>
+      <span class="brand-text"><strong>Ridgeline Realty</strong><span>Gettysburg &amp; Adams County</span></span>
+    </a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="{{ home_url('/listings/') }}" class="is-active" aria-current="page">Listings</a></li>
+        <li><a href="{{ home_url('/areas/') }}">Areas We Serve</a></li>
+        <li><a href="{{ home_url('/sell/') }}">Sell Your Home</a></li>
+        <li><a href="{{ home_url('/agents/') }}">Our Agents</a></li>
+        <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-cta">
+      <a class="header-phone" href="tel:+17175550210">(717) 555-0210</a>
+      <a class="btn btn-primary btn-sm" href="{{ home_url('/contact/') }}#schedule">Schedule a Showing</a>
+    </div>
+
+    <button class="hamburger" id="hamburgerBtn" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav">
+      <span></span>
+    </button>
+  </div>
+
+  <nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+    <a href="{{ home_url('/listings/') }}" class="is-active" aria-current="page">Listings</a>
+    <a href="{{ home_url('/areas/') }}">Areas We Serve</a>
+    <a href="{{ home_url('/sell/') }}">Sell Your Home</a>
+    <a href="{{ home_url('/agents/') }}">Our Agents</a>
+    <a href="{{ home_url('/contact/') }}">Contact</a>
+    <div class="mobile-cta">
+      <a class="btn btn-primary" style="width:100%" href="{{ home_url('/contact/') }}#schedule">Schedule a Showing</a>
+    </div>
+  </nav>
+</header>
+
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="container">
+    <ol>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li aria-current="page">Listings</li>
+    </ol>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ===== PAGE HERO ===== -->
+  <section class="hero hero-compact">
+    <div class="container hero-inner">
+      <span class="eyebrow">Current Inventory</span>
+      <h1>Homes for sale across <em>Gettysburg &amp; Adams County</em></h1>
+      <p class="hero-sub">Filter by price, beds, baths, and property type — from Baltimore Street Victorians to new construction in Cumberland Township and orchard-country builds near Biglerville.</p>
+    </div>
+  </section>
+
+  <!-- ===== LISTINGS ===== -->
+  <section class="listings" id="listings">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Search Homes</span>
+        <h2>Find your Adams County home</h2>
+        <p>Listings are updated from our MLS feed each morning. (Demo data shown for this concept site.)</p>
+      </div>
+
+      <form class="filter-bar reveal" id="filterForm" aria-label="Filter listings">
+        <div class="filter-grid">
+          <div class="filter-field">
+            <label for="fKeyword">Keyword / location</label>
+            <input type="text" id="fKeyword" placeholder="Street, town, or feature">
+          </div>
+          <div class="filter-field">
+            <label for="fMinPrice">Min price</label>
+            <input type="number" id="fMinPrice" min="0" step="5000" placeholder="$0">
+          </div>
+          <div class="filter-field">
+            <label for="fMaxPrice">Max price</label>
+            <input type="number" id="fMaxPrice" min="0" step="5000" placeholder="No max">
+          </div>
+          <div class="filter-field">
+            <label for="fBeds">Bedrooms</label>
+            <select id="fBeds">
+              <option value="0">Any</option>
+              <option value="1">1+</option>
+              <option value="2">2+</option>
+              <option value="3">3+</option>
+              <option value="4">4+</option>
+            </select>
+          </div>
+          <div class="filter-field">
+            <label for="fBaths">Bathrooms</label>
+            <select id="fBaths">
+              <option value="0">Any</option>
+              <option value="1">1+</option>
+              <option value="2">2+</option>
+              <option value="3">3+</option>
+            </select>
+          </div>
+        </div>
+        <div class="filter-grid" style="margin-top:14px;">
+          <div class="filter-field">
+            <label for="fType">Property type</label>
+            <select id="fType">
+              <option value="any">Any type</option>
+              <option value="House">House</option>
+              <option value="Condo">Condo</option>
+              <option value="Historic">Historic</option>
+              <option value="Land">Land</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="filter-footer">
+          <p class="result-count" id="resultCount" aria-live="polite">Showing 8 homes</p>
+          <div class="sort-field">
+            <label for="sortSelect">Sort</label>
+            <select id="sortSelect">
+              <option value="newest">Newest</option>
+              <option value="priceLow">Price: Low to High</option>
+              <option value="priceHigh">Price: High to Low</option>
+            </select>
+          </div>
+          <button type="button" class="btn btn-ghost btn-sm" id="resetFilters">Reset filters</button>
+        </div>
+      </form>
+
+      <div class="listing-grid" id="listingGrid" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <!-- ===== MORTGAGE CALCULATOR ===== -->
+  <section class="calc-section" id="mortgage">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Plan Your Purchase</span>
+        <h2>Mortgage calculator</h2>
+        <p>Estimate your monthly payment before you fall in love with a Gettysburg listing. Adjust the numbers below.</p>
+      </div>
+
+      <div class="calc-wrap reveal">
+        <div class="calc-form">
+          <div class="field">
+            <label for="calcPrice">Home price <span class="live-val" id="calcPriceVal">$420,000</span></label>
+            <input type="range" id="calcPrice" min="100000" max="1200000" step="5000" value="420000">
+          </div>
+          <div class="field">
+            <label for="calcDown">Down payment <span class="live-val" id="calcDownVal">$84,000 (20%)</span></label>
+            <input type="range" id="calcDown" min="0" max="100" step="1" value="20">
+          </div>
+          <div class="field">
+            <label for="calcRate">Interest rate <span class="live-val" id="calcRateVal">6.75%</span></label>
+            <input type="range" id="calcRate" min="3" max="10" step="0.05" value="6.75">
+          </div>
+          <div class="field">
+            <label for="calcTerm">Loan term <span class="live-val" id="calcTermVal">30 years</span></label>
+            <input type="range" id="calcTerm" min="10" max="30" step="5" value="30">
+          </div>
+        </div>
+        <div class="calc-result">
+          <span class="label">Estimated monthly payment</span>
+          <div class="amount" id="calcResult">$2,180<span>/mo</span></div>
+          <div class="calc-breakdown">
+            <div class="row"><span>Loan amount</span><strong id="calcLoanAmt">$336,000</strong></div>
+            <div class="row"><span>Total interest paid</span><strong id="calcTotalInterest">$449,940</strong></div>
+            <div class="row"><span>Total paid over term</span><strong id="calcTotalPaid">$785,940</strong></div>
+          </div>
+          <p style="font-family:var(--ff-mono);font-size:.72rem;color:rgba(255,255,255,.55);margin-top:14px;">Estimate excludes taxes, insurance &amp; HOA. Not a loan offer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== CTA BAND ===== -->
+  <section class="cta-band">
+    <div class="container">
+      <span class="eyebrow">See One You Like?</span>
+      <h2>Book a private showing</h2>
+      <p>Pick any home above, then schedule a tour with a Ridgeline agent who knows the block, the schools, and what's really behind the walls.</p>
+      <div class="cta-actions">
+        <a href="{{ home_url('/contact/') }}#schedule" class="btn btn-primary">Schedule a Showing</a>
+        <a href="{{ home_url('/areas/') }}" class="btn btn-outline">Explore Our Areas</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===== FOOTER ===== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="{{ home_url('/') }}" class="brand">
+          <span class="brand-mark" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#0c1c2c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 20l5-9 4 6 3-5 6 8"/><path d="M3 20h18"/></svg>
+          </span>
+          <span class="brand-text"><strong>Ridgeline Realty</strong><span>Gettysburg &amp; Adams County</span></span>
+        </a>
+        <p>Locally owned and operated, connecting Adams County families with in-town homes, historic properties, and new builds since 2016.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Ridgeline Realty on Facebook"><svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M14 9h3V6h-3a4 4 0 0 0-4 4v2H8v3h2v6h3v-6h3l1-3h-4v-1a1 1 0 0 1 1-2z"/></svg></a>
+          <a href="#" aria-label="Ridgeline Realty on Instagram"><svg viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Ridgeline Realty on LinkedIn"><svg viewBox="0 0 24 24" stroke-width="1.8"><rect x="3" y="3" width="18" height="18" rx="3"/><path d="M7 10v7"/><path d="M7 7v.01"/><path d="M11 17v-4a2 2 0 0 1 4 0v4"/><path d="M11 13v4"/></svg></a>
+        </div>
+      </div>
+
+      <div class="footer-col">
+        <h4>Office</h4>
+        <address>
+          Ridgeline Realty<br>
+          210 Chambersburg Road<br>
+          Gettysburg, PA 17325<br>
+          <a href="tel:+17175550210">(717) 555-0210</a><br>
+          <a href="mailto:info@@ridgelinerealty.test">info@@ridgelinerealty.test</a>
+        </address>
+      </div>
+
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <address>
+          Mon–Fri: 9:00am–6:00pm<br>
+          Sat: 10:00am–3:00pm<br>
+          Sun: By appointment
+        </address>
+        <h4 style="margin-top:22px;">Quick Links</h4>
+        <ul>
+          <li><a href="{{ home_url('/listings/') }}">Listings</a></li>
+          <li><a href="{{ home_url('/sell/') }}">Sell Your Home</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li><a href="{{ home_url('/listings/') }}">Listings</a></li>
+          <li><a href="{{ home_url('/areas/') }}">Areas We Serve</a></li>
+          <li><a href="{{ home_url('/agents/') }}">Our Agents</a></li>
+          <li><a href="{{ home_url('/sell/') }}">Sell Your Home</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <p class="footer-service-note">Proudly serving Gettysburg plus Biglerville, Littlestown, New Oxford, McSherrystown, Fairfield, Cashtown, and the surrounding Adams County townships, Pennsylvania.</p>
+
+    <div class="footer-bottom">
+      <div class="equal-housing">
+        <svg viewBox="0 0 24 24" stroke-width="1.8"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h14V10"/><path d="M9 20v-6h6v6"/></svg>
+        <span>Equal Housing Opportunity</span>
+      </div>
+      <p>&copy; <span data-current-year>2026</span> Ridgeline Realty. Design concept by Ridges &amp; Valleys Studio — a Gettysburg, PA web studio — created to show a prospective client their future site. Not a licensed real-estate brokerage. All listings, prices, and testimonials are illustrative.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== LISTING MODAL ===== -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <span class="eyebrow" id="modalType">House</span>
+        <h2 id="modalTitle">Address</h2>
+      </div>
+      <button class="modal-close" id="modalCloseBtn" aria-label="Close listing details">
+        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#0e2023" stroke-width="2"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <div class="modal-gallery" id="modalGallery" aria-hidden="true"></div>
+    <div class="modal-content">
+      <div class="modal-price" id="modalPrice">$0</div>
+      <p id="modalDescription"></p>
+      <div class="modal-specs" id="modalSpecs"></div>
+      <div class="mortgage-mini">
+        <h4>Estimated monthly payment</h4>
+        <div class="mm-result" id="modalMortgage">$0/mo</div>
+        <p>Based on 20% down, 6.75% rate, 30-year term. See full calculator for custom terms.</p>
+      </div>
+      <div style="display:flex;gap:12px;margin-top:20px;flex-wrap:wrap;">
+        <a href="{{ home_url('/contact/') }}#schedule" class="btn btn-dark" id="modalScheduleBtn">Schedule a Showing</a>
+        <a href="#mortgage" class="btn btn-ghost">Open Full Calculator</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== CHAT WIDGET ===== -->
+<div class="chat-widget">
+  <div class="chat-panel" id="chatPanel">
+    <div class="chat-head">
+      <div><strong>Ridgeline Assistant</strong><br><span>Usually replies in minutes</span></div>
+      <button class="chat-close" id="chatCloseBtn" aria-label="Close chat">&times;</button>
+    </div>
+    <div class="chat-body" id="chatBody">
+      <div class="chat-msg">Hi! I'm the Ridgeline assistant (demo). Ask me something below.</div>
+    </div>
+    <div class="chat-quick">
+      <button type="button" data-reply="worth">What's my home worth?</button>
+      <button type="button" data-reply="showing">Schedule a showing</button>
+      <button type="button" data-reply="agent">Talk to an agent</button>
+      <button type="button" data-reply="areas">Areas you serve?</button>
+    </div>
+  </div>
+  <button class="chat-toggle" id="chatToggleBtn" aria-label="Open chat assistant" aria-expanded="false">
+    <svg viewBox="0 0 24 24"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"/></svg>
+  </button>
+</div>
+
+<a href="#" class="concept-badge">Concept &middot; Ridges &amp; Valleys Studio</a>
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- Listings data ---------- */
+  var listings = [
+    {
+      id:'l1', address:'214 Baltimore Street', town:'Gettysburg, PA 17325', price:489000,
+      status:'for-sale', statusLabel:'For Sale', type:'Historic', beds:4, baths:2.5, sqft:2650,
+      gradient:'linear-gradient(135deg,#7a5a2b,#2f2013)', order:1,
+      description:'A meticulously maintained Federal-style townhome three blocks from Lincoln Square, with original heart-pine floors, restored millwork, and a walled garden courtyard. Recent updates include a new slate roof and updated electrical, all completed under historic-district guidelines.',
+      yearBuilt:1868, lot:'0.14 acres'
+    },
+    {
+      id:'l2', address:'88 Steinwehr Avenue, Unit 3', town:'Gettysburg, PA 17325', price:259900,
+      status:'new', statusLabel:'New', type:'Condo', beds:2, baths:2, sqft:1180,
+      gradient:'linear-gradient(135deg,#2c6a8f,#0f2a3a)', order:8,
+      description:'A bright second-floor condo in a small boutique building steps from downtown restaurants and the Gettysburg Visitor Center. Open living/kitchen layout, in-unit laundry, and a private balcony overlooking Steinwehr Avenue.',
+      yearBuilt:2004, lot:'Common area'
+    },
+    {
+      id:'l3', address:'1450 Table Rock Road', town:'Cumberland Township, PA 17325', price:612500,
+      status:'for-sale', statusLabel:'For Sale', type:'House', beds:4, baths:3, sqft:3020,
+      gradient:'linear-gradient(135deg,#3f7a53,#173321)', order:6,
+      description:'New construction on a full acre with mountain-laurel landscaping and long views toward the ridgeline. Chef\'s kitchen with quartz counters, first-floor primary suite, and a walkout lower level ready to finish.',
+      yearBuilt:2025, lot:'1.02 acres'
+    },
+    {
+      id:'l4', address:'622 Chambersburg Street', town:'Gettysburg, PA 17325', price:415000,
+      status:'pending', statusLabel:'Pending', type:'Historic', beds:3, baths:2, sqft:2100,
+      gradient:'linear-gradient(135deg,#8a5a3b,#3a2415)', order:3,
+      description:'A charming Victorian with a wraparound front porch, original stained glass, and a deep in-town lot with mature shade trees. Walkable to Gettysburg College and the town square.',
+      yearBuilt:1891, lot:'0.21 acres'
+    },
+    {
+      id:'l5', address:"77 Herr's Ridge Road", town:'Franklin Township, PA 17325', price:549000,
+      status:'for-sale', statusLabel:'For Sale', type:'House', beds:3, baths:2, sqft:2400,
+      gradient:'linear-gradient(135deg,#6b7f45,#2a331b)', order:5,
+      description:'A stone-and-frame farmhouse on three rolling acres with a bank barn, fenced pasture, and a renovated kitchen that keeps its original fireplace. Ten minutes to Lincoln Square, a world away in feel.',
+      yearBuilt:1932, lot:'3.1 acres'
+    },
+    {
+      id:'l6', address:'12 Cider Press Lane', town:'Biglerville, PA 17307', price:398000,
+      status:'new', statusLabel:'New', type:'House', beds:3, baths:2.5, sqft:1950,
+      gradient:'linear-gradient(135deg,#c9a24b,#5c481c)', order:7,
+      description:'A new-build craftsman on the edge of orchard country, with a covered front porch built for cider-season evenings. Open-concept main floor, mudroom, and a two-car garage with EV-ready wiring.',
+      yearBuilt:2024, lot:'0.42 acres'
+    },
+    {
+      id:'l7', address:'305 Bullfrog Road', town:'Straban Township, PA 17325', price:175000,
+      status:'for-sale', statusLabel:'For Sale', type:'Land', beds:0, baths:0, sqft:0,
+      gradient:'linear-gradient(135deg,#4a5a3f,#1c2417)', order:4,
+      description:'Five wooded and cleared acres with a perc-approved building site, road frontage, and public water available at the street. Bring your builder or ask us for a referral.',
+      yearBuilt:null, lot:'5.0 acres'
+    },
+    {
+      id:'l8', address:'45 Springs Avenue', town:'Gettysburg, PA 17325', price:329900,
+      status:'for-sale', statusLabel:'For Sale', type:'House', beds:3, baths:1.5, sqft:1540,
+      gradient:'linear-gradient(135deg,#7a4b4b,#301c1c)', order:2,
+      description:'A tidy Craftsman bungalow near Lincoln Cemetery with a refinished front porch, updated kitchen, and a fenced backyard. Move-in ready with newer HVAC and a one-car detached garage.',
+      yearBuilt:1924, lot:'0.17 acres'
+    }
+  ];
+
+  var saved = {};
+
+  var svgBed = '<svg viewBox="0 0 24 24"><path d="M2 20v-7a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v7"/><path d="M2 13V7a2 2 0 0 1 2-2h6v6"/><path d="M2 20h20"/></svg>';
+  var svgBath = '<svg viewBox="0 0 24 24"><path d="M4 12h16v4a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4z"/><path d="M4 12V6a2 2 0 0 1 2-2h1"/><path d="M9 4v3"/></svg>';
+  var svgSqft = '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 3v18M3 9h6"/></svg>';
+  var svgHeart = '<svg viewBox="0 0 24 24"><path d="M20.8 4.6a5.5 5.5 0 0 0-7.8 0L12 5.6l-1-1a5.5 5.5 0 0 0-7.8 7.8l1 1L12 21l7.8-7.6 1-1a5.5 5.5 0 0 0 0-7.8z"/></svg>';
+
+  function fmtPrice(p){
+    if(p === 0) return 'Call for price';
+    return '$' + p.toLocaleString('en-US');
+  }
+
+  var listingGrid = document.getElementById('listingGrid');
+  var resultCount = document.getElementById('resultCount');
+
+  function renderListings(items){
+    listingGrid.innerHTML = '';
+    if(items.length === 0){
+      var empty = document.createElement('div');
+      empty.className = 'empty-state';
+      empty.style.gridColumn = '1 / -1';
+      empty.textContent = 'No homes match those filters yet — try widening your search.';
+      listingGrid.appendChild(empty);
+    } else {
+      items.forEach(function(l){
+        var card = document.createElement('article');
+        card.className = 'listing-card';
+
+        var statusClass = l.status === 'for-sale' ? 'status-for-sale' : (l.status === 'new' ? 'status-new' : 'status-pending');
+        var isSaved = !!saved[l.id];
+
+        card.innerHTML =
+          '<div class="listing-photo" style="background:'+l.gradient+';">'+
+            '<span class="status-tag '+statusClass+'">'+l.statusLabel+'</span>'+
+            '<span class="price-badge">'+fmtPrice(l.price)+'</span>'+
+            '<button class="save-btn'+(isSaved?' saved':'')+'" data-id="'+l.id+'" aria-pressed="'+isSaved+'" aria-label="'+(isSaved?'Remove from saved homes':'Save this home')+'">'+svgHeart+'</button>'+
+          '</div>'+
+          '<div class="listing-body">'+
+            '<span class="listing-type">'+l.type+'</span>'+
+            '<span class="listing-address">'+l.address+'</span>'+
+            '<span class="listing-town">'+l.town+'</span>'+
+            '<div class="specs-row">'+
+              (l.type!=='Land' ? '<span>'+svgBed+' '+l.beds+' bd</span><span>'+svgBath+' '+l.baths+' ba</span><span>'+svgSqft+' '+l.sqft.toLocaleString('en-US')+' sqft</span>' : '<span>'+svgSqft+' '+l.lot+'</span>')+
+            '</div>'+
+            '<div class="listing-actions">'+
+              '<button type="button" class="btn btn-dark btn-sm view-details" data-id="'+l.id+'">View details</button>'+
+            '</div>'+
+          '</div>';
+        listingGrid.appendChild(card);
+      });
+    }
+
+    listingGrid.querySelectorAll('.save-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        var id = btn.getAttribute('data-id');
+        saved[id] = !saved[id];
+        btn.classList.toggle('saved', saved[id]);
+        btn.setAttribute('aria-pressed', saved[id] ? 'true' : 'false');
+        btn.setAttribute('aria-label', saved[id] ? 'Remove from saved homes' : 'Save this home');
+      });
+    });
+    listingGrid.querySelectorAll('.view-details').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        openModal(btn.getAttribute('data-id'));
+      });
+    });
+  }
+
+  function applyFilters(){
+    var keyword = document.getElementById('fKeyword').value.trim().toLowerCase();
+    var minPrice = parseFloat(document.getElementById('fMinPrice').value) || 0;
+    var maxPrice = parseFloat(document.getElementById('fMaxPrice').value) || Infinity;
+    var minBeds = parseInt(document.getElementById('fBeds').value, 10) || 0;
+    var minBaths = parseInt(document.getElementById('fBaths').value, 10) || 0;
+    var type = document.getElementById('fType').value;
+    var sort = document.getElementById('sortSelect').value;
+
+    var filtered = listings.filter(function(l){
+      var matchesKeyword = !keyword || (l.address + ' ' + l.town + ' ' + l.type).toLowerCase().indexOf(keyword) !== -1;
+      var matchesPrice = l.price >= minPrice && l.price <= maxPrice;
+      var matchesBeds = l.beds >= minBeds;
+      var matchesBaths = l.baths >= minBaths;
+      var matchesType = type === 'any' || l.type === type;
+      return matchesKeyword && matchesPrice && matchesBeds && matchesBaths && matchesType;
+    });
+
+    if(sort === 'priceLow'){ filtered.sort(function(a,b){ return a.price - b.price; }); }
+    else if(sort === 'priceHigh'){ filtered.sort(function(a,b){ return b.price - a.price; }); }
+    else { filtered.sort(function(a,b){ return a.order - b.order; }); }
+
+    renderListings(filtered);
+    resultCount.textContent = 'Showing ' + filtered.length + (filtered.length === 1 ? ' home' : ' homes');
+  }
+
+  ['fKeyword','fMinPrice','fMaxPrice'].forEach(function(id){
+    document.getElementById(id).addEventListener('input', applyFilters);
+  });
+  ['fBeds','fBaths','fType','sortSelect'].forEach(function(id){
+    document.getElementById(id).addEventListener('change', applyFilters);
+  });
+  document.getElementById('filterForm').addEventListener('submit', function(e){ e.preventDefault(); applyFilters(); });
+  document.getElementById('resetFilters').addEventListener('click', function(){
+    document.getElementById('filterForm').reset();
+    applyFilters();
+  });
+
+  /* ---------- Prefill from homepage hero search (?q=&beds=&max=) ---------- */
+  (function prefillFromQuery(){
+    var params = new URLSearchParams(window.location.search);
+    var q = params.get('q');
+    var beds = params.get('beds');
+    var max = params.get('max');
+    if(q){ document.getElementById('fKeyword').value = q; }
+    if(beds && beds !== '0'){ document.getElementById('fBeds').value = beds; }
+    if(max && max !== '0'){ document.getElementById('fMaxPrice').value = max; }
+  })();
+
+  applyFilters();
+
+  /* ---------- Mortgage math (shared) ---------- */
+  function monthlyPayment(price, downPct, rate, years){
+    var principal = price * (1 - downPct/100);
+    var monthlyRate = (rate/100)/12;
+    var n = years * 12;
+    if(monthlyRate === 0){ return principal / n; }
+    var pow = Math.pow(1+monthlyRate, n);
+    return principal * (monthlyRate * pow) / (pow - 1);
+  }
+  function currency(n){
+    return '$' + Math.round(n).toLocaleString('en-US');
+  }
+
+  /* ---------- Standalone calculator ---------- */
+  var calcPrice = document.getElementById('calcPrice');
+  var calcDown = document.getElementById('calcDown');
+  var calcRate = document.getElementById('calcRate');
+  var calcTerm = document.getElementById('calcTerm');
+
+  function updateCalc(){
+    var price = parseFloat(calcPrice.value);
+    var downPct = parseFloat(calcDown.value);
+    var rate = parseFloat(calcRate.value);
+    var years = parseFloat(calcTerm.value);
+
+    document.getElementById('calcPriceVal').textContent = currency(price);
+    document.getElementById('calcDownVal').textContent = currency(price*downPct/100) + ' (' + downPct + '%)';
+    document.getElementById('calcRateVal').textContent = rate.toFixed(2) + '%';
+    document.getElementById('calcTermVal').textContent = years + ' years';
+
+    var payment = monthlyPayment(price, downPct, rate, years);
+    var loanAmt = price * (1 - downPct/100);
+    var totalPaid = payment * years * 12;
+    var totalInterest = totalPaid - loanAmt;
+
+    document.getElementById('calcResult').innerHTML = currency(payment) + '<span>/mo</span>';
+    document.getElementById('calcLoanAmt').textContent = currency(loanAmt);
+    document.getElementById('calcTotalInterest').textContent = currency(totalInterest);
+    document.getElementById('calcTotalPaid').textContent = currency(totalPaid);
+  }
+  [calcPrice, calcDown, calcRate, calcTerm].forEach(function(el){
+    el.addEventListener('input', updateCalc);
+  });
+  updateCalc();
+
+  /* ---------- Listing modal ---------- */
+  var modalOverlay = document.getElementById('modalOverlay');
+  var lastFocused = null;
+
+  function openModal(id){
+    var l = listings.filter(function(x){ return x.id === id; })[0];
+    if(!l) return;
+    lastFocused = document.activeElement;
+
+    document.getElementById('modalType').textContent = l.type;
+    document.getElementById('modalTitle').textContent = l.address;
+    document.getElementById('modalPrice').textContent = fmtPrice(l.price);
+    document.getElementById('modalDescription').textContent = l.description;
+
+    var gallery = document.getElementById('modalGallery');
+    gallery.innerHTML =
+      '<div class="gallery-tile gallery-main" style="background:'+l.gradient+';"></div>'+
+      '<div class="gallery-tile" style="background:linear-gradient(135deg,#dab868,#0d3d3f);"></div>'+
+      '<div class="gallery-tile" style="background:linear-gradient(135deg,#124f52,#c9a24b);"></div>';
+
+    var specsWrap = document.getElementById('modalSpecs');
+    var specsHtml = '';
+    if(l.type !== 'Land'){
+      specsHtml += '<span class="spec">'+svgBed+' '+l.beds+' Bedrooms</span>';
+      specsHtml += '<span class="spec">'+svgBath+' '+l.baths+' Bathrooms</span>';
+      specsHtml += '<span class="spec">'+svgSqft+' '+l.sqft.toLocaleString('en-US')+' sqft</span>';
+    }
+    specsHtml += '<span class="spec">'+svgSqft+' Lot: '+l.lot+'</span>';
+    if(l.yearBuilt){ specsHtml += '<span class="spec">'+svgSqft+' Built '+l.yearBuilt+'</span>'; }
+    specsWrap.innerHTML = specsHtml;
+
+    var payment = l.price > 0 ? monthlyPayment(l.price, 20, 6.75, 30) : 0;
+    document.getElementById('modalMortgage').textContent = l.price > 0 ? (currency(payment) + '/mo') : 'Contact for pricing';
+
+    /* Cross-page schedule link carries the property address as a hint */
+    document.getElementById('modalScheduleBtn').setAttribute('href', 'contact.html?property=' + encodeURIComponent(l.id) + '#schedule');
+
+    modalOverlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    document.getElementById('modalCloseBtn').focus();
+  }
+  function closeModal(){
+    modalOverlay.classList.remove('open');
+    document.body.style.overflow = '';
+    if(lastFocused){ lastFocused.focus(); }
+  }
+  document.getElementById('modalCloseBtn').addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', function(e){
+    if(e.target === modalOverlay){ closeModal(); }
+  });
+  document.addEventListener('keydown', function(e){
+    if(e.key === 'Escape' && modalOverlay.classList.contains('open')){ closeModal(); }
+  });
+
+})();
+</script>
+@endsection

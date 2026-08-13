@@ -1,0 +1,330 @@
+{{--
+  Template Name: Visit Us & The Area
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "Store",
+  "@@id": "{{ home_url('/') }}#store",
+  "name": "Diamond & Ridge Mercantile",
+  "description": "Downtown Gettysburg gift shop and boutique stocked by local Adams County makers — candles, apparel, home goods and locally made gifts, available in-store and online.",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/visit/') }}",
+  "telephone": "+1-717-555-0133",
+  "email": "shop@@diamondandridge.test",
+  "priceRange": "$$",
+  "currenciesAccepted": "USD",
+  "paymentAccepted": "Cash, Visa, Mastercard, American Express, Apple Pay",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "33 York Street",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8312, "longitude": -77.2299 },
+  "hasMap": "https://www.google.com/maps?q=33+York+Street+Gettysburg+PA+17325",
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday"], "opens": "10:00", "closes": "18:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday","Saturday"], "opens": "10:00", "closes": "20:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "11:00", "closes": "17:00" }
+  ],
+  "department": [
+    { "@@type": "Store", "name": "Candles & Soap" },
+    { "@@type": "Store", "name": "Apparel" },
+    { "@@type": "Store", "name": "Home Goods" },
+    { "@@type": "Store", "name": "Local Gifts & Pantry" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, Pennsylvania" },
+    { "@@type": "City", "name": "Biglerville" },
+    { "@@type": "City", "name": "New Oxford" },
+    { "@@type": "City", "name": "Littlestown" },
+    { "@@type": "City", "name": "McSherrystown" }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "Visit Us", "item": "{{ home_url('/visit/') }}" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="Diamond & Ridge Mercantile home">
+      <span class="brand-mark" aria-hidden="true">D&amp;R</span>
+      <span class="brand-word">
+        <strong>Diamond &amp; Ridge</strong>
+        <span>Mercantile Co.</span>
+      </span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="{{ home_url('/shop/') }}">Shop</a></li>
+        <li><a href="{{ home_url('/collections/') }}">Collections</a></li>
+        <li><a href="{{ home_url('/about/') }}">About</a></li>
+        <li><a href="{{ home_url('/visit/') }}" class="is-active" aria-current="page">Visit</a></li>
+        <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="{{ home_url('/shop/') }}" class="btn btn-primary btn-sm header-cta">Shop online</a>
+      <button class="icon-btn" id="cartToggle" aria-label="Open cart, 0 items" aria-haspopup="dialog" aria-controls="cartDrawer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="9" cy="21" r="1.3" fill="currentColor" stroke="none"/>
+          <circle cx="18" cy="21" r="1.3" fill="currentColor" stroke="none"/>
+          <path d="M3 4h2l2.2 11.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L20.5 8H6.2"/>
+        </svg>
+        <span class="cart-badge" id="cartBadge" aria-hidden="true">0</span>
+      </button>
+      <button class="icon-btn hamburger" id="menuToggle" aria-label="Open menu" aria-haspopup="true" aria-expanded="false" aria-controls="mobileMenu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<div class="scrim" id="scrim"></div>
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile" aria-hidden="true">
+  <div class="mobile-menu-head">
+    <span class="brand-word"><strong>Menu</strong></span>
+    <button class="icon-btn" id="menuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <ul>
+    <li><a href="{{ home_url('/shop/') }}" class="mobile-link">Shop</a></li>
+    <li><a href="{{ home_url('/collections/') }}" class="mobile-link">Collections</a></li>
+    <li><a href="{{ home_url('/about/') }}" class="mobile-link">About / Local Makers</a></li>
+    <li><a href="{{ home_url('/visit/') }}" class="mobile-link is-active">Visit Us</a></li>
+    <li><a href="{{ home_url('/contact/') }}" class="mobile-link">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Cart drawer -->
+<aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
+  <div class="cart-head">
+    <h2 id="cartTitle">Your Bag</h2>
+    <button class="icon-btn" id="cartClose" aria-label="Close cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="cart-empty" id="cartEmptyMsg">Your bag is empty — browse the shop to add something local &amp; lovely.</p>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-total-row"><span>Subtotal</span><span id="cartTotal">$0.00</span></div>
+    <button class="btn btn-primary btn-block" id="checkoutBtn">Checkout</button>
+    <p class="cart-checkout-msg" id="checkoutMsg" aria-live="polite"></p>
+  </div>
+</aside>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastText">Added to cart</span>
+</div>
+
+<main id="main">
+  <nav class="breadcrumb wrap" aria-label="Breadcrumb">
+    <ol>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li aria-current="page">Visit Us</li>
+    </ol>
+  </nav>
+
+  <section class="page-hero">
+    <div class="wrap">
+      <span class="eyebrow">Visit Us · The Area</span>
+      <h1>Find us at <em>33 York Street</em>, downtown Gettysburg</h1>
+      <p>We're a two-minute walk east of Lincoln Square, in the heart of the Gettysburg Historic District — an easy stop before or after the battlefield, the shops on Steinwehr Avenue, or dinner on Chambersburg Street.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="visit-grid">
+        <div class="visit-card reveal">
+          <div class="visit-list">
+            <div class="visit-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <div><strong>33 York Street, Gettysburg, PA 17325</strong><span>A short block east of Lincoln Square (the Diamond), on the north side of York Street</span></div>
+            </div>
+            <div class="visit-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.2z"/></svg>
+              <div><strong>(717) 555-0133</strong><span>Call or text — we usually answer during store hours</span></div>
+            </div>
+            <div class="visit-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 4h16v16H4z"/><path d="M4 9h16"/></svg>
+              <div><strong>shop@@diamondandridge.test</strong><span>Email us about orders, gift boxes or wholesale</span></div>
+            </div>
+          </div>
+          <a href="https://www.google.com/maps?q=33+York+Street+Gettysburg+PA+17325" class="btn btn-outline">Get directions</a>
+        </div>
+        <div class="visit-card reveal">
+          <table class="hours">
+            <thead><tr><th>Day</th><th>Hours</th></tr></thead>
+            <tbody>
+              <tr><td>Monday – Thursday</td><td>10:00 am – 6:00 pm</td></tr>
+              <tr><td>Friday – Saturday</td><td>10:00 am – 8:00 pm</td></tr>
+              <tr><td>Sunday</td><td>11:00 am – 5:00 pm</td></tr>
+            </tbody>
+          </table>
+          <div class="hours-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg>
+            <span>Online orders placed by 2 pm ship the same business day. In-store pickup orders are usually ready in about an hour.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--paper);border-block:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head reveal"><span class="eyebrow">The Area</span><h2>Getting here &amp; what's nearby</h2></div>
+      <div class="prose">
+        <p>Diamond &amp; Ridge Mercantile sits right in the middle of everything that makes downtown Gettysburg worth a day. From <strong>Lincoln Square</strong> — the traffic circle locals call "the Diamond" — walk east on York Street and you'll reach our door in about two minutes. The <strong>David Wills House</strong>, where Abraham Lincoln finished the Gettysburg Address, is on the square itself, half a block from us. Keep the whole visit on foot: most of the historic district is walkable in well under fifteen minutes.</p>
+
+        <h2>Walking distances from our door</h2>
+        <ul class="bullets">
+          <li><strong>Lincoln Square (the Diamond):</strong> about 2 minutes / 500 feet west on York Street.</li>
+          <li><strong>David Wills House:</strong> under 2 minutes, right on Lincoln Square.</li>
+          <li><strong>Shops &amp; restaurants on Chambersburg &amp; Baltimore Streets:</strong> 3–6 minutes on foot.</li>
+          <li><strong>Steinwehr Avenue &amp; the visitor-heavy south end:</strong> about a 12–15 minute walk, or a 4-minute drive.</li>
+          <li><strong>Gettysburg National Military Park Museum &amp; Visitor Center:</strong> roughly a 6-minute drive on Baltimore Street to the Taneytown Road entrance.</li>
+        </ul>
+
+        <h2>Driving directions &amp; parking</h2>
+        <p>Coming in on <strong>US-15</strong>, take the US-30 (York Street / Lincoln Highway) exit and head west toward town — York Street brings you straight to us just before Lincoln Square. From <strong>US-30 east or west</strong>, follow Chambersburg Street or York Street into the square; we're on the York Street side. From the battlefield and the south, come up <strong>Baltimore Street</strong> to the square and turn east onto York.</p>
+        <p>There is metered on-street parking along York Street and around Lincoln Square, plus the <strong>Race Horse Alley parking garage</strong> a short walk away off Stratton Street. Weekends and summer afternoons fill up, so arriving before 11 am usually means an easy spot near the door. Order online for in-store pickup and we'll have your bag waiting so you only need the meter for a few minutes.</p>
+
+        <h2>Make a day of it</h2>
+        <p>Pair a stop here with the landmarks that ring the town: <strong>Seminary Ridge</strong> and the Lutheran Theological Seminary to the west, <strong>Little Round Top</strong> and the southern battlefield down Taneytown Road, and the peaceful <strong>Sachs Covered Bridge</strong> southwest of town toward Marsh Creek. Many of our products are named for these very places — the Round Top candle, the Seminary Ridge mug, the Sachs Bridge soap — so it's easy to carry a piece of the day home.</p>
+
+        <h2>Towns we serve nearby</h2>
+        <p>Plenty of our regulars drive in from around Adams County, and we ship to the ones who'd rather not. If you're coming from out of town, here's roughly how far you are:</p>
+      </div>
+      <div class="town-grid reveal" style="margin-top:1.6rem;">
+        <div class="town-card"><strong>Biglerville</strong><span>~9 mi north · 15 min via US-15/Rt 34</span></div>
+        <div class="town-card"><strong>New Oxford</strong><span>~9 mi east · 15 min via US-30</span></div>
+        <div class="town-card"><strong>Littlestown</strong><span>~10 mi southeast · 18 min via Rt 97</span></div>
+        <div class="town-card"><strong>McSherrystown</strong><span>~11 mi east · 18 min via US-30</span></div>
+        <div class="town-card"><strong>Fairfield</strong><span>~8 mi west · 14 min via Rt 116</span></div>
+        <div class="town-card"><strong>Cashtown</strong><span>~8 mi west · 13 min via US-30</span></div>
+        <div class="town-card"><strong>Hanover</strong><span>~15 mi east · 25 min via US-30</span></div>
+        <div class="town-card"><strong>Aspers</strong><span>~12 mi north · 20 min via Rt 34</span></div>
+        <div class="town-card"><strong>Orrtanna</strong><span>~11 mi west · 18 min via US-30</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal"><span class="eyebrow">Before You Come</span><h2>Visiting questions</h2></div>
+      <div class="faq-list">
+        <div class="faq-item reveal"><h3>Where exactly are you?</h3><p>33 York Street, Gettysburg, PA 17325 — on the north side of York Street, a two-minute walk east of Lincoln Square.</p></div>
+        <div class="faq-item reveal"><h3>Is parking easy?</h3><p>Metered on-street parking runs along York Street and around the square, with the Race Horse Alley garage a short walk away off Stratton Street. Mornings are easiest.</p></div>
+        <div class="faq-item reveal"><h3>Are you open on Sundays?</h3><p>Yes — Sunday 11:00 am to 5:00 pm. We're open seven days a week; see the hours table above.</p></div>
+        <div class="faq-item reveal"><h3>Can I pick up an online order in person?</h3><p>Absolutely. Choose in-store pickup at checkout and we'll have it ready at the counter, usually within the hour.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section style="background:var(--cream-deep);border-block:1px solid var(--line);">
+    <div class="wrap">
+      <div class="cta-band reveal">
+        <h2>Come say hello on York Street</h2>
+        <p>Open every day, two minutes from Lincoln Square. Can't make it in? We'll ship anywhere in the country.</p>
+        <div class="hero-ctas"><a href="{{ home_url('/shop/') }}" class="btn btn-light">Shop online</a><a href="{{ home_url('/contact/') }}" class="btn btn-outline" style="color:var(--cream);border-color:var(--cream);">Contact us</a></div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark" aria-hidden="true" style="width:36px;height:36px;font-size:1.1rem;">D&amp;R</span>
+          <strong>Diamond &amp; Ridge Mercantile</strong>
+        </div>
+        <p class="footer-desc">Locally-made candles, apparel, home goods &amp; gifts from a storefront on York Street in downtown Gettysburg, PA.</p>
+        <div class="payment-icons" aria-label="Accepted payment methods">
+          <svg viewBox="0 0 48 32" role="img" aria-label="Visa"><rect width="48" height="32" rx="4" fill="#1a1f71"/><text x="24" y="21" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">VISA</text></svg>
+          <svg viewBox="0 0 48 32" role="img" aria-label="Mastercard"><rect width="48" height="32" rx="4" fill="#252525"/><circle cx="20" cy="16" r="9" fill="#eb001b"/><circle cx="28" cy="16" r="9" fill="#f79e1b" fill-opacity="0.9"/></svg>
+          <svg viewBox="0 0 48 32" role="img" aria-label="American Express"><rect width="48" height="32" rx="4" fill="#2e77bc"/><text x="24" y="21" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">AMEX</text></svg>
+          <svg viewBox="0 0 48 32" role="img" aria-label="Apple Pay"><rect width="48" height="32" rx="4" fill="#000"/><text x="24" y="21" font-family="Arial, sans-serif" font-size="9" font-weight="600" fill="#fff" text-anchor="middle"> Pay</text></svg>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/shop/') }}">Shop</a></li>
+          <li><a href="{{ home_url('/collections/') }}">Collections</a></li>
+          <li><a href="{{ home_url('/about/') }}">Local Makers</a></li>
+          <li><a href="{{ home_url('/visit/') }}">Visit Us</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Store</h4>
+        <ul>
+          <li><a href="{{ home_url('/visit/') }}">Hours &amp; Directions</a></li>
+          <li><a href="{{ home_url('/visit/') }}">The Area</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Shipping &amp; Returns</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Wholesale &amp; Gift Boxes</a></li>
+        </ul>
+        <p style="margin-top:1rem;font-size:0.85rem;color:#b7a98c;">Free shipping over $75. Returns accepted within 30 days on unused items — in-store or by mail.</p>
+      </div>
+      <div>
+        <h4>Find Us</h4>
+        <address class="footer-nap">
+          Diamond &amp; Ridge Mercantile<br>
+          33 York Street<br>
+          Gettysburg, PA 17325<br>
+          <a href="tel:+17175550133">(717) 555-0133</a><br>
+          <a href="mailto:shop@@diamondandridge.test">shop@@diamondandridge.test</a>
+        </address>
+        <div class="social-row">
+          <a href="#" aria-label="Diamond & Ridge Mercantile on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Diamond & Ridge Mercantile on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 9h3V6h-3a4 4 0 0 0-4 4v2H7v3h3v6h3v-6h3l1-3h-4v-2a1 1 0 0 1 1-1z"/></svg></a>
+          <a href="#" aria-label="Diamond & Ridge Mercantile on Pinterest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 17c1-4 1.5-6.5 1.5-8a2.5 2.5 0 0 1 5 0c0 1.5-1 4.5-1.5 6a2 2 0 0 0 4 .5"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:2rem;font-size:0.85rem;color:#b7a98c;max-width:60ch;">Proudly serving Gettysburg and the towns of Adams County — Biglerville, New Oxford, Littlestown, McSherrystown, Fairfield, Cashtown and Hanover nearby.</p>
+    <div class="footer-bottom">
+      <span>© <span class="js-year">2026</span> Diamond &amp; Ridge Mercantile. Design concept by Ridges &amp; Valleys Studio.</span>
+      <span>Concept for demonstration — not a live store.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Concept badge -->
+<a href="#" class="concept-badge">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2L12 16.5 5.7 21l2.3-7.2-6-4.6h7.6z"/></svg>
+  Concept · Ridges &amp; Valleys Studio
+</a>
+@endsection

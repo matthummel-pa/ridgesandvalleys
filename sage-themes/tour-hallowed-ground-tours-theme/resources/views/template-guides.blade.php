@@ -1,0 +1,376 @@
+{{--
+  Template Name: Your Gettysburg Battlefield Guides
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "TravelAgency",
+  "@@id": "{{ home_url('/') }}#business",
+  "name": "Hallowed Ground Battlefield Tours",
+  "url": "{{ home_url('/guides/') }}",
+  "image": "https://commons.wikimedia.org/wiki/Special:FilePath/Pennsylvania_-_Gettysburg_-_NARA_-_68148252_(cropped).jpg?width=1600",
+  "description": "Licensed-guide walking, bus, and evening lantern tours of the Gettysburg battlefield in Gettysburg, Pennsylvania.",
+  "telephone": "+17175550271",
+  "email": "tours@@hallowedground.test",
+  "priceRange": "$$",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "271 Baltimore Street",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": {
+    "@@type": "GeoCoordinates",
+    "latitude": 39.83,
+    "longitude": -77.229
+  },
+  "openingHoursSpecification": [
+    {
+      "@@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "08:00",
+      "closes": "18:00",
+      "validFrom": "2026-04-01",
+      "validThrough": "2026-11-30"
+    },
+    {
+      "@@type": "OpeningHoursSpecification",
+      "dayOfWeek": [
+        "Thursday",
+        "Friday",
+        "Saturday",
+        "Sunday"
+      ],
+      "opens": "09:00",
+      "closes": "16:00",
+      "validFrom": "2026-12-01",
+      "validThrough": "2027-03-31"
+    }
+  ],
+  "areaServed": [
+    {
+      "@@type": "City",
+      "name": "Gettysburg, Pennsylvania"
+    },
+    {
+      "@@type": "AdministrativeArea",
+      "name": "Adams County, Pennsylvania"
+    },
+    {
+      "@@type": "City",
+      "name": "Biglerville, Pennsylvania"
+    },
+    {
+      "@@type": "City",
+      "name": "Littlestown, Pennsylvania"
+    },
+    {
+      "@@type": "City",
+      "name": "New Oxford, Pennsylvania"
+    },
+    {
+      "@@type": "City",
+      "name": "McSherrystown, Pennsylvania"
+    },
+    {
+      "@@type": "City",
+      "name": "Fairfield, Pennsylvania"
+    },
+    {
+      "@@type": "City",
+      "name": "Cashtown, Pennsylvania"
+    },
+    {
+      "@@type": "City",
+      "name": "Hanover, Pennsylvania"
+    }
+  ],
+  "sameAs": [
+    "https://www.facebook.com/",
+    "https://www.instagram.com/",
+    "https://www.tripadvisor.com/"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ home_url('/') }}"
+    },
+    {
+      "@@type": "ListItem",
+      "position": 2,
+      "name": "Our Guides",
+      "item": "{{ home_url('/guides/') }}"
+    }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="{{ home_url('/') }}" class="brand">
+      <svg class="brand-mark" width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M2 26L10 12L15 19L20 9L32 26H2Z" fill="currentColor" opacity="0.9"/><circle cx="26" cy="7" r="3" fill="currentColor"/></svg>
+      <span class="brand-text">
+        <span class="brand-name">Hallowed Ground</span>
+        <span class="brand-sub">Battlefield Tours</span>
+      </span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <ul><li><a href="{{ home_url('/') }}">Home</a></li><li><a href="{{ home_url('/tours/') }}">Tours</a></li><li><a href="{{ home_url('/guides/') }}" class="is-active" aria-current="page">Our Guides</a></li><li><a href="{{ home_url('/area/') }}">The Area</a></li><li><a href="{{ home_url('/contact/') }}">Contact</a></li></ul>
+    </nav>
+    <div class="header-actions">
+      <a href="tel:+17175550271" class="btn btn-ghost btn-sm" style="color:#fff;">(717) 555-0271</a>
+      <a href="{{ home_url('/book/') }}" class="btn btn-primary btn-sm">Book a Tour</a>
+      <button type="button" class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="mobileNav" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<nav class="mobile-nav" id="mobileNav" aria-label="Mobile">
+  <ul><li><a href="{{ home_url('/') }}">Home</a></li><li><a href="{{ home_url('/tours/') }}">Tours</a></li><li><a href="{{ home_url('/guides/') }}" class="is-active" aria-current="page">Our Guides</a></li><li><a href="{{ home_url('/area/') }}">The Area</a></li><li><a href="{{ home_url('/contact/') }}">Contact</a></li></ul>
+  <a href="tel:+17175550271" class="btn btn-outline btn-block" style="color:#fff;">Call (717) 555-0271</a>
+  <a href="{{ home_url('/book/') }}" class="btn btn-primary btn-block" style="margin-top:0.8rem;">Book a Tour</a>
+</nav>
+
+<main id="main">
+<nav class="breadcrumb" aria-label="Breadcrumb"><div class="wrap"><ol><li><a href="{{ home_url('/') }}">Home</a></li><li class="sep" aria-hidden="true">/</li><li aria-current="page">Our Guides</li></ol></div></nav>
+  <section class="page-intro">
+    <div class="wrap reveal">
+      <span class="eyebrow">Our Guides</span>
+      <h1>Meet your licensed Gettysburg battlefield guides</h1>
+      <p>Every walking and bus tour is led by a guide certified through the Association of Licensed Battlefield Guides &mdash; the same demanding exam used by Gettysburg National Military Park. That means accurate history, no filler, and a guide who can answer the hard questions.</p>
+    </div>
+  </section>
+
+  <div class="info-strip">
+    <div class="wrap">
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 15a4 4 0 100-8 4 4 0 000 8z"/><path d="M12 2a8 8 0 00-8 8c0 5.5 8 12 8 12s8-6.5 8-12a8 8 0 00-8-8z"/></svg>
+        271 Baltimore Street, Gettysburg, PA
+      </div>
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
+        Tours depart daily, rain or shine
+      </div>
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Association-licensed guides
+      </div>
+      <div class="info-item">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07 19.5 19.5 0 01-6-6 19.79 19.79 0 01-3.07-8.67A2 2 0 014.11 2h3a2 2 0 012 1.72c.127.96.361 1.902.7 2.81a2 2 0 01-.45 2.11L8.09 9.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.908.339 1.85.573 2.81.7A2 2 0 0122 16.92z"/></svg>
+        (717) 555-0271
+      </div>
+    </div>
+  </div>
+
+
+  <section class="section">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">The Team</span>
+        <h2>Historians who live the ground they walk.</h2>
+        <p>Our guides live in and around Gettysburg and Adams County, and each brings a specialty &mdash; from artillery tactics on Cemetery Ridge to the civilian story downtown.</p>
+      </div>
+      <article class="about-grid reveal" style="margin-bottom:2.6rem;">
+        <div>
+          <div class="guide-avatar" style="width:64px;height:64px;font-size:1.2rem;">TR</div>
+          <span class="eyebrow" style="display:block; margin-top:0.8rem;">Licensed Battlefield Guide, LBG #1142</span>
+          <h2 style="margin-block:0.4rem 0.8rem;">Tom Reilly</h2>
+          <div class="about-copy">
+            <p>Twenty-two years guiding at Gettysburg. Tom specializes in Day Two, Little Round Top, and the artillery duels along Cemetery Ridge, and he leads many of our Battlefield Highlights and hike departures.</p>
+            <p>A former park volunteer turned full-time licensed guide, Tom grew up in Adams County and can point out where the fighting reached the fields his family farmed. He&#x27;s known for making tactics clear to first-time visitors without dumbing down the history.</p>
+          </div>
+        </div>
+        <figure class="about-media">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gettysburg,_Wentz_farm_bildings.jpg?width=1600" alt="Gettysburg battlefield landscape guided by Tom Reilly" onerror="this.style.display='none'">
+          <figcaption>Tom Reilly &middot; Licensed Battlefield Guide, LBG #1142</figcaption>
+        </figure>
+      </article>
+      <article class="about-grid reveal" style="margin-bottom:2.6rem;">
+        <div>
+          <div class="guide-avatar" style="width:64px;height:64px;font-size:1.2rem;">DC</div>
+          <span class="eyebrow" style="display:block; margin-top:0.8rem;">Licensed Battlefield Guide &amp; former NPS ranger</span>
+          <h2 style="margin-block:0.4rem 0.8rem;">Denise Coyle</h2>
+          <div class="about-copy">
+            <p>A former National Park Service interpretive ranger, Denise leads our Ghosts of Gettysburg Lantern Walk and civilian-history tours through downtown Gettysburg.</p>
+            <p>Denise centers the stories of the townspeople, nurses, and families caught in the battle. Her evening lantern walks pair primary-source letters and diaries with the streets and buildings where those events actually happened.</p>
+          </div>
+        </div>
+        <figure class="about-media">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gettysburg,_Wentz_farm_bildings.jpg?width=1600" alt="Gettysburg battlefield landscape guided by Denise Coyle" onerror="this.style.display='none'">
+          <figcaption>Denise Coyle &middot; Licensed Battlefield Guide &amp; former NPS ranger</figcaption>
+        </figure>
+      </article>
+      <article class="about-grid reveal" style="margin-bottom:2.6rem;">
+        <div>
+          <div class="guide-avatar" style="width:64px;height:64px;font-size:1.2rem;">MW</div>
+          <span class="eyebrow" style="display:block; margin-top:0.8rem;">Licensed Battlefield Guide &amp; Historian</span>
+          <h2 style="margin-block:0.4rem 0.8rem;">Marcus Webb</h2>
+          <div class="about-copy">
+            <p>Author of two regimental histories, Marcus leads our Pickett&#x27;s Charge programs and the Sunrise Private Battlefield Experience.</p>
+            <p>Marcus digs into the individual regiments and the human decisions behind the maps. On private tours he tailors the route to your interests, whether that&#x27;s a specific ancestor&#x27;s unit, the cavalry fights, or the July 3rd assault on Cemetery Ridge.</p>
+          </div>
+        </div>
+        <figure class="about-media">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gettysburg,_Wentz_farm_bildings.jpg?width=1600" alt="Gettysburg battlefield landscape guided by Marcus Webb" onerror="this.style.display='none'">
+          <figcaption>Marcus Webb &middot; Licensed Battlefield Guide &amp; Historian</figcaption>
+        </figure>
+      </article>
+      <article class="about-grid reveal" style="margin-bottom:2.6rem;">
+        <div>
+          <div class="guide-avatar" style="width:64px;height:64px;font-size:1.2rem;">JS</div>
+          <span class="eyebrow" style="display:block; margin-top:0.8rem;">Licensed Battlefield Guide</span>
+          <h2 style="margin-block:0.4rem 0.8rem;">Jenna Serrano</h2>
+          <div class="about-copy">
+            <p>Jenna leads family-friendly walking tours and school groups, with a knack for keeping younger visitors engaged across all three days of the battle.</p>
+            <p>A certified guide and former classroom teacher from Littlestown, Jenna builds tours that work for mixed-age groups, connecting the landscape to stories kids remember long after they leave the field.</p>
+          </div>
+        </div>
+        <figure class="about-media">
+          <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gettysburg,_Wentz_farm_bildings.jpg?width=1600" alt="Gettysburg battlefield landscape guided by Jenna Serrano" onerror="this.style.display='none'">
+          <figcaption>Jenna Serrano &middot; Licensed Battlefield Guide</figcaption>
+        </figure>
+      </article>
+    </div>
+  </section>
+
+  <section class="section section-alt">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Guest Reviews</span>
+        <h2>What guests say about our guides.</h2>
+        <p>Sample reviews shown for this concept design.</p>
+      </div>
+      <div class="reviews-grid reveal">
+        <article class="review-card">
+          <div class="stars" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg></div>
+          <blockquote>"Tom made three days of history feel like one afternoon. My kids still talk about Little Round Top."</blockquote>
+          <p class="review-author">Karen D.<span>Little Round Top &amp; Devil's Den Hike &middot; Hanover, PA</span></p>
+        </article>
+        <article class="review-card">
+          <div class="stars" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg></div>
+          <blockquote>"The lantern walk was genuinely moving, not gimmicky. Denise ties every stop back to a real name and letter."</blockquote>
+          <p class="review-author">Ray P.<span>Ghosts of Gettysburg Lantern Walk &middot; New Oxford, PA</span></p>
+        </article>
+        <article class="review-card">
+          <div class="stars" aria-hidden="true"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.6 6.1.6-4.6 4.1 1.3 6-5.4-3.1-5.4 3.1 1.3-6L1.3 7.2l6.1-.6z"/></svg></div>
+          <blockquote>"Booked the bus tour for my in-laws who can't walk far. Comfortable, well-paced, and still packed with detail."</blockquote>
+          <p class="review-author">Sandra M.<span>Pickett's Charge Deluxe Bus Tour &middot; Littlestown, PA</span></p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="wrap">
+      <div class="book-band reveal">
+        <div>
+          <span class="eyebrow eyebrow--light">Ready When You Are</span>
+          <h2>Tour with a licensed guide.</h2>
+          <p>Pick a tour, choose a date, and check out securely. You'll get a confirmation with your ticket number by email.</p>
+          <div class="trust-strip">
+            <div class="trust-item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="10" width="16" height="10" rx="2"/><path d="M8 10V7a4 4 0 018 0v3"/></svg>
+              Secure checkout
+            </div>
+            <div class="trust-item">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg>
+              Free cancellation up to 24h
+            </div>
+            <div class="card-icons" aria-hidden="true">
+              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="4" fill="#1a3b6d"/><text x="17" y="14" font-family="Arial" font-size="8" fill="#fff" text-anchor="middle" font-weight="bold">VISA</text></svg>
+              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="4" fill="#2b2523"/><circle cx="14" cy="11" r="6" fill="#eb001b"/><circle cx="20" cy="11" r="6" fill="#f79e1b" opacity="0.85"/></svg>
+              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="4" fill="#2e77bc"/><text x="17" y="14" font-family="Arial" font-size="6.5" fill="#fff" text-anchor="middle" font-weight="bold">AMEX</text></svg>
+              <svg width="34" height="22" viewBox="0 0 34 22"><rect width="34" height="22" rx="4" fill="#f4f0e6"/><text x="17" y="14" font-family="Arial" font-size="6" fill="#a3341f" text-anchor="middle" font-weight="bold">DISC</text></svg>
+            </div>
+          </div>
+        </div>
+        <a href="{{ home_url('/book/') }}" class="btn btn-primary" style="flex-shrink:0;">Start Booking</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="{{ home_url('/') }}" class="brand" style="color:#fff;">
+          <svg class="brand-mark" width="34" height="34" viewBox="0 0 34 34" fill="none" aria-hidden="true"><path d="M2 26L10 12L15 19L20 9L32 26H2Z" fill="currentColor" opacity="0.9"/><circle cx="26" cy="7" r="3" fill="currentColor"/></svg>
+          <span class="brand-text"><span class="brand-name">Hallowed Ground</span><span class="brand-sub">Battlefield Tours</span></span>
+        </a>
+        <p>Licensed-guide battlefield tours in Gettysburg, PA. Walking, bus, and evening lantern experiences for individuals, families, and groups.</p>
+        <div class="social-row">
+          <a href="#" aria-label="Hallowed Ground Battlefield Tours on Facebook"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M22 12a10 10 0 10-11.6 9.9v-7H7.9V12h2.5V9.8c0-2.5 1.5-3.9 3.8-3.9 1.1 0 2.2.2 2.2.2v2.5h-1.3c-1.2 0-1.6.8-1.6 1.6V12h2.8l-.4 2.9h-2.4v7A10 10 0 0022 12z"/></svg></a>
+          <a href="#" aria-label="Hallowed Ground Battlefield Tours on Instagram"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Hallowed Ground Battlefield Tours on TripAdvisor"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="8" cy="14" r="3.2"/><circle cx="16" cy="14" r="3.2"/><path d="M2 9h6M16 9h6M12 6.5c-2.5 0-4.7 1-6.2 2.5M12 6.5c2.5 0 4.7 1 6.2 2.5"/></svg></a>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li><a href="{{ home_url('/tours/') }}">All Tours</a></li>
+          <li><a href="{{ home_url('/guides/') }}">Our Guides</a></li>
+          <li><a href="{{ home_url('/area/') }}">The Area</a></li>
+          <li><a href="{{ home_url('/book/') }}">Book &amp; Pay</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact &amp; FAQ</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <ul class="footer-hours">
+          <li><b style="color:#fff;">Apr&ndash;Nov</b></li>
+          <li>Mon&ndash;Sun, 8:00 AM&ndash;6:00 PM</li>
+          <li style="margin-top:0.5rem;"><b style="color:#fff;">Dec&ndash;Mar</b></li>
+          <li>Thu&ndash;Sun, 9:00 AM&ndash;4:00 PM</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Contact</h4>
+        <ul>
+          <li>Hallowed Ground Battlefield Tours</li>
+          <li>271 Baltimore Street<br>Gettysburg, PA 17325</li>
+          <li><a href="tel:+17175550271">(717) 555-0271</a></li>
+          <li><a href="mailto:tours@@hallowedground.test">tours@@hallowedground.test</a></li>
+        </ul>
+      </div>
+    </div>
+    <p class="footer-service">Proudly serving Gettysburg and the surrounding Adams County communities of Biglerville, Littlestown, New Oxford, McSherrystown, Fairfield, Cashtown, and Hanover.</p>
+    <div class="footer-bottom">
+      <span>&copy; <span data-year>2026</span> Hallowed Ground Battlefield Tours, Gettysburg PA. All rights reserved.</span>
+      <span>Design concept by Ridges &amp; Valleys Studio.</span>
+    </div>
+  </div>
+</footer>
+
+<a href="#" class="concept-badge" aria-label="This is a design concept by Ridges and Valleys Studio">
+  <span class="dot" aria-hidden="true"></span> Concept &middot; Ridges &amp; Valleys Studio
+</a>
+@endsection

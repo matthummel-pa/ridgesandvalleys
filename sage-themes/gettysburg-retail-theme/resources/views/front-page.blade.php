@@ -1,0 +1,461 @@
+{{-- Front page: concept home --}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "Store",
+  "@@id": "{{ home_url('/') }}#store",
+  "name": "Diamond & Ridge Mercantile",
+  "description": "Downtown Gettysburg gift shop and boutique stocked by local Adams County makers — candles, apparel, home goods and locally made gifts, available in-store and online.",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/') }}",
+  "telephone": "+1-717-555-0133",
+  "email": "shop@@diamondandridge.test",
+  "priceRange": "$$",
+  "currenciesAccepted": "USD",
+  "paymentAccepted": "Cash, Visa, Mastercard, American Express, Apple Pay",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "33 York Street",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8312, "longitude": -77.2299 },
+  "hasMap": "https://www.google.com/maps?q=33+York+Street+Gettysburg+PA+17325",
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday"], "opens": "10:00", "closes": "18:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday","Saturday"], "opens": "10:00", "closes": "20:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "11:00", "closes": "17:00" }
+  ],
+  "department": [
+    { "@@type": "Store", "name": "Candles & Soap" },
+    { "@@type": "Store", "name": "Apparel" },
+    { "@@type": "Store", "name": "Home Goods" },
+    { "@@type": "Store", "name": "Local Gifts & Pantry" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, Pennsylvania" },
+    { "@@type": "City", "name": "Biglerville" },
+    { "@@type": "City", "name": "New Oxford" },
+    { "@@type": "City", "name": "Littlestown" },
+    { "@@type": "City", "name": "McSherrystown" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- ============ HEADER ============ -->
+<header class="site-header">
+  <div class="wrap header-inner">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="Diamond & Ridge Mercantile home">
+      <span class="brand-mark" aria-hidden="true">D&amp;R</span>
+      <span class="brand-word">
+        <strong>Diamond &amp; Ridge</strong>
+        <span>Mercantile Co.</span>
+      </span>
+    </a>
+    <nav class="main-nav" aria-label="Primary">
+      <ul>
+        <li><a href="{{ home_url('/shop/') }}">Shop</a></li>
+        <li><a href="{{ home_url('/collections/') }}">Collections</a></li>
+        <li><a href="{{ home_url('/about/') }}">About</a></li>
+        <li><a href="{{ home_url('/visit/') }}">Visit</a></li>
+        <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+      </ul>
+    </nav>
+    <div class="header-actions">
+      <a href="{{ home_url('/shop/') }}" class="btn btn-primary btn-sm header-cta">Shop online</a>
+      <button class="icon-btn" id="cartToggle" aria-label="Open cart, 0 items" aria-haspopup="dialog" aria-controls="cartDrawer">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="9" cy="21" r="1.3" fill="currentColor" stroke="none"/>
+          <circle cx="18" cy="21" r="1.3" fill="currentColor" stroke="none"/>
+          <path d="M3 4h2l2.2 11.4a2 2 0 0 0 2 1.6h7.6a2 2 0 0 0 2-1.6L20.5 8H6.2"/>
+        </svg>
+        <span class="cart-badge" id="cartBadge" aria-hidden="true">0</span>
+      </button>
+      <button class="icon-btn hamburger" id="menuToggle" aria-label="Open menu" aria-haspopup="true" aria-expanded="false" aria-controls="mobileMenu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<!-- Mobile menu -->
+<div class="scrim" id="scrim"></div>
+<nav class="mobile-menu" id="mobileMenu" aria-label="Mobile" aria-hidden="true">
+  <div class="mobile-menu-head">
+    <span class="brand-word"><strong>Menu</strong></span>
+    <button class="icon-btn" id="menuClose" aria-label="Close menu">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <ul>
+    <li><a href="{{ home_url('/shop/') }}" class="mobile-link">Shop</a></li>
+    <li><a href="{{ home_url('/collections/') }}" class="mobile-link">Collections</a></li>
+    <li><a href="{{ home_url('/about/') }}" class="mobile-link">About / Local Makers</a></li>
+    <li><a href="{{ home_url('/visit/') }}" class="mobile-link">Visit Us</a></li>
+    <li><a href="{{ home_url('/contact/') }}" class="mobile-link">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- Cart drawer -->
+<aside class="cart-drawer" id="cartDrawer" role="dialog" aria-modal="true" aria-labelledby="cartTitle" aria-hidden="true">
+  <div class="cart-head">
+    <h2 id="cartTitle">Your Bag</h2>
+    <button class="icon-btn" id="cartClose" aria-label="Close cart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>
+    </button>
+  </div>
+  <div class="cart-items" id="cartItems">
+    <p class="cart-empty" id="cartEmptyMsg">Your bag is empty — browse the shop to add something local &amp; lovely.</p>
+  </div>
+  <div class="cart-foot">
+    <div class="cart-total-row"><span>Subtotal</span><span id="cartTotal">$0.00</span></div>
+    <button class="btn btn-primary btn-block" id="checkoutBtn">Checkout</button>
+    <p class="cart-checkout-msg" id="checkoutMsg" aria-live="polite"></p>
+  </div>
+</aside>
+
+<!-- Toast -->
+<div class="toast" id="toast" role="status" aria-live="polite">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg>
+  <span id="toastText">Added to cart</span>
+</div>
+
+<main id="main">
+
+  <!-- ============ HERO ============ -->
+  <section class="hero" id="top">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow">Downtown Gettysburg · York Street</span>
+        <h1>Locally made goods, <em class="serif">shipped from the Diamond.</em></h1>
+        <p class="hero-lede">Soy candles poured a few blocks away, apparel screen-printed in Adams County, and gifts that carry a little bit of Gettysburg with them. Shop our York Street storefront in person or right here online.</p>
+        <div class="hero-ctas">
+          <a href="{{ home_url('/shop/') }}" class="btn btn-primary">Shop the collection</a>
+          <a href="{{ home_url('/visit/') }}" class="btn btn-outline">Plan your visit</a>
+        </div>
+        <div class="hero-stats">
+          <div><strong>1899</strong><span>Building Built</span></div>
+          <div><strong>30+</strong><span>Local Makers</span></div>
+          <div><strong>2 min</strong><span>From Lincoln Square</span></div>
+        </div>
+      </div>
+      <div class="hero-art">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/DowntownGettysburgPA.jpg?width=1600" alt="Historic downtown Gettysburg street view near Lincoln Square, with brick storefronts and a wide sidewalk" loading="eager" onerror="this.style.display='none'">
+        <span class="hero-art-tag">Lincoln Square — two minutes from our door</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ TEASERS: every page ============ -->
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Find Your Way Around</span>
+        <h2>Everything at Diamond &amp; Ridge, in one place</h2>
+      </div>
+      <div class="teaser-grid">
+        <a class="teaser-card reveal" href="{{ home_url('/shop/') }}">
+          <span class="teaser-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V6l-3-4z"/><path d="M3 6h18M16 10a4 4 0 0 1-8 0"/></svg></span>
+          <h3>Shop</h3>
+          <p>Browse the full product grid, add to your bag, and check out online — candles, tees, mugs, honey and more.</p>
+          <span class="teaser-more">Shop online →</span>
+        </a>
+        <a class="teaser-card reveal" href="{{ home_url('/collections/') }}">
+          <span class="teaser-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg></span>
+          <h3>Collections</h3>
+          <p>Shop the whole store by category — Candles, Apparel, Home Goods and Local Gifts, each named for a corner of Adams County.</p>
+          <span class="teaser-more">Browse collections →</span>
+        </a>
+        <a class="teaser-card reveal" href="{{ home_url('/about/') }}">
+          <span class="teaser-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg></span>
+          <h3>Local Makers</h3>
+          <p>Everything on our shelves is made by someone in Adams County. Meet the makers behind the candles, prints and pantry goods.</p>
+          <span class="teaser-more">Meet the makers →</span>
+        </a>
+        <a class="teaser-card reveal" href="{{ home_url('/visit/') }}">
+          <span class="teaser-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg></span>
+          <h3>Visit Us</h3>
+          <p>Find us at 33 York Street — a two-minute walk from Lincoln Square. Hours, parking, directions and what's nearby.</p>
+          <span class="teaser-more">Plan your visit →</span>
+        </a>
+        <a class="teaser-card reveal" href="{{ home_url('/contact/') }}">
+          <span class="teaser-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v12H5.2L4 17.5z"/></svg></span>
+          <h3>Contact</h3>
+          <p>Questions about an order, a custom gift box, or wholesale? Call, text or send us a note — we usually answer the same day.</p>
+          <span class="teaser-more">Get in touch →</span>
+        </a>
+        <a class="teaser-card reveal" href="{{ home_url('/shop/') }}">
+          <span class="teaser-ico" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M6 6l1.5 12.5a1.5 1.5 0 0 0 1.5 1.3h6a1.5 1.5 0 0 0 1.5-1.3L18 6M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2"/></svg></span>
+          <h3>Ship &amp; Pickup</h3>
+          <p>Order online for same-day in-store pickup, or we'll ship it anywhere. Free shipping on orders over $75.</p>
+          <span class="teaser-more">Start shopping →</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED PRODUCTS (teaser to shop) ============ -->
+  <section style="background:var(--cream-deep);border-block:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head-row reveal">
+        <div class="section-head" style="margin-bottom:0;">
+          <span class="eyebrow">The Shop</span>
+          <h2>Featured pieces, made close to home</h2>
+        </div>
+        <p style="max-width:32ch;color:var(--ink-soft);margin:0;">New batches every season. Everything ships from our York Street storefront within 2 business days. <a href="{{ home_url('/shop/') }}" style="color:var(--terracotta-dk);font-weight:600;">See all products →</a></p>
+      </div>
+      <div class="product-grid">
+        <article class="product-card reveal">
+          <div class="product-media pm-1">
+            <svg viewBox="0 0 200 200" aria-hidden="true"><ellipse cx="100" cy="150" rx="55" ry="10" fill="rgba(0,0,0,0.15)"/><rect x="60" y="70" width="80" height="90" rx="8" fill="rgba(255,253,249,0.92)"/><ellipse cx="100" cy="70" rx="40" ry="10" fill="rgba(255,253,249,0.98)"/><path d="M100 40 Q108 55 100 60 Q92 55 100 40Z" fill="#e8a180"/></svg>
+          </div>
+          <div class="product-body">
+            <span class="product-cat">Candles</span>
+            <h3 class="product-name">Round Top Ridge Soy Candle</h3>
+            <div class="product-foot">
+              <span class="product-price price">$26.00</span>
+              <button class="add-btn" data-name="Round Top Ridge Soy Candle" data-price="26.00">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="product-card reveal">
+          <div class="product-media pm-2">
+            <svg viewBox="0 0 200 200" aria-hidden="true"><rect x="55" y="55" width="90" height="110" rx="4" fill="rgba(255,253,249,0.9)"/><rect x="70" y="80" width="60" height="8" rx="4" fill="#5c6a51"/><rect x="70" y="98" width="40" height="8" rx="4" fill="#5c6a51"/></svg>
+          </div>
+          <div class="product-body">
+            <span class="product-cat">Apparel</span>
+            <h3 class="product-name">Diamond Field Heavyweight Tee</h3>
+            <div class="product-foot">
+              <span class="product-price price">$34.00</span>
+              <button class="add-btn" data-name="Diamond Field Heavyweight Tee" data-price="34.00">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="product-card reveal">
+          <div class="product-media pm-3">
+            <svg viewBox="0 0 200 200" aria-hidden="true"><path d="M70 70 h60 v70 a30 30 0 0 1 -60 0 z" fill="rgba(255,253,249,0.92)"/><path d="M130 90 q25 0 25 22 q0 22 -25 22" fill="none" stroke="rgba(255,253,249,0.92)" stroke-width="8"/></svg>
+          </div>
+          <div class="product-body">
+            <span class="product-cat">Ceramics &amp; Home</span>
+            <h3 class="product-name">Seminary Ridge Stoneware Mug</h3>
+            <div class="product-foot">
+              <span class="product-price price">$29.00</span>
+              <button class="add-btn" data-name="Seminary Ridge Stoneware Mug" data-price="29.00">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Add
+              </button>
+            </div>
+          </div>
+        </article>
+        <article class="product-card reveal">
+          <div class="product-media pm-4">
+            <svg viewBox="0 0 200 200" aria-hidden="true"><path d="M100 55 C130 80 145 105 130 130 C118 150 82 150 70 130 C55 105 70 80 100 55 Z" fill="rgba(255,253,249,0.92)"/></svg>
+          </div>
+          <div class="product-body">
+            <span class="product-cat">Local Gifts</span>
+            <h3 class="product-name">Round Barn Wildflower Honey</h3>
+            <div class="product-foot">
+              <span class="product-price price">$13.00</span>
+              <button class="add-btn" data-name="Round Barn Wildflower Honey" data-price="13.00">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg> Add
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ STORY TEASER ============ -->
+  <section class="story">
+    <div class="wrap story-grid">
+      <div class="story-photo reveal">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Two_Buildings_in_the_Gettysburg_Historic_District.jpg?width=1600" alt="Historic brick storefronts in the Gettysburg Historic District, like the Diamond & Ridge Mercantile building on York Street" loading="lazy" onerror="this.style.display='none'">
+      </div>
+      <div class="story-copy reveal">
+        <span class="eyebrow">Our Story</span>
+        <h2>A storefront on York Street, stocked by neighbors</h2>
+        <p>Diamond &amp; Ridge Mercantile opened in an 1899 storefront steps from Lincoln Square with a simple idea: the best souvenir of Adams County isn't a magnet, it's something someone here actually made. Every maker on our shelves is local, and every order is packed by the same people who greet you at the door.</p>
+        <div class="hero-ctas" style="margin-top:1.2rem;">
+          <a href="{{ home_url('/about/') }}" class="btn btn-primary">Meet our local makers</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ VISIT TEASER ============ -->
+  <section>
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Visit Us</span>
+        <h2>Two minutes from Lincoln Square</h2>
+      </div>
+      <div class="visit-grid">
+        <div class="visit-card reveal">
+          <div class="visit-list">
+            <div class="visit-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M12 21s7-6.5 7-12a7 7 0 1 0-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>
+              <div><strong>33 York Street, Gettysburg, PA 17325</strong><span>A short block east of Lincoln Square, on the way toward the Diamond</span></div>
+            </div>
+            <div class="visit-row">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3-8.7A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.5 2.1L8 9.8a16 16 0 0 0 6 6l1.3-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.9 2.2z"/></svg>
+              <div><strong>(717) 555-0133</strong><span>Call or text — we usually answer</span></div>
+            </div>
+          </div>
+          <a href="{{ home_url('/visit/') }}" class="btn btn-outline">Directions, parking &amp; hours</a>
+        </div>
+        <div class="visit-card reveal">
+          <table class="hours">
+            <thead><tr><th>Day</th><th>Hours</th></tr></thead>
+            <tbody>
+              <tr><td>Monday – Thursday</td><td>10:00 am – 6:00 pm</td></tr>
+              <tr><td>Friday – Saturday</td><td>10:00 am – 8:00 pm</td></tr>
+              <tr><td>Sunday</td><td>11:00 am – 5:00 pm</td></tr>
+            </tbody>
+          </table>
+          <div class="hours-note">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 8v5l3 2"/></svg>
+            <span>Online orders placed by 2 pm ship the same business day. In-store pickup orders are ready in about an hour.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REVIEWS ============ -->
+  <section style="background:var(--cream-deep);border-block:1px solid var(--line);">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Customer Reviews</span>
+        <h2>What Adams County (and beyond) is saying</h2>
+      </div>
+      <div class="reviews-grid">
+        <article class="review-card reveal">
+          <div class="stars" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg>
+          </div>
+          <p class="review-quote serif">"The Round Top candle smells like a fall hike on the ridge. I've reordered it four times and shipping was fast both times."</p>
+          <span class="review-who">— Marissa T., Columbus, OH (sample review)</span>
+        </article>
+        <article class="review-card reveal">
+          <div class="stars" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg>
+          </div>
+          <p class="review-quote serif">"Stopped in on a battlefield trip and ended up mailing myself a box of gifts. The mug is now my everyday coffee mug."</p>
+          <span class="review-who">— David K., Frederick, MD (sample review)</span>
+        </article>
+        <article class="review-card reveal">
+          <div class="stars" aria-hidden="true">
+            <svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 8.5l6.4-.6z"/></svg>
+          </div>
+          <p class="review-quote serif">"Bought the weekender bag for my sister and the honey for me. Both gone within a week — the honey, not the bag."</p>
+          <span class="review-who">— Priya S., Gettysburg, PA (sample review)</span>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ NEWSLETTER ============ -->
+  <section id="newsletter">
+    <div class="wrap">
+      <div class="newsletter reveal">
+        <div>
+          <span class="eyebrow" style="color:var(--gold-lt);">Stay In The Loop</span>
+          <h2>New batches, restocks &amp; first dibs on limited runs</h2>
+          <p>One email a month, roughly. No spam, just new stock and the occasional in-store event on the Diamond.</p>
+        </div>
+        <div>
+          <form id="newsletterForm" class="newsletter-form" action="#" novalidate>
+            <label for="newsletterEmail" class="visually-hidden">Email address</label>
+            <input type="email" id="newsletterEmail" name="email" placeholder="you@@email.com" required>
+            <button type="submit" class="btn btn-light">Sign up</button>
+          </form>
+          <p class="newsletter-msg" id="newsletterMsg" aria-live="polite"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ============ FOOTER ============ -->
+<footer class="site-footer">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">
+          <span class="brand-mark" aria-hidden="true" style="width:36px;height:36px;font-size:1.1rem;">D&amp;R</span>
+          <strong>Diamond &amp; Ridge Mercantile</strong>
+        </div>
+        <p class="footer-desc">Locally-made candles, apparel, home goods &amp; gifts from a storefront on York Street in downtown Gettysburg, PA.</p>
+        <div class="payment-icons" aria-label="Accepted payment methods">
+          <svg viewBox="0 0 48 32" role="img" aria-label="Visa"><rect width="48" height="32" rx="4" fill="#1a1f71"/><text x="24" y="21" font-family="Arial, sans-serif" font-size="12" font-weight="700" fill="#fff" text-anchor="middle">VISA</text></svg>
+          <svg viewBox="0 0 48 32" role="img" aria-label="Mastercard"><rect width="48" height="32" rx="4" fill="#252525"/><circle cx="20" cy="16" r="9" fill="#eb001b"/><circle cx="28" cy="16" r="9" fill="#f79e1b" fill-opacity="0.9"/></svg>
+          <svg viewBox="0 0 48 32" role="img" aria-label="American Express"><rect width="48" height="32" rx="4" fill="#2e77bc"/><text x="24" y="21" font-family="Arial, sans-serif" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">AMEX</text></svg>
+          <svg viewBox="0 0 48 32" role="img" aria-label="Apple Pay"><rect width="48" height="32" rx="4" fill="#000"/><text x="24" y="21" font-family="Arial, sans-serif" font-size="9" font-weight="600" fill="#fff" text-anchor="middle"> Pay</text></svg>
+        </div>
+      </div>
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/shop/') }}">Shop</a></li>
+          <li><a href="{{ home_url('/collections/') }}">Collections</a></li>
+          <li><a href="{{ home_url('/about/') }}">Local Makers</a></li>
+          <li><a href="{{ home_url('/visit/') }}">Visit Us</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Store</h4>
+        <ul>
+          <li><a href="{{ home_url('/visit/') }}">Hours &amp; Directions</a></li>
+          <li><a href="{{ home_url('/visit/') }}">The Area</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Shipping &amp; Returns</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Wholesale &amp; Gift Boxes</a></li>
+        </ul>
+        <p style="margin-top:1rem;font-size:0.85rem;color:#b7a98c;">Free shipping over $75. Returns accepted within 30 days on unused items — in-store or by mail.</p>
+      </div>
+      <div>
+        <h4>Find Us</h4>
+        <address class="footer-nap">
+          Diamond &amp; Ridge Mercantile<br>
+          33 York Street<br>
+          Gettysburg, PA 17325<br>
+          <a href="tel:+17175550133">(717) 555-0133</a><br>
+          <a href="mailto:shop@@diamondandridge.test">shop@@diamondandridge.test</a>
+        </address>
+        <div class="social-row">
+          <a href="#" aria-label="Diamond & Ridge Mercantile on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+          <a href="#" aria-label="Diamond & Ridge Mercantile on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M14 9h3V6h-3a4 4 0 0 0-4 4v2H7v3h3v6h3v-6h3l1-3h-4v-2a1 1 0 0 1 1-1z"/></svg></a>
+          <a href="#" aria-label="Diamond & Ridge Mercantile on Pinterest"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9 17c1-4 1.5-6.5 1.5-8a2.5 2.5 0 0 1 5 0c0 1.5-1 4.5-1.5 6a2 2 0 0 0 4 .5"/></svg></a>
+        </div>
+      </div>
+    </div>
+    <p style="margin-top:2rem;font-size:0.85rem;color:#b7a98c;max-width:60ch;">Proudly serving Gettysburg and the towns of Adams County — Biglerville, New Oxford, Littlestown, McSherrystown, Fairfield, Cashtown and Hanover nearby.</p>
+    <div class="footer-bottom">
+      <span>© <span class="js-year">2026</span> Diamond &amp; Ridge Mercantile. Design concept by Ridges &amp; Valleys Studio.</span>
+      <span>Concept for demonstration — not a live store.</span>
+    </div>
+  </div>
+</footer>
+
+<!-- Concept badge -->
+<a href="#" class="concept-badge">
+  <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2l2.4 7.2H22l-6 4.6 2.3 7.2L12 16.5 5.7 21l2.3-7.2-6-4.6h7.6z"/></svg>
+  Concept · Ridges &amp; Valleys Studio
+</a>
+@endsection

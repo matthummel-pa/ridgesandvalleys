@@ -1,0 +1,381 @@
+{{--
+  Template Name: Gettysburg Trail & Battlefield Gear Guides
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SportingGoodsStore",
+  "@@id": "{{ home_url('/') }}#store",
+  "name": "Ridgeline Outfitters",
+  "description": "Outdoor gear shop in Gettysburg, PA publishing local trail and battlefield-walking gear guides for Adams County hikers.",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/guides/') }}",
+  "telephone": "+1-717-555-0120",
+  "email": "gear@@ridgelineoutfitters.test",
+  "priceRange": "$$",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "120 Buford Avenue",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8339, "longitude": -77.2380 },
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday"], "opens": "10:00", "closes": "18:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday","Saturday"], "opens": "09:00", "closes": "20:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "11:00", "closes": "17:00" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, Pennsylvania" },
+    "Biglerville, PA", "Littlestown, PA", "New Oxford, PA", "McSherrystown, PA", "Fairfield, PA", "Cashtown, PA", "Hanover, PA"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "Gear Guides", "item": "{{ home_url('/guides/') }}" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="Ridgeline Outfitters home">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" fill="#1a2e23" stroke="#ff5a1f" stroke-width="2"/>
+        <path d="M12 32L22 14L27 24L32 16L38 32H12Z" fill="#f8f6f0"/>
+        <circle cx="24" cy="24" r="22" stroke="#efe9db" stroke-width="0.5" opacity="0.3"/>
+      </svg>
+      <span>Ridgeline Outfitters<small>Gettysburg, PA · Buford Ave</small></span>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      <a href="{{ home_url('/') }}">Home</a>
+      <a href="{{ home_url('/shop/') }}">Shop Gear</a>
+      <a href="{{ home_url('/guides/') }}" class="is-active" aria-current="page">Gear Guides</a>
+      <a href="{{ home_url('/about/') }}">About</a>
+      <a href="{{ home_url('/visit/') }}">Visit Us</a>
+      <a href="{{ home_url('/contact/') }}">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="icon-btn" href="{{ home_url('/shop/') }}" aria-label="View wishlist on the Shop page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.4 8 2 4.5 5.6 4.1c2-.2 3.7.8 4.9 2.5 1.2-1.7 2.9-2.7 4.9-2.5C19 4.5 20.6 8 20 11.7 17.5 16.4 12 21 12 21z"/></svg>
+      </a>
+      <a class="icon-btn" href="{{ home_url('/shop/') }}" aria-label="View cart on the Shop page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l.4 2M7 13h10l3-8H5.4M7 13L5.4 5M7 13l-1.7 6.4A1 1 0 006.3 20H18M10 22a1 1 0 100-2 1 1 0 000 2zM18 22a1 1 0 100-2 1 1 0 000 2z"/></svg>
+      </a>
+      <button class="icon-btn hamburger" id="menuToggle" aria-label="Open menu" aria-haspopup="true" aria-expanded="false" aria-controls="mobileMenu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobileMenu" class="mobile-menu" aria-label="Mobile" hidden>
+    <a href="{{ home_url('/') }}">Home</a>
+    <a href="{{ home_url('/shop/') }}">Shop Gear</a>
+    <a href="{{ home_url('/guides/') }}" class="is-active" aria-current="page">Gear Guides</a>
+    <a href="{{ home_url('/about/') }}">About</a>
+    <a href="{{ home_url('/visit/') }}">Visit Us</a>
+    <a href="{{ home_url('/contact/') }}">Contact</a>
+  </nav>
+</header>
+
+<!-- ===================== BREADCRUMB ===================== -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="container">
+    <ol>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li aria-current="page">Gear Guides</li>
+    </ol>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section class="hero page-hero" id="top">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow on-dark">Trail &amp; Battlefield Gear Guides</span>
+        <h1>What to carry on <em>Gettysburg's</em> trails, by route and season.</h1>
+        <p>We walk these paths on our days off — the battlefield loops, the Round Tops, and the ridgelines up in Michaux. Here's the gear that actually earns a spot in your pack for each one, and how it changes through the year in Adams County.</p>
+        <div class="hero-ctas">
+          <a href="#routes" class="btn btn-primary">Jump to the routes</a>
+          <a href="{{ home_url('/shop/') }}" class="btn btn-outline on-dark">Shop the gear wall</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Little_Round_Top_Gettysburg.jpg?width=1600" alt="View from Little Round Top over the Gettysburg battlefield, a popular walking route in Gettysburg National Military Park" loading="lazy" onerror="this.style.display='none'">
+        <div class="visual-overlay"></div>
+        <div class="compass-badge">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#ff8654" stroke-width="1.6" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M15 9l-2 5-5 2 2-5z" fill="#ff8654" stroke="none"/></svg>
+        </div>
+        <div class="visual-tag">
+          <span class="eyebrow">Local knowledge</span>
+          <p>"From Little Round Top to the Michaux ridgelines."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== INTRO PROSE ===================== -->
+  <section>
+    <div class="container">
+      <div class="layout-split">
+        <div class="prose reveal">
+          <span class="eyebrow">Hiking around Gettysburg</span>
+          <h2>Where to walk near the shop</h2>
+          <p>Gettysburg is unusual for a small town: you can string together a genuinely good half-day of walking without ever getting in your car for long. Most of the routes below sit inside <strong>Gettysburg National Military Park</strong>, a few minutes south of our Buford Avenue storefront, where crushed-stone avenues, mowed field paths, and rocky woodland trails all connect. For bigger climbs and forest miles, <strong>Michaux State Forest</strong> and the <strong>Appalachian Trail</strong> at Caledonia and Pine Grove Furnace are about 25 to 40 minutes west and north.</p>
+          <p>The terrain is friendlier than the mountains out west, but it has its own quirks. Battlefield trails cross open, exposed fields — great views, no shade, and surprisingly cold wind in the shoulder seasons. The wooded stretches around <strong>Little Round Top</strong>, <strong>Big Round Top</strong>, and <strong>Devil's Den</strong> are rooty, rocky, and slick after rain. Up in Michaux, you get real elevation, longer water carries, and rockier footing. Different problems, different gear — which is the whole reason we wrote this page instead of just handing you a generic packing list.</p>
+          <p>Everything we recommend below is on the wall at the shop, and every one of us has hiked these routes in the exact gear we're pointing you toward. If you'd rather talk it through in person, bring your plan to <a href="{{ home_url('/visit/') }}">120 Buford Avenue</a> and we'll build the kit with you.</p>
+        </div>
+        <aside class="side-card reveal" aria-label="On this page">
+          <h3>On this page</h3>
+          <ul>
+            <li><a href="#routes">Local routes &amp; the gear for each</a></li>
+            <li><a href="#seasons">Gear by season</a></li>
+            <li><a href="#faq">Trail FAQ</a></li>
+          </ul>
+          <a href="{{ home_url('/shop/') }}" class="btn btn-primary btn-block">Shop all gear</a>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== ROUTES ===================== -->
+  <section class="collections" id="routes">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Route by route</span>
+        <h2>Four local walks &amp; what to pack</h2>
+        <p>Distances are approximate and measured from trailheads inside the national park unless noted.</p>
+      </div>
+      <div class="guide-grid">
+
+        <article class="guide-card reveal">
+          <div class="tag-row">
+            <span class="mini-tag blaze">Battlefield</span>
+            <span class="mini-tag">~5.5 mi loop</span>
+            <span class="mini-tag">Easy–moderate</span>
+          </div>
+          <h3>Big Round Top &amp; Little Round Top Loop</h3>
+          <p>The classic. Park at the Little Round Top lot off Sykes Avenue, take the summit trail up Big Round Top, then loop back down through Devil's Den and the Valley of Death. Rocky, rooty, and steep in short bursts — the views over the battlefield at the top are the payoff.</p>
+          <ul class="gear-list">
+            <li>Trail runners or light hikers with a grippy outsole (the rocks get slick)</li>
+            <li>A 20–32L daypack with room for a layer and water</li>
+            <li>1–2 L of water — no reliable water on the loop</li>
+            <li>A wind layer for the exposed summit and field edges</li>
+          </ul>
+        </article>
+
+        <article class="guide-card reveal">
+          <div class="tag-row">
+            <span class="mini-tag blaze">Battlefield</span>
+            <span class="mini-tag">3–9 mi</span>
+            <span class="mini-tag">Flat &amp; exposed</span>
+          </div>
+          <h3>Battlefield Avenue Walking Routes</h3>
+          <p>The crushed-stone avenues — Seminary Ridge, Confederate Avenue, Hancock Avenue — link into flat, well-marked walking loops past the monuments and the High Water Mark. Ideal for a history-first walk at your own pace, in open sun the whole way.</p>
+          <ul class="gear-list">
+            <li>Comfortable everyday walking shoes or trail runners</li>
+            <li>Sun hat, sunglasses, and sunscreen (almost zero shade)</li>
+            <li>A hip pack or small daypack for water and a map</li>
+            <li>A packable rain shell — weather rolls across the fields fast</li>
+          </ul>
+        </article>
+
+        <article class="guide-card reveal">
+          <div class="tag-row">
+            <span class="mini-tag blaze">Forest day hike</span>
+            <span class="mini-tag">6–10 mi</span>
+            <span class="mini-tag">Moderate</span>
+          </div>
+          <h3>Michaux State Forest Day Hikes</h3>
+          <p>About 30–40 minutes west and north, Michaux offers real forest miles, ridgeline views, and quieter trails around Caledonia and Pine Grove Furnace. This is where you go when the battlefield loops start to feel short.</p>
+          <ul class="gear-list">
+            <li>Supportive hiking boots or burlier trail runners</li>
+            <li>A 32L daypack with a hydration sleeve</li>
+            <li>2+ L of water — carries between sources are longer here</li>
+            <li>Insulating mid-layer and a map or GPS; cell signal is patchy</li>
+          </ul>
+        </article>
+
+        <article class="guide-card reveal">
+          <div class="tag-row">
+            <span class="mini-tag blaze">Overnight</span>
+            <span class="mini-tag">Backpacking</span>
+            <span class="mini-tag">Advanced</span>
+          </div>
+          <h3>Michaux &amp; A.T. Overnights</h3>
+          <p>String Michaux trails together with a stretch of the Appalachian Trail for a two- or three-night trip. Established sites and shelters, but you'll want a full overnight kit and a plan for water and weather.</p>
+          <ul class="gear-list">
+            <li>A 50–60L overnight pack fitted to your torso</li>
+            <li>A freestanding 3-season tent</li>
+            <li>A stove, cook kit, and water filter or treatment</li>
+            <li>Sleep system rated for the season — nights get cold on the ridges</li>
+          </ul>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== SEASONS ===================== -->
+  <section id="seasons">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Dialing it in</span>
+        <h2>Gear by season in Adams County</h2>
+        <p>South-central Pennsylvania gives you four real seasons. Here's how our packing lists shift through the year.</p>
+      </div>
+      <div class="season-grid">
+        <div class="season-card reveal">
+          <span class="season-k">Spring</span>
+          <h3>Mud &amp; changeable weather</h3>
+          <p>Waterproof boots, gaiters, and a rain shell. Fields are soft and the Round Top trails stay slick. Layers you can shed as the day warms.</p>
+        </div>
+        <div class="season-card reveal">
+          <span class="season-k">Summer</span>
+          <h3>Heat &amp; full sun</h3>
+          <p>Breathable trail runners, a sun hat, extra water, and electrolytes. The battlefield avenues offer no shade — start early and carry more than you think.</p>
+        </div>
+        <div class="season-card reveal">
+          <span class="season-k">Fall</span>
+          <h3>Prime hiking weather</h3>
+          <p>The best season here. Grippy footwear for leaf-covered rock, an insulated vest for cool mornings, and a headlamp as daylight shortens.</p>
+        </div>
+        <div class="season-card reveal">
+          <span class="season-k">Winter</span>
+          <h3>Cold, wind &amp; short days</h3>
+          <p>Insulated layers, a wind-blocking shell, traction for icy patches, and a warm hat. Exposed ridges and fields cut colder than the thermometer suggests.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== FAQ ===================== -->
+  <section class="collections" id="faq">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Trail FAQ</span>
+        <h2>Common questions from local hikers</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item reveal">
+          <h3>Are the Gettysburg battlefield trails good for beginners?</h3>
+          <p>Yes. The crushed-stone avenues are flat, well-marked, and easy walking, and you can make your loop as short or long as you like. The Round Top loop adds some rocky climbing, so newer hikers should wear supportive shoes and take it slow on the descents.</p>
+        </div>
+        <div class="faq-item reveal">
+          <h3>Do I need hiking boots, or will trail runners do?</h3>
+          <p>For the battlefield avenues and the Round Top loop, most people are happiest in trail runners or light hikers. For Michaux day hikes with a heavier pack, or for overnights, we usually steer folks toward a supportive boot. Come in and we'll fit you for the trips you actually have planned.</p>
+        </div>
+        <div class="faq-item reveal">
+          <h3>Is there water on the trails?</h3>
+          <p>Not reliably. The battlefield loops have no trail water, so carry what you need. In Michaux there are sources, but plan longer carries and bring a filter or treatment if you're staying out.</p>
+        </div>
+        <div class="faq-item reveal">
+          <h3>Can you help me plan a route and pack for it?</h3>
+          <p>That's our favorite part of the job. Stop by <a href="{{ home_url('/visit/') }}">120 Buford Avenue</a> in Gettysburg or <a href="{{ home_url('/contact/') }}">send us a note</a> with your plan, and we'll build a gear list around the route, the season, and your experience.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA ===================== -->
+  <section>
+    <div class="container">
+      <div class="cta-band reveal">
+        <span class="eyebrow on-dark">Ready when you are</span>
+        <h2>Build your kit for the next hike</h2>
+        <p>Shop the gear wall online, or come talk routes and fit at the counter on Buford Avenue in downtown Gettysburg.</p>
+        <div class="hero-ctas">
+          <a href="{{ home_url('/shop/') }}" class="btn btn-primary">Shop the Gear Wall</a>
+          <a href="{{ home_url('/visit/') }}" class="btn btn-outline on-dark">Plan your visit</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="{{ home_url('/') }}" class="brand">
+          <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="22" fill="#1a2e23" stroke="#ff5a1f" stroke-width="2"/>
+            <path d="M12 32L22 14L27 24L32 16L38 32H12Z" fill="#f8f6f0"/>
+          </svg>
+          <span>Ridgeline Outfitters</span>
+        </a>
+        <p>Outdoor &amp; adventure gear for the trails, ridgelines, and battlefield paths of Adams County, PA.</p>
+        <div class="social-row">
+          <a href="#" onclick="return false;" aria-label="Ridgeline Outfitters on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
+          <a href="#" onclick="return false;" aria-label="Ridgeline Outfitters on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M15 8h2V4h-2a4 4 0 00-4 4v2H9v4h2v6h4v-6h2.5l.5-4H15V8z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li><a href="{{ home_url('/shop/') }}">Shop Gear</a></li>
+          <li><a href="{{ home_url('/guides/') }}">Gear Guides</a></li>
+          <li><a href="{{ home_url('/about/') }}">About</a></li>
+          <li><a href="{{ home_url('/visit/') }}">Visit Us</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Visit the Shop</h4>
+        <ul>
+          <li><a href="{{ home_url('/visit/') }}">120 Buford Avenue<br>Gettysburg, PA 17325</a></li>
+          <li><a href="tel:+17175550120">(717) 555-0120</a></li>
+          <li><a href="mailto:gear@@ridgelineoutfitters.test">gear@@ridgelineoutfitters.test</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <table class="hours-table">
+          <tbody>
+            <tr><td>Mon – Thu</td><td>10:00 – 6:00</td></tr>
+            <tr><td>Fri – Sat</td><td>9:00 – 8:00</td></tr>
+            <tr><td>Sunday</td><td>11:00 – 5:00</td></tr>
+          </tbody>
+        </table>
+        <p style="color:var(--stone-300); font-size:0.82rem; margin-top:14px;">Proudly serving Gettysburg, Biglerville, Littlestown, New Oxford, McSherrystown, Fairfield, Cashtown &amp; Hanover.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-year>2026</span> Ridgeline Outfitters. All rights reserved.</span>
+      <span class="mono">120 Buford Ave, Gettysburg, PA 17325 · (717) 555-0120</span>
+    </div>
+    <p class="footer-fine">Design concept by Ridges &amp; Valleys Studio to demonstrate a future website for Ridgeline Outfitters, a fictional business. Product names, prices, inventory, and reviews shown are illustrative only. No transactions are processed on this site.</p>
+  </div>
+</footer>
+
+<!-- ===================== CONCEPT BADGE ===================== -->
+<a href="#" class="concept-badge" onclick="return false;">
+  <span class="dot" aria-hidden="true"></span>
+  Concept · Ridges &amp; Valleys Studio
+</a>
+@endsection

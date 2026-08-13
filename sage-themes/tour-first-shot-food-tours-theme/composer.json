@@ -1,0 +1,53 @@
+{
+    "name": "matthummel-pa/tour-first-shot-food-tours-theme",
+    "type": "wordpress-theme",
+    "license": "MIT",
+    "description": "First Shot Food & History Tours \u2014 Sage 11 WordPress theme (Food and history walking-tour concept for Gettysburg, PA)",
+    "homepage": "https://github.com/matthummel-pa/tour-first-shot-food-tours-theme",
+    "authors": [
+        {
+            "name": "Matt Hummel",
+            "homepage": "https://ridgesandvalleys.com"
+        }
+    ],
+    "keywords": [
+        "wordpress",
+        "theme",
+        "sage",
+        "roots",
+        "gettysburg"
+    ],
+    "support": {
+        "issues": "https://github.com/matthummel-pa/tour-first-shot-food-tours-theme/issues"
+    },
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    },
+    "require": {
+        "php": ">=8.3",
+        "roots/acorn": "^6.0"
+    },
+    "require-dev": {
+        "laravel/pint": "^1.20"
+    },
+    "suggest": {
+        "log1x/sage-directives": "A collection of useful Blade directives for WordPress and Sage (^1.0)."
+    },
+    "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
+        "sort-packages": true,
+        "platform": {
+            "php": "8.3"
+        }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "scripts": {
+        "post-autoload-dump": [
+            "Roots\\Acorn\\ComposerScripts::postAutoloadDump"
+        ]
+    }
+}

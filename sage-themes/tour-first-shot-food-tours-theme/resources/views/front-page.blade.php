@@ -1,0 +1,388 @@
+{{-- Front page: concept home --}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "TravelAgency",
+  "@@id": "{{ home_url('/') }}#business",
+  "name": "First Shot Food & History Tours",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/') }}",
+  "telephone": "+1-717-555-0105",
+  "email": "book@@firstshottours.test",
+  "priceRange": "$$",
+  "description": "Small-group food and history walking tours through downtown Gettysburg, Pennsylvania, pairing July 1863 history with tastings at local eateries.",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "5 Chambersburg Street",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8313, "longitude": -77.2311 },
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday","Friday"], "opens": "09:00", "closes": "17:00" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, Pennsylvania" },
+    { "@@type": "City", "name": "Biglerville" },
+    { "@@type": "City", "name": "New Oxford" },
+    { "@@type": "City", "name": "Littlestown" },
+    { "@@type": "City", "name": "Hanover" }
+  ],
+  "knowsAbout": ["Gettysburg history", "food tours", "walking tours", "American Civil War history"]
+}
+</script>
+@endpush
+
+@section('content')
+<a class="skip-link" href="#main">Skip to main content</a>
+
+<header class="site">
+  <div class="container nav-wrap">
+    <a class="brand" href="{{ home_url('/') }}" aria-label="First Shot Food &amp; History Tours, home">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" fill="#C1592C"/>
+        <path d="M24 10 L30 22 L24 20 L18 22 Z" fill="#FBF2E4"/>
+        <rect x="22.5" y="20" width="3" height="16" rx="1.5" fill="#FBF2E4"/>
+        <circle cx="24" cy="34" r="3.4" fill="#E3A93F"/>
+      </svg>
+      <span class="brand-text">
+        <strong>First Shot</strong>
+        <span>Food &amp; History Tours</span>
+      </span>
+    </a>
+
+    <nav class="primary-nav" aria-label="Primary">
+      <ul>
+        <li><a href="{{ home_url('/') }}" class="is-active" aria-current="page">Home</a></li>
+        <li><a href="{{ home_url('/tours/') }}">Tours</a></li>
+        <li><a href="{{ home_url('/book/') }}">Book a Date</a></li>
+        <li><a href="{{ home_url('/route/') }}">The Route</a></li>
+        <li><a href="{{ home_url('/faq/') }}">FAQ</a></li>
+        <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+      </ul>
+    </nav>
+
+    <div class="header-actions">
+      <a class="btn btn-primary btn-sm" href="{{ home_url('/book/') }}">Book a Date</a>
+      <button class="hamburger" id="hamburgerBtn" aria-expanded="false" aria-controls="mobileMenu" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <nav aria-label="Mobile">
+    <ul>
+      <li><a href="{{ home_url('/') }}" class="is-active" aria-current="page">Home</a></li>
+      <li><a href="{{ home_url('/tours/') }}">Tours</a></li>
+      <li><a href="{{ home_url('/book/') }}">Book a Date</a></li>
+      <li><a href="{{ home_url('/route/') }}">The Route</a></li>
+      <li><a href="{{ home_url('/faq/') }}">FAQ</a></li>
+      <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+    </ul>
+    <a class="btn btn-primary btn-block" href="{{ home_url('/book/') }}">Book a Date</a>
+  </nav>
+</div>
+
+<main id="main">
+
+  <section class="hero" id="top">
+    <div class="hero-media">
+      <img src="https://commons.wikimedia.org/wiki/Special:FilePath/DowntownGettysburgPA.jpg?width=1600"
+           alt="Historic brick storefronts along a downtown Gettysburg, Pennsylvania street"
+           onerror="this.style.display='none'">
+    </div>
+    <div class="hero-inner container">
+      <span class="hero-badge">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 2l2.6 6.6L21 10l-5.5 4.3L17 21l-5-3.6L7 21l1.5-6.7L3 10l6.4-1.4L12 2z" fill="currentColor"/></svg>
+        Small groups &middot; Rain or shine &middot; Local-owned in Gettysburg
+      </span>
+      <h1>History has a taste.<br><em>We walk you to it.</em></h1>
+      <p class="hero-sub">Ninety minutes to three hours through Gettysburg's Historic District &mdash; the real story of July 1863, told stop by stop, with a tasting waiting at every corner.</p>
+      <div class="hero-cta-row">
+        <a href="{{ home_url('/book/') }}" class="btn btn-primary">Book a Date</a>
+        <a href="{{ home_url('/tours/') }}" class="btn btn-ghost">See the Tours</a>
+      </div>
+      <div class="hero-meta">
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.6"/></svg>
+          Departs Lincoln Square, Gettysburg PA
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          1.5&ndash;3 hour walking tours
+        </div>
+        <div>
+          <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12h16M4 12l4-4M4 12l4 4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Thursday&ndash;Monday, April&ndash;November
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="trust-strip">
+    <div class="container">
+      <span class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="5" y="11" width="14" height="9" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M8 11V8a4 4 0 0 1 8 0v3" stroke="currentColor" stroke-width="1.6"/></svg>
+        Secure checkout &mdash; encrypted demo form
+      </span>
+      <span class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Free cancellation up to 48 hours
+      </span>
+      <span class="trust-item">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M8 12l3 3 5-6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        Certified Adams County guides
+      </span>
+      <span class="card-icons" aria-hidden="true">
+        <svg viewBox="0 0 34 22"><rect x="0.5" y="0.5" width="33" height="21" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.6"/><text x="17" y="14" font-family="JetBrains Mono, monospace" font-size="7" text-anchor="middle" fill="currentColor">VISA</text></svg>
+        <svg viewBox="0 0 34 22"><rect x="0.5" y="0.5" width="33" height="21" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.6"/><circle cx="14" cy="11" r="6" fill="currentColor" fill-opacity="0.55"/><circle cx="21" cy="11" r="6" fill="currentColor" fill-opacity="0.35"/></svg>
+        <svg viewBox="0 0 34 22"><rect x="0.5" y="0.5" width="33" height="21" rx="3" fill="none" stroke="currentColor" stroke-opacity="0.6"/><text x="17" y="14" font-family="JetBrains Mono, monospace" font-size="6.5" text-anchor="middle" fill="currentColor">AMEX</text></svg>
+      </span>
+    </div>
+  </div>
+
+  <section class="bg-paper">
+    <div class="container story-grid reveal">
+      <div class="story-photos">
+        <div class="story-photos-inner">
+          <div class="photo-card">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Two_Buildings_in_the_Gettysburg_Historic_District.jpg?width=1600"
+                 alt="Two historic 19th-century buildings in the Gettysburg Historic District"
+                 onerror="this.parentElement.style.display='none'">
+          </div>
+          <div class="photo-card small">
+            <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Gettysburg,_Pennsylvania_(6286097408).jpg?width=1600"
+                 alt="Street view of a historic Gettysburg town block near Lincoln Square"
+                 onerror="this.parentElement.style.display='none'">
+          </div>
+        </div>
+      </div>
+      <div class="story-text">
+        <span class="eyebrow">Our Story</span>
+        <h2>Started at a card table, one block off Lincoln Square.</h2>
+        <p>First Shot began in 2018 when local historian <strong>Dana Meckley</strong> got tired of watching visitors speed-walk past Gettysburg's Historic District straight to the battlefield &mdash; missing the town that lived through it. She teamed up with three restaurant-owning friends and built a tour that treats a meal like a primary source.</p>
+        <p>Every guide on our team is a certified Adams County history interpreter who also happens to know exactly which bakery pulls its sticky buns out of the oven at 10:15. We keep groups small (12 guests, max) so questions get real answers and nobody's stuck at the back of the pack.</p>
+        <div class="stat-row">
+          <div class="stat"><strong>7+</strong><span>years guiding</span></div>
+          <div class="stat"><strong>11</strong><span>local eateries partnered</span></div>
+          <div class="stat"><strong>12</strong><span>max group size</span></div>
+          <div class="stat"><strong>4.9&#9733;</strong><span>sample rating</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-cream-dim">
+    <div class="container">
+      <div class="section-head center reveal">
+        <span class="eyebrow">Explore the Site</span>
+        <h2>Everything you need to plan your walk.</h2>
+        <p>Four ways to taste the town, a live booking calendar, and a full map of the route through downtown Gettysburg &mdash; start wherever you like.</p>
+      </div>
+      <div class="teaser-grid reveal">
+        <a class="teaser-card" href="{{ home_url('/tours/') }}">
+          <span class="teaser-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 21h16M6 21V9l6-5 6 5v12M10 21v-6h4v6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          <h3>The Tours</h3>
+          <p>Four routes, from a 90-minute family bakery loop to a three-hour farm-to-table walk. Compare durations, stops, and pricing.</p>
+          <span class="teaser-link">See all four tours &rarr;</span>
+        </a>
+        <a class="teaser-card" href="{{ home_url('/book/') }}">
+          <span class="teaser-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M3 9h18M8 2v4M16 2v4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <h3>Book a Date</h3>
+          <p>Pick a date on the live calendar, choose a departure time, add tickets and extras, and see your total update in real time.</p>
+          <span class="teaser-link">Check the calendar &rarr;</span>
+        </a>
+        <a class="teaser-card" href="{{ home_url('/route/') }}">
+          <span class="teaser-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 21s-7-6.1-7-11a7 7 0 0 1 14 0c0 4.9-7 11-7 11z" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="10" r="2.5" stroke="currentColor" stroke-width="1.6"/></svg></span>
+          <h3>The Route &amp; Local Eats</h3>
+          <p>Every stop from Lincoln Square down Steinwehr Avenue to the first-shot marker on Chambersburg Road &mdash; with walking distances.</p>
+          <span class="teaser-link">Walk the route &rarr;</span>
+        </a>
+        <a class="teaser-card" href="{{ home_url('/faq/') }}">
+          <span class="teaser-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .8-1 1.7M12 17h.01" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg></span>
+          <h3>FAQ</h3>
+          <p>Dietary swaps, how much walking is involved, rain policy, cancellations, parking, accessibility, and group bookings.</p>
+          <span class="teaser-link">Read the FAQ &rarr;</span>
+        </a>
+        <a class="teaser-card" href="{{ home_url('/contact/') }}">
+          <span class="teaser-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M4 6h16v12H4z" stroke="currentColor" stroke-width="1.6"/><path d="M4 7l8 6 8-6" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></span>
+          <h3>Contact</h3>
+          <p>Reach the booking desk at 5 Chambersburg Street, call, email, or send a message about private and group tours.</p>
+          <span class="teaser-link">Get in touch &rarr;</span>
+        </a>
+        <a class="teaser-card" href="{{ home_url('/book/') }}">
+          <span class="teaser-icon"><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3l7 4v5c0 5-3.4 7.7-7 9-3.6-1.3-7-4-7-9V7l7-4z" stroke="currentColor" stroke-width="1.6"/></svg></span>
+          <h3>What's Included</h3>
+          <p>A certified local guide, three to five full-size tastings, a printable route map, and dietary accommodation on every ticket.</p>
+          <span class="teaser-link">See what you get &rarr;</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-paper">
+    <div class="container">
+      <div class="section-head center reveal">
+        <span class="eyebrow">The Tours</span>
+        <h2>Four ways to taste the town.</h2>
+        <p>Pick a route, then head to the booking calendar to lock in your date &mdash; your tour choice carries over automatically.</p>
+      </div>
+      <div class="tour-grid reveal">
+        <article class="tour-card">
+          <span class="theme-tag">Flagship history + tastings</span>
+          <h3>First Shot Founders Walk</h3>
+          <p class="tour-desc">Our original route: Lincoln Square to the Historic District, tracing the town's three days under occupation with four full tastings along the way.</p>
+          <p class="tour-stops"><strong>4 stops</strong> along the way</p>
+          <div class="tour-meta-row"><span>2.5 hours</span><span class="tour-price">$69<small> / adult</small></span></div>
+          <a class="btn btn-teal btn-block" href="{{ home_url('/book/') }}">Book this tour</a>
+        </article>
+        <article class="tour-card">
+          <span class="theme-tag">Evening tavern history (21+)</span>
+          <h3>Twilight Taps &amp; Tales</h3>
+          <p class="tour-desc">An after-dark walk through the taverns that billeted soldiers on both sides, with three tastings including a local cider flight.</p>
+          <p class="tour-stops"><strong>3 stops</strong> along the way</p>
+          <div class="tour-meta-row"><span>2 hours</span><span class="tour-price">$79<small> / adult</small></span></div>
+          <a class="btn btn-teal btn-block" href="{{ home_url('/book/') }}">Book this tour</a>
+        </article>
+        <article class="tour-card">
+          <span class="theme-tag">Family-friendly bakery route</span>
+          <h3>Sweet Street Stroll</h3>
+          <p class="tour-desc">A shorter, kid-friendly loop built around Gettysburg's bakeries and creamery &mdash; lighter history, heavier on dessert.</p>
+          <p class="tour-stops"><strong>3 stops</strong> along the way</p>
+          <div class="tour-meta-row"><span>1.5 hours</span><span class="tour-price">$49<small> / adult</small></span></div>
+          <a class="btn btn-teal btn-block" href="{{ home_url('/book/') }}">Book this tour</a>
+        </article>
+        <article class="tour-card">
+          <span class="theme-tag">Extended history + Adams County farms</span>
+          <h3>Farm-to-Table Founders Tour</h3>
+          <p class="tour-desc">Our longest walk adds a stop featuring produce from nearby Adams County orchards and farm stands alongside the full downtown history route.</p>
+          <p class="tour-stops"><strong>5 stops</strong> along the way</p>
+          <div class="tour-meta-row"><span>3 hours</span><span class="tour-price">$89<small> / adult</small></span></div>
+          <a class="btn btn-teal btn-block" href="{{ home_url('/book/') }}">Book this tour</a>
+        </article>
+      </div>
+      <div style="text-align:center; margin-top:2.5rem;" class="reveal">
+        <a class="btn btn-outline" href="{{ home_url('/tours/') }}">Compare all tours in detail</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="bg-cream-dim">
+    <div class="container">
+      <div class="section-head center reveal">
+        <span class="eyebrow">Guest Reviews</span>
+        <h2>What people remember isn't the history lesson &mdash; it's the bread pudding.</h2>
+        <p>Sample testimonials shown to illustrate the experience.</p>
+      </div>
+      <div class="reviews-grid reveal">
+        <article class="review-card">
+          <div class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg></div>
+          <p class="review-quote">&ldquo;We've done a dozen food tours across the country &mdash; this is the only one where I learned something at every single stop, not just at the start.&rdquo;</p>
+          <p class="review-author">Karen D., Baltimore MD</p>
+        </article>
+        <article class="review-card">
+          <div class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg></div>
+          <p class="review-quote">&ldquo;Our guide made the Wills House come alive, and then we were eating scrapple biscuits ten minutes later. Somehow it worked perfectly.&rdquo;</p>
+          <p class="review-author">Marcus T., Harrisburg PA</p>
+        </article>
+        <article class="review-card">
+          <div class="stars" aria-label="5 out of 5 stars"><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg><svg viewBox="0 0 20 20" fill="currentColor"><path d="M10 1.5l2.6 5.3 5.9.9-4.3 4.1 1 5.8L10 14.8l-5.2 2.8 1-5.8-4.3-4.1 5.9-.9L10 1.5z"/></svg></div>
+          <p class="review-quote">&ldquo;Booked the Twilight Taps tour for a bachelorette weekend. Equal parts spooky, informative, and delicious. Would absolutely do it again.&rdquo;</p>
+          <p class="review-author">Priya S., Philadelphia PA</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="cta-band">
+    <div class="container">
+      <div>
+        <h2>Ready to taste your way through Gettysburg?</h2>
+        <p>Small groups fill up fast in peak season. Pick a date and reserve your spot in a couple of minutes.</p>
+      </div>
+      <div class="cta-actions">
+        <a class="btn btn-ghost" href="{{ home_url('/tours/') }}">Browse tours</a>
+        <a class="btn btn-primary" href="{{ home_url('/book/') }}">Book a date</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="site">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a class="brand" href="{{ home_url('/') }}" style="color:#fff;">
+          <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="22" fill="#C1592C"/>
+            <path d="M24 10 L30 22 L24 20 L18 22 Z" fill="#FBF2E4"/>
+            <rect x="22.5" y="20" width="3" height="16" rx="1.5" fill="#FBF2E4"/>
+            <circle cx="24" cy="34" r="3.4" fill="#E3A93F"/>
+          </svg>
+          <span class="brand-text"><strong style="color:#fff;">First Shot</strong><span style="color:var(--teal-light);">Food &amp; History Tours</span></span>
+        </a>
+        <p>Small-group walking tours through downtown Gettysburg &mdash; real history, real food, real local eateries. Est. 2018.</p>
+        <div class="social-row">
+          <a href="#" aria-label="First Shot Tours on Instagram"><svg viewBox="0 0 24 24" fill="none"><rect x="3" y="3" width="18" height="18" rx="5" stroke="currentColor" stroke-width="1.6"/><circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.6"/><circle cx="17.3" cy="6.7" r="1" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="First Shot Tours on Facebook"><svg viewBox="0 0 24 24" fill="none"><path d="M14 9h3V6h-3c-2 0-3.5 1.5-3.5 3.5V11H8v3h2.5v6h3v-6H16l.5-3h-3V9.8c0-.5.2-.8.7-.8z" fill="currentColor"/></svg></a>
+          <a href="#" aria-label="First Shot Tours on TripAdvisor"><svg viewBox="0 0 24 24" fill="none"><circle cx="8" cy="13" r="3.2" stroke="currentColor" stroke-width="1.6"/><circle cx="16" cy="13" r="3.2" stroke="currentColor" stroke-width="1.6"/><path d="M8 7h8M12 13a4 4 0 0 1 0-6M12 13a4 4 0 0 0 0-6" stroke="currentColor" stroke-width="1.4"/></svg></a>
+        </div>
+      </div>
+
+      <div>
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li><a href="{{ home_url('/tours/') }}">Tours</a></li>
+          <li><a href="{{ home_url('/book/') }}">Book a date</a></li>
+          <li><a href="{{ home_url('/route/') }}">The route &amp; local eats</a></li>
+          <li><a href="{{ home_url('/faq/') }}">FAQ</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h4>Visit / Book</h4>
+        <address class="footer-nap">
+          <strong style="color:#fff;">First Shot Food &amp; History Tours</strong><br>
+          5 Chambersburg Street<br>
+          Gettysburg, PA 17325<br>
+          <a href="tel:+17175550105">(717) 555-0105</a><br>
+          <a href="mailto:book@@firstshottours.test">book@@firstshottours.test</a>
+        </address>
+      </div>
+
+      <div>
+        <h4>Hours</h4>
+        <ul>
+          <li>Booking desk: Mon&ndash;Fri, 9am&ndash;5pm</li>
+          <li>Tours depart: Thu&ndash;Mon</li>
+          <li>Season: April&ndash;November</li>
+          <li>Closed Tue &amp; Wed</li>
+        </ul>
+      </div>
+    </div>
+
+    <p style="font-family:var(--font-mono); font-size:0.75rem; color:rgba(251,242,228,0.55); margin-top:2rem;">Serving Gettysburg and the wider Adams County area &mdash; Biglerville, New Oxford, Littlestown, McSherrystown, Fairfield, Cashtown, and Hanover.</p>
+
+    <div class="footer-bottom">
+      <span>&copy; <span id="footerYear"></span> First Shot Food &amp; History Tours. All rights reserved.</span>
+      <span>Design concept by Ridges &amp; Valleys Studio, Gettysburg PA &mdash; not a live booking system.</span>
+    </div>
+  </div>
+</footer>
+
+<a class="concept-badge" href="#" onclick="event.preventDefault();" aria-label="This is a design concept by Ridges and Valleys Studio">
+  <span class="dot" aria-hidden="true"></span> Concept &middot; Ridges &amp; Valleys Studio
+</a>
+@endsection

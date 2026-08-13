@@ -29,3 +29,9 @@ npm-debug.log
 
 # Local scratch — files staged for manual deletion (see README)
 _to_delete/
+
+# Generated Sage concept themes (build artifacts only)
+sage-themes/*/node_modules/
+sage-themes/*/vendor/
+sage-themes/*/public/build/
+sage-themes/*/public/hot/

@@ -1,0 +1,311 @@
+{{--
+  Template Name: About Ridgeline Outfitters
+--}}
+
+@extends('layouts.app')
+
+@push('head')
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "SportingGoodsStore",
+  "@@id": "{{ home_url('/') }}#store",
+  "name": "Ridgeline Outfitters",
+  "description": "Locally owned outdoor gear shop in Gettysburg, PA, staffed by a small crew of Adams County hikers.",
+  "image": "{{ home_url('/preview.jpg/') }}",
+  "url": "{{ home_url('/about/') }}",
+  "telephone": "+1-717-555-0120",
+  "email": "gear@@ridgelineoutfitters.test",
+  "priceRange": "$$",
+  "foundingDate": "2015",
+  "address": {
+    "@@type": "PostalAddress",
+    "streetAddress": "120 Buford Avenue",
+    "addressLocality": "Gettysburg",
+    "addressRegion": "PA",
+    "postalCode": "17325",
+    "addressCountry": "US"
+  },
+  "geo": { "@@type": "GeoCoordinates", "latitude": 39.8339, "longitude": -77.2380 },
+  "openingHoursSpecification": [
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Monday","Tuesday","Wednesday","Thursday"], "opens": "10:00", "closes": "18:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": ["Friday","Saturday"], "opens": "09:00", "closes": "20:00" },
+    { "@@type": "OpeningHoursSpecification", "dayOfWeek": "Sunday", "opens": "11:00", "closes": "17:00" }
+  ],
+  "areaServed": [
+    { "@@type": "City", "name": "Gettysburg" },
+    { "@@type": "AdministrativeArea", "name": "Adams County, Pennsylvania" },
+    "Biglerville, PA", "Littlestown, PA", "New Oxford, PA", "McSherrystown, PA", "Fairfield, PA", "Cashtown, PA", "Hanover, PA"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@@context": "https://schema.org",
+  "@@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@@type": "ListItem", "position": 1, "name": "Home", "item": "{{ home_url('/') }}" },
+    { "@@type": "ListItem", "position": 2, "name": "About", "item": "{{ home_url('/about/') }}" }
+  ]
+}
+</script>
+@endpush
+
+@section('content')
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a href="{{ home_url('/') }}" class="brand" aria-label="Ridgeline Outfitters home">
+      <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <circle cx="24" cy="24" r="22" fill="#1a2e23" stroke="#ff5a1f" stroke-width="2"/>
+        <path d="M12 32L22 14L27 24L32 16L38 32H12Z" fill="#f8f6f0"/>
+        <circle cx="24" cy="24" r="22" stroke="#efe9db" stroke-width="0.5" opacity="0.3"/>
+      </svg>
+      <span>Ridgeline Outfitters<small>Gettysburg, PA · Buford Ave</small></span>
+    </a>
+
+    <nav class="main-nav" aria-label="Primary">
+      <a href="{{ home_url('/') }}">Home</a>
+      <a href="{{ home_url('/shop/') }}">Shop Gear</a>
+      <a href="{{ home_url('/guides/') }}">Gear Guides</a>
+      <a href="{{ home_url('/about/') }}" class="is-active" aria-current="page">About</a>
+      <a href="{{ home_url('/visit/') }}">Visit Us</a>
+      <a href="{{ home_url('/contact/') }}">Contact</a>
+    </nav>
+
+    <div class="header-actions">
+      <a class="icon-btn" href="{{ home_url('/shop/') }}" aria-label="View wishlist on the Shop page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7.5-4.6-10-9.3C.4 8 2 4.5 5.6 4.1c2-.2 3.7.8 4.9 2.5 1.2-1.7 2.9-2.7 4.9-2.5C19 4.5 20.6 8 20 11.7 17.5 16.4 12 21 12 21z"/></svg>
+      </a>
+      <a class="icon-btn" href="{{ home_url('/shop/') }}" aria-label="View cart on the Shop page">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3h2l.4 2M7 13h10l3-8H5.4M7 13L5.4 5M7 13l-1.7 6.4A1 1 0 006.3 20H18M10 22a1 1 0 100-2 1 1 0 000 2zM18 22a1 1 0 100-2 1 1 0 000 2z"/></svg>
+      </a>
+      <button class="icon-btn hamburger" id="menuToggle" aria-label="Open menu" aria-haspopup="true" aria-expanded="false" aria-controls="mobileMenu">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <nav id="mobileMenu" class="mobile-menu" aria-label="Mobile" hidden>
+    <a href="{{ home_url('/') }}">Home</a>
+    <a href="{{ home_url('/shop/') }}">Shop Gear</a>
+    <a href="{{ home_url('/guides/') }}">Gear Guides</a>
+    <a href="{{ home_url('/about/') }}" class="is-active" aria-current="page">About</a>
+    <a href="{{ home_url('/visit/') }}">Visit Us</a>
+    <a href="{{ home_url('/contact/') }}">Contact</a>
+  </nav>
+</header>
+
+<!-- ===================== BREADCRUMB ===================== -->
+<nav class="breadcrumb" aria-label="Breadcrumb">
+  <div class="container">
+    <ol>
+      <li><a href="{{ home_url('/') }}">Home</a></li>
+      <li class="sep" aria-hidden="true">/</li>
+      <li aria-current="page">About</li>
+    </ol>
+  </div>
+</nav>
+
+<main id="main">
+
+  <!-- ===================== PAGE HERO ===================== -->
+  <section class="hero page-hero" id="top">
+    <div class="container hero-grid">
+      <div class="hero-copy">
+        <span class="eyebrow on-dark">About the shop · Since 2015</span>
+        <h1>A small crew of <em>Gettysburg hikers</em> behind the counter.</h1>
+        <p>Ridgeline Outfitters isn't a chain with a Gettysburg zip code — it's five locals who spend their weekends on the same battlefield trails and Michaux ridgelines we sell gear for. We opened on Buford Avenue in 2015, and we've stayed small on purpose.</p>
+        <div class="hero-ctas">
+          <a href="{{ home_url('/shop/') }}" class="btn btn-primary">Shop the Gear Wall</a>
+          <a href="{{ home_url('/visit/') }}" class="btn btn-outline on-dark">Visit us on Buford Ave</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Two_Buildings_in_the_Gettysburg_Historic_District.jpg?width=1600" alt="Historic brick storefronts in downtown Gettysburg's historic district near Ridgeline Outfitters on Buford Avenue" loading="lazy" onerror="this.style.display='none'">
+        <div class="visual-overlay"></div>
+        <div class="visual-tag">
+          <span class="eyebrow">Buford Avenue</span>
+          <p>"Locally owned, locally hiked."</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== STORY ===================== -->
+  <section class="story" id="story">
+    <div class="container story-grid">
+      <div class="story-photo reveal">
+        <img src="https://commons.wikimedia.org/wiki/Special:FilePath/Cumberland_Valley_Pennsylvania.jpg?width=1600" alt="Ridge-and-valley farmland around Gettysburg and Adams County, Pennsylvania" loading="lazy" onerror="this.style.display='none'">
+        <span class="story-photo-caption">Adams County, PA</span>
+      </div>
+      <div class="story-copy reveal">
+        <span class="eyebrow">Our Story</span>
+        <h2>Started with one bad pair of boots.</h2>
+        <p>In 2015, our founder Dave Kessler hiked the entire Billy Yank Trail in boots that fell apart by mile nine. He figured if a battlefield-trail town like Gettysburg couldn't outfit its own hikers properly, somebody ought to fix that. Ridgeline Outfitters opened that fall on Buford Avenue, stocked with the boots, packs, and layers Dave wished he'd had.</p>
+        <p>A decade later we're still a small crew — five of us, all hikers, all locals — hand-picking gear that holds up on the Adams County trails we walk every weekend, from the battlefield's Billy Yank and Johnny Reb Trails to weekend runs up to Michaux State Forest.</p>
+        <p class="story-signoff">"We don't sell anything we haven't hiked in ourselves." — Dave Kessler, Founder</p>
+        <div class="founder-badges">
+          <div class="founder-badge"><span class="dot" aria-hidden="true"></span><span>Locally owned since 2015</span></div>
+          <div class="founder-badge"><span class="dot" aria-hidden="true"></span><span>Staff trail-tested gear</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== WHAT WE STAND FOR ===================== -->
+  <section id="values">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow">Why shop local</span>
+        <h2>What you get from a shop that hikes here</h2>
+        <p>The gear you'll find online anywhere. What you can't get online is a fitting from someone who walked the exact trail you're about to.</p>
+      </div>
+      <div class="teaser-grid">
+        <div class="teaser-card reveal">
+          <span class="t-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 21s-7-6.5-7-11a7 7 0 1114 0c0 4.5-7 11-7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>
+          <h3>Local trail knowledge</h3>
+          <p>We hike the Round Tops, the battlefield avenues, and Michaux on our own time. Ask us about a route and you'll get a real answer, not a printout.</p>
+        </div>
+        <div class="teaser-card reveal">
+          <span class="t-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M20 6L9 17l-5-5"/></svg></span>
+          <h3>Honest fitting</h3>
+          <p>We'd rather sell you the right $120 boot than the wrong $200 one. If a piece isn't right for your trip, we'll say so.</p>
+        </div>
+        <div class="teaser-card reveal">
+          <span class="t-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 12a9 9 0 1018 0 9 9 0 00-18 0zM12 7v5l3 3"/></svg></span>
+          <h3>Gear repair &amp; support</h3>
+          <p>Blown a zipper or a boot eyelet before a big trip? Bring it in. We handle small repairs in-house and stand behind what we sell.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== TESTIMONIALS ===================== -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-head center reveal">
+        <span class="eyebrow">Word on the trail</span>
+        <h2>What local hikers are saying</h2>
+        <p>Sample reviews, shown to illustrate the kind of service the shop is built around.</p>
+      </div>
+      <div class="testi-grid">
+        <div class="testi-card reveal">
+          <div class="stars" aria-hidden="true">
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+          </div>
+          <p class="quote">"Talked me out of the wrong boots and into the right ones — my feet survived all four days of the Billy Yank loop without a single blister."</p>
+          <p class="testi-person">Renee O.<span>Fairfield, PA</span></p>
+        </div>
+        <div class="testi-card reveal">
+          <div class="stars" aria-hidden="true">
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+          </div>
+          <p class="quote">"Real gearheads, not just a register. They set up my whole car-camping kit for a Michaux weekend and it all just worked."</p>
+          <p class="testi-person">Tom I.<span>Gettysburg, PA</span></p>
+        </div>
+        <div class="testi-card reveal">
+          <div class="stars" aria-hidden="true">
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+            <svg viewBox="0 0 20 20"><path d="M10 1l2.6 5.9 6.4.6-4.8 4.3 1.4 6.3L10 15l-5.6 3.1 1.4-6.3L1 7.5l6.4-.6z"/></svg>
+          </div>
+          <p class="quote">"Ordered a rain shell online for in-store pickup on a Friday afternoon — ready in twenty minutes, exactly the fit I needed."</p>
+          <p class="testi-person">Priya C.<span>New Oxford, PA</span></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===================== CTA ===================== -->
+  <section>
+    <div class="container">
+      <div class="cta-band reveal">
+        <span class="eyebrow on-dark">Come say hi</span>
+        <h2>Stop by the shop on Buford Avenue</h2>
+        <p>We're at 120 Buford Avenue in downtown Gettysburg. Bring your trail plan, borrow a map, and let's find the right gear together.</p>
+        <div class="hero-ctas">
+          <a href="{{ home_url('/visit/') }}" class="btn btn-primary">Directions &amp; hours</a>
+          <a href="{{ home_url('/contact/') }}" class="btn btn-outline on-dark">Contact the crew</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ===================== FOOTER ===================== -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <a href="{{ home_url('/') }}" class="brand">
+          <svg class="brand-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+            <circle cx="24" cy="24" r="22" fill="#1a2e23" stroke="#ff5a1f" stroke-width="2"/>
+            <path d="M12 32L22 14L27 24L32 16L38 32H12Z" fill="#f8f6f0"/>
+          </svg>
+          <span>Ridgeline Outfitters</span>
+        </a>
+        <p>Outdoor &amp; adventure gear for the trails, ridgelines, and battlefield paths of Adams County, PA.</p>
+        <div class="social-row">
+          <a href="#" onclick="return false;" aria-label="Ridgeline Outfitters on Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.2" cy="6.8" r="1"/></svg></a>
+          <a href="#" onclick="return false;" aria-label="Ridgeline Outfitters on Facebook"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M15 8h2V4h-2a4 4 0 00-4 4v2H9v4h2v6h4v-6h2.5l.5-4H15V8z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <ul>
+          <li><a href="{{ home_url('/') }}">Home</a></li>
+          <li><a href="{{ home_url('/shop/') }}">Shop Gear</a></li>
+          <li><a href="{{ home_url('/guides/') }}">Gear Guides</a></li>
+          <li><a href="{{ home_url('/about/') }}">About</a></li>
+          <li><a href="{{ home_url('/visit/') }}">Visit Us</a></li>
+          <li><a href="{{ home_url('/contact/') }}">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Visit the Shop</h4>
+        <ul>
+          <li><a href="{{ home_url('/visit/') }}">120 Buford Avenue<br>Gettysburg, PA 17325</a></li>
+          <li><a href="tel:+17175550120">(717) 555-0120</a></li>
+          <li><a href="mailto:gear@@ridgelineoutfitters.test">gear@@ridgelineoutfitters.test</a></li>
+        </ul>
+      </div>
+      <div class="footer-col">
+        <h4>Hours</h4>
+        <table class="hours-table">
+          <tbody>
+            <tr><td>Mon – Thu</td><td>10:00 – 6:00</td></tr>
+            <tr><td>Fri – Sat</td><td>9:00 – 8:00</td></tr>
+            <tr><td>Sunday</td><td>11:00 – 5:00</td></tr>
+          </tbody>
+        </table>
+        <p style="color:var(--stone-300); font-size:0.82rem; margin-top:14px;">Proudly serving Gettysburg, Biglerville, Littlestown, New Oxford, McSherrystown, Fairfield, Cashtown &amp; Hanover.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span data-year>2026</span> Ridgeline Outfitters. All rights reserved.</span>
+      <span class="mono">120 Buford Ave, Gettysburg, PA 17325 · (717) 555-0120</span>
+    </div>
+    <p class="footer-fine">Design concept by Ridges &amp; Valleys Studio to demonstrate a future website for Ridgeline Outfitters, a fictional business. Product names, prices, inventory, and reviews shown are illustrative only. No transactions are processed on this site.</p>
+  </div>
+</footer>
+
+<!-- ===================== CONCEPT BADGE ===================== -->
+<a href="#" class="concept-badge" onclick="return false;">
+  <span class="dot" aria-hidden="true"></span>
+  Concept · Ridges &amp; Valleys Studio
+</a>
+@endsection
