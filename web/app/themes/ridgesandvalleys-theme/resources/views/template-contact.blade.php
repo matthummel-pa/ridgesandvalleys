@@ -186,6 +186,7 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
     .rv-cnt-why-item h3{font-family:var(--font-display);font-size:1.12rem;font-weight:700;color:var(--color-ink);margin:.2rem 0 .35rem;line-height:1.2}
     .rv-cnt-why-item p{margin:0;color:var(--color-body);font-size:.95rem;line-height:1.55}
     @media(max-width:820px){.rv-cnt-why-grid{grid-template-columns:1fr}}
+    @media(max-width:480px){.rv-cnt-why-actions{flex-direction:column;align-items:stretch}.rv-cnt-why-actions .rv-btn{justify-content:center}.rv-cnt-why-jump{justify-content:center}}
     .rv-cways{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:1rem;margin-top:clamp(1.5rem,3vw,2.5rem);position:relative;z-index:3}
     .rv-cway{display:flex;align-items:center;gap:1rem;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.25rem 1.35rem;text-decoration:none;position:relative;overflow:hidden;transition:transform .15s ease,border-color .15s ease,box-shadow .2s ease}
     a.rv-cway:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--color-clay) 40%,var(--color-line));box-shadow:var(--shadow-lift)}

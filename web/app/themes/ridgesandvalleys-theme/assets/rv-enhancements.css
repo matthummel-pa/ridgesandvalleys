@@ -78,9 +78,10 @@ html[data-theme="dark"] .rv-brand-logo-link .rv-logo-dark{display:block}
 @media(max-width:600px){.rv-brand-logo-link .rv-logo{height:38px}}
 /* Topic / industry chips: swipe on phones instead of wrapping into a tall stack. */
 @media(max-width:640px){
-  .rv-work-filters{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:.4rem;scrollbar-width:thin}
-  .rv-work-filters .rv-work-cat,.rv-work-filters .rv-filter{flex:0 0 auto;padding:.55rem 1rem}
-  .rv-work-filters .rv-work-cats-label{flex:0 0 auto}
+  /* Two classes beat the page-template `.rv-work-cats{flex-wrap:wrap}` (loads later). */
+  .rv-work-cats.rv-work-filters{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:.45rem;scrollbar-width:thin}
+  .rv-work-cats.rv-work-filters .rv-work-cat,.rv-work-cats.rv-work-filters .rv-filter{flex:0 0 auto;padding:.55rem 1rem}
+  .rv-work-cats.rv-work-filters .rv-work-cats-label{flex:0 0 auto}
 }
 /* Text-only wordmark fallback (no Media Library logo set) */
 .rv-brand-text-link{display:inline-flex;align-items:center;text-decoration:none}

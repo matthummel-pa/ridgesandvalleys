@@ -158,6 +158,7 @@
       .rv-jnl-why-item h3{font-family:var(--font-display);font-size:1.12rem;font-weight:700;color:var(--color-ink);margin:.2rem 0 .35rem;line-height:1.2}
       .rv-jnl-why-item p{margin:0;color:var(--color-body);font-size:.95rem;line-height:1.55}
       @media(max-width:820px){.rv-jnl-why-grid{grid-template-columns:1fr}}
+      @media(max-width:480px){.rv-jnl-why-actions{flex-direction:column;align-items:stretch}.rv-jnl-why-actions .rv-btn{justify-content:center}.rv-jnl-why-jump{justify-content:center}}
       .rv-jnl-feature{display:grid;grid-template-columns:1.15fr minmax(0,1fr);gap:0;margin-top:1.75rem;background:var(--color-surface);border:1.5px solid var(--color-line);border-radius:18px;overflow:hidden;box-shadow:var(--shadow-soft)}
       .rv-jnl-feature-shot{display:block;position:relative;min-height:16rem;background:var(--color-cream);text-decoration:none}
       .rv-jnl-feature-shot img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0}
