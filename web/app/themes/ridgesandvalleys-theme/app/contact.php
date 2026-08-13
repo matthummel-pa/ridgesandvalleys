@@ -258,6 +258,9 @@ add_action('init', function () {
     }
 
     $page_id = isset($_POST['rv_form_page']) ? absint($_POST['rv_form_page']) : 0;
+    if ($page_id && ($perm = get_permalink($page_id))) {
+        $redirect = $perm;
+    }
     $fields  = contact_fields($page_id ?: null);
 
     $lines      = [];
