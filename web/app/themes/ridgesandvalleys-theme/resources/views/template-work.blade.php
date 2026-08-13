@@ -332,7 +332,7 @@
     .rv-area-tag:hover{border-color:var(--color-sage)}
     /* Bold proof strip (always-dark pine band) */
     .rv-work-stats{padding-block:clamp(2.25rem,4vw,3.25rem)}
-    .rv-work-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem 2rem;text-align:center}
+    .rv-work-stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:1.5rem 2rem;text-align:left}
     .rv-work-stat{display:flex;flex-direction:column;gap:.3rem}
     .rv-work-stat-v{font-family:var(--font-display);font-weight:800;font-size:clamp(2.4rem,5.5vw,3.4rem);line-height:1;color:#fff;letter-spacing:-.02em}
     .rv-work-stat-u{font-size:.42em;font-weight:700;margin-left:.15em;color:var(--color-wheat);letter-spacing:0}
@@ -387,11 +387,11 @@
     .rv-craft-grid .rv-craft-num{font-family:var(--font-display);font-weight:800;font-size:1.9rem;color:color-mix(in srgb,var(--color-clay) 60%,transparent);letter-spacing:-.02em}
     .rv-craft-grid .rv-craft-title{font-size:1.3rem;margin-top:.35rem}
     /* Areas served — bold, vivid, airy, left-aligned */
-    .rv-areas2{padding-block:clamp(4.5rem,9vw,7.5rem)}
+    .rv-areas2{padding-block:clamp(3.25rem,6vw,5.25rem)}
     .rv-areas2 .rv-shell{max-width:66rem}
     .rv-areas2-head{text-align:left;max-width:52rem;margin:0}
     .rv-areas2-head .rv-eyebrow{display:inline-block}
-    .rv-areas2-h{font-family:var(--font-display);font-weight:800;font-size:clamp(2.4rem,6.5vw,4.25rem);line-height:1.02;letter-spacing:-.03em;color:var(--color-ink);margin:.75rem 0 0}
+    .rv-areas2-h{font-family:var(--font-display);font-weight:800;font-size:clamp(1.85rem,4.2vw,2.85rem);line-height:1.08;letter-spacing:-.03em;color:var(--color-ink);margin:.45rem 0 0;max-width:18ch}
     .rv-areas2-accent{background:var(--ridgeline);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;color:transparent}
     .rv-areas2-lede{margin:1.4rem 0 0;max-width:46rem;font-size:1.12rem;line-height:1.75;color:var(--color-body)}
     .rv-areas2-towns{display:flex;flex-wrap:wrap;justify-content:flex-start;gap:.7rem;margin:clamp(2.5rem,5vw,3.75rem) 0 0;max-width:58rem}

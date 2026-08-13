@@ -105,7 +105,7 @@
       if (!hero || !banner) {
         body.classList.remove('rv-nav-transparent'); // no hero — fall back to solid
       } else {
-        var fit = function () { hero.style.paddingTop = (banner.offsetHeight + 24) + 'px'; };
+        var fit = function () { hero.style.paddingTop = (banner.offsetHeight + 40) + 'px'; };
         fit();
         window.addEventListener('resize', fit, { passive: true });
       }

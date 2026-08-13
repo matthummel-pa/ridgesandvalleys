@@ -537,6 +537,23 @@ function home_rooted_point_defaults(): array
 }
 
 /**
+ * About-page hero proof ribbon. Kept in PHP so the Blade template can call it
+ * with a one-line @php(...) — Sage can fatally fail compiling a multi-line
+ * @php/@endphp block of nested __() arrays inside @section.
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function about_proof_defaults(): array
+{
+    return [
+        ['v' => __('15+ yrs', 'sage'), 'l' => __('building for the web', 'sage')],
+        ['v' => __('~7 days', 'sage'), 'l' => __('to your first draft', 'sage')],
+        ['v' => __('WCAG 2.2 AA', 'sage'), 'l' => __('on every page', 'sage')],
+        ['v' => __('You own it', 'sage'), 'l' => __('site, domain, hosting', 'sage')],
+    ];
+}
+
+/**
  * Baseline inclusions for the services “What every build includes” grid.
  * Shared by the template defaults and the Page content repeater.
  *
@@ -887,12 +904,7 @@ function page_field_map(): array
                 ['about_invite', __('Invitation paragraph (partners & welcome)', 'sage'), 'textarea', __('We\'re just as happy to team up with other marketing and design studios, freelancers, and photographers on a project. We\'re new to the neighborhood and all in — so come say hello, and let\'s build something good, right here at home.', 'sage')],
                 ['hero_btn', __('Hero button label', 'sage'), 'text', __('Work with us', 'sage')],
                 ['about_meta', __('Meta line (under the button)', 'sage'), 'text', __('Family-owned · Accessibility-first · Serving Gettysburg & South Central PA', 'sage')],
-                ['about_proof', __('Proof ribbon (four items)', 'sage'), 'repeater', [
-                    ['v' => __('15+ yrs', 'sage'), 'l' => __('building for the web', 'sage')],
-                    ['v' => __('~7 days', 'sage'), 'l' => __('to your first draft', 'sage')],
-                    ['v' => __('WCAG 2.2 AA', 'sage'), 'l' => __('on every page', 'sage')],
-                    ['v' => __('You own it', 'sage'), 'l' => __('site, domain, hosting', 'sage')],
-                ], [
+                ['about_proof', __('Proof ribbon (four items)', 'sage'), 'repeater', about_proof_defaults(), [
                     ['v', __('Value', 'sage'), 'text'],
                     ['l', __('Label', 'sage'), 'text'],
                 ]],

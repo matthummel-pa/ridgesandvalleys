@@ -19,14 +19,7 @@
       </div>
       <p class="rv-hero-note">{{ \App\field('about_meta', __('Family-owned · Accessibility-first · Serving Gettysburg & South Central PA', 'sage')) }}</p>
     </div>
-    @php
-      $aboutProof = \App\field_rows('about_proof', [
-        ['v' => __('15+ yrs', 'sage'), 'l' => __('building for the web', 'sage')],
-        ['v' => __('~7 days', 'sage'), 'l' => __('to your first draft', 'sage')],
-        ['v' => __('WCAG 2.2 AA', 'sage'), 'l' => __('on every page', 'sage')],
-        ['v' => __('You own it', 'sage'), 'l' => __('site, domain, hosting', 'sage')],
-      ]);
-    @endphp
+    @php($aboutProof = \App\field_rows('about_proof', \App\about_proof_defaults()))
     @if (count($aboutProof))
       <div class="rv-hero-proof">
         <div class="rv-shell">
@@ -301,7 +294,7 @@
     @media(max-width:480px){.rv-about-nap li{grid-template-columns:1fr;gap:.15rem}}
     .rv-about-local-grid{display:grid;grid-template-columns:1.25fr .9fr;gap:clamp(2rem,4vw,3.5rem);align-items:start}
     @media(max-width:820px){.rv-about-local-grid{grid-template-columns:1fr}}
-    .rv-about-local-h{font-family:var(--font-display);font-weight:800;font-size:clamp(1.9rem,4.4vw,3.1rem);line-height:1.04;letter-spacing:-.02em;color:var(--color-ink);margin:.45rem 0 1.1rem}
+    .rv-about-local-h{font-family:var(--font-display);font-weight:800;font-size:clamp(1.75rem,3.5vw,2.5rem);line-height:1.08;letter-spacing:-.03em;color:var(--color-ink);margin:.45rem 0 1.1rem;max-width:18ch}
     .rv-about-local .rv-feature-text{font-size:1.08rem;line-height:1.7;color:var(--color-body);margin:0 0 1rem;max-width:60ch}
     .rv-about-highlights{display:grid;gap:1rem}
     .rv-about-hl{position:relative;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.2rem 1.35rem 1.2rem 1.6rem;overflow:hidden}
@@ -323,15 +316,15 @@
     .rv-about-bio-body p{margin:0 0 1.1rem}
     .rv-about-bio-side{display:grid;gap:1rem}
     /* Team */
-    .rv-about-team .rv-page-intro{max-width:60ch}
+    .rv-about-team .rv-page-intro{max-width:48ch}
     .rv-team-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;margin-top:2rem}
-    .rv-team-card{background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.6rem 1.5rem;text-align:center}
-    .rv-team-photo{width:96px;height:96px;border-radius:50%;object-fit:cover;margin:0 auto .9rem;display:block;border:3px solid var(--color-line)}
-    .rv-team-avatar{width:96px;height:96px;border-radius:50%;margin:0 auto .9rem;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--color-sage) 22%,var(--color-surface));border:3px solid var(--color-line);color:color-mix(in srgb,var(--color-ink) 45%,transparent)}
+    .rv-team-card{background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.6rem 1.5rem;text-align:left}
+    .rv-team-photo{width:96px;height:96px;border-radius:50%;object-fit:cover;margin:0 0 .9rem;display:block;border:3px solid var(--color-line)}
+    .rv-team-avatar{width:96px;height:96px;border-radius:50%;margin:0 0 .9rem;display:flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--color-sage) 22%,var(--color-surface));border:3px solid var(--color-line);color:color-mix(in srgb,var(--color-ink) 45%,transparent)}
     .rv-team-avatar svg{width:58px;height:58px;display:block}
     .rv-team-name{font-family:var(--font-display);font-size:1.3rem;font-weight:800;color:var(--color-ink);margin:0}
     .rv-team-role{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--color-clay);font-weight:600;margin:.35rem 0 .8rem}
     .rv-team-bio{color:var(--color-body);font-size:.98rem;line-height:1.6;margin:0}
-    .rv-about-team-note{text-align:center;margin-top:1.75rem}
+    .rv-about-team-note{text-align:left;margin-top:1.75rem}
   </style>
 @endsection
