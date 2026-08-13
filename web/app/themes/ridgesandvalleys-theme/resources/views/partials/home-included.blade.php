@@ -1,23 +1,39 @@
 {{-- INCLUDED IN EVERY BUILD --}}
-<section class="rv-band rv-band-alt">
+@php
+  $homeId = \App\home_page_id() ?: get_the_ID();
+@endphp
+<section class="rv-band rv-band-alt" aria-labelledby="rv-incl-heading">
   <div class="rv-shell">
-    {!! \App\eyebrow(\App\field('included_eyebrow', __('No surprises', 'sage'))) !!}
-    <h2 class="rv-section-title">{{ \App\field('included_title', __('Included in', 'sage')) }} <em class="rv-accent">{{ \App\field('included_accent', __('every', 'sage')) }}</em> {{ \App\field('included_title_end', __('build.', 'sage')) }}</h2>
-    <div class="rv-grid rv-grid-3" style="margin-top:2rem">
-      @foreach (\App\field_rows('included_items', [
-        ['title' => __('Accessibility-first', 'sage'), 'text' => __('Built to WCAG 2.2 AA — readable contrast, keyboard navigation, and screen-reader-friendly structure on every page.', 'sage')],
-        ['title' => __('Mobile-first', 'sage'), 'text' => __('Designed for the phone first, because that\'s where most of your visitors actually are.', 'sage')],
-        ['title' => __('You own everything', 'sage'), 'text' => __('Your domain, your hosting account, your site. No lock-in, and you can leave a care plan anytime.', 'sage')],
-        ['title' => __('Found locally', 'sage'), 'text' => __('Google Business Profile setup, on-page SEO, and the local foundations that put you on the map.', 'sage')],
-        ['title' => __('Fast & secure', 'sage'), 'text' => __('Lean, page-builder-free code, HTTPS, backups, and a hosting setup tuned to load quickly.', 'sage')],
-        ['title' => __('A real training handoff', 'sage'), 'text' => __('A short walkthrough (and a video) so you can update the few things you\'ll actually touch.', 'sage')],
-      ]) as $inc)
-        <article class="rv-card rv-feature">
-          <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-          <h3 class="rv-feature-title">{{ $inc['title'] ?? '' }}</h3>
-          <p class="rv-feature-text">{{ $inc['text'] ?? '' }}</p>
+    <header class="rv-incl-head">
+      {!! \App\eyebrow(\App\field('incl_eyebrow', __('No surprises', 'sage'), $homeId)) !!}
+      <h2 id="rv-incl-heading" class="rv-section-title">{{ \App\field('incl_h2', __('Included in every', 'sage'), $homeId) }} <em class="rv-accent">{{ \App\field('incl_h2_accent', __('build.', 'sage'), $homeId) }}</em></h2>
+      <p class="rv-page-intro">{{ \App\field('incl_lede', __('Every Gettysburg web design package — Rescue, Local Launch, or Growth — ships with the same baseline. The price changes with scope. This list does not.', 'sage'), $homeId) }}</p>
+    </header>
+
+    <ul class="rv-incl-grid">
+      @foreach (\App\field_rows('incl_points', \App\svc_incl_point_defaults(), $homeId) as $inc)
+        <li class="rv-card rv-incl-item">
+          <h3>{{ $inc['title'] ?? '' }}</h3>
+          <p>{{ $inc['text'] ?? '' }}</p>
+        </li>
+      @endforeach
+    </ul>
+
+    <div class="rv-incl-bounds">
+      @foreach (\App\field_rows('incl_bounds', \App\svc_bound_defaults(), $homeId) as $b)
+        <article class="rv-incl-bound">
+          <h3>{{ $b['title'] ?? '' }}</h3>
+          <p>{{ $b['text'] ?? '' }}</p>
         </article>
       @endforeach
+    </div>
+
+    <div class="rv-incl-foot">
+      <p class="rv-incl-close">{{ \App\field('incl_close', __('The full list, with packages, is on the services page.', 'sage'), $homeId) }}</p>
+      <div class="rv-incl-actions">
+        <a class="rv-btn rv-btn-primary" href="{{ \App\services_href(\App\field('incl_cta_url', \App\services_path() . '#included', $homeId)) }}">{{ \App\field('incl_cta', __('Compare packages', 'sage'), $homeId) }} {!! \App\icon('arrow') !!}</a>
+        <a class="rv-btn rv-btn-ghost" href="{{ \App\cta_href(\App\field('incl_cta2_url', '/contact/', $homeId)) }}">{{ \App\field('incl_cta2', __('Get a quote', 'sage'), $homeId) }}</a>
+      </div>
     </div>
   </div>
 </section>
