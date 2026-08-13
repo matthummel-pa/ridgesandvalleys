@@ -63,30 +63,45 @@ add_action('wp_head', function () {
 /**
  * Performance: preconnect to the image CDNs used by hotlinked hero imagery, and
  * preload the page's Largest Contentful Paint (LCP) image so it starts loading
- * immediately instead of being discovered late. This is the main lever for a
- * top PageSpeed / Core Web Vitals score on image-led pages.
+ * immediately instead of being discovered late. Responsive imagesrcset means
+ * phones fetch a ~960px candidate instead of the 1600px desktop file.
+ * Runs at priority 0 so the LCP image is requested before font preloads.
  */
 add_action('wp_head', function () {
     echo '<link rel="preconnect" href="https://images.pexels.com">' . "\n";
     echo '<link rel="preconnect" href="https://upload.wikimedia.org">' . "\n";
     echo '<link rel="dns-prefetch" href="https://commons.wikimedia.org">' . "\n";
 
-    $lcp = '';
-    if (is_singular('post')) {
-        $lcp = has_post_thumbnail() ? (string) get_the_post_thumbnail_url(null, 'rv-hero') : blog_post_image();
-    } elseif (is_front_page()) {
-        $lcp = hero_bg_url(stock_image('hero-home'));
+    $fallback = '';
+    $postId   = null;
+    if (is_front_page()) {
+        $fallback = stock_image('hero-home');
     } elseif (is_home()) {
-        $lcp = hero_bg_url(stock_image('process'), (int) get_option('page_for_posts'));
+        $fallback = stock_image('process');
+        $postId   = (int) get_option('page_for_posts');
     } elseif (is_page()) {
-        // Page heroes are Featured-Image-driven; preload it when one is set.
-        $lcp = hero_bg_url();
+        $fallback = current_hero_stock_fallback();
+    } elseif (is_singular('post')) {
+        $fallback = blog_post_image();
+    } else {
+        return;
     }
 
-    if ($lcp) {
-        printf('<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n", esc_url($lcp));
+    $src = hero_bg_sources($fallback, $postId);
+    if (($src['src'] ?? '') === '') {
+        return;
     }
-}, 2);
+
+    // When imagesrcset is present, omit href so Chromium does not fetch both
+    // the desktop src and the mobile candidate.
+    $tag = '<link rel="preload" as="image" fetchpriority="high"';
+    if (($src['srcset'] ?? '') !== '') {
+        $tag .= ' imagesrcset="' . esc_attr($src['srcset']) . '" imagesizes="' . esc_attr($src['sizes']) . '"';
+    } else {
+        $tag .= ' href="' . esc_url($src['src']) . '"';
+    }
+    echo $tag . ">\n";
+}, 0);
 
 /**
  * Site icons / favicons.
@@ -185,6 +200,7 @@ add_action('after_setup_theme', function () {
     ]);
 
     add_image_size('rv-card', 720, 480, true);
+    add_image_size('rv-hero-sm', 960, 540, true);
     add_image_size('rv-hero', 1600, 900, true);
 }, 20);
 

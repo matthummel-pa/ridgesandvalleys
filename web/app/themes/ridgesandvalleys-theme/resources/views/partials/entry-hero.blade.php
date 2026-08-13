@@ -8,9 +8,7 @@
 @if ($rvHero['hero'])
   <section class="rv-hero rv-entry-hero">
     <span class="rv-stripe" aria-hidden="true"></span>
-    @if ($rvHero['hero_bg'])
-      <span class="rv-hero-bg" style="background-image:url('{{ $rvHero['hero_bg'] }}')" aria-hidden="true"></span>
-    @endif
+    {!! \App\hero_bg_markup(\App\blog_post_image()) !!}
     <div class="rv-shell rv-hero-inner">
       <h1 class="rv-hero-title">{!! wp_kses_post($rvHero['hero_title']) !!}</h1>
       @if (trim($rvHero['hero_sub'] ?? '') !== '')

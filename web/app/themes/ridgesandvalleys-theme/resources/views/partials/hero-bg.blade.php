@@ -8,7 +8,4 @@
     @include('partials.hero-bg', ['fallback' => \App\stock_image('hero-home')])
     @include('partials.hero-bg', ['fallback' => \App\stock_image('process'), 'postId' => $blogId])
 --}}
-@php($rvHeroBg = \App\hero_bg_url($fallback ?? '', $postId ?? null))
-@if ($rvHeroBg)
-  <span class="rv-hero-bg" style="background-image:url('{{ $rvHeroBg }}')" aria-hidden="true"></span>
-@endif
+{!! \App\hero_bg_markup($fallback ?? '', $postId ?? null) !!}
