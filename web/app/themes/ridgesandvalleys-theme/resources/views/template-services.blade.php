@@ -118,30 +118,29 @@
   </section>
 
   {{-- LOCAL SEO (bold, dark) --}}
-  <section class="rv-band rv-band-pine rv-svc-seo">
+  <section id="local-seo" class="rv-band rv-band-pine rv-svc-seo" aria-labelledby="rv-seo-heading">
     <div class="rv-shell">
-      {!! \App\eyebrow(\App\field('seo_eyebrow', __('Get found in Gettysburg', 'sage'))) !!}
-      <h2 class="rv-section-title">{{ \App\field('seo_title', __('Local SEO that puts you', 'sage')) }} <em class="rv-accent">{{ \App\field('seo_accent', __('on the map.', 'sage')) }}</em></h2>
-      <p class="rv-hero-sub" style="max-width:74ch">{!! \App\field('seo_intro', __('<strong>Local SEO decides whether they find you.</strong> When a neighbor or visitor reaches for their phone and searches “web designer near me,” “best breakfast in Gettysburg,” or “plumber in Adams County,” you either show up — or the competitor three listings up does. It\'s the difference between a website that just exists and one that actually brings people through your door.', 'sage')) !!}</p>
-
-      <div class="rv-svc-seo-grid">
-        @foreach (\App\field_rows('seo_items', [
-          ['title' => __('Google Business Profile', 'sage'), 'text' => __('Claimed, verified, and optimized — categories, hours, photos, and posts that help you show up in Maps and the local pack.', 'sage')],
-          ['title' => __('Local keyword research', 'sage'), 'text' => __('The exact terms people around here actually type — by town, by service, by season — built right into your pages.', 'sage')],
-          ['title' => __('Location & service-area pages', 'sage'), 'text' => __('Dedicated, indexable pages for Gettysburg and the nearby towns you serve, so you can rank in more than one place.', 'sage')],
-          ['title' => __('LocalBusiness schema', 'sage'), 'text' => __('Structured data that tells Google exactly what you are, where you are, and what you offer.', 'sage')],
-          ['title' => __('NAP consistency', 'sage'), 'text' => __('Your name, address, and phone matched across your site and listings — the signal local search trusts most.', 'sage')],
-          ['title' => __('Reviews that show up', 'sage'), 'text' => __('A simple way to earn reviews and display them, so new customers see the proof before they ever call.', 'sage')],
-          ['title' => __('Built for the map pack', 'sage'), 'text' => __('Optimized to compete for the coveted top-three local results — not buried on page two.', 'sage')],
-          ['title' => __('Fast & mobile-first', 'sage'), 'text' => __('Local search happens on phones. A site that loads instantly keeps you in the running.', 'sage')],
-        ]) as $item)
-          <div class="rv-svc-seo-item">
+      <div class="rv-svc-seo-head">
+        {!! \App\eyebrow(\App\field('seo_eyebrow', __('Get found in Gettysburg', 'sage'))) !!}
+        <h2 id="rv-seo-heading" class="rv-section-title">{{ \App\field('seo_title', __('Local SEO that puts you', 'sage')) }} <em class="rv-accent">{{ \App\field('seo_accent', __('on the map.', 'sage')) }}</em></h2>
+        <p class="rv-svc-seo-lead">{!! \App\field('svc_seo_intro', __('<strong>Local SEO decides whether they find you.</strong> When someone in Adams County searches “web designer near me” or “best breakfast in Gettysburg,” you either show up — or the shop three listings up does.', 'sage')) !!}</p>
+      </div>
+      <ul class="rv-svc-seo-list">
+        @foreach (\App\field_rows('svc_seo_points', \App\svc_seo_point_defaults()) as $item)
+          <li class="rv-svc-seo-item">
             <h3>{{ $item['title'] ?? '' }}</h3>
             <p>{{ $item['text'] ?? '' }}</p>
-          </div>
+          </li>
+        @endforeach
+      </ul>
+      <div class="rv-svc-seo-bounds">
+        @foreach (\App\field_rows('svc_seo_bounds', \App\svc_seo_bound_defaults()) as $b)
+          <article class="rv-svc-seo-bound">
+            <h3>{{ $b['title'] ?? '' }}</h3>
+            <p>{{ $b['text'] ?? '' }}</p>
+          </article>
         @endforeach
       </div>
-      <p class="rv-svc-seo-note">{{ \App\field('seo_note', __('Baked into every Local Launch and Growth Site — and available as a standalone tune-up for a site you already have.', 'sage')) }}</p>
     </div>
   </section>
 
@@ -302,14 +301,23 @@
     .rv-svc-bound{padding:1.35rem 1.45rem;border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);background:color-mix(in srgb,var(--color-ink) 3.5%,var(--color-surface))}
     .rv-svc-bound h3{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-clay);font-weight:700;margin:0 0 .5rem}
     .rv-svc-bound p{margin:0;color:var(--color-body);font-size:.92rem;line-height:1.55}
-    /* Local SEO (on the always-dark pine band) */
-    .rv-svc-seo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:2.25rem}
-    .rv-svc-seo-item{position:relative;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);border-radius:var(--radius-lg,16px);padding:1.3rem 1.35rem 1.3rem 1.6rem;overflow:hidden;transition:transform .15s ease,background-color .15s ease}
+    /* Local SEO — same scan pattern as “what every build includes”, on pine */
+    .rv-svc-seo-lead{max-width:68ch;margin:.85rem 0 0;color:#d3ddcf;font-size:1.05rem;line-height:1.6}
+    .rv-svc-seo-lead strong{color:#fff}
+    .rv-svc-seo-list{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0 0;padding:0;list-style:none}
+    @media(max-width:900px){.rv-svc-seo-list{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:620px){.rv-svc-seo-list{grid-template-columns:1fr}}
+    .rv-svc-seo-item{position:relative;margin:0;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);border-radius:var(--radius-lg,16px);padding:1.4rem 1.35rem 1.3rem;overflow:hidden;transition:transform .15s ease,background-color .15s ease}
     .rv-svc-seo-item:hover{transform:translateY(-2px);background:rgba(255,255,255,.08)}
-    .rv-svc-seo-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--ridgeline)}
-    .rv-svc-seo-item h3{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:#fff;margin:0 0 .35rem}
-    .rv-svc-seo-item p{margin:0;color:#d3ddcf;font-size:.93rem;line-height:1.55}
-    .rv-svc-seo-note{margin-top:1.6rem;font-family:var(--font-mono);font-size:.8rem;letter-spacing:.03em;color:var(--color-wheat)}
+    .rv-svc-seo-item h3{position:relative;font-family:var(--font-display);font-size:1.12rem;font-weight:800;color:#fff;margin:0;padding-left:1.85rem;line-height:1.25}
+    .rv-svc-seo-item h3::before{content:"";position:absolute;left:0;top:.12em;width:1.1rem;height:1.1rem;border-radius:50%;background:color-mix(in srgb,var(--color-wheat) 28%,transparent)}
+    .rv-svc-seo-item h3::after{content:"";position:absolute;left:.34rem;top:.45em;width:.42rem;height:.22rem;border-left:2px solid var(--color-wheat);border-bottom:2px solid var(--color-wheat);transform:rotate(-45deg)}
+    .rv-svc-seo-item p{margin:.5rem 0 0;padding-left:1.85rem;color:#d3ddcf;font-size:.94rem;line-height:1.55}
+    .rv-svc-seo-bounds{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.15rem}
+    @media(max-width:720px){.rv-svc-seo-bounds{grid-template-columns:1fr}}
+    .rv-svc-seo-bound{padding:1.35rem 1.45rem;border:1px solid rgba(255,255,255,.16);border-radius:var(--radius-lg,16px);background:rgba(255,255,255,.04)}
+    .rv-band-pine .rv-svc-seo-bound h3{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-wheat);font-weight:700;margin:0 0 .5rem}
+    .rv-svc-seo-bound p{margin:0;color:#d3ddcf;font-size:.92rem;line-height:1.55}
     /* Helpful-to-know FAQ (light band, flips in dark mode) */
     .rv-svc-faq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.1rem;margin-top:2rem}
     .rv-svc-faq-item{background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.35rem 1.5rem;transition:border-color .15s ease}

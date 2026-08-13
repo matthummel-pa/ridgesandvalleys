@@ -420,6 +420,61 @@ function svc_bound_defaults(): array
 }
 
 /**
+ * Local SEO checklist on the services page. Six items so the grid is even
+ * (3×2). “Map pack” and “mobile-first” live in the intro / included section.
+ *
+ * @return list<array{title:string,text:string}>
+ */
+function svc_seo_point_defaults(): array
+{
+    return [
+        [
+            'title' => __('Google Business Profile', 'sage'),
+            'text'  => __('Claimed, verified, and kept current — categories, hours, photos, and posts that help you show in Maps and the local pack.', 'sage'),
+        ],
+        [
+            'title' => __('The words people here actually type', 'sage'),
+            'text'  => __('Town, service, and seasonal terms built into your pages — not generic “best company” copy.', 'sage'),
+        ],
+        [
+            'title' => __('Town & service-area pages', 'sage'),
+            'text'  => __('Indexable pages for Gettysburg and the nearby towns you serve, so you can rank in more than one place.', 'sage'),
+        ],
+        [
+            'title' => __('LocalBusiness schema', 'sage'),
+            'text'  => __('Structured data that tells Google what you are, where you are, and what you offer.', 'sage'),
+        ],
+        [
+            'title' => __('Name, address, and phone that match', 'sage'),
+            'text'  => __('NAP consistency across your site and listings — the signal local search trusts most.', 'sage'),
+        ],
+        [
+            'title' => __('Reviews that show up', 'sage'),
+            'text'  => __('A simple way to earn reviews and display them, so new customers see the proof before they call.', 'sage'),
+        ],
+    ];
+}
+
+/**
+ * Where local SEO sits in the packages (baked in vs. a tune-up).
+ *
+ * @return list<array{title:string,text:string}>
+ */
+function svc_seo_bound_defaults(): array
+{
+    return [
+        [
+            'title' => __('In Local Launch & Growth Site', 'sage'),
+            'text'  => __('This local SEO work is in the build — not a surprise invoice after launch.', 'sage'),
+        ],
+        [
+            'title' => __('Already have a site?', 'sage'),
+            'text'  => __('A Website Rescue or a standalone tune-up can fix Maps, listings, and on-page without starting over.', 'sage'),
+        ],
+    ];
+}
+
+/**
  * Services FAQ as [question, answer] pairs for JSON-LD. Defaults match the
  * template so schema stays in sync when the repeater is empty.
  *
@@ -778,21 +833,15 @@ function page_field_map(): array
                 ['seo_eyebrow', __('Eyebrow', 'sage'), 'text', __('Get found in Gettysburg', 'sage')],
                 ['seo_title', __('Heading (before accent)', 'sage'), 'text', __('Local SEO that puts you', 'sage')],
                 ['seo_accent', __('Accent phrase', 'sage'), 'text', __('on the map.', 'sage')],
-                ['seo_intro', __('Intro paragraph', 'sage'), 'html', __('<strong>Local SEO decides whether they find you.</strong> When a neighbor or visitor reaches for their phone and searches “web designer near me,” “best breakfast in Gettysburg,” or “plumber in Adams County,” you either show up — or the competitor three listings up does. It\'s the difference between a website that just exists and one that actually brings people through your door.', 'sage')],
-                ['seo_items', __('SEO cards', 'sage'), 'repeater', [
-                    ['title' => __('Google Business Profile', 'sage'), 'text' => __('Claimed, verified, and optimized — categories, hours, photos, and posts that help you show up in Maps and the local pack.', 'sage')],
-                    ['title' => __('Local keyword research', 'sage'), 'text' => __('The exact terms people around here actually type — by town, by service, by season — built right into your pages.', 'sage')],
-                    ['title' => __('Location & service-area pages', 'sage'), 'text' => __('Dedicated, indexable pages for Gettysburg and the nearby towns you serve, so you can rank in more than one place.', 'sage')],
-                    ['title' => __('LocalBusiness schema', 'sage'), 'text' => __('Structured data that tells Google exactly what you are, where you are, and what you offer.', 'sage')],
-                    ['title' => __('NAP consistency', 'sage'), 'text' => __('Your name, address, and phone matched across your site and listings — the signal local search trusts most.', 'sage')],
-                    ['title' => __('Reviews that show up', 'sage'), 'text' => __('A simple way to earn reviews and display them, so new customers see the proof before they ever call.', 'sage')],
-                    ['title' => __('Built for the map pack', 'sage'), 'text' => __('Optimized to compete for the coveted top-three local results — not buried on page two.', 'sage')],
-                    ['title' => __('Fast & mobile-first', 'sage'), 'text' => __('Local search happens on phones. A site that loads instantly keeps you in the running.', 'sage')],
-                ], [
+                ['svc_seo_intro', __('Intro paragraph', 'sage'), 'html', __('<strong>Local SEO decides whether they find you.</strong> When someone in Adams County searches “web designer near me” or “best breakfast in Gettysburg,” you either show up — or the shop three listings up does.', 'sage')],
+                ['svc_seo_points', __('Local SEO items', 'sage'), 'repeater', svc_seo_point_defaults(), [
+                    ['title', __('Item title', 'sage'), 'text'],
+                    ['text', __('Item text', 'sage'), 'textarea'],
+                ]],
+                ['svc_seo_bounds', __('Where it sits (baked in / already have a site)', 'sage'), 'repeater', svc_seo_bound_defaults(), [
                     ['title', __('Card title', 'sage'), 'text'],
                     ['text', __('Card text', 'sage'), 'textarea'],
                 ]],
-                ['seo_note', __('Note under the cards', 'sage'), 'text', __('Baked into every Local Launch and Growth Site — and available as a standalone tune-up for a site you already have.', 'sage')],
             ],
             __('Process (services)', 'sage') => [
                 ['sproc_eyebrow', __('Eyebrow', 'sage'), 'text', __('Groundwork to launch', 'sage')],
@@ -1420,7 +1469,7 @@ function field_group_hint(string $label): string
         __('Before pricing', 'sage')  => __('The three value cards above the pricing — what every package actually buys, before the dollar amounts.', 'sage'),
         __('Packages', 'sage')         => __('The pricing line-up. Three project cards sit in a row; a Care plan uses the full-width bar underneath. Each card has a name, price, “best for” line, one-line outcome, and three features. Leave a button label blank to use the default button above.', 'sage'),
         __('What every build includes', 'sage') => __('The baseline under the packages: an intro, six included items, then two quieter cards for what’s not in scope and how the work runs.', 'sage'),
-        __('Local SEO section', 'sage') => __('The dark local-SEO block: heading, intro, the grid of SEO cards, and the note beneath.', 'sage'),
+        __('Local SEO section', 'sage') => __('The dark local-SEO block: heading, intro, six checklist items, then two quieter cards for what’s in a new build vs. a tune-up.', 'sage'),
         __('Process (services)', 'sage') => __('The services timeline: heading and each day step.', 'sage'),
         __('AI-assisted split', 'sage') => __('The “honest split” heading, the two cards, and the disclosure note.', 'sage'),
         __('Helpful to know (FAQ)', 'sage') => __('The short services FAQ — heading and each question with its answer.', 'sage'),
