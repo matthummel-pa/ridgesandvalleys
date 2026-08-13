@@ -30,6 +30,7 @@ function initOffcanvas(): void {
     requestAnimationFrame(() => panel.classList.add('is-open'));
     toggle.setAttribute('aria-expanded', 'true');
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('rv-menu-open');
     document.addEventListener('keydown', onKeydown);
     focusable()[0]?.focus();
   };
@@ -38,6 +39,7 @@ function initOffcanvas(): void {
     panel.classList.remove('is-open');
     toggle.setAttribute('aria-expanded', 'false');
     document.body.style.overflow = '';
+    document.body.classList.remove('rv-menu-open');
     document.removeEventListener('keydown', onKeydown);
     window.setTimeout(() => {
       panel.hidden = true;
@@ -116,7 +118,35 @@ function initThemeToggle(): void {
   });
 }
 
+function initHeaderScroll(): void {
+  const onScroll = (): void => {
+    document.body.classList.toggle('rv-scrolled', (window.scrollY || window.pageYOffset) > 24);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+}
+
+function initNavDropdowns(): void {
+  document.querySelectorAll<HTMLAnchorElement>('.rv-nav-list .menu-item-has-children > a').forEach((link) => {
+    const item = link.parentElement;
+    if (!item) return;
+    link.setAttribute('aria-haspopup', 'true');
+    link.setAttribute('aria-expanded', 'false');
+    const setOpen = (open: boolean): void => {
+      link.setAttribute('aria-expanded', String(open));
+    };
+    item.addEventListener('mouseenter', () => setOpen(true));
+    item.addEventListener('mouseleave', () => setOpen(false));
+    item.addEventListener('focusin', () => setOpen(true));
+    item.addEventListener('focusout', (e: FocusEvent) => {
+      if (!item.contains(e.relatedTarget as Node | null)) setOpen(false);
+    });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initOffcanvas();
   initThemeToggle();
+  initHeaderScroll();
+  initNavDropdowns();
 });

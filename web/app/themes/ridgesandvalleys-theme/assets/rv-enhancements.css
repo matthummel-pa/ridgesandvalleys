@@ -350,6 +350,8 @@ html[data-theme="dark"] .rv-share-btn { color: var(--color-ink); }
 .rv-nav-transparent .rv-topbar-note,
 .rv-nav-transparent .rv-theme-toggle,
 .rv-nav-transparent .rv-menu-toggle { color: #fff; }
+.rv-nav-transparent .rv-nav-list .sub-menu a { color: var(--color-ink); }
+.rv-nav-transparent .rv-nav-list .sub-menu a:hover { color: var(--color-pine); }
 .rv-nav-transparent .rv-theme-toggle,
 .rv-nav-transparent .rv-menu-toggle { border-color: rgba(255, 255, 255, .5); background: transparent; }
 .rv-nav-transparent .rv-topbar-social { --social-color: rgba(255, 255, 255, .85); }

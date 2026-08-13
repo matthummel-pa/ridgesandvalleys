@@ -321,10 +321,10 @@ add_action('customize_register', function ($wp_customize) {
         'type'        => 'range',
         'input_attrs' => ['min' => 720, 'max' => 1100, 'step' => 10],
     ]);
-    $wp_customize->add_setting('rv_cta_mobile', ['default' => false, 'sanitize_callback' => 'rest_sanitize_boolean']);
+    $wp_customize->add_setting('rv_cta_mobile', ['default' => true, 'sanitize_callback' => 'rest_sanitize_boolean']);
     $wp_customize->add_control('rv_cta_mobile', [
         'label'       => __('Keep header button on mobile', 'sage'),
-        'description' => __('The header CTA button hides on small screens by default. Turn on to keep it next to the menu icon.', 'sage'),
+        'description' => __('Keep the quote button next to the menu icon on small screens. Turn off to leave only the hamburger.', 'sage'),
         'section'     => 'rv_header',
         'type'        => 'checkbox',
     ]);
@@ -1630,7 +1630,7 @@ add_action('wp_head', function () {
     $hh   = min(104, max(56, (int) get_theme_mod('rv_header_height', 72)));
     $logo = min(72, max(24, (int) get_theme_mod('rv_logo_max_height', 52)));
     $bp   = min(1100, max(720, (int) get_theme_mod('rv_nav_breakpoint', 860)));
-    $ctaM = (bool) get_theme_mod('rv_cta_mobile', false);
+    $ctaM = (bool) get_theme_mod('rv_cta_mobile', true);
     $shad = (bool) get_theme_mod('rv_header_shadow', false);
 
     $talign = get_theme_mod('rv_topbar_align', 'between');

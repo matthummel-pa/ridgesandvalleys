@@ -50,7 +50,7 @@
         <a class="rv-btn rv-btn-primary rv-btn-cta" href="{{ \App\cta_href($ctaUrl) }}">{{ $ctaText }}</a>
       @endif
       <button type="button" class="rv-menu-toggle" aria-expanded="false" aria-controls="rv-offcanvas">
-        {!! \App\icon('menu') !!}
+        <span class="rv-menu-bars" aria-hidden="true"><span></span><span></span><span></span></span>
         <span class="screen-reader-text">{{ __('Menu', 'sage') }}</span>
       </button>
     </div>
@@ -60,9 +60,15 @@
 
 <div id="rv-offcanvas" class="rv-offcanvas" hidden>
   <div class="rv-offcanvas-panel" role="dialog" aria-modal="true" aria-label="{{ __('Site menu', 'sage') }}">
-    <button type="button" class="rv-offcanvas-close" aria-label="{{ __('Close menu', 'sage') }}">{!! \App\oc_close_svg() !!}</button>
+    <div class="rv-offcanvas-top">
+      <span class="rv-offcanvas-kicker">{{ __('Menu', 'sage') }}</span>
+      <button type="button" class="rv-offcanvas-close" aria-label="{{ __('Close menu', 'sage') }}">{!! \App\oc_close_svg() !!}</button>
+    </div>
     @if (has_nav_menu('primary'))
       {!! wp_nav_menu(['theme_location' => 'primary', 'container' => false, 'menu_class' => 'rv-offcanvas-list', 'echo' => false, 'depth' => 2]) !!}
+    @endif
+    @if ($ctaText)
+      <a class="rv-btn rv-btn-primary rv-offcanvas-cta" href="{{ \App\cta_href($ctaUrl) }}">{{ $ctaText }}</a>
     @endif
 
     @if ($rvPhone || $rvEmail)
@@ -93,7 +99,7 @@
   </div>
 </div>
 
-@if (get_theme_mod('rv_header_transparent', false) || get_theme_mod('rv_topbar_hide_on_scroll', false))
+@if (get_theme_mod('rv_header_transparent', false))
 <script>
 (function () {
   document.addEventListener('DOMContentLoaded', function () {
@@ -115,12 +121,6 @@
         window.addEventListener('resize', fit, { passive: true });
       }
     }
-    // Shared scroll flag — drives the transparent solidify + hide-top-bar-on-scroll.
-    var onScroll = function () {
-      body.classList.toggle('rv-scrolled', (window.scrollY || window.pageYOffset) > 30);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
   });
 })();
 </script>
