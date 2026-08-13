@@ -261,9 +261,30 @@ add_action('manage_project_posts_custom_column', function ($col, $post_id) {
 }, 10, 2);
 
 /**
+ * Public origin of the concept demos on GitHub Pages.
+ *
+ * The HTML lives in the theme at concept/, but that folder is excluded from
+ * the SiteGround theme rsync. Live “Open demo” links therefore point here.
+ * Filter `rv/concept_pages_base` to override (e.g. a custom domain).
+ */
+function concept_pages_base(): string
+{
+    return apply_filters('rv/concept_pages_base', 'https://matthummel-pa.github.io/ridgesandvalleys');
+}
+
+/**
+ * Absolute URL of a concept demo (directory) or a file inside it.
+ */
+function concept_demo_url(string $folder, string $file = ''): string
+{
+    $url = rtrim(concept_pages_base(), '/') . '/' . rawurlencode($folder) . '/';
+    return $file === '' ? $url : $url . ltrim($file, '/');
+}
+
+/**
  * The concept-site portfolio, seeded once as Project posts so it populates the
- * Projects admin list and the Work grid. Each links to its live HTML mockup in
- * /concept/. Safe + idempotent: skips any project whose slug already exists.
+ * Projects admin list and the Work grid. Each links to its GitHub Pages demo.
+ * Safe + idempotent: skips any project whose slug already exists.
  */
 function concept_project_seeds(): array
 {
@@ -422,8 +443,8 @@ function seed_concept_projects(): void
         update_post_meta($post_id, '_rv_industry', $c['industry']);
         update_post_meta($post_id, '_rv_location', 'Gettysburg, PA');
         update_post_meta($post_id, '_rv_services', $c['services']);
-        update_post_meta($post_id, '_rv_url', get_theme_file_uri('concept/' . $c['folder'] . '/index.html'));
-        update_post_meta($post_id, '_rv_preview', get_theme_file_uri('concept/' . $c['folder'] . '/preview.jpg'));
+        update_post_meta($post_id, '_rv_url', concept_demo_url($c['folder']));
+        update_post_meta($post_id, '_rv_preview', concept_demo_url($c['folder'], 'preview.jpg'));
         update_post_meta($post_id, '_rv_is_concept', '1');
         update_post_meta($post_id, '_rv_challenge', $c['challenge']);
         update_post_meta($post_id, '_rv_approach', $c['approach']);
@@ -446,14 +467,14 @@ function seed_concept_projects(): void
  * or add newly-created concepts.
  */
 add_action('admin_init', function () {
-    if (get_option('rv_concepts_seed_v') === '3') {
+    if (get_option('rv_concepts_seed_v') === '4') {
         return;
     }
     if (! current_user_can('edit_posts')) {
         return;
     }
     seed_concept_projects();
-    update_option('rv_concepts_seed_v', '3');
+    update_option('rv_concepts_seed_v', '4');
 });
 
 /**
