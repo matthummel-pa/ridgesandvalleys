@@ -111,6 +111,33 @@ function home_intro_step_defaults(): array
 }
 
 /**
+ * Homepage “If this sounds familiar” cards — symptom plus the fix, so the
+ * section is a diagnosis, not a complaint list.
+ *
+ * @return list<array{title:string,text:string,fix:string}>
+ */
+function home_pain_defaults(): array
+{
+    return [
+        [
+            'title' => __('Invisible in local search', 'sage'),
+            'text'  => __('Hours, services, and the phone number live on Facebook — or nowhere a Gettysburg search can land.', 'sage'),
+            'fix'   => __('A Visit page Google can index, with the basics on every page.', 'sage'),
+        ],
+        [
+            'title' => __('Fights a phone', 'sage'),
+            'text'  => __('Most visitors arrive on mobile. Small type, slow pages, and missed tap targets send them to the next shop.', 'sage'),
+            'fix'   => __('Mobile-first layout, readable type, and one clear next step.', 'sage'),
+        ],
+        [
+            'title' => __('Scary to update', 'sage'),
+            'text'  => __('Changing a price or a photo feels like it might break the layout — so the site goes stale.', 'sage'),
+            'fix'   => __('A handoff you can actually use, and a Care plan if you’d rather not touch it.', 'sage'),
+        ],
+    ];
+}
+
+/**
  * The registered input type ('text' | 'textarea' | 'html' | 'url' | 'lines' |
  * 'select' | ...) for a scalar field key, scanning page_field_map() across all
  * templates (first match wins). Defaults to 'text'. The live preview uses this to
@@ -727,16 +754,20 @@ function page_field_map(): array
                 ['intro_link2_url', __('Link 2 · URL', 'sage'), 'url', __('e.g. /contact/', 'sage')],
             ],
             __('Problems section', 'sage') => [
-                ['problems_eyebrow', __('Eyebrow', 'sage'), 'text', __('If this sounds familiar', 'sage')],
-                ['problems_title', __('Heading (before accent)', 'sage'), 'text', __('Your site should', 'sage')],
-                ['problems_accent', __('Accent word', 'sage'), 'text', __('help', 'sage')],
-                ['problems_after', __('Heading (after accent)', 'sage'), 'text', __('people act.', 'sage')],
-                ['problem1_title', __('Card 1 · title', 'sage'), 'text', __('Hard to find the basics', 'sage')],
-                ['problem1_text', __('Card 1 · text', 'sage'), 'textarea', __('Hours, directions, and prices are buried — or living on Facebook where you don\'t control them.', 'sage')],
-                ['problem2_title', __('Card 2 · title', 'sage'), 'text', __('Dated on a phone', 'sage')],
-                ['problem2_text', __('Card 2 · text', 'sage'), 'textarea', __('Most visitors show up on mobile, and the current site fights them the whole way.', 'sage')],
-                ['problem3_title', __('Card 3 · title', 'sage'), 'text', __('Risky to update', 'sage')],
-                ['problem3_text', __('Card 3 · text', 'sage'), 'textarea', __('Changing a price or a photo feels like it might break the whole thing.', 'sage')],
+                ['pain_eyebrow', __('Eyebrow', 'sage'), 'text', __('If this sounds familiar', 'sage')],
+                ['pain_h2', __('Heading (before accent)', 'sage'), 'text', __('When Gettysburg customers', 'sage')],
+                ['pain_h2_accent', __('Accent phrase', 'sage'), 'text', __('can’t find you.', 'sage')],
+                ['pain_lede', __('Intro under the heading', 'sage'), 'textarea', __('Hours on Facebook, a site that fights a phone, a page you’re afraid to edit — that’s what we hear from Adams County shops and firms. Gettysburg web design should fix those, not add to them.', 'sage')],
+                ['pain_items', __('The three snags (symptom + fix)', 'sage'), 'repeater', home_pain_defaults(), [
+                    ['title', __('Snag title', 'sage'), 'text'],
+                    ['text', __('What it looks like', 'sage'), 'textarea'],
+                    ['fix', __('The fix (one line)', 'sage'), 'text'],
+                ]],
+                ['pain_close', __('Closer under the cards', 'sage'), 'text', __('If two of these are true, it’s a rebuild — not another plugin.', 'sage')],
+                ['pain_cta', __('Primary button', 'sage'), 'text', __('See how we fix this', 'sage')],
+                ['pain_cta_url', __('Primary button link', 'sage'), 'url', __('e.g. /gettysburg-web-design-services/', 'sage')],
+                ['pain_cta2', __('Secondary button', 'sage'), 'text', __('Get a quote', 'sage')],
+                ['pain_cta2_url', __('Secondary button link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
             ],
             __('Packages section', 'sage') => [
                 ['pkg_eyebrow', __('Eyebrow', 'sage'), 'text', __('Clear scope. Fast build. No mystery.', 'sage')],
@@ -1632,7 +1663,7 @@ function field_group_hint(string $label): string
 {
     $hints = [
         __('Hero', 'sage')             => __('The banner at the top of the page: a short eyebrow, the headline with its accent word, one supporting sentence, and the buttons.', 'sage'),
-        __('Problems section', 'sage') => __('The “if this sounds familiar” block — its heading and the three cards that name what’s frustrating about an outdated site.', 'sage'),
+        __('Problems section', 'sage') => __('The “if this sounds familiar” block — heading, lede, three snag cards (each with a one-line fix), and the closer buttons.', 'sage'),
         __('Packages section', 'sage') => __('The heading and Compare button for the homepage pricing strip. The cards themselves come from the Services page (Page content → Packages), so home and services stay in sync.', 'sage'),
         __('Rooted section', 'sage')   => __('The local “built here” block — heading, paragraph, and the comma-separated list of region chips.', 'sage'),
         __('Testimonial', 'sage')      => __('The single highlighted client quote and who said it.', 'sage'),

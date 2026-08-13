@@ -1,22 +1,34 @@
-{{-- PROBLEMS --}}
-<section class="rv-band rv-band-alt">
+{{-- PROBLEMS / “If this sounds familiar” --}}
+@php
+  $homeId = \App\home_page_id() ?: get_the_ID();
+@endphp
+<section class="rv-band rv-band-alt" aria-labelledby="rv-pain-heading">
   <div class="rv-shell">
-    {!! \App\eyebrow(\App\field('problems_eyebrow', __('If this sounds familiar', 'sage'))) !!}
-    <h2 class="rv-section-title">{{ \App\field('problems_title', __('Your site should', 'sage')) }} <em class="rv-accent">{{ \App\field('problems_accent', __('help', 'sage')) }}</em> {{ \App\field('problems_after', __('people act.', 'sage')) }}</h2>
-    <div class="rv-grid rv-grid-3" style="margin-top:2.25rem">
-      @php($problems = [
-        ['01', \App\field('problem1_title', __('Hard to find the basics', 'sage')), \App\field('problem1_text', __('Hours, directions, and prices are buried — or living on Facebook where you don\'t control them.', 'sage'))],
-        ['02', \App\field('problem2_title', __('Dated on a phone', 'sage')), \App\field('problem2_text', __('Most visitors show up on mobile, and the current site fights them the whole way.', 'sage'))],
-        ['03', \App\field('problem3_title', __('Risky to update', 'sage')), \App\field('problem3_text', __('Changing a price or a photo feels like it might break the whole thing.', 'sage'))],
-      ])
-      @foreach ($problems as $p)
-        <article class="rv-card rv-feature">
+    <header class="rv-pain-head">
+      {!! \App\eyebrow(\App\field('pain_eyebrow', __('If this sounds familiar', 'sage'), $homeId)) !!}
+      <h2 id="rv-pain-heading" class="rv-section-title">{{ \App\field('pain_h2', __('When Gettysburg customers', 'sage'), $homeId) }} <em class="rv-accent">{{ \App\field('pain_h2_accent', __('can’t find you.', 'sage'), $homeId) }}</em></h2>
+      <p class="rv-page-intro">{{ \App\field('pain_lede', __('Hours on Facebook, a site that fights a phone, a page you’re afraid to edit — that’s what we hear from Adams County shops and firms. Gettysburg web design should fix those, not add to them.', 'sage'), $homeId) }}</p>
+    </header>
+
+    <ul class="rv-pain-grid">
+      @foreach (\App\field_rows('pain_items', \App\home_pain_defaults(), $homeId) as $pain)
+        <li class="rv-card rv-pain-card">
           <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-          <span class="rv-metric-v" style="font-size:2rem">{{ $p[0] }}</span>
-          <h3 class="rv-feature-title" style="margin-top:.4rem">{{ $p[1] }}</h3>
-          <p class="rv-feature-text">{{ $p[2] }}</p>
-        </article>
+          <h3>{{ $pain['title'] ?? '' }}</h3>
+          <p>{{ $pain['text'] ?? '' }}</p>
+          @if (trim(\App\strip_field_markers((string) ($pain['fix'] ?? ''))) !== '')
+            <p class="rv-pain-fix"><span>{{ __('The fix', 'sage') }}</span> {{ $pain['fix'] }}</p>
+          @endif
+        </li>
       @endforeach
+    </ul>
+
+    <div class="rv-pain-foot">
+      <p class="rv-pain-close">{{ \App\field('pain_close', __('If two of these are true, it’s a rebuild — not another plugin.', 'sage'), $homeId) }}</p>
+      <div class="rv-pain-actions">
+        <a class="rv-btn rv-btn-primary" href="{{ \App\services_href(\App\field('pain_cta_url', \App\services_path(), $homeId)) }}">{{ \App\field('pain_cta', __('See how we fix this', 'sage'), $homeId) }} {!! \App\icon('arrow') !!}</a>
+        <a class="rv-btn rv-btn-ghost" href="{{ \App\cta_href(\App\field('pain_cta2_url', '/contact/', $homeId)) }}">{{ \App\field('pain_cta2', __('Get a quote', 'sage'), $homeId) }}</a>
+      </div>
     </div>
   </div>
 </section>

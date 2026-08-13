@@ -271,6 +271,19 @@ pre code { background: none; padding: 0; color: inherit; }
 .rv-intro-links .rv-btn { justify-content: center; }
 @media (max-width: 820px) { .rv-intro-pair { grid-template-columns: 1fr; } }
 
+/* Homepage “If this sounds familiar” — diagnosis cards (symptom + fix) */
+.rv-pain-head { max-width: 62ch; margin-bottom: 1.75rem; }
+.rv-pain-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.rv-pain-card { display: flex; flex-direction: column; margin: 0; padding: 1.4rem 1.3rem 1.25rem; }
+.rv-pain-card h3 { font-size: 1.15rem; margin: 0; line-height: 1.25; }
+.rv-pain-card > p { margin: 0.5rem 0 0; font-size: 0.95rem; line-height: 1.55; color: var(--color-muted); }
+.rv-pain-fix { margin-top: auto; padding-top: 0.9rem; border-top: 1px solid var(--color-line); font-size: 0.92rem; line-height: 1.5; color: var(--color-body); }
+.rv-pain-fix span { display: block; font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-clay); margin-bottom: 0.3rem; }
+.rv-pain-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 1.5rem; margin-top: 1.5rem; padding-top: 1.35rem; border-top: 1.5px solid var(--color-line); }
+.rv-pain-close { margin: 0; max-width: 42ch; font-size: 1.02rem; line-height: 1.45; color: var(--color-ink); }
+.rv-pain-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; }
+@media (max-width: 900px) { .rv-pain-grid { grid-template-columns: 1fr; } }
+
 /* ============================================================= Cards + grids */
 .rv-grid { display: grid; gap: clamp(1.25rem,3vw,1.75rem); }
 .rv-grid-3 { grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
