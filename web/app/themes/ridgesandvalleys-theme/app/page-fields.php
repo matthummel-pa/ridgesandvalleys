@@ -1087,7 +1087,7 @@ function page_field_map(): array
                 ['proof_eyebrow', __('Eyebrow', 'sage'), 'text', __('Proof, not promises', 'sage')],
                 ['proof_title', __('Heading (before accent)', 'sage'), 'text', __('Gettysburg web design', 'sage')],
                 ['proof_accent', __('Accent word', 'sage'), 'text', __('results.', 'sage')],
-                ['proof_lede', __('Intro under the heading', 'sage'), 'textarea', __('A real project — then the three things every Gettysburg web design rebuild is built to do for Adams County businesses.', 'sage')],
+                ['proof_lede_types', __('Intro under the heading', 'sage'), 'textarea', __('One live concept for each kind of Adams County business — restaurant, inn, shop, tours. Open a demo, then see what the rebuild is built to do.', 'sage')],
                 ['proof_client', __('Fallback story · client line (used when no Project post exists)', 'sage'), 'text', __('Bradley Goldsmith Law · Local Launch', 'sage')],
                 ['proof_story_title', __('Fallback story · heading', 'sage'), 'text', __('A clearer path from visitor to consultation.', 'sage')],
                 ['proof_story_text', __('Fallback story · paragraph', 'sage'), 'textarea', __('A focused five-page rebuild that made the firm easy to reach and easy to trust — shipped in a week.', 'sage')],

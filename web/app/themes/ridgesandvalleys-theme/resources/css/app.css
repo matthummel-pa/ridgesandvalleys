@@ -693,26 +693,31 @@ html[data-theme="dark"] .rv-plan-care.is-featured { border-color: var(--color-sa
 
 /* Homepage proof (featured work) + rooted (local studio) */
 .rv-proof-head, .rv-rooted-head { max-width: 62ch; margin-bottom: 1.75rem; }
+.rv-proof-list { display: flex; flex-direction: column; gap: 2.25rem; }
+.rv-proof-type { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); margin: 0 0 0.55rem; }
+.rv-proof-list > .rv-proof-item:nth-child(even) .rv-proof { grid-template-areas: "body visual" "metrics metrics"; grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr); }
 .rv-proof {
 	display: grid;
 	grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
 	grid-template-rows: minmax(280px, 1fr) auto;
+	grid-template-areas: "visual body" "metrics metrics";
 	border: 1.5px solid var(--color-line);
 	border-radius: 18px;
 	overflow: hidden;
 	box-shadow: var(--shadow-soft);
 	background: var(--color-surface);
 }
-.rv-proof-visual { grid-row: 1; min-height: 320px; }
+.rv-proof-visual { grid-area: visual; min-height: 320px; }
 .rv-proof-visual > img { object-position: top center; }
-.rv-proof-body { grid-row: 1; padding: clamp(1.5rem, 3.2vw, 2.4rem); display: flex; flex-direction: column; }
+.rv-proof-body { grid-area: body; padding: clamp(1.5rem, 3.2vw, 2.4rem); display: flex; flex-direction: column; }
 .rv-proof-title { font-size: clamp(1.45rem, 2.6vw, 1.95rem); margin: 0.3rem 0 0; }
 .rv-proof-where { margin: 0.45rem 0 0; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
 .rv-proof-body .rv-feature-text { margin-top: 0.7rem; max-width: 46ch; }
 .rv-proof-actions, .rv-rooted-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 1.35rem; }
 .rv-proof-body .rv-proof-actions { margin-top: auto; padding-top: 1.35rem; }
+.rv-proof-more { display: flex; justify-content: flex-start; margin-top: 1.35rem; }
 .rv-proof-metrics {
-	grid-column: 1 / -1;
+	grid-area: metrics;
 	display: grid;
 	grid-template-columns: repeat(3, minmax(0, 1fr));
 	gap: 0.75rem 1.25rem;
@@ -759,13 +764,12 @@ html[data-theme="dark"] .rv-plan-care.is-featured { border-color: var(--color-sa
 	.rv-proof-outcomes-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 820px) {
-	/* Reset row/column so photo, copy, and stats stack. Leaving grid-row: 1 on
-	   visual + body creates an implicit second column; metrics (1 / -1) then
-	   only span the skinny explicit track and collapse. */
-	.rv-proof { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
-	.rv-proof-visual,
-	.rv-proof-body,
-	.rv-proof-metrics { grid-column: 1; grid-row: auto; }
+	.rv-proof,
+	.rv-proof-list > .rv-proof-item:nth-child(even) .rv-proof {
+		grid-template-columns: minmax(0, 1fr);
+		grid-template-rows: auto;
+		grid-template-areas: "visual" "body" "metrics";
+	}
 	.rv-proof-visual { min-height: 220px; aspect-ratio: 16 / 10; }
 	.rv-rooted { grid-template-columns: 1fr; }
 	.rv-rooted-visual { order: -1; min-height: 220px; aspect-ratio: 16 / 10; }

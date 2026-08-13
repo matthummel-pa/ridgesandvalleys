@@ -563,6 +563,96 @@ function work_filter_categories(array $posts): array
 }
 
 /**
+ * One published Project per industry bucket for the homepage proof list.
+ * Prefers concept/demo posts; skips empty buckets. Order follows work_industry_defs().
+ *
+ * @return list<\WP_Post>
+ */
+function home_proof_type_projects(): array
+{
+    $q = new \WP_Query([
+        'post_type'      => 'project',
+        'post_status'    => 'publish',
+        'posts_per_page' => 24,
+        'no_found_rows'  => true,
+        'orderby'        => 'date',
+        'order'          => 'DESC',
+    ]);
+    $concepts = [];
+    $any = [];
+    foreach ($q->posts as $p) {
+        $slug = work_project_category((int) $p->ID)['slug'];
+        if (get_post_meta($p->ID, '_rv_is_concept', true) === '1' && ! isset($concepts[$slug])) {
+            $concepts[$slug] = $p;
+        }
+        if (! isset($any[$slug])) {
+            $any[$slug] = $p;
+        }
+    }
+
+    $picked = [];
+    $seen = [];
+    foreach (work_industry_defs() as $d) {
+        $p = $concepts[$d['slug']] ?? $any[$d['slug']] ?? null;
+        if ($p && ! isset($seen[$p->ID])) {
+            $picked[] = $p;
+            $seen[$p->ID] = true;
+        }
+    }
+    foreach ($concepts as $slug => $p) {
+        if ($slug === 'other' && ! isset($seen[$p->ID])) {
+            $picked[] = $p;
+        }
+    }
+
+    return $picked;
+}
+
+/**
+ * Template data for one homepage proof project box.
+ *
+ * @return array{id:int,type:string,kicker:string,title:string,where:string,text:string,href:string,img:string,alt:string,show_credit:bool,metrics:list<array{v:string,l:string}>}
+ */
+function home_proof_box_data(\WP_Post $post, string $fallback_img = ''): array
+{
+    $id = (int) $post->ID;
+    $cat = work_project_category($id);
+    $title = wp_strip_all_tags(html_entity_decode(get_the_title($id), ENT_QUOTES, 'UTF-8'));
+    $excerpt = trim((string) get_the_excerpt($post));
+    $summary = trim((string) get_post_meta($id, '_rv_summary', true));
+    $text = $excerpt !== '' ? $excerpt : $summary;
+    $kicker = trim((string) get_post_meta($id, '_rv_eyebrow', true));
+    if ($kicker === '') {
+        $kicker = trim((string) get_post_meta($id, '_rv_client', true));
+    }
+    if ($kicker === '') {
+        $kicker = __('Featured work', 'sage');
+    }
+    $img = (string) get_the_post_thumbnail_url($id, 'rv-hero');
+    if ($img === '') {
+        $img = (string) get_post_meta($id, '_rv_preview', true);
+    }
+    $used_fallback = $img === '';
+    if ($used_fallback) {
+        $img = $fallback_img;
+    }
+
+    return [
+        'id'          => $id,
+        'type'        => $cat['label'],
+        'kicker'      => $kicker,
+        'title'       => $title,
+        'where'       => trim((string) get_post_meta($id, '_rv_location', true)),
+        'text'        => $text,
+        'href'        => (string) get_permalink($id),
+        'img'         => $img,
+        'alt'         => sprintf(/* translators: %s: project title */ __('Gettysburg web design case study: %s', 'sage'), $title),
+        'show_credit' => $used_fallback,
+        'metrics'     => home_proof_project_metrics($id),
+    ];
+}
+
+/**
  * Card fields for one project on the Work grid.
  *
  * @return array{cat:array{slug:string,label:string},concept:bool,url:string,eyebrow:string,summary:string,preview:string,industry:string,location:string,metric:string}
