@@ -235,9 +235,12 @@ pre code { background: none; padding: 0; color: inherit; }
 .rv-hero-note { margin-top: 1rem; font-size: 0.82rem; letter-spacing: 0.02em; color: rgba(247, 241, 230, 0.72); max-width: 46ch; }
 .rv-hero-trust { font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 0.06em; text-transform: uppercase; color: #c5d0c0; margin-top: 1rem; max-width: 46ch; }
 
-/* Left-weighted scrim so type stays readable and the photo still shows on the right. */
-.rv-hero-bg { position: absolute; inset: 0; z-index: 0; background-size: cover; background-position: center; }
-.rv-hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18, 21, 15, 0.92) 0%, rgba(18, 21, 15, 0.72) 42%, rgba(18, 21, 15, 0.28) 100%), linear-gradient(180deg, rgba(18, 21, 15, 0.22) 0%, rgba(18, 21, 15, 0.7) 100%); }
+/* Left-weighted scrim so type stays readable and the photo still shows on the right.
+   The photo is an <img> (LCP) so phones can pick a srcset candidate; the gradient
+   stays on the wrapper because ::after does not paint on replaced elements. */
+.rv-hero-bg { position: absolute; inset: 0; z-index: 0; }
+.rv-hero-bg-img { position: absolute; inset: 0; width: 100%; height: 100%; max-width: none; object-fit: cover; object-position: center; display: block; }
+.rv-hero-bg::after { content: ""; position: absolute; inset: 0; z-index: 1; pointer-events: none; background: linear-gradient(90deg, rgba(18, 21, 15, 0.92) 0%, rgba(18, 21, 15, 0.72) 42%, rgba(18, 21, 15, 0.28) 100%), linear-gradient(180deg, rgba(18, 21, 15, 0.22) 0%, rgba(18, 21, 15, 0.7) 100%); }
 .rv-hero > .rv-shell { position: relative; z-index: 1; }
 
 /* Homepage: extra top padding (header sits over the photo) and a slightly larger H1. */

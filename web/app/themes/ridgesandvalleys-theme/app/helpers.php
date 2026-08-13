@@ -390,6 +390,170 @@ function hero_bg_url(string $fallback = '', ?int $post_id = null): string
 }
 
 /**
+ * Stock fallback used by the current page template's hero (empty when the
+ * template has no bundled photo). Keeps LCP preload in sync with Blade.
+ */
+function current_hero_stock_fallback(): string
+{
+    $map = [
+        'template-services.blade.php'      => 'hero-services',
+        'template-work.blade.php'          => 'hero-work',
+        'template-about.blade.php'         => 'about',
+        'template-faq.blade.php'           => 'process',
+        'template-contact.blade.php'       => '',
+        'template-tools.blade.php'         => '',
+        'template-grader.blade.php'        => '',
+        'template-seo.blade.php'           => '',
+        'template-security.blade.php'      => '',
+        'template-email.blade.php'         => '',
+        'template-local.blade.php'         => '',
+        'template-accessibility.blade.php' => '',
+    ];
+    foreach ($map as $tpl => $key) {
+        if (is_page_template($tpl)) {
+            return $key !== '' ? stock_image($key) : '';
+        }
+    }
+
+    return '';
+}
+
+/**
+ * srcset for hotlinked Commons / Pexels URLs so phones are not forced to
+ * download the 1600px desktop file.
+ */
+function hero_remote_srcset(string $url): string
+{
+    $url = html_entity_decode(trim($url), ENT_QUOTES | ENT_HTML5, 'UTF-8');
+    if ($url === '') {
+        return '';
+    }
+
+    if (str_contains($url, 'commons.wikimedia.org') || str_contains($url, 'upload.wikimedia.org')) {
+        $base = preg_replace('/[?&]width=\d+/', '', $url) ?: $url;
+        $join = str_contains($base, '?') ? '&' : '?';
+        $parts = [];
+        foreach ([800, 960, 1200, 1600] as $w) {
+            $parts[] = $base . $join . 'width=' . $w . ' ' . $w . 'w';
+        }
+
+        return implode(', ', $parts);
+    }
+
+    if (str_contains($url, 'images.pexels.com')) {
+        $base = preg_replace('/[?&]w=\d+/', '', $url) ?: $url;
+        $join = str_contains($base, '?') ? '&' : '?';
+        $parts = [];
+        foreach ([800, 960, 1200, 1600] as $w) {
+            $parts[] = $base . $join . 'w=' . $w . ' ' . $w . 'w';
+        }
+
+        return implode(', ', $parts);
+    }
+
+    return '';
+}
+
+/**
+ * Drop srcset candidates wider than $max_w so retina desktops do not fetch
+ * the 2048px original (heroes are displayed at rv-hero / 1600).
+ */
+function hero_cap_srcset(string $srcset, int $max_w = 1600): string
+{
+    if ($srcset === '') {
+        return '';
+    }
+
+    $keep = [];
+    foreach (array_map('trim', explode(',', $srcset)) as $part) {
+        if (preg_match('/\s(\d+)w$/', $part, $m) && (int) $m[1] <= $max_w) {
+            $keep[] = $part;
+        }
+    }
+
+    return implode(', ', $keep);
+}
+
+/**
+ * Resolved hero photo for markup + preload: src, srcset, sizes, width, height.
+ *
+ * @return array{src: string, srcset: string, sizes: string, width: int, height: int, id: int}
+ */
+function hero_bg_sources(string $fallback = '', ?int $post_id = null): array
+{
+    $empty = ['src' => '', 'srcset' => '', 'sizes' => '100vw', 'width' => 1600, 'height' => 900, 'id' => 0];
+    $post_id = $post_id ?: (int) get_the_ID();
+
+    $id = 0;
+    if ($post_id && has_post_thumbnail($post_id)) {
+        $id = (int) get_post_thumbnail_id($post_id);
+    }
+    if ($id < 1) {
+        $field = function_exists(__NAMESPACE__ . '\\field') ? field('hero_bg', '', $post_id ?: null) : '';
+        if ($field !== '' && function_exists('attachment_url_to_postid')) {
+            $id = (int) attachment_url_to_postid($field);
+        }
+    }
+
+    if ($id > 0) {
+        $full = wp_get_attachment_image_src($id, 'rv-hero') ?: wp_get_attachment_image_src($id, 'full');
+        if (! $full) {
+            return $empty;
+        }
+        $srcset = (string) wp_get_attachment_image_srcset($id, 'rv-hero');
+        if ($srcset === '') {
+            $srcset = (string) wp_get_attachment_image_srcset($id, 'full');
+        }
+
+        return [
+            'src'    => (string) $full[0],
+            'srcset' => hero_cap_srcset($srcset, 1600),
+            'sizes'  => '100vw',
+            'width'  => (int) $full[1],
+            'height' => (int) $full[2],
+            'id'     => $id,
+        ];
+    }
+
+    $url = hero_bg_url($fallback, $post_id ?: null);
+    if ($url === '') {
+        return $empty;
+    }
+
+    return [
+        'src'    => $url,
+        'srcset' => hero_remote_srcset($url),
+        'sizes'  => '100vw',
+        'width'  => 1600,
+        'height' => 900,
+        'id'     => 0,
+    ];
+}
+
+/**
+ * Hero LCP image: a real <img> (not a CSS background) so the browser can
+ * prioritize it, pick a mobile srcset candidate, and measure LCP correctly.
+ */
+function hero_bg_markup(string $fallback = '', ?int $post_id = null): string
+{
+    $src = hero_bg_sources($fallback, $post_id);
+    if ($src['src'] === '') {
+        return '';
+    }
+
+    $img = sprintf(
+        '<img class="rv-hero-bg-img" src="%s"%s sizes="%s" width="%d" height="%d" alt="" fetchpriority="high" loading="eager">',
+        esc_url($src['src']),
+        $src['srcset'] !== '' ? ' srcset="' . esc_attr($src['srcset']) . '"' : '',
+        esc_attr($src['sizes']),
+        (int) $src['width'],
+        (int) $src['height']
+    );
+
+    return '<span class="rv-hero-bg" aria-hidden="true">' . $img . '</span>';
+}
+
+/**
  * Numbered pagination markup.
  */
 function pagination(): string
