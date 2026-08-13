@@ -670,7 +670,7 @@ function page_field_map(): array
                 ['rooted_h2', __('Heading (before accent)', 'sage'), 'text', __('Built in', 'sage')],
                 ['rooted_h2_accent', __('Accent word', 'sage'), 'text', __('Gettysburg.', 'sage')],
                 ['rooted_h2_end', __('Heading (after accent)', 'sage'), 'text', __('Supported here.', 'sage')],
-                ['rooted_lede', __('Intro under the heading', 'sage'), 'textarea', __('Family-owned web design in Adams County — in-person when you want it, and still here after launch. The towns we serve are listed below.', 'sage')],
+                ['rooted_lede', __('Intro under the heading', 'sage'), 'textarea', __('Family-owned web design in Adams County — in-person when you want it, and still here after launch.', 'sage')],
                 ['rooted_points', __('Why local matters', 'sage'), 'repeater', home_rooted_point_defaults(), [
                     ['title', __('Point title', 'sage'), 'text'],
                     ['text', __('Point text', 'sage'), 'textarea'],

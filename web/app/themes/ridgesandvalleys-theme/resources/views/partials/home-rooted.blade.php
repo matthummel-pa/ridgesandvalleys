@@ -9,7 +9,7 @@
     <header class="rv-rooted-head">
       {!! \App\eyebrow(\App\field('rooted_kicker', __('A local studio, not a remote agency', 'sage'), $homeId)) !!}
       <h2 id="rv-rooted-heading" class="rv-section-title">{{ \App\field('rooted_h2', __('Built in', 'sage'), $homeId) }} <em class="rv-accent">{{ \App\field('rooted_h2_accent', __('Gettysburg.', 'sage'), $homeId) }}</em> {{ \App\field('rooted_h2_end', __('Supported here.', 'sage'), $homeId) }}</h2>
-      <p class="rv-page-intro">{{ \App\field('rooted_lede', __('Family-owned web design in Adams County — in-person when you want it, and still here after launch. The towns we serve are listed below.', 'sage'), $homeId) }}</p>
+      <p class="rv-page-intro">{{ \App\field('rooted_lede', __('Family-owned web design in Adams County — in-person when you want it, and still here after launch.', 'sage'), $homeId) }}</p>
     </header>
 
     <div class="rv-rooted">

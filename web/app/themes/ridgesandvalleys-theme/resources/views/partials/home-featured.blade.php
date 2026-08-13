@@ -9,16 +9,18 @@
   if ($hasProject) {
     $featured->the_post();
     $storyKicker = get_post_meta(get_the_ID(), '_rv_client', true) ?: __('Featured work', 'sage');
-    $storyTitle = get_the_title();
+    $storyTitleHtml = get_the_title();
+    $storyTitlePlain = wp_strip_all_tags(html_entity_decode($storyTitleHtml, ENT_QUOTES, 'UTF-8'));
     $storyText = get_the_excerpt() ?: __('A focused rebuild that made the business easy to reach and easy to trust — shipped in a week.', 'sage');
     $storyHref = get_permalink();
     $storyCta = \App\field('proof_cta_case', __('Read the case study', 'sage'), $homeId);
     $imgSrc = $featuredImg ?: (has_post_thumbnail() ? get_the_post_thumbnail_url(get_the_ID(), 'rv-hero') : \App\stock_image('featured'));
-    $imgAlt = sprintf(/* translators: %s: project title */ __('Gettysburg web design case study: %s', 'sage'), $storyTitle);
+    $imgAlt = sprintf(/* translators: %s: project title */ __('Gettysburg web design case study: %s', 'sage'), $storyTitlePlain);
     wp_reset_postdata();
   } else {
     $storyKicker = \App\field('proof_client', __('Bradley Goldsmith Law · Local Launch', 'sage'), $homeId);
-    $storyTitle = \App\field('proof_story_title', __('A clearer path from visitor to consultation.', 'sage'), $homeId);
+    $storyTitleHtml = \App\field('proof_story_title', __('A clearer path from visitor to consultation.', 'sage'), $homeId);
+    $storyTitlePlain = $storyTitleHtml;
     $storyText = \App\field('proof_story_text', __('A focused five-page rebuild that made the firm easy to reach and easy to trust — shipped in a week.', 'sage'), $homeId);
     $storyHref = \App\cta_href(\App\field('proof_cta_url', '/work/', $homeId));
     $storyCta = \App\field('proof_cta', __('See the work', 'sage'), $homeId);
@@ -41,7 +43,7 @@
       </div>
       <div class="rv-proof-body">
         {!! \App\eyebrow($storyKicker) !!}
-        <h3 class="rv-proof-title">{{ $storyTitle }}</h3>
+        <h3 class="rv-proof-title">{{ $storyTitlePlain }}</h3>
         <p class="rv-feature-text">{{ $storyText }}</p>
         <ul class="rv-scan">
           @foreach (\App\field_rows('proof_points', \App\home_proof_point_defaults(), $homeId) as $i => $pt)
