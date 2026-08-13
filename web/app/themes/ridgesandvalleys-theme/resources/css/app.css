@@ -246,7 +246,7 @@ pre code { background: none; padding: 0; color: inherit; }
 
 /* Interior pages: content sizes the band. Transparent header pads .rv-hero;
    keep inner top padding so the H1 sits below the overlay nav, not under it. */
-body:not(.home) .rv-hero-inner { padding-block: clamp(1.75rem, 4vw, 2.5rem) clamp(1.75rem, 4vw, 2.75rem); }
+body:not(.home) .rv-hero-inner { padding-block: clamp(2.5rem, 5.5vw, 3.75rem) clamp(1.75rem, 4vw, 2.75rem); }
 body:not(.home) .rv-hero-title { font-size: clamp(2.05rem, 4.2vw, 3.05rem); max-width: 16ch; }
 body:not(.home) .rv-hero-sub { max-width: 42ch; }
 
