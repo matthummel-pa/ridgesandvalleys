@@ -47,47 +47,10 @@
       <h2 class="rv-section-title">{{ \App\field('plans_title', __('Pick the plan that fits', 'sage')) }} <em class="rv-accent">{{ \App\field('plans_accent', __('where you are.', 'sage')) }}</em></h2>
       <p class="rv-page-intro">{{ \App\field('plans_intro', __('Every Gettysburg web design package is one fixed price, agreed up front — no hourly meter, no surprise invoices. Rescue a site you already have, launch a new one for Adams County, or keep it growing after. Not sure which fits? Tell me about your business and I\'ll point you to the right one.', 'sage')) }}</p>
     </div>
-    <div class="rv-svc-plans">
-      @foreach (\App\svc_project_packages() as $s)
-        @php($isFeatured = trim(\App\strip_field_markers((string) ($s['flag'] ?? ''))) !== '')
-        <article class="rv-card rv-service rv-plan{{ $isFeatured ? ' is-featured' : '' }}">
-          <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-          @if ($isFeatured)<span class="rv-plan-flag">{{ $s['flag'] }}</span>@endif
-          <div class="rv-service-body">
-            @if (trim(\App\strip_field_markers((string) ($s['for'] ?? ''))) !== '')
-              <p class="rv-plan-for"><span>{{ __('Best for', 'sage') }}</span> {{ $s['for'] }}</p>
-            @endif
-            <h3 class="rv-service-name">{{ $s['name'] ?? '' }}</h3>
-            <p class="rv-service-tag">{{ $s['price'] ?? '' }}</p>
-            <p class="rv-service-desc">{{ $s['desc'] ?? '' }}</p>
-            <ul class="rv-service-list">
-              @foreach (\App\lines($s['features'] ?? []) as $item)<li>{{ $item }}</li>@endforeach
-            </ul>
-            <a class="rv-btn {{ $isFeatured ? 'rv-btn-primary' : 'rv-btn-ghost' }} rv-plan-btn" href="{{ \App\svc_package_href($s) }}">{{ $s['cta'] ?? __('Get a quote', 'sage') }}</a>
-          </div>
-        </article>
-      @endforeach
-    </div>
-
-    @foreach (\App\svc_care_packages() as $s)
-      @php($isFeatured = trim(\App\strip_field_markers((string) ($s['flag'] ?? ''))) !== '')
-      <article class="rv-card rv-plan rv-plan-care{{ $isFeatured ? ' is-featured' : '' }}">
-        <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-        <div class="rv-plan-care-copy">
-          @if ($isFeatured)<span class="rv-plan-flag rv-plan-flag-inline">{{ $s['flag'] }}</span>@endif
-          @if (trim(\App\strip_field_markers((string) ($s['for'] ?? ''))) !== '')
-            <p class="rv-plan-for"><span>{{ __('Best for', 'sage') }}</span> {{ $s['for'] }}</p>
-          @endif
-          <h3 class="rv-service-name">{{ $s['name'] ?? '' }}</h3>
-          <p class="rv-service-tag">{{ $s['price'] ?? '' }}</p>
-          <p class="rv-service-desc">{{ $s['desc'] ?? '' }}</p>
-        </div>
-        <ul class="rv-service-list">
-          @foreach (\App\lines($s['features'] ?? []) as $item)<li>{{ $item }}</li>@endforeach
-        </ul>
-        <a class="rv-btn {{ $isFeatured ? 'rv-btn-primary' : 'rv-btn-ghost' }} rv-plan-btn" href="{{ \App\svc_package_href($s) }}">{{ $s['cta'] ?? __('Get a quote', 'sage') }}</a>
-      </article>
-    @endforeach
+    @include('partials.package-plans', [
+      'projects' => \App\svc_project_packages(),
+      'care'     => \App\svc_care_packages(),
+    ])
   </section>
 
   {{-- WHAT EVERY BUILD INCLUDES --}}
@@ -256,36 +219,6 @@
   {!! \App\offer_schema(\App\svc_packages(), $ctaHref) !!}
 
   <style>
-    /* Plans — 3 project cards, then a full-width care bar */
-    .rv-svc-plans{display:grid;grid-template-columns:repeat(3,1fr);gap:1.15rem;margin-top:2.25rem;align-items:stretch}
-    @media(max-width:900px){.rv-svc-plans{grid-template-columns:1fr}}
-    .rv-svc-plans .rv-plan{position:relative;display:flex;flex-direction:column;padding:0;overflow:hidden;border-radius:var(--radius-lg,18px);transition:transform .18s ease,box-shadow .2s ease,border-color .18s ease}
-    .rv-svc-plans .rv-plan:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift)}
-    .rv-svc-plans .rv-service-body{display:flex;flex-direction:column;flex:1 1 auto;padding:1.7rem 1.55rem 1.6rem}
-    .rv-plan-for{font-size:.88rem;color:var(--color-muted);margin:0 0 .55rem;line-height:1.4}
-    .rv-plan-for span{display:block;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-clay);font-weight:600;margin-bottom:.2rem}
-    .rv-svc-plans .rv-service-name{font-family:var(--font-display);font-weight:800;font-size:1.28rem;color:var(--color-ink);margin:0;line-height:1.15}
-    .rv-svc-plans .rv-service-tag{font-family:var(--font-display);font-weight:800;font-size:1.55rem;letter-spacing:-.02em;color:var(--color-clay);margin:.35rem 0 0;text-transform:none}
-    .rv-svc-plans .rv-service-desc{color:var(--color-body);font-size:.95rem;line-height:1.55;margin:1rem 0 0;padding-top:1rem;border-top:1px solid var(--color-line)}
-    .rv-svc-plans .rv-service-list{list-style:none;margin:1rem 0 1.6rem;padding:0;display:grid;gap:.55rem}
-    .rv-svc-plans .rv-service-list li,.rv-plan-care .rv-service-list li{position:relative;padding-left:1.65rem;font-size:.92rem;color:var(--color-body);line-height:1.4}
-    .rv-svc-plans .rv-service-list li::before,.rv-plan-care .rv-service-list li::before{content:"";position:absolute;left:0;top:.05em;width:1.1rem;height:1.1rem;border-radius:50%;background:color-mix(in srgb,var(--color-sage) 26%,transparent)}
-    .rv-svc-plans .rv-service-list li::after,.rv-plan-care .rv-service-list li::after{content:"";position:absolute;left:.34rem;top:.4em;width:.42rem;height:.22rem;border-left:2px solid var(--color-pine);border-bottom:2px solid var(--color-pine);transform:rotate(-45deg)}
-    .rv-plan-btn{margin-top:auto;width:100%;justify-content:center;text-align:center}
-    .rv-svc-plans .rv-plan.is-featured{border:1.5px solid var(--color-pine);box-shadow:0 12px 34px color-mix(in srgb,var(--color-pine) 20%,transparent)}
-    .rv-svc-plans .rv-plan.is-featured:hover{transform:translateY(-6px)}
-    .rv-plan-flag{position:absolute;top:0;right:0;z-index:3;background:var(--color-pine);color:#fff;font-family:var(--font-mono);font-size:.64rem;letter-spacing:.09em;text-transform:uppercase;font-weight:700;padding:.35rem .7rem;border-bottom-left-radius:12px}
-    .rv-plan-flag-inline{position:static;display:inline-block;border-radius:999px;margin-bottom:.55rem;border-bottom-left-radius:999px}
-    html[data-theme="dark"] .rv-svc-plans .rv-plan.is-featured,html[data-theme="dark"] .rv-plan-care.is-featured{border-color:var(--color-sage)}
-    /* Care plan — full-width bar under the project cards */
-    .rv-plan-care{position:relative;display:grid;grid-template-columns:minmax(16rem,1.1fr) minmax(14rem,1fr) auto;gap:1.5rem 2rem;align-items:center;width:100%;margin-top:1.15rem;padding:1.55rem 1.7rem 1.5rem;overflow:hidden;border-radius:var(--radius-lg,18px)}
-    .rv-svc-plans .rv-plan-care{grid-column:1/-1;width:100%}
-    .rv-plan-care .rv-service-name{font-family:var(--font-display);font-weight:800;font-size:1.28rem;color:var(--color-ink);margin:0;line-height:1.15}
-    .rv-plan-care .rv-service-tag{font-family:var(--font-display);font-weight:800;font-size:1.45rem;letter-spacing:-.02em;color:var(--color-clay);margin:.3rem 0 0;text-transform:none}
-    .rv-plan-care .rv-service-desc{color:var(--color-body);font-size:.95rem;line-height:1.5;margin:.55rem 0 0;padding:0;border:0}
-    .rv-plan-care .rv-service-list{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
-    .rv-plan-care .rv-plan-btn{width:auto;min-width:12rem}
-    @media(max-width:900px){.rv-plan-care{grid-template-columns:1fr;gap:1.1rem;padding:1.45rem 1.35rem 1.35rem}.rv-plan-care .rv-plan-btn{width:100%}}
     /* What every build includes: scannable checklist, then quieter boundaries */
     .rv-svc-incl{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0 0;padding:0;list-style:none}
     @media(max-width:900px){.rv-svc-incl{grid-template-columns:repeat(2,1fr)}}

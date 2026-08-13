@@ -536,17 +536,39 @@ html[data-theme="dark"] .rv-theme-toggle .rv-moon { display: inline; }
 .rv-band-pine p { color: #d3ddcf; }
 .rv-band-pine .rv-accent { color: var(--color-wheat); }
 
-/* Priced package cards */
-.rv-packages { display: grid; grid-template-columns: repeat(auto-fit, minmax(215px, 1fr)); gap: clamp(1rem, 2.5vw, 1.5rem); }
-.rv-pkg { position: relative; display: flex; flex-direction: column; background: var(--color-surface); border: 1.5px solid var(--color-line); border-radius: 18px; overflow: hidden; box-shadow: var(--shadow-soft); }
-.rv-pkg > .rv-stripe-thin { position: absolute; top: 0; left: 0; right: 0; }
-.rv-pkg-in { display: flex; flex-direction: column; height: 100%; padding: 1.7rem 1.4rem 1.5rem; }
-.rv-pkg-flag { font-family: var(--font-mono); font-size: 0.62rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--color-clay); font-weight: 600; margin-bottom: 0.35rem; }
-.rv-pkg-name { font-family: var(--font-display); font-weight: 700; font-size: 1.08rem; color: var(--color-ink); }
-.rv-pkg-price { font-family: var(--font-serif); font-size: 2.1rem; line-height: 1; color: var(--color-ink); margin: 0.5rem 0; }
-.rv-pkg-price span { font-size: 0.9rem; color: var(--color-muted); font-family: var(--font-body); }
-.rv-pkg-desc { color: var(--color-muted); font-size: 0.9rem; margin: 0; }
-.rv-pkg-feat { border-color: var(--color-clay); box-shadow: var(--shadow-lift); }
+/* Priced package cards — 3 project cards, then a full-width care bar (home + services) */
+.rv-svc-plans { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.15rem; margin-top: 2.25rem; align-items: stretch; }
+@media (max-width: 900px) { .rv-svc-plans { grid-template-columns: 1fr; } }
+.rv-svc-plans .rv-plan { position: relative; display: flex; flex-direction: column; padding: 0; overflow: hidden; border-radius: var(--radius-lg, 18px); transition: transform .18s ease, box-shadow .2s ease, border-color .18s ease; }
+.rv-svc-plans .rv-plan:hover { transform: translateY(-4px); box-shadow: var(--shadow-lift); }
+.rv-svc-plans .rv-service-body { display: flex; flex-direction: column; flex: 1 1 auto; padding: 1.7rem 1.55rem 1.6rem; }
+.rv-plan-for { font-size: 0.88rem; color: var(--color-muted); margin: 0 0 0.55rem; line-height: 1.4; }
+.rv-plan-for span { display: block; font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-clay); font-weight: 600; margin-bottom: 0.2rem; }
+.rv-svc-plans .rv-service-name { font-family: var(--font-display); font-weight: 800; font-size: 1.28rem; color: var(--color-ink); margin: 0; line-height: 1.15; }
+.rv-svc-plans .rv-service-tag { font-family: var(--font-display); font-weight: 800; font-size: 1.55rem; letter-spacing: -0.02em; color: var(--color-clay); margin: 0.35rem 0 0; text-transform: none; }
+.rv-svc-plans .rv-service-desc { color: var(--color-body); font-size: 0.95rem; line-height: 1.55; margin: 1rem 0 0; padding-top: 1rem; border-top: 1px solid var(--color-line); }
+.rv-svc-plans .rv-service-list { list-style: none; margin: 1rem 0 1.6rem; padding: 0; display: grid; gap: 0.55rem; }
+.rv-svc-plans .rv-service-list li,
+.rv-plan-care .rv-service-list li { position: relative; padding-left: 1.65rem; font-size: 0.92rem; color: var(--color-body); line-height: 1.4; }
+.rv-svc-plans .rv-service-list li::before,
+.rv-plan-care .rv-service-list li::before { content: ""; position: absolute; left: 0; top: 0.05em; width: 1.1rem; height: 1.1rem; border-radius: 50%; background: color-mix(in srgb, var(--color-sage) 26%, transparent); }
+.rv-svc-plans .rv-service-list li::after,
+.rv-plan-care .rv-service-list li::after { content: ""; position: absolute; left: 0.34rem; top: 0.4em; width: 0.42rem; height: 0.22rem; border-left: 2px solid var(--color-pine); border-bottom: 2px solid var(--color-pine); transform: rotate(-45deg); }
+.rv-plan-btn { margin-top: auto; width: 100%; justify-content: center; text-align: center; }
+.rv-svc-plans .rv-plan.is-featured { border: 1.5px solid var(--color-pine); box-shadow: 0 12px 34px color-mix(in srgb, var(--color-pine) 20%, transparent); }
+.rv-svc-plans .rv-plan.is-featured:hover { transform: translateY(-6px); }
+.rv-plan-flag { position: absolute; top: 0; right: 0; z-index: 3; background: var(--color-pine); color: #fff; font-family: var(--font-mono); font-size: 0.64rem; letter-spacing: 0.09em; text-transform: uppercase; font-weight: 700; padding: 0.35rem 0.7rem; border-bottom-left-radius: 12px; }
+.rv-plan-flag-inline { position: static; display: inline-block; border-radius: 999px; margin-bottom: 0.55rem; border-bottom-left-radius: 999px; }
+html[data-theme="dark"] .rv-svc-plans .rv-plan.is-featured,
+html[data-theme="dark"] .rv-plan-care.is-featured { border-color: var(--color-sage); }
+.rv-plan-care { position: relative; display: grid; grid-template-columns: minmax(16rem, 1.1fr) minmax(14rem, 1fr) auto; gap: 1.5rem 2rem; align-items: center; width: 100%; margin-top: 1.15rem; padding: 1.55rem 1.7rem 1.5rem; overflow: hidden; border-radius: var(--radius-lg, 18px); }
+.rv-svc-plans .rv-plan-care { grid-column: 1 / -1; width: 100%; }
+.rv-plan-care .rv-service-name { font-family: var(--font-display); font-weight: 800; font-size: 1.28rem; color: var(--color-ink); margin: 0; line-height: 1.15; }
+.rv-plan-care .rv-service-tag { font-family: var(--font-display); font-weight: 800; font-size: 1.45rem; letter-spacing: -0.02em; color: var(--color-clay); margin: 0.3rem 0 0; text-transform: none; }
+.rv-plan-care .rv-service-desc { color: var(--color-body); font-size: 0.95rem; line-height: 1.5; margin: 0.55rem 0 0; padding: 0; border: 0; }
+.rv-plan-care .rv-service-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45rem; }
+.rv-plan-care .rv-plan-btn { width: auto; min-width: 12rem; }
+@media (max-width: 900px) { .rv-plan-care { grid-template-columns: 1fr; gap: 1.1rem; padding: 1.45rem 1.35rem 1.35rem; } .rv-plan-care .rv-plan-btn { width: 100%; } }
 
 /* Region chips */
 .rv-chips { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.25rem; }

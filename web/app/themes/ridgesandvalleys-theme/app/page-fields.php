@@ -259,9 +259,10 @@ function svc_package_defaults(): array
 }
 
 /**
- * Services-page packages for the current (or given) page. Saved repeater rows
- * win; missing keys (new fields like “Best for” / layout) fill from the matching
- * default by index, then from shared fallbacks so older saved cards still render.
+ * Package cards for the current (or given) page — used by the services template
+ * and the homepage packages strip. Saved repeater rows win; missing keys (new
+ * fields like “Best for” / layout) fill from the matching default by index, then
+ * from shared fallbacks so older saved cards still render.
  *
  * @return list<array{name:string,price:string,flag:string,for:string,desc:string,features:list<string>,cta:string,kind:string,url:string}>
  */
@@ -352,13 +353,47 @@ function svc_package_name_from_slug(string $slug): string
     return '';
 }
 
-/** Project packages (comparison grid) for the services page. */
+/** Published page using the Services template, or 0 if none. */
+function services_page_id(): int
+{
+    static $id = null;
+    if ($id !== null) {
+        return $id;
+    }
+    $found = get_posts([
+        'post_type'      => 'page',
+        'post_status'    => 'publish',
+        'posts_per_page' => 1,
+        'fields'         => 'ids',
+        'meta_key'       => '_wp_page_template',
+        'meta_value'     => 'template-services.blade.php',
+        'no_found_rows'  => true,
+    ]);
+    if ($found) {
+        $id = (int) $found[0];
+
+        return $id;
+    }
+    foreach (['gettysburg-web-design-services', 'services'] as $slug) {
+        $page = get_page_by_path($slug);
+        if ($page instanceof \WP_Post) {
+            $id = (int) $page->ID;
+
+            return $id;
+        }
+    }
+    $id = 0;
+
+    return $id;
+}
+
+/** Project packages (comparison grid) for services and the homepage strip. */
 function svc_project_packages(?int $post_id = null): array
 {
     return array_values(array_filter(svc_packages($post_id), static fn ($p) => ($p['kind'] ?? 'project') !== 'care'));
 }
 
-/** Care-plan packages (full-width bar) for the services page. */
+/** Care-plan packages (full-width bar) for services and the homepage strip. */
 function svc_care_packages(?int $post_id = null): array
 {
     return array_values(array_filter(svc_packages($post_id), static fn ($p) => ($p['kind'] ?? '') === 'care'));
@@ -569,20 +604,8 @@ function page_field_map(): array
                 ['pkg_eyebrow', __('Eyebrow', 'sage'), 'text', __('Clear scope. Fast build. No mystery.', 'sage')],
                 ['pkg_title', __('Heading', 'sage'), 'text', __('Three ways to', 'sage')],
                 ['pkg_accent', __('Accent word', 'sage'), 'text', __('start.', 'sage')],
-                ['pkg1_name', __('Package 1 · name', 'sage'), 'text', __('Website Rescue', 'sage')],
-                ['pkg1_price', __('Package 1 · price', 'sage'), 'text', '$950'],
-                ['pkg1_desc', __('Package 1 · description', 'sage'), 'textarea', __('Audit, cleanup, broken links, mobile, speed & SEO fixes.', 'sage')],
-                ['pkg2_flag', __('Package 2 · flag', 'sage'), 'text', __('Most popular', 'sage')],
-                ['pkg2_name', __('Package 2 · name', 'sage'), 'text', __('Local Launch', 'sage')],
-                ['pkg2_price', __('Package 2 · price', 'sage'), 'text', '$2,750'],
-                ['pkg2_desc', __('Package 2 · description', 'sage'), 'textarea', __('Up to 5 pages, local SEO, analytics, accessibility, one revision.', 'sage')],
-                ['pkg3_name', __('Package 3 · name', 'sage'), 'text', __('Growth Site', 'sage')],
-                ['pkg3_price', __('Package 3 · price', 'sage'), 'text', '$4,500'],
-                ['pkg3_desc', __('Package 3 · description', 'sage'), 'textarea', __('8–12 pages, migration, booking or ecommerce, advanced forms.', 'sage')],
-                ['pkg4_name', __('Package 4 · name', 'sage'), 'text', __('Care & Grow', 'sage')],
-                ['pkg4_price', __('Package 4 · price', 'sage'), 'text', '$179'],
-                ['pkg4_desc', __('Package 4 · description', 'sage'), 'textarea', __('Updates, backups, security, small changes, reporting.', 'sage')],
                 ['pkg_cta', __('“Compare all services” button label', 'sage'), 'text', __('Compare all services', 'sage')],
+                ['pkg_compare_url', __('“Compare all services” button link', 'sage'), 'url', __('e.g. /gettysburg-web-design-services/#packages', 'sage')],
             ],
             __('Rooted section', 'sage') => [
                 ['rooted_eyebrow', __('Eyebrow', 'sage'), 'text', __('Rooted in the ridges & valleys', 'sage')],
@@ -605,7 +628,6 @@ function page_field_map(): array
                 ['hero_btn1_url', __('Hero button 1 link (“Plan my site”)', 'sage'), 'url', __('e.g. /contact/', 'sage')],
                 ['hero_btn2_url', __('Hero button 2 link (“See the process”)', 'sage'), 'url', __('e.g. /services/', 'sage')],
                 ['cta_button_url', __('Closing CTA button link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
-                ['pkg_cta_url', __('“Compare all services” button link', 'sage'), 'url', __('e.g. /services/', 'sage')],
             ],
             __('Hero trust line', 'sage') => [
                 ['hero_trust', __('Trust line under the buttons', 'sage'), 'text', __('15+ yrs building for the web · Accessibility-first · WordPress · Local support', 'sage')],
@@ -1442,7 +1464,7 @@ function field_group_hint(string $label): string
     $hints = [
         __('Hero', 'sage')             => __('The banner at the very top of the page: the small eyebrow label above the title, the main headline, the highlighted accent word, and the sentence beneath.', 'sage'),
         __('Problems section', 'sage') => __('The “if this sounds familiar” block — its heading and the three cards that name what’s frustrating about an outdated site.', 'sage'),
-        __('Packages section', 'sage') => __('The pricing line-up: a heading plus four packages, each with a name, a price, and a one-line description.', 'sage'),
+        __('Packages section', 'sage') => __('The heading and Compare button for the homepage pricing strip. The cards themselves come from the Services page (Page content → Packages), so home and services stay in sync.', 'sage'),
         __('Rooted section', 'sage')   => __('The local “built here” block — heading, paragraph, and the comma-separated list of region chips.', 'sage'),
         __('Testimonial', 'sage')      => __('The single highlighted client quote and who said it.', 'sage'),
         __('Call to action', 'sage')   => __('The closing banner that invites visitors to reach out — heading, subtext, and the button label.', 'sage'),
