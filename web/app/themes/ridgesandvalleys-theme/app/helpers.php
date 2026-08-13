@@ -455,6 +455,26 @@ function hero_remote_srcset(string $url): string
 }
 
 /**
+ * Drop srcset candidates wider than $max_w so retina desktops do not fetch
+ * the 2048px original (heroes are displayed at rv-hero / 1600).
+ */
+function hero_cap_srcset(string $srcset, int $max_w = 1600): string
+{
+    if ($srcset === '') {
+        return '';
+    }
+
+    $keep = [];
+    foreach (array_map('trim', explode(',', $srcset)) as $part) {
+        if (preg_match('/\s(\d+)w$/', $part, $m) && (int) $m[1] <= $max_w) {
+            $keep[] = $part;
+        }
+    }
+
+    return implode(', ', $keep);
+}
+
+/**
  * Resolved hero photo for markup + preload: src, srcset, sizes, width, height.
  *
  * @return array{src: string, srcset: string, sizes: string, width: int, height: int, id: int}
@@ -487,7 +507,7 @@ function hero_bg_sources(string $fallback = '', ?int $post_id = null): array
 
         return [
             'src'    => (string) $full[0],
-            'srcset' => $srcset,
+            'srcset' => hero_cap_srcset($srcset, 1600),
             'sizes'  => '100vw',
             'width'  => (int) $full[1],
             'height' => (int) $full[2],
