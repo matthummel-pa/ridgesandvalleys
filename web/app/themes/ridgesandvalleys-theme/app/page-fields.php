@@ -763,18 +763,26 @@ function svc_seo_bound_defaults(): array
  *
  * @return list<array{0:string,1:string}>
  */
+function svc_faq_item_defaults(): array
+{
+    return [
+        ['q' => __('What does this actually cost?', 'sage'), 'a' => __('A fixed price, in writing, before I start. Rescue, Local Launch, or Growth Site — you pick the scope, I give you the number. No hourly meter, no surprise invoices. Not sure which fits? Tell me about the business and I’ll point you.', 'sage')],
+        ['q' => __('How soon can we be live?', 'sage'), 'a' => __('Most local sites go live in 7–10 days once I have your photos, hours, and a bit about who you serve. You’ll see a real first draft in about a week. Bigger builds take a little longer — and you’ll know the timeline before we start, not after.', 'sage')],
+        ['q' => __('Is the site actually mine when we’re done?', 'sage'), 'a' => __('Yes. Domain, hosting, every page — in your name. Want to run it yourself, hand it to someone else, or keep me on a care plan? It’s yours either way. No lock-in, no ransom.', 'sage')],
+        ['q' => __('I already have a website. Can you just fix it?', 'sage'), 'a' => __('That’s the Website Rescue — I look at what you have and fix the things that cost you calls: speed, mobile, accessibility, local SEO. You don’t have to start over unless the current site is really in the way.', 'sage')],
+        ['q' => __('What if I need to change something later?', 'sage'), 'a' => __('During the build you get one clear round of revisions — gather your notes, I apply them in a single pass. After launch, a Care & Grow plan covers small edits, or you can ask as you go. You’re never stuck waiting on a ticket queue.', 'sage')],
+        ['q' => __('Do I have to deal with hosting and domains?', 'sage'), 'a' => __('No. I set both up in your name and can keep an eye on them, or hand you the keys on day one. Either way you’re never locked into me to keep the lights on.', 'sage')],
+        ['q' => __('Will it work on a phone — and for everyone?', 'sage'), 'a' => __('That’s the baseline, not an add-on. Mobile-first pages, tested on a real phone, built toward WCAG 2.2 AA — so a visitor using a screen reader, or a tourist on Steinwehr with one bar of signal, can still find your hours and call you.', 'sage')],
+        ['q' => __('Do you only work with Gettysburg businesses?', 'sage'), 'a' => __('Home base is Gettysburg and Adams County — Biglerville, Littlestown, New Oxford, Hanover, and the townships around them. Farther out in South Central PA is fine too. Most of the work happens over a call and a shared screen.', 'sage')],
+    ];
+}
+
+/**
+ * @return list<array{0:string,1:string}>
+ */
 function svc_faq_pairs(?int $post_id = null): array
 {
-    $rows = field_rows('sfaq_items', [
-        ['q' => __('Do I own my website?', 'sage'), 'a' => __('Completely. The domain, the hosting, and every word and pixel are in your name. Want to move it or hand it to someone else someday? It\'s yours to take.', 'sage')],
-        ['q' => __('How fast can it launch?', 'sage'), 'a' => __('Most local sites go live in 7–10 days once I have your content and assets. Bigger builds take a little longer — and you\'ll know the timeline before we start.', 'sage')],
-        ['q' => __('What if I need changes later?', 'sage'), 'a' => __('You get one consolidated revision round during the build. After launch, a Care & Grow plan covers ongoing edits, or you can request changes as you need them.', 'sage')],
-        ['q' => __('Do you handle hosting and domains?', 'sage'), 'a' => __('Yes — I set everything up in your name and can manage it for you, or hand you the keys. Either way, you\'re never locked in.', 'sage')],
-        ['q' => __('What areas do you serve?', 'sage'), 'a' => __('Gettysburg, Adams County, and across South Central PA — Biglerville, Littlestown, New Oxford, Hanover, and beyond. Farther out? Most of the work happens over a call and a shared screen.', 'sage')],
-        ['q' => __('How does payment work?', 'sage'), 'a' => __('A fixed price agreed up front, a deposit to start, and the balance before launch. No surprise invoices, no hourly meter running.', 'sage')],
-        ['q' => __('Will my site be accessible?', 'sage'), 'a' => __('Always. Every build is WCAG-minded and tested on real devices, so it works for everyone — and accessible sites tend to rank better, too.', 'sage')],
-        ['q' => __('Can you fix my current site instead?', 'sage'), 'a' => __('Absolutely. That\'s the Website Rescue — an audit and targeted fixes for speed, mobile, accessibility, and SEO without a full rebuild.', 'sage')],
-    ], $post_id);
+    $rows = field_rows('sfaq_qs', svc_faq_item_defaults(), $post_id);
 
     $pairs = [];
     foreach ($rows as $f) {
@@ -1240,22 +1248,18 @@ function page_field_map(): array
                 ]],
             ],
             __('Helpful to know (FAQ)', 'sage') => [
-                ['sfaq_eyebrow', __('Eyebrow', 'sage'), 'text', __('Helpful to know', 'sage')],
+                ['sfaq_eyebrow', __('Eyebrow', 'sage'), 'text', __('Before you pick a package', 'sage')],
                 ['sfaq_title', __('Heading (before accent)', 'sage'), 'text', __('Answers before you', 'sage')],
                 ['sfaq_accent', __('Accent phrase', 'sage'), 'text', __('even ask.', 'sage')],
-                ['sfaq_items', __('Questions & answers', 'sage'), 'repeater', [
-                    ['q' => __('Do I own my website?', 'sage'), 'a' => __('Completely. The domain, the hosting, and every word and pixel are in your name. Want to move it or hand it to someone else someday? It\'s yours to take.', 'sage')],
-                    ['q' => __('How fast can it launch?', 'sage'), 'a' => __('Most local sites go live in 7–10 days once I have your content and assets. Bigger builds take a little longer — and you\'ll know the timeline before we start.', 'sage')],
-                    ['q' => __('What if I need changes later?', 'sage'), 'a' => __('You get one consolidated revision round during the build. After launch, a Care & Grow plan covers ongoing edits, or you can request changes as you need them.', 'sage')],
-                    ['q' => __('Do you handle hosting and domains?', 'sage'), 'a' => __('Yes — I set everything up in your name and can manage it for you, or hand you the keys. Either way, you\'re never locked in.', 'sage')],
-                    ['q' => __('What areas do you serve?', 'sage'), 'a' => __('Gettysburg, Adams County, and across South Central PA — Biglerville, Littlestown, New Oxford, Hanover, and beyond. Farther out? Most of the work happens over a call and a shared screen.', 'sage')],
-                    ['q' => __('How does payment work?', 'sage'), 'a' => __('A fixed price agreed up front, a deposit to start, and the balance before launch. No surprise invoices, no hourly meter running.', 'sage')],
-                    ['q' => __('Will my site be accessible?', 'sage'), 'a' => __('Always. Every build is WCAG-minded and tested on real devices, so it works for everyone — and accessible sites tend to rank better, too.', 'sage')],
-                    ['q' => __('Can you fix my current site instead?', 'sage'), 'a' => __('Absolutely. That\'s the Website Rescue — an audit and targeted fixes for speed, mobile, accessibility, and SEO without a full rebuild.', 'sage')],
-                ], [
+                ['sfaq_lede', __('Intro paragraph', 'sage'), 'textarea', __('These are the things Gettysburg owners actually ask before they hire me. Open the one that’s on your mind — and if yours isn’t here, write. I answer myself.', 'sage')],
+                ['sfaq_qs', __('Questions & answers (buying order)', 'sage'), 'repeater', svc_faq_item_defaults(), [
                     ['q', __('Question', 'sage'), 'text'],
                     ['a', __('Answer', 'sage'), 'textarea'],
                 ]],
+                ['sfaq_close', __('Invite under the answers', 'sage'), 'text', __('Still chewing on something? Ask. You’ll hear back from me — not a form letter.', 'sage')],
+                ['sfaq_close_btn', __('Invite button', 'sage'), 'text', __('Ask me', 'sage')],
+                ['sfaq_more', __('Link to the full FAQ page', 'sage'), 'text', __('More questions, answered', 'sage')],
+                ['sfaq_more_url', __('Full FAQ page link', 'sage'), 'url', __('e.g. /faq/', 'sage')],
             ],
             __('Founding offer', 'sage') => [
                 ['founding_eyebrow', __('Eyebrow', 'sage'), 'text', __('Founding offer · only 3 spots', 'sage')],

@@ -187,26 +187,27 @@
     </div>
   </section>
 
-  {{-- HELPFUL TO KNOW (FAQ) --}}
-  <section class="rv-shell rv-band rv-svc-faq">
-    {!! \App\eyebrow(\App\field('sfaq_eyebrow', __('Helpful to know', 'sage'))) !!}
-    <h2 class="rv-section-title">{{ \App\field('sfaq_title', __('Answers before you', 'sage')) }} <em class="rv-accent">{{ \App\field('sfaq_accent', __('even ask.', 'sage')) }}</em></h2>
-    <div class="rv-svc-faq-grid">
-      @foreach (\App\field_rows('sfaq_items', [
-        ['q' => __('Do I own my website?', 'sage'), 'a' => __('Completely. The domain, the hosting, and every word and pixel are in your name. Want to move it or hand it to someone else someday? It\'s yours to take.', 'sage')],
-        ['q' => __('How fast can it launch?', 'sage'), 'a' => __('Most local sites go live in 7–10 days once I have your content and assets. Bigger builds take a little longer — and you\'ll know the timeline before we start.', 'sage')],
-        ['q' => __('What if I need changes later?', 'sage'), 'a' => __('You get one consolidated revision round during the build. After launch, a Care & Grow plan covers ongoing edits, or you can request changes as you need them.', 'sage')],
-        ['q' => __('Do you handle hosting and domains?', 'sage'), 'a' => __('Yes — I set everything up in your name and can manage it for you, or hand you the keys. Either way, you\'re never locked in.', 'sage')],
-        ['q' => __('What areas do you serve?', 'sage'), 'a' => __('Gettysburg, Adams County, and across South Central PA — Biglerville, Littlestown, New Oxford, Hanover, and beyond. Farther out? Most of the work happens over a call and a shared screen.', 'sage')],
-        ['q' => __('How does payment work?', 'sage'), 'a' => __('A fixed price agreed up front, a deposit to start, and the balance before launch. No surprise invoices, no hourly meter running.', 'sage')],
-        ['q' => __('Will my site be accessible?', 'sage'), 'a' => __('Always. Every build is WCAG-minded and tested on real devices, so it works for everyone — and accessible sites tend to rank better, too.', 'sage')],
-        ['q' => __('Can you fix my current site instead?', 'sage'), 'a' => __('Absolutely. That\'s the Website Rescue — an audit and targeted fixes for speed, mobile, accessibility, and SEO without a full rebuild.', 'sage')],
-      ]) as $f)
-        <div class="rv-svc-faq-item">
-          <h3>{{ $f['q'] ?? '' }}</h3>
-          <p>{{ $f['a'] ?? '' }}</p>
+  {{-- FAQ — buying objections, one at a time, then an invite to ask. --}}
+  <section class="rv-band rv-svc-faq" aria-labelledby="rv-svc-faq-title">
+    <div class="rv-shell rv-svc-faq-layout">
+      <div class="rv-svc-faq-copy">
+        {!! \App\eyebrow(\App\field('sfaq_eyebrow', __('Before you pick a package', 'sage'))) !!}
+        <h2 id="rv-svc-faq-title" class="rv-section-title">{{ \App\field('sfaq_title', __('Answers before you', 'sage')) }} <em class="rv-accent">{{ \App\field('sfaq_accent', __('even ask.', 'sage')) }}</em></h2>
+        <p class="rv-page-intro">{{ \App\field('sfaq_lede', __('These are the things Gettysburg owners actually ask before they hire me. Open the one that’s on your mind — and if yours isn’t here, write. I answer myself.', 'sage')) }}</p>
+        <p class="rv-svc-faq-close">{{ \App\field('sfaq_close', __('Still chewing on something? Ask. You’ll hear back from me — not a form letter.', 'sage')) }}</p>
+        <div class="rv-svc-faq-actions">
+          <a class="rv-btn rv-btn-primary" href="{{ $ctaHref }}">{{ \App\field('sfaq_close_btn', __('Ask me', 'sage')) }}</a>
+          <a class="rv-svc-faq-more" href="{{ \App\cta_href(\App\field('sfaq_more_url', '/faq/')) }}">{{ \App\field('sfaq_more', __('More questions, answered', 'sage')) }} {!! \App\icon('arrow') !!}</a>
         </div>
-      @endforeach
+      </div>
+      <div class="rv-faq">
+        @foreach (\App\field_rows('sfaq_qs', \App\svc_faq_item_defaults()) as $i => $f)
+          <details class="rv-faq-item" name="svc-faq" @if ($i === 0) open @endif>
+            <summary>{{ $f['q'] ?? '' }}</summary>
+            <div class="rv-faq-answer"><p>{{ $f['a'] ?? '' }}</p></div>
+          </details>
+        @endforeach
+      </div>
     </div>
   </section>
 
@@ -284,12 +285,23 @@
     .rv-svc-seo-bound{padding:1.35rem 1.45rem;border:1px solid rgba(255,255,255,.16);border-radius:var(--radius-lg,16px);background:rgba(255,255,255,.04)}
     .rv-band-pine .rv-svc-seo-bound h3{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-wheat);font-weight:700;margin:0 0 .5rem}
     .rv-svc-seo-bound p{margin:0;color:#d3ddcf;font-size:.92rem;line-height:1.55}
-    /* Helpful-to-know FAQ (light band, flips in dark mode) */
-    .rv-svc-faq-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.1rem;margin-top:2rem}
-    .rv-svc-faq-item{background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.35rem 1.5rem;transition:border-color .15s ease}
-    .rv-svc-faq-item:hover{border-color:var(--color-sage)}
-    .rv-svc-faq-item h3{font-family:var(--font-display);font-size:1.1rem;font-weight:700;color:var(--color-ink);margin:0 0 .4rem}
-    .rv-svc-faq-item p{margin:0;color:var(--color-body);font-size:.96rem;line-height:1.6}
+    /* FAQ — split invite + accordion (buying-order questions) */
+    .rv-svc-faq-layout{display:grid;grid-template-columns:minmax(0,.92fr) minmax(0,1.18fr);gap:clamp(1.75rem,4vw,3rem);align-items:start}
+    .rv-svc-faq-copy .rv-section-title{margin:.35rem 0 .8rem}
+    .rv-svc-faq-copy .rv-page-intro{margin:0}
+    .rv-svc-faq-close{margin:1.1rem 0 0;max-width:36ch;color:var(--color-ink);font-size:1.02rem;line-height:1.5}
+    .rv-svc-faq-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.85rem 1.15rem;margin-top:1.35rem}
+    .rv-svc-faq-more{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;font-size:.9rem;color:var(--color-clay);text-decoration:none}
+    .rv-svc-faq-more:hover{color:var(--color-pine)}
+    .rv-svc-faq-more svg{width:15px;height:15px;transition:transform .2s ease}
+    .rv-svc-faq-more:hover svg{transform:translateX(3px)}
+    .rv-svc-faq .rv-faq{margin:0}
+    .rv-svc-faq .rv-faq-item{border-radius:var(--radius-lg,16px)}
+    .rv-svc-faq .rv-faq-item[open]{border-color:color-mix(in srgb,var(--color-clay) 38%,var(--color-line));box-shadow:var(--shadow-soft)}
+    .rv-svc-faq .rv-faq-item summary{font-size:1.02rem;line-height:1.35;text-wrap:pretty}
+    .rv-svc-faq .rv-faq-answer{font-size:1rem;line-height:1.65;max-width:52ch}
+    @media(max-width:820px){.rv-svc-faq-layout{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.rv-svc-faq-more svg{transition:none}}
     /* Founding offer — inclusions as a scannable checklist (on the dark pine band) */
     .rv-founding-list{list-style:none;display:flex;flex-wrap:wrap;gap:.6rem;margin:1.5rem 0 0;padding:0}
     .rv-founding-list li{position:relative;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:.5rem 1.05rem .5rem 2.1rem;color:#fff;font-weight:600;font-size:.92rem}
