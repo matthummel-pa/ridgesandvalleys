@@ -55,6 +55,7 @@
       html[data-theme="dark"] .rv-plan-for span,
       html[data-theme="dark"] .rv-intro-step-n,
       html[data-theme="dark"] .rv-pain-fix span,
+      html[data-theme="dark"] .rv-incl-bound h3,
       html[data-theme="dark"] .rv-toolcard-badge { color: var(--color-wheat); }
       html[data-theme="dark"] .rv-work-more,
       html[data-theme="dark"] .rv-process-note { color: var(--color-sage); }
