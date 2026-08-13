@@ -220,7 +220,7 @@ function home_layout_box($post): void
           'rooted_img' => [
               'label'      => __('Rooted / local photo', 'sage'),
               'value'      => $rooted_img,
-              'help'       => __('The photo in the “Built here. Supported here.” band.', 'sage'),
+              'help'       => __('The photo in the “Built in Gettysburg” local-studio band.', 'sage'),
               'credit_key' => 'rooted_credit',
               'credit'     => $rooted_credit,
           ],
