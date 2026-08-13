@@ -567,6 +567,47 @@ function about_proof(?int $post_id = null): array
     return is_array($rows) ? $rows : about_proof_defaults();
 }
 
+/**
+ * Services-page hero proof ribbon. Buyer-facing stats on the hero seam,
+ * same pattern as Home / About. One-line @php(...) helper so Blade
+ * doesn't compile nested default arrays away.
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function svc_proof_defaults(): array
+{
+    return [
+        ['v' => __('Fixed price', 'sage'), 'l' => __('agreed up front', 'sage')],
+        ['v' => __('~7 days', 'sage'), 'l' => __('to your first draft', 'sage')],
+        ['v' => __('WCAG 2.2 AA', 'sage'), 'l' => __('on every page', 'sage')],
+        ['v' => __('You own it', 'sage'), 'l' => __('domain, hosting, content', 'sage')],
+    ];
+}
+
+/**
+ * @return list<array{v:string,l:string}>
+ */
+function svc_proof(?int $post_id = null): array
+{
+    $rows = field_rows('svc_proof', svc_proof_defaults(), $post_id);
+
+    return is_array($rows) && $rows !== [] ? $rows : svc_proof_defaults();
+}
+
+/**
+ * “What you’re really paying for” rows under the services hero.
+ *
+ * @return list<array{kicker:string,title:string,text:string}>
+ */
+function svcvalue_item_defaults(): array
+{
+    return [
+        ['kicker' => __('Get found', 'sage'), 'title' => __('A site that gets found', 'sage'), 'text' => __('Local SEO and a properly set-up Google Business Profile, baked in — so neighbors and visitors in Adams County actually find you.', 'sage')],
+        ['kicker' => __('Earn trust', 'sage'), 'title' => __('A site that earns trust', 'sage'), 'text' => __('Fast, mobile-first, accessible pages with clear copy and real photos — the things that turn a first-time visitor into a phone call.', 'sage')],
+        ['kicker' => __('You own it', 'sage'), 'title' => __('A site you own', 'sage'), 'text' => __('Your domain, your hosting, your content — plus training so you can run it yourself. No lock-in, no ransom.', 'sage')],
+    ];
+}
+
 /** @return list<array{title:string,text:string}> */
 function about_promise_defaults(): array
 {
@@ -1087,16 +1128,19 @@ function page_field_map(): array
                 __('keep.', 'sage'),
                 __('Fixed-scope packages for Gettysburg and Adams County — more calls, clearer hours, a site you own. Honest pricing, no jargon.', 'sage')
             ),
+            __('Hero proof ribbon', 'sage') => [
+                ['svc_proof', __('Stats (four items)', 'sage'), 'repeater', svc_proof_defaults(), [
+                    ['v', __('Value', 'sage'), 'text'],
+                    ['l', __('Label', 'sage'), 'text'],
+                ]],
+            ],
             __('Before pricing', 'sage') => [
                 ['svcvalue_eyebrow', __('Eyebrow', 'sage'), 'text', __('Before the pricing', 'sage')],
                 ['svcvalue_title', __('Heading (before accent)', 'sage'), 'text', __('What you\'re really', 'sage')],
                 ['svcvalue_accent', __('Accent phrase', 'sage'), 'text', __('paying for.', 'sage')],
                 ['svcvalue_intro', __('Intro paragraph', 'sage'), 'textarea', __('Every package below buys the same three things, whatever your budget. The price changes with scope — the standards never do.', 'sage')],
-                ['svcvalue_items', __('Value cards', 'sage'), 'repeater', [
-                    ['title' => __('A site that gets found', 'sage'), 'text' => __('Local SEO and a properly set-up Google Business Profile, baked in — so neighbors and visitors in Adams County actually find you.', 'sage')],
-                    ['title' => __('A site that earns trust', 'sage'), 'text' => __('Fast, mobile-first, accessible pages with clear copy and real photos — the things that turn a first-time visitor into a phone call.', 'sage')],
-                    ['title' => __('A site you own', 'sage'), 'text' => __('Your domain, your hosting, your content — plus training so you can run it yourself. No lock-in, no ransom.', 'sage')],
-                ], [
+                ['svcvalue_items', __('Reasons (shown as a compact list)', 'sage'), 'repeater', svcvalue_item_defaults(), [
+                    ['kicker', __('Kicker (optional)', 'sage'), 'text'],
                     ['title', __('Card title', 'sage'), 'text'],
                     ['text', __('Card text', 'sage'), 'textarea'],
                 ]],

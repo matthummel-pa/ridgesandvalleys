@@ -6,37 +6,53 @@
 @section('content')
   @php($ctaHref = \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')))
 
-  <section class="rv-hero">
+  <section class="rv-hero" aria-labelledby="rv-svc-hero-title">
     <span class="rv-stripe" aria-hidden="true"></span>
     @include('partials.hero-bg', ['fallback' => \App\stock_image('hero-services')])
     <div class="rv-shell rv-hero-inner">
       {!! \App\eyebrow(\App\field('hero_eyebrow', __('Web design & local SEO · Gettysburg', 'sage'))) !!}
-      <h1 class="rv-hero-title">{{ \App\field('hero_title', __('Gettysburg web design that earns its', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('keep.', 'sage')) }}</em></h1>
+      <h1 id="rv-svc-hero-title" class="rv-hero-title">{{ \App\field('hero_title', __('Gettysburg web design that earns its', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('keep.', 'sage')) }}</em></h1>
       <p class="rv-hero-sub">{{ \App\field('hero_lede', __('Fixed-scope packages for Gettysburg and Adams County — more calls, clearer hours, a site you own. Honest pricing, no jargon.', 'sage')) }}</p>
       <div class="rv-hero-actions">
         <a class="rv-btn rv-btn-primary" href="{{ $ctaHref }}">{{ \App\field('hero_btn1', __('Get a quote', 'sage')) }}</a>
-        <a class="rv-btn rv-btn-ghost" href="#packages">{{ \App\field('hero_btn2', __('See the packages', 'sage')) }}</a>
+        <a class="rv-btn rv-btn-ghost" href="#packages">{{ \App\field('hero_btn2', __('See the packages', 'sage')) }} &darr;</a>
       </div>
     </div>
+    @php($svcProof = \App\svc_proof())
+    @if (! empty($svcProof))
+      <div class="rv-hero-proof">
+        <div class="rv-shell">
+          <ul class="rv-hero-stats" aria-label="{{ __('At a glance', 'sage') }}">
+            @foreach ($svcProof as $pf)
+              <li>
+                <span class="rv-hero-stat-v">{{ $pf['v'] ?? '' }}</span>
+                @if (($pf['l'] ?? '') !== '')<span class="rv-hero-stat-l">{{ $pf['l'] }}</span>@endif
+              </li>
+            @endforeach
+          </ul>
+        </div>
+      </div>
+    @endif
   </section>
 
-  {{-- WHAT YOU'RE REALLY PAYING FOR (value pillars, above the pricing) --}}
-  <section class="rv-shell rv-band">
-    {!! \App\eyebrow(\App\field('svcvalue_eyebrow', __('Before the pricing', 'sage'))) !!}
-    <h2 class="rv-section-title">{{ \App\field('svcvalue_title', __('What you\'re really', 'sage')) }} <em class="rv-accent">{{ \App\field('svcvalue_accent', __('paying for.', 'sage')) }}</em></h2>
-    <p class="rv-page-intro">{{ \App\field('svcvalue_intro', __('Every package below buys the same three things, whatever your budget. The price changes with scope — the standards never do.', 'sage')) }}</p>
-    <div class="rv-grid rv-grid-3" style="margin-top:2rem">
-      @foreach (\App\field_rows('svcvalue_items', [
-        ['title' => __('A site that gets found', 'sage'), 'text' => __('Local SEO and a properly set-up Google Business Profile, baked in — so neighbors and visitors in Adams County actually find you.', 'sage')],
-        ['title' => __('A site that earns trust', 'sage'), 'text' => __('Fast, mobile-first, accessible pages with clear copy and real photos — the things that turn a first-time visitor into a phone call.', 'sage')],
-        ['title' => __('A site you own', 'sage'), 'text' => __('Your domain, your hosting, your content — plus training so you can run it yourself. No lock-in, no ransom.', 'sage')],
-      ]) as $v)
-        <article class="rv-card rv-feature">
-          <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-          <h3 class="rv-feature-title">{{ $v['title'] ?? '' }}</h3>
-          <p class="rv-feature-text">{{ $v['text'] ?? '' }}</p>
-        </article>
-      @endforeach
+  {{-- What you're paying for — split: the pitch on the left, the three standards on the right. --}}
+  <section class="rv-band rv-band-alt rv-svc-value" aria-labelledby="rv-svc-value-title">
+    <div class="rv-shell rv-svc-value-grid">
+      <div class="rv-svc-value-copy">
+        {!! \App\eyebrow(\App\field('svcvalue_eyebrow', __('Before the pricing', 'sage'))) !!}
+        <h2 id="rv-svc-value-title" class="rv-section-title">{{ \App\field('svcvalue_title', __('What you\'re really', 'sage')) }} <em class="rv-accent">{{ \App\field('svcvalue_accent', __('paying for.', 'sage')) }}</em></h2>
+        <p class="rv-page-intro">{{ \App\field('svcvalue_intro', __('Every package below buys the same three things, whatever your budget. The price changes with scope — the standards never do.', 'sage')) }}</p>
+        <a class="rv-svc-value-jump" href="#packages">{{ __('See the packages', 'sage') }} {!! \App\icon('arrow') !!}</a>
+      </div>
+      <div class="rv-svc-value-list">
+        @foreach (\App\field_rows('svcvalue_items', \App\svcvalue_item_defaults()) as $v)
+          <article class="rv-svc-value-item">
+            @if (($v['kicker'] ?? '') !== '')<span class="rv-svc-value-kicker">{{ $v['kicker'] }}</span>@endif
+            @if (($v['title'] ?? '') !== '')<h3>{{ $v['title'] }}</h3>@endif
+            @if (($v['text'] ?? '') !== '')<p>{{ $v['text'] }}</p>@endif
+          </article>
+        @endforeach
+      </div>
     </div>
   </section>
 
@@ -219,6 +235,23 @@
   {!! \App\offer_schema(\App\svc_packages(), $ctaHref) !!}
 
   <style>
+    /* What you're paying for — split under the hero */
+    .rv-svc-value{padding-block:clamp(2.25rem,4.5vw,3.5rem)}
+    .rv-svc-value-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:clamp(1.5rem,4vw,2.75rem);align-items:start}
+    .rv-svc-value-copy .rv-section-title{margin:.35rem 0 .8rem}
+    .rv-svc-value-copy .rv-page-intro{margin:0}
+    .rv-svc-value-jump{display:inline-flex;align-items:center;gap:.4rem;margin-top:1.2rem;font-weight:700;font-size:.9rem;color:var(--color-clay);text-decoration:none}
+    .rv-svc-value-jump:hover{color:var(--color-pine)}
+    .rv-svc-value-jump svg{width:15px;height:15px;transition:transform .2s ease}
+    .rv-svc-value-jump:hover svg{transform:translateX(3px)}
+    .rv-svc-value-list{display:grid;gap:.8rem}
+    .rv-svc-value-item{position:relative;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.1rem 1.3rem 1.1rem 1.5rem;overflow:hidden}
+    .rv-svc-value-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ridgeline)}
+    .rv-svc-value-kicker{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-clay)}
+    .rv-svc-value-item h3{font-family:var(--font-display);font-size:1.12rem;font-weight:700;color:var(--color-ink);margin:.2rem 0 .35rem;line-height:1.2}
+    .rv-svc-value-item p{margin:0;color:var(--color-body);font-size:.95rem;line-height:1.55}
+    @media(max-width:820px){.rv-svc-value-grid{grid-template-columns:1fr}}
+    @media(prefers-reduced-motion:reduce){.rv-svc-value-jump svg{transition:none}}
     /* What every build includes: scannable checklist, then quieter boundaries */
     .rv-svc-incl{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0 0;padding:0;list-style:none}
     @media(max-width:900px){.rv-svc-incl{grid-template-columns:repeat(2,1fr)}}
