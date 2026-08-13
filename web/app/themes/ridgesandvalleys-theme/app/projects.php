@@ -488,3 +488,148 @@ add_action('init', function () {
         ]);
     }
 });
+
+/**
+ * Industry buckets for the Work page filters. Order is the studio's preferred
+ * pill order; keyword lists are matched against industry / eyebrow / client / title.
+ *
+ * @return list<array{slug:string,label:string,kw:list<string>}>
+ */
+function work_industry_defs(): array
+{
+    return [
+        ['slug' => 'restaurants', 'label' => __('Restaurants', 'sage'), 'kw' => ['restaurant', 'kitchen', 'tavern', 'bistro', 'eatery', 'dining', 'food & drink', 'bakery', 'cafe', 'café', 'coffee', 'pizzeria', 'grill', 'pub', 'brewery']],
+        ['slug' => 'inns', 'label' => __('Hotels & inns', 'sage'), 'kw' => ['inn', 'hotel', 'b&b', 'bed and breakfast', 'bed & breakfast', 'lodging', 'lodge', 'cottage', 'guesthouse', 'motel', 'hospitality', 'stay']],
+        ['slug' => 'retail', 'label' => __('Retail & shops', 'sage'), 'kw' => ['retail', 'shop', 'store', 'mercantile', 'boutique', 'goods', 'market', 'thread', 'apparel', 'gift']],
+        ['slug' => 'tours', 'label' => __('Tours', 'sage'), 'kw' => ['tour', 'tours', 'battlefield', 'history', 'guide', 'trail', 'experience', 'sightseeing']],
+        ['slug' => 'realestate', 'label' => __('Real estate', 'sage'), 'kw' => ['real estate', 'realty', 'realtor', 'property', 'properties', 'homes for sale', 'broker']],
+        ['slug' => 'services', 'label' => __('Professional services', 'sage'), 'kw' => ['law', 'legal', 'attorney', 'lawyer', 'accountant', 'accounting', 'dental', 'dentist', 'medical', 'clinic', 'consult', 'agency', 'financial', 'insurance', 'professional service']],
+    ];
+}
+
+/**
+ * Canonical industry bucket for a project (slug + label).
+ *
+ * @return array{slug:string,label:string}
+ */
+function work_project_category(int $id): array
+{
+    $hay = strtolower(trim(
+        (string) get_post_meta($id, '_rv_industry', true) . ' ' .
+        (string) get_post_meta($id, '_rv_eyebrow', true) . ' ' .
+        (string) get_post_meta($id, '_rv_client', true) . ' ' .
+        (string) get_the_title($id)
+    ));
+    foreach (work_industry_defs() as $d) {
+        foreach ($d['kw'] as $k) {
+            if ($k !== '' && strpos($hay, $k) !== false) {
+                return ['slug' => $d['slug'], 'label' => $d['label']];
+            }
+        }
+    }
+
+    return ['slug' => 'other', 'label' => __('Other', 'sage')];
+}
+
+/**
+ * Present filter pills for a set of project posts, in preferred order.
+ *
+ * @param list<\WP_Post> $posts
+ * @return array<string, array{label:string,count:int}>
+ */
+function work_filter_categories(array $posts): array
+{
+    $present = [];
+    foreach ($posts as $p) {
+        $c = work_project_category((int) $p->ID);
+        if (! isset($present[$c['slug']])) {
+            $present[$c['slug']] = ['label' => $c['label'], 'count' => 0];
+        }
+        $present[$c['slug']]['count']++;
+    }
+    $ordered = [];
+    foreach (work_industry_defs() as $d) {
+        if (isset($present[$d['slug']])) {
+            $ordered[$d['slug']] = $present[$d['slug']];
+        }
+    }
+    foreach ($present as $slug => $row) {
+        if (! isset($ordered[$slug])) {
+            $ordered[$slug] = $row;
+        }
+    }
+
+    return $ordered;
+}
+
+/**
+ * Card fields for one project on the Work grid.
+ *
+ * @return array{cat:array{slug:string,label:string},concept:bool,url:string,eyebrow:string,summary:string,preview:string,industry:string,location:string,metric:string}
+ */
+function work_card_data(int $id): array
+{
+    $cat = work_project_category($id);
+    $url = trim((string) get_post_meta($id, '_rv_url', true));
+    if ($url !== '' && ! preg_match('#^https?://#i', $url)) {
+        $url = '';
+    }
+    $m1v = trim((string) get_post_meta($id, '_rv_m1_value', true));
+    $m1l = trim((string) get_post_meta($id, '_rv_m1_label', true));
+    $eyebrow = trim((string) get_post_meta($id, '_rv_eyebrow', true));
+    if ($eyebrow === '') {
+        $eyebrow = trim((string) get_post_meta($id, '_rv_client', true));
+    }
+    if ($eyebrow === '') {
+        $eyebrow = __('Case study', 'sage');
+    }
+    $summary = trim((string) get_post_meta($id, '_rv_summary', true));
+    $industry = trim((string) get_post_meta($id, '_rv_industry', true));
+
+    return [
+        'cat'      => $cat,
+        'concept'  => get_post_meta($id, '_rv_is_concept', true) === '1',
+        'url'      => $url,
+        'eyebrow'  => $eyebrow,
+        'summary'  => $summary,
+        'preview'  => (string) get_post_meta($id, '_rv_preview', true),
+        'industry' => $industry !== '' ? $industry : $cat['label'],
+        'location' => trim((string) get_post_meta($id, '_rv_location', true)),
+        'metric'   => $m1v !== '' ? trim($m1v . ($m1l !== '' ? ' · ' . $m1l : '')) : '',
+    ];
+}
+
+/**
+ * CollectionPage + ItemList JSON-LD for the Work index.
+ *
+ * @param list<\WP_Post> $posts
+ */
+function work_itemlist_jsonld(array $posts): string
+{
+    $elements = [];
+    $pos = 0;
+    foreach ($posts as $p) {
+        $pos++;
+        $elements[] = [
+            '@type'    => 'ListItem',
+            'position' => $pos,
+            'url'      => get_permalink($p),
+            'name'     => html_entity_decode(wp_strip_all_tags(get_the_title($p)), ENT_QUOTES | ENT_HTML5, 'UTF-8'),
+        ];
+    }
+    if ($elements === []) {
+        return '';
+    }
+    $schema = [
+        '@context'   => 'https://schema.org',
+        '@type'      => 'CollectionPage',
+        'name'       => __('Gettysburg web design work', 'sage'),
+        'url'        => (string) get_permalink(),
+        'mainEntity' => [
+            '@type'           => 'ItemList',
+            'itemListElement' => $elements,
+        ],
+    ];
+
+    return '<script type="application/ld+json">' . wp_json_encode($schema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) . '</script>';
+}

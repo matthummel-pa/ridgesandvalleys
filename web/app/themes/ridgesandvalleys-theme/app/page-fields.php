@@ -608,6 +608,71 @@ function svcvalue_item_defaults(): array
     ];
 }
 
+/**
+ * Work-page hero proof ribbon. Same seam pattern as Home / About — Blade
+ * calls this with a one-line @php(...) so nested default arrays don't
+ * get compiled away. Key is `work_proof` (not `work_stats`) so rewritten
+ * short labels ship past stale saved meta.
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function work_proof_defaults(): array
+{
+    return [
+        ['v' => __('15+ yrs', 'sage'), 'l' => __('building for the web', 'sage')],
+        ['v' => __('Live demos', 'sage'), 'l' => __('one concept per industry', 'sage')],
+        ['v' => __('~7 days', 'sage'), 'l' => __('typical launch', 'sage')],
+        ['v' => __('You own it', 'sage'), 'l' => __('site, domain, hosting', 'sage')],
+    ];
+}
+
+/**
+ * Work hero proof rows, normalized to the shared ribbon shape (v + l).
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function work_stats(?int $post_id = null): array
+{
+    $rows = field_rows('work_proof', work_proof_defaults(), $post_id);
+    if (! is_array($rows) || $rows === []) {
+        $rows = work_proof_defaults();
+    }
+
+    $out = [];
+    foreach ($rows as $row) {
+        if (! is_array($row)) {
+            continue;
+        }
+        $value = trim((string) ($row['value'] ?? $row['v'] ?? ''));
+        $unit  = trim((string) ($row['unit'] ?? ''));
+        $label = trim((string) ($row['label'] ?? $row['l'] ?? ''));
+        if ($value === '' && $label === '') {
+            continue;
+        }
+        $out[] = [
+            'v' => trim($value . ($unit !== '' ? ' ' . $unit : '')),
+            'l' => $label,
+        ];
+    }
+
+    return $out !== [] ? $out : [];
+}
+
+/**
+ * Under-hero funnel steps: find your industry → click the demo → get a quote.
+ * Keyed `wwhy_items` so this copy ships past saved `work_why_items` meta.
+ *
+ * @return list<array{kicker:string,title:string,text:string}>
+ */
+function work_why_item_defaults(): array
+{
+    return [
+        ['kicker' => __('Step 1', 'sage'), 'title' => __('Find your kind of business', 'sage'), 'text' => __('Restaurants, inns, shops, tours — tap the filter that matches you. You’ll see how I’d approach a site for a business like yours in Adams County.', 'sage')],
+        ['kicker' => __('Step 2', 'sage'), 'title' => __('Click the live demo', 'sage'), 'text' => __('These aren’t screenshots. Open the working site on your phone, tap through menus and hours, feel the speed. That’s the proof — not a mood board.', 'sage')],
+        ['kicker' => __('Step 3', 'sage'), 'title' => __('Then talk it through', 'sage'), 'text' => __('If it feels like a fit, get a fixed-price quote. No pitch deck, no account manager — just Matt, and a clear next step.', 'sage')],
+    ];
+}
+
 /** @return list<array{title:string,text:string}> */
 function about_promise_defaults(): array
 {
@@ -1292,51 +1357,48 @@ function page_field_map(): array
         ],
 
         'template-work.blade.php' => [
-            __('Hero', 'sage') => $hero(
-                __('Selected work', 'sage'),
-                __('Business owners buy', 'sage'),
-                __('confidence.', 'sage'),
-                __('Clickable concept sites for Gettysburg and Adams County businesses — the problem, the approach, and the result.', 'sage')
-            ),
-            __('Media & links', 'sage') => [
-                ['hero_bg', __('Hero background image', 'sage'), 'image', __('Built-in until you choose one.', 'sage')],
-                ['hero_btn1_url', __('Hero button link (“Start your project”)', 'sage'), 'url', __('e.g. /contact/', 'sage')],
-            ],
-            __('Proof stats strip', 'sage') => [
-                ['work_stats', __('Stats', 'sage'), 'repeater', [
-                    ['value' => '15+', 'unit' => '', 'label' => __('years building for the web', 'sage')],
-                    ['value' => '10', 'unit' => '', 'label' => __('full concept sites to explore', 'sage')],
-                    ['value' => '7–10', 'unit' => __('days', 'sage'), 'label' => __('typical launch, start to live', 'sage')],
-                    ['value' => '100%', 'unit' => '', 'label' => __('yours — domain, hosting, content', 'sage')],
-                ], [
-                    ['value', __('Big number', 'sage'), 'text'],
-                    ['unit', __('Small unit (optional)', 'sage'), 'text'],
-                    ['label', __('Label', 'sage'), 'text'],
+            __('Hero', 'sage') => [
+                ['work_kicker', __('Eyebrow', 'sage'), 'text', __('Gettysburg web design work', 'sage')],
+                ['work_h1', __('Heading (before accent)', 'sage'), 'text', __('Gettysburg web design you can', 'sage')],
+                ['work_h1_accent', __('Accent phrase', 'sage'), 'text', __('actually click.', 'sage')],
+                ['work_lede', __('Hero lede (one short paragraph)', 'sage'), 'textarea', __('Live concept sites for restaurants, inns, shops, and tours around Gettysburg and Adams County. Filter by industry, click the working demo, then get a quote.', 'sage')],
+                ['work_cta', __('Primary button', 'sage'), 'text', __('Get a quote', 'sage')],
+                ['work_cta_url', __('Primary button link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
+                ['work_cta2', __('Secondary button', 'sage'), 'text', __('Browse the work', 'sage')],
+                ['work_note', __('Meta line (under the buttons)', 'sage'), 'text', __('Honest concepts · Live demos · No fake clients', 'sage')],
+                ['work_proof', __('Proof ribbon (four items)', 'sage'), 'repeater', work_proof_defaults(), [
+                    ['v', __('Value', 'sage'), 'text'],
+                    ['l', __('Label', 'sage'), 'text'],
                 ]],
             ],
-            __('Value cards', 'sage') => [
-                ['work_why_eyebrow', __('Eyebrow', 'sage'), 'text', __('Honest by default', 'sage')],
-                ['work_why_title', __('Heading (before accent)', 'sage'), 'text', __('Real work you can', 'sage')],
-                ['work_why_accent', __('Accent phrase', 'sage'), 'text', __('actually click.', 'sage')],
-                ['work_why_intro', __('Intro paragraph', 'sage'), 'html', __('<strong>I built these myself — one per industry.</strong> Each is a live, working demo you can click around, so you can see exactly how I think, not just a pretty screenshot. No fake clients, no borrowed templates, no stock mockups dressed up as real projects.', 'sage')],
-                ['work_why_items', __('Cards (numbered automatically)', 'sage'), 'repeater', [
-                    ['kicker' => __('Get found', 'sage'), 'title' => __('Show up when it counts', 'sage'), 'text' => __('Google Business Profile, local SEO, and fast, clean pages so the right people in Adams County find you first — not three competitors down.', 'sage')],
-                    ['kicker' => __('Earn trust', 'sage'), 'title' => __('Look as good as you are', 'sage'), 'text' => __('Clear copy, real photos, mobile-first layouts, and accessibility built in — a site that makes a first-time visitor feel safe picking up the phone.', 'sage')],
-                    ['kicker' => __('Stay in control', 'sage'), 'title' => __('You own everything', 'sage'), 'text' => __('Your domain, your hosting, your content — and a short training video so you can update hours and prices yourself. No lock-in, no ransom.', 'sage')],
-                ], [
+            __('Media & links', 'sage') => [
+                ['hero_bg', __('Hero background image', 'sage'), 'image', __('Built-in until you choose one.', 'sage')],
+            ],
+            __('Why these concepts', 'sage') => [
+                ['wwhy_eyebrow', __('Eyebrow', 'sage'), 'text', __('How to use this page', 'sage')],
+                ['wwhy_title', __('Heading (before accent)', 'sage'), 'text', __('Pick your industry.', 'sage')],
+                ['wwhy_accent', __('Accent phrase', 'sage'), 'text', __('Click the demo.', 'sage')],
+                ['wwhy_intro', __('Intro paragraph', 'sage'), 'html', __('<strong>I built these myself — one live site per industry.</strong> Filter to a business like yours, click around the working demo, then get a quote if it feels like a fit. No fake clients, no borrowed templates, no stock mockups dressed up as case studies.', 'sage')],
+                ['wwhy_jump', __('Jump link (to the grid)', 'sage'), 'text', __('Browse the concepts', 'sage')],
+                ['wwhy_cta', __('Quote button', 'sage'), 'text', __('Get a quote', 'sage')],
+                ['wwhy_items', __('Three steps (shown as a compact list)', 'sage'), 'repeater', work_why_item_defaults(), [
                     ['kicker', __('Kicker', 'sage'), 'text'],
                     ['title', __('Card title', 'sage'), 'text'],
                     ['text', __('Card text', 'sage'), 'textarea'],
                 ]],
             ],
             __('Case studies header', 'sage') => [
-                ['work_cs_eyebrow', __('Eyebrow', 'sage'), 'text', __('The work', 'sage')],
-                ['work_cs_title', __('Heading (before accent)', 'sage'), 'text', __('Concepts, built', 'sage')],
-                ['work_cs_accent', __('Accent phrase', 'sage'), 'text', __('in full.', 'sage')],
-                ['work_cs_intro', __('Intro paragraph', 'sage'), 'textarea', __('These are concept sites I designed and coded from scratch — one for each kind of local business I work with. Anything marked “Concept” is my own self-initiated demo, not a client project. Click any one for the problem it solves, my approach, and a live, working preview.', 'sage')],
-                ['work_cats_label', __('“Built for” label', 'sage'), 'text', __('Built for', 'sage')],
-                ['work_cats', __('Category chips', 'sage'), 'lines', [__('Hotels & inns', 'sage'), __('Restaurants', 'sage'), __('Retail & shops', 'sage'), __('Tours', 'sage'), __('Real estate', 'sage')]],
-                ['work_hint', __('Note under the grid', 'sage'), 'textarea', __('Each write-up follows: Problem → Approach → What it does → Design goals. On concepts these goals are illustrative; on client projects they become measured results.', 'sage')],
+                ['wcs_eyebrow', __('Eyebrow', 'sage'), 'text', __('The work', 'sage')],
+                ['wcs_title', __('Heading (before accent)', 'sage'), 'text', __('Concepts for', 'sage')],
+                ['wcs_accent', __('Accent phrase', 'sage'), 'text', __('Adams County businesses.', 'sage')],
+                ['wcs_intro', __('Intro paragraph', 'sage'), 'textarea', __('Filter by industry, open a live demo, then read the problem → approach → result. Anything marked “Concept” is my own self-initiated demo, not a client project — so you can click the real site, not a screenshot.', 'sage')],
+                ['wcs_cats_label', __('Filter label', 'sage'), 'text', __('Show me', 'sage')],
+                ['wcs_honest', __('Honesty line (under the filters)', 'sage'), 'textarea', __('Concept means I built it to show my approach — not a paid client. That’s the point: you can click the working site.', 'sage')],
+                ['wcs_hint', __('Note under the grid', 'sage'), 'textarea', __('Each write-up follows Problem → Approach → Result. On concepts those goals are illustrative; on client projects they become measured results.', 'sage')],
+                ['wcs_cta_kicker', __('After-grid CTA eyebrow', 'sage'), 'text', __('Your turn', 'sage')],
+                ['wcs_cta_h', __('After-grid CTA heading', 'sage'), 'text', __('See something close to your business?', 'sage')],
+                ['wcs_cta_p', __('After-grid CTA paragraph', 'sage'), 'textarea', __('Tell me what you do in Adams County. I’ll point you to the closest concept and a fixed price — usually a reply within a business day.', 'sage')],
+                ['wcs_cta_btn', __('After-grid CTA button', 'sage'), 'text', __('Get a quote', 'sage')],
             ],
             __('Don\'t see your business', 'sage') => [
                 ['morebiz_eyebrow', __('Eyebrow', 'sage'), 'text', __('Your business next', 'sage')],
@@ -1785,7 +1847,6 @@ function page_field_map(): array
         'template-security.blade.php'     => ['Check my site', 'Talk to me'],
         'template-seo.blade.php'          => ['Check my SEO', 'Talk to me'],
         'template-tools.blade.php'        => ['Browse the tools', 'Talk to me'],
-        'template-work.blade.php'         => ['Start your project', 'Explore the concepts'],
     ];
 
     foreach ($map as $tpl => &$groups) {
@@ -1851,7 +1912,8 @@ function field_group_hint(string $label): string
         __('FAQ items', 'sage')        => __('Every question and answer. Set each row’s Category to group it — questions with the same category appear together, in the order listed here.', 'sage'),
         __('Proof stats strip', 'sage') => __('The dark strip of big numbers. Each stat has a big number, an optional small unit (e.g. “days”), and a label.', 'sage'),
         __('Value cards', 'sage')      => __('The “real work you can actually click” heading and its numbered cards.', 'sage'),
-        __('Case studies header', 'sage') => __('The heading above the case-study grid, the “Built for” category chips, and the note beneath.', 'sage'),
+        __('Why these concepts', 'sage') => __('The split under-hero: how to use the page on the left, three funnel steps on the right, plus the jump and quote links.', 'sage'),
+        __('Case studies header', 'sage') => __('The heading above the project grid, the industry filters, the honesty line, the note under the cards, and the after-grid quote strip.', 'sage'),
         __('Don\'t see your business', 'sage') => __('The heading, the business-type chips, the foundation panel, and its checklist.', 'sage'),
         __('How it goes', 'sage')      => __('The numbered build flow, plus the “what you walk away with” checklist and reassurance line.', 'sage'),
         __('The design craft', 'sage') => __('The heading, the numbered craft cards, and the closing paragraph.', 'sage'),
