@@ -567,6 +567,47 @@ function about_proof(?int $post_id = null): array
     return is_array($rows) ? $rows : about_proof_defaults();
 }
 
+/**
+ * Services-page hero proof ribbon. Buyer-facing stats on the hero seam,
+ * same pattern as Home / About. One-line @php(...) helper so Blade
+ * doesn't compile nested default arrays away.
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function svc_proof_defaults(): array
+{
+    return [
+        ['v' => __('Fixed price', 'sage'), 'l' => __('agreed up front', 'sage')],
+        ['v' => __('~7 days', 'sage'), 'l' => __('to your first draft', 'sage')],
+        ['v' => __('WCAG 2.2 AA', 'sage'), 'l' => __('on every page', 'sage')],
+        ['v' => __('You own it', 'sage'), 'l' => __('domain, hosting, content', 'sage')],
+    ];
+}
+
+/**
+ * @return list<array{v:string,l:string}>
+ */
+function svc_proof(?int $post_id = null): array
+{
+    $rows = field_rows('svc_proof', svc_proof_defaults(), $post_id);
+
+    return is_array($rows) && $rows !== [] ? $rows : svc_proof_defaults();
+}
+
+/**
+ * “What you’re really paying for” rows under the services hero.
+ *
+ * @return list<array{kicker:string,title:string,text:string}>
+ */
+function svcvalue_item_defaults(): array
+{
+    return [
+        ['kicker' => __('Get found', 'sage'), 'title' => __('A site that gets found', 'sage'), 'text' => __('Local SEO and a properly set-up Google Business Profile, baked in — so neighbors and visitors in Adams County actually find you.', 'sage')],
+        ['kicker' => __('Earn trust', 'sage'), 'title' => __('A site that earns trust', 'sage'), 'text' => __('Fast, mobile-first, accessible pages with clear copy and real photos — the things that turn a first-time visitor into a phone call.', 'sage')],
+        ['kicker' => __('You own it', 'sage'), 'title' => __('A site you own', 'sage'), 'text' => __('Your domain, your hosting, your content — plus training so you can run it yourself. No lock-in, no ransom.', 'sage')],
+    ];
+}
+
 /** @return list<array{title:string,text:string}> */
 function about_promise_defaults(): array
 {
@@ -722,18 +763,26 @@ function svc_seo_bound_defaults(): array
  *
  * @return list<array{0:string,1:string}>
  */
+function svc_faq_item_defaults(): array
+{
+    return [
+        ['q' => __('What does this actually cost?', 'sage'), 'a' => __('A fixed price, in writing, before I start. Rescue, Local Launch, or Growth Site — you pick the scope, I give you the number. No hourly meter, no surprise invoices. Not sure which fits? Tell me about the business and I’ll point you.', 'sage')],
+        ['q' => __('How soon can we be live?', 'sage'), 'a' => __('Most local sites go live in 7–10 days once I have your photos, hours, and a bit about who you serve. You’ll see a real first draft in about a week. Bigger builds take a little longer — and you’ll know the timeline before we start, not after.', 'sage')],
+        ['q' => __('Is the site actually mine when we’re done?', 'sage'), 'a' => __('Yes. Domain, hosting, every page — in your name. Want to run it yourself, hand it to someone else, or keep me on a care plan? It’s yours either way. No lock-in, no ransom.', 'sage')],
+        ['q' => __('I already have a website. Can you just fix it?', 'sage'), 'a' => __('That’s the Website Rescue — I look at what you have and fix the things that cost you calls: speed, mobile, accessibility, local SEO. You don’t have to start over unless the current site is really in the way.', 'sage')],
+        ['q' => __('What if I need to change something later?', 'sage'), 'a' => __('During the build you get one clear round of revisions — gather your notes, I apply them in a single pass. After launch, a Care & Grow plan covers small edits, or you can ask as you go. You’re never stuck waiting on a ticket queue.', 'sage')],
+        ['q' => __('Do I have to deal with hosting and domains?', 'sage'), 'a' => __('No. I set both up in your name and can keep an eye on them, or hand you the keys on day one. Either way you’re never locked into me to keep the lights on.', 'sage')],
+        ['q' => __('Will it work on a phone — and for everyone?', 'sage'), 'a' => __('That’s the baseline, not an add-on. Mobile-first pages, tested on a real phone, built toward WCAG 2.2 AA — so a visitor using a screen reader, or a tourist on Steinwehr with one bar of signal, can still find your hours and call you.', 'sage')],
+        ['q' => __('Do you only work with Gettysburg businesses?', 'sage'), 'a' => __('Home base is Gettysburg and Adams County — Biglerville, Littlestown, New Oxford, Hanover, and the townships around them. Farther out in South Central PA is fine too. Most of the work happens over a call and a shared screen.', 'sage')],
+    ];
+}
+
+/**
+ * @return list<array{0:string,1:string}>
+ */
 function svc_faq_pairs(?int $post_id = null): array
 {
-    $rows = field_rows('sfaq_items', [
-        ['q' => __('Do I own my website?', 'sage'), 'a' => __('Completely. The domain, the hosting, and every word and pixel are in your name. Want to move it or hand it to someone else someday? It\'s yours to take.', 'sage')],
-        ['q' => __('How fast can it launch?', 'sage'), 'a' => __('Most local sites go live in 7–10 days once I have your content and assets. Bigger builds take a little longer — and you\'ll know the timeline before we start.', 'sage')],
-        ['q' => __('What if I need changes later?', 'sage'), 'a' => __('You get one consolidated revision round during the build. After launch, a Care & Grow plan covers ongoing edits, or you can request changes as you need them.', 'sage')],
-        ['q' => __('Do you handle hosting and domains?', 'sage'), 'a' => __('Yes — I set everything up in your name and can manage it for you, or hand you the keys. Either way, you\'re never locked in.', 'sage')],
-        ['q' => __('What areas do you serve?', 'sage'), 'a' => __('Gettysburg, Adams County, and across South Central PA — Biglerville, Littlestown, New Oxford, Hanover, and beyond. Farther out? Most of the work happens over a call and a shared screen.', 'sage')],
-        ['q' => __('How does payment work?', 'sage'), 'a' => __('A fixed price agreed up front, a deposit to start, and the balance before launch. No surprise invoices, no hourly meter running.', 'sage')],
-        ['q' => __('Will my site be accessible?', 'sage'), 'a' => __('Always. Every build is WCAG-minded and tested on real devices, so it works for everyone — and accessible sites tend to rank better, too.', 'sage')],
-        ['q' => __('Can you fix my current site instead?', 'sage'), 'a' => __('Absolutely. That\'s the Website Rescue — an audit and targeted fixes for speed, mobile, accessibility, and SEO without a full rebuild.', 'sage')],
-    ], $post_id);
+    $rows = field_rows('sfaq_qs', svc_faq_item_defaults(), $post_id);
 
     $pairs = [];
     foreach ($rows as $f) {
@@ -745,6 +794,20 @@ function svc_faq_pairs(?int $post_id = null): array
     }
 
     return $pairs;
+}
+
+/**
+ * “Launch day isn’t goodbye” — included support vs optional care.
+ *
+ * @return list<array{kicker:string,title:string,text:string}>
+ */
+function svc_after_point_defaults(): array
+{
+    return [
+        ['kicker' => __('Included', 'sage'), 'title' => __('30-day workmanship warranty', 'sage'), 'text' => __('If something I built breaks in the first month, I fix it. No charge, no debate, no ticket queue — you call Matt.', 'sage')],
+        ['kicker' => __('Included', 'sage'), 'title' => __('A training handoff', 'sage'), 'text' => __('A short walkthrough so you can change hours, prices, and photos yourself. You are not waiting on me to open the shop.', 'sage')],
+        ['kicker' => __('Always', 'sage'), 'title' => __('You own the Gettysburg website', 'sage'), 'text' => __('Domain, hosting, and every page stay in your name. Take it in-house, hand it off, or keep a care plan. No lock-in.', 'sage')],
+    ];
 }
 
 /** Which field set applies to a page (front page detected via the reading setting). */
@@ -1087,16 +1150,19 @@ function page_field_map(): array
                 __('keep.', 'sage'),
                 __('Fixed-scope packages for Gettysburg and Adams County — more calls, clearer hours, a site you own. Honest pricing, no jargon.', 'sage')
             ),
+            __('Hero proof ribbon', 'sage') => [
+                ['svc_proof', __('Stats (four items)', 'sage'), 'repeater', svc_proof_defaults(), [
+                    ['v', __('Value', 'sage'), 'text'],
+                    ['l', __('Label', 'sage'), 'text'],
+                ]],
+            ],
             __('Before pricing', 'sage') => [
                 ['svcvalue_eyebrow', __('Eyebrow', 'sage'), 'text', __('Before the pricing', 'sage')],
                 ['svcvalue_title', __('Heading (before accent)', 'sage'), 'text', __('What you\'re really', 'sage')],
                 ['svcvalue_accent', __('Accent phrase', 'sage'), 'text', __('paying for.', 'sage')],
                 ['svcvalue_intro', __('Intro paragraph', 'sage'), 'textarea', __('Every package below buys the same three things, whatever your budget. The price changes with scope — the standards never do.', 'sage')],
-                ['svcvalue_items', __('Value cards', 'sage'), 'repeater', [
-                    ['title' => __('A site that gets found', 'sage'), 'text' => __('Local SEO and a properly set-up Google Business Profile, baked in — so neighbors and visitors in Adams County actually find you.', 'sage')],
-                    ['title' => __('A site that earns trust', 'sage'), 'text' => __('Fast, mobile-first, accessible pages with clear copy and real photos — the things that turn a first-time visitor into a phone call.', 'sage')],
-                    ['title' => __('A site you own', 'sage'), 'text' => __('Your domain, your hosting, your content — plus training so you can run it yourself. No lock-in, no ransom.', 'sage')],
-                ], [
+                ['svcvalue_items', __('Reasons (shown as a compact list)', 'sage'), 'repeater', svcvalue_item_defaults(), [
+                    ['kicker', __('Kicker (optional)', 'sage'), 'text'],
                     ['title', __('Card title', 'sage'), 'text'],
                     ['text', __('Card text', 'sage'), 'textarea'],
                 ]],
@@ -1183,35 +1249,33 @@ function page_field_map(): array
                 ['aisplit_note', __('Disclosure note', 'sage'), 'textarea', __('Your agreement discloses that AI may assist with drafts while all work is reviewed. Confidential information is never placed into a third-party model without permission.', 'sage')],
             ],
             __('After launch', 'sage') => [
-                ['after_eyebrow', __('Eyebrow', 'sage'), 'text', __('After launch', 'sage')],
+                ['after_kicker', __('Eyebrow', 'sage'), 'text', __('Website care · Gettysburg', 'sage')],
                 ['after_title', __('Heading (before accent)', 'sage'), 'text', __('Launch day isn\'t', 'sage')],
                 ['after_accent', __('Accent word', 'sage'), 'text', __('goodbye.', 'sage')],
-                ['after_items', __('Cards', 'sage'), 'repeater', [
-                    ['title' => __('A workmanship warranty', 'sage'), 'text' => __('If something I built breaks in the first 30 days, I fix it — no charge, no debate.', 'sage')],
-                    ['title' => __('Optional care plans', 'sage'), 'text' => __('Updates, backups, security, small edits, and reporting from $179/mo — cancel anytime, and you keep the site.', 'sage')],
-                    ['title' => __('You\'re never stuck', 'sage'), 'text' => __('You own the domain, hosting, and site. Want to take it in-house or hand it to someone else? It\'s yours to move.', 'sage')],
-                ], [
-                    ['title', __('Card title', 'sage'), 'text'],
-                    ['text', __('Card text', 'sage'), 'textarea'],
+                ['after_lede', __('Intro paragraph', 'sage'), 'textarea', __('Every Gettysburg website I build includes a 30-day workmanship warranty and a training handoff. Need hosting, backups, and small edits after that? Care & Grow is optional — and you still own the site if you cancel.', 'sage')],
+                ['after_points', __('What’s included (kickers + titles)', 'sage'), 'repeater', svc_after_point_defaults(), [
+                    ['kicker', __('Kicker', 'sage'), 'text'],
+                    ['title', __('Heading', 'sage'), 'text'],
+                    ['text', __('Text', 'sage'), 'textarea'],
                 ]],
+                ['after_care_kicker', __('Care panel kicker', 'sage'), 'text', __('Optional', 'sage')],
+                ['after_care_title', __('Care panel heading', 'sage'), 'text', __('Care & Grow — website care from $179/mo', 'sage')],
+                ['after_care_text', __('Care panel text', 'sage'), 'textarea', __('Hosting, backups, security, monthly edits, and a look at search. Cancel anytime. You keep the site.', 'sage')],
+                ['after_care_btn', __('Care panel button', 'sage'), 'text', __('See Care & Grow', 'sage')],
             ],
             __('Helpful to know (FAQ)', 'sage') => [
-                ['sfaq_eyebrow', __('Eyebrow', 'sage'), 'text', __('Helpful to know', 'sage')],
+                ['sfaq_eyebrow', __('Eyebrow', 'sage'), 'text', __('Before you pick a package', 'sage')],
                 ['sfaq_title', __('Heading (before accent)', 'sage'), 'text', __('Answers before you', 'sage')],
                 ['sfaq_accent', __('Accent phrase', 'sage'), 'text', __('even ask.', 'sage')],
-                ['sfaq_items', __('Questions & answers', 'sage'), 'repeater', [
-                    ['q' => __('Do I own my website?', 'sage'), 'a' => __('Completely. The domain, the hosting, and every word and pixel are in your name. Want to move it or hand it to someone else someday? It\'s yours to take.', 'sage')],
-                    ['q' => __('How fast can it launch?', 'sage'), 'a' => __('Most local sites go live in 7–10 days once I have your content and assets. Bigger builds take a little longer — and you\'ll know the timeline before we start.', 'sage')],
-                    ['q' => __('What if I need changes later?', 'sage'), 'a' => __('You get one consolidated revision round during the build. After launch, a Care & Grow plan covers ongoing edits, or you can request changes as you need them.', 'sage')],
-                    ['q' => __('Do you handle hosting and domains?', 'sage'), 'a' => __('Yes — I set everything up in your name and can manage it for you, or hand you the keys. Either way, you\'re never locked in.', 'sage')],
-                    ['q' => __('What areas do you serve?', 'sage'), 'a' => __('Gettysburg, Adams County, and across South Central PA — Biglerville, Littlestown, New Oxford, Hanover, and beyond. Farther out? Most of the work happens over a call and a shared screen.', 'sage')],
-                    ['q' => __('How does payment work?', 'sage'), 'a' => __('A fixed price agreed up front, a deposit to start, and the balance before launch. No surprise invoices, no hourly meter running.', 'sage')],
-                    ['q' => __('Will my site be accessible?', 'sage'), 'a' => __('Always. Every build is WCAG-minded and tested on real devices, so it works for everyone — and accessible sites tend to rank better, too.', 'sage')],
-                    ['q' => __('Can you fix my current site instead?', 'sage'), 'a' => __('Absolutely. That\'s the Website Rescue — an audit and targeted fixes for speed, mobile, accessibility, and SEO without a full rebuild.', 'sage')],
-                ], [
+                ['sfaq_lede', __('Intro paragraph', 'sage'), 'textarea', __('These are the things Gettysburg owners actually ask before they hire me. Open the one that’s on your mind — and if yours isn’t here, write. I answer myself.', 'sage')],
+                ['sfaq_qs', __('Questions & answers (buying order)', 'sage'), 'repeater', svc_faq_item_defaults(), [
                     ['q', __('Question', 'sage'), 'text'],
                     ['a', __('Answer', 'sage'), 'textarea'],
                 ]],
+                ['sfaq_close', __('Invite under the answers', 'sage'), 'text', __('Still chewing on something? Ask. You’ll hear back from me — not a form letter.', 'sage')],
+                ['sfaq_close_btn', __('Invite button', 'sage'), 'text', __('Ask me', 'sage')],
+                ['sfaq_more', __('Link to the full FAQ page', 'sage'), 'text', __('More questions, answered', 'sage')],
+                ['sfaq_more_url', __('Full FAQ page link', 'sage'), 'url', __('e.g. /faq/', 'sage')],
             ],
             __('Founding offer', 'sage') => [
                 ['founding_eyebrow', __('Eyebrow', 'sage'), 'text', __('Founding offer · only 3 spots', 'sage')],
