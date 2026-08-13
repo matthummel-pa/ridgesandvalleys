@@ -68,8 +68,8 @@ function rv_seo_meta_map(): array
         ],
         // kw: contact gettysburg web designer
         'contact' => [
-            "Contact a Gettysburg Web Designer | Ridges & Valleys",
-            "Contact Ridges & Valleys for Gettysburg & Adams County web design. Tell me about your business and get a free, fixed-price quote — no pressure, no jargon.",
+            "Request a Gettysburg Web Design Quote | Ridges & Valleys",
+            "Tell me about your Gettysburg or Adams County business — a quote, an intro, or just hello. I’ll reply within a business day with a fixed-scope idea. No pressure.",
         ],
         // kw: website accessibility statement
         'accessibility' => [

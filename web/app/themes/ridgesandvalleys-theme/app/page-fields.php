@@ -673,6 +673,59 @@ function work_why_item_defaults(): array
     ];
 }
 
+/**
+ * Contact-page hero proof ribbon. Keyed `cnt_proof` so copy ships past saved meta.
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function contact_proof_defaults(): array
+{
+    return [
+        ['v' => __('A real person', 'sage'), 'l' => __('Matt replies — not a ticket queue', 'sage')],
+        ['v' => __('Fixed price', 'sage'), 'l' => __('agreed up front, in writing', 'sage')],
+        ['v' => __('You own it', 'sage'), 'l' => __('domain, hosting, and the site', 'sage')],
+        ['v' => __('No pressure', 'sage'), 'l' => __('a quote, an intro, or just hello', 'sage')],
+    ];
+}
+
+/**
+ * @return list<array{v:string,l:string}>
+ */
+function contact_proof(?int $post_id = null): array
+{
+    $rows = field_rows('cnt_proof', contact_proof_defaults(), $post_id);
+
+    return is_array($rows) && $rows !== [] ? $rows : contact_proof_defaults();
+}
+
+/**
+ * Under-hero: why this page exists, without the hard sell.
+ *
+ * @return list<array{kicker:string,title:string,text:string}>
+ */
+function contact_why_item_defaults(): array
+{
+    return [
+        ['kicker' => __('A quote', 'sage'), 'title' => __('Tell me what you need', 'sage'), 'text' => __('A new site, a rescue, Maps, or ongoing care. A few details are enough — I’ll come back with a fixed-scope idea, usually within a business day.', 'sage')],
+        ['kicker' => __('Not sure yet', 'sage'), 'title' => __('That’s a fine place to start', 'sage'), 'text' => __('Skip anything you don’t know. Grade your site first if you’d rather look around. I’ll still read whatever you send.', 'sage')],
+        ['kicker' => __('Just hello', 'sage'), 'title' => __('Introductions are welcome', 'sage'), 'text' => __('Partnerships, referrals, a coffee in Gettysburg, or “I know someone who might need this.” This page isn’t only for buyers.', 'sage')],
+    ];
+}
+
+/**
+ * “What happens next” beside the quote form.
+ *
+ * @return list<array{strong:string,text:string}>
+ */
+function contact_next_defaults(): array
+{
+    return [
+        ['strong' => __('I read it — usually within a business day.', 'sage'), 'text' => __('A real note from Matt. Not an auto-reply, not a calendar link.', 'sage')],
+        ['strong' => __('A short, no-pressure reply.', 'sage'), 'text' => __('A couple of questions if I need them. Never a pitch deck.', 'sage')],
+        ['strong' => __('A clear next step.', 'sage'), 'text' => __('A fixed-scope idea if it’s a project — or an honest pointer if it isn’t.', 'sage')],
+    ];
+}
+
 /** @return list<array{title:string,text:string}> */
 function about_promise_defaults(): array
 {
@@ -1520,41 +1573,62 @@ function page_field_map(): array
         ],
 
         'template-contact.blade.php' => [
-            __('Header', 'sage') => [
-                ['hero_eyebrow', __('Eyebrow', 'sage'), 'text', __('Get in touch', 'sage')],
-                ['hero_title', __('Heading', 'sage'), 'text', __('Let\'s build something', 'sage')],
-                ['hero_accent', __('Accent word', 'sage'), 'text', __('local.', 'sage')],
-                ['contact_lede', __('Hero lede (one short paragraph)', 'sage'), 'textarea', __('Tell me about your Gettysburg or Adams County business — I’ll come back with a fixed-scope idea, usually within a business day.', 'sage')],
-                ['contact_hero_btn', __('Hero button label', 'sage'), 'text', __('Send a note', 'sage')],
-                ['contact_note', __('Footnote', 'sage'), 'textarea', __('The project clock starts when this and your assets are complete. Feedback within two business days keeps launch on schedule.', 'sage')],
+            __('Hero', 'sage') => [
+                ['cnt_kicker', __('Eyebrow', 'sage'), 'text', __('Gettysburg web design · let’s talk', 'sage')],
+                ['cnt_h1', __('Heading (before accent)', 'sage'), 'text', __('Tell me about the', 'sage')],
+                ['cnt_h1_accent', __('Accent phrase', 'sage'), 'text', __('business.', 'sage')],
+                ['cnt_lede', __('Hero lede (one short paragraph)', 'sage'), 'textarea', __('A new site, a second look at the one you have, or just hello — I’ll read it and reply. Usually within a business day. No jargon, no pressure.', 'sage')],
+                ['cnt_cta', __('Primary button', 'sage'), 'text', __('Request a quote', 'sage')],
+                ['cnt_cta2', __('Secondary button', 'sage'), 'text', __('Or email me', 'sage')],
+                ['cnt_note', __('Meta line (under the buttons)', 'sage'), 'text', __('A real person answers · Fixed price · You own the site', 'sage')],
+                ['cnt_proof', __('Proof ribbon (four items)', 'sage'), 'repeater', contact_proof_defaults(), [
+                    ['v', __('Value', 'sage'), 'text'],
+                    ['l', __('Label', 'sage'), 'text'],
+                ]],
+            ],
+            __('Media & links', 'sage') => [
+                ['hero_bg', __('Hero background image', 'sage'), 'image', __('Built-in until you choose one.', 'sage')],
             ],
             __('Contact details', 'sage') => [
                 ['contact_email', __('Email address', 'sage'), 'text', 'matthew.r.hummel@gmail.com'],
                 ['contact_phone', __('Phone (leave blank to hide)', 'sage'), 'text', ''],
                 ['contact_hours', __('Hours', 'sage'), 'text', __('Mon–Fri, 9am–5pm · evenings by appointment', 'sage')],
             ],
-            __('Quick ways to get in touch', 'sage') => [
-                ['cway_form_title', __('Form card · title', 'sage'), 'text', __('Fill out the form', 'sage')],
-                ['cway_form_desc', __('Form card · text', 'sage'), 'text', __('The fastest way to a fixed-scope quote.', 'sage')],
-                ['cway_email_title', __('Email card · title', 'sage'), 'text', __('Email me directly', 'sage')],
-                ['cway_call_title', __('Call card · title (shown if phone set)', 'sage'), 'text', __('Call or text', 'sage')],
-                ['cway_local_title', __('Location card · title (shown if no phone)', 'sage'), 'text', __('Local to Gettysburg', 'sage')],
-                ['cway_local_desc', __('Location card · text', 'sage'), 'text', __('Serving Adams County & South Central PA', 'sage')],
+            __('Under the hero', 'sage') => [
+                ['cnt_why_eyebrow', __('Eyebrow', 'sage'), 'text', __('How this works', 'sage')],
+                ['cnt_why_title', __('Heading (before accent)', 'sage'), 'text', __('A conversation,', 'sage')],
+                ['cnt_why_accent', __('Accent phrase', 'sage'), 'text', __('not a pitch.', 'sage')],
+                ['cnt_why_intro', __('Intro paragraph', 'sage'), 'html', __('<strong>I’m a one-person studio in Gettysburg.</strong> Quotes are welcome. So are introductions, partnerships, and “I’m not sure yet.” Fill in what you can — skip what you can’t. I’ll still read it.', 'sage')],
+                ['cnt_why_jump', __('Jump to form', 'sage'), 'text', __('Request a quote', 'sage')],
+                ['cnt_why_email', __('Email link label', 'sage'), 'text', __('Or just email me', 'sage')],
+                ['cnt_why_items', __('Three cards', 'sage'), 'repeater', contact_why_item_defaults(), [
+                    ['kicker', __('Kicker', 'sage'), 'text'],
+                    ['title', __('Card title', 'sage'), 'text'],
+                    ['text', __('Card text', 'sage'), 'textarea'],
+                ]],
+            ],
+            __('Ways to reach me', 'sage') => [
+                ['cnt_path_quote', __('Quote path · title', 'sage'), 'text', __('Request a quote', 'sage')],
+                ['cnt_path_quote_d', __('Quote path · text', 'sage'), 'text', __('The form below — a few details, a real plan back.', 'sage')],
+                ['cnt_path_email', __('Email path · title', 'sage'), 'text', __('Email me directly', 'sage')],
+                ['cnt_path_call', __('Call path · title (if phone is set)', 'sage'), 'text', __('Call or text', 'sage')],
+                ['cnt_path_tools', __('Tools path · title', 'sage'), 'text', __('Grade your site first', 'sage')],
+                ['cnt_path_tools_d', __('Tools path · text', 'sage'), 'text', __('Free, no signup — look around, then decide.', 'sage')],
             ],
             __('Form column', 'sage') => [
-                ['cform_eyebrow', __('Eyebrow', 'sage'), 'text', __('Project inquiry', 'sage')],
-                ['cform_title', __('Heading (before accent)', 'sage'), 'text', __('Tell me about your', 'sage')],
-                ['cform_accent', __('Accent word', 'sage'), 'text', __('business.', 'sage')],
+                ['cnt_form_eyebrow', __('Eyebrow', 'sage'), 'text', __('Quote request', 'sage')],
+                ['cnt_form_title', __('Heading (before accent)', 'sage'), 'text', __('A few details.', 'sage')],
+                ['cnt_form_accent', __('Accent phrase', 'sage'), 'text', __('That’s enough.', 'sage')],
+                ['cnt_form_intro', __('Intro under the heading', 'sage'), 'textarea', __('Skip anything you’re not sure about. Required fields are name, email, what you need, and what a win would look like.', 'sage')],
+                ['cnt_form_btn', __('Submit button', 'sage'), 'text', __('Send my request', 'sage')],
+                ['cnt_form_fine', __('Line under the button', 'sage'), 'text', __('No mailing list. A real reply from Matt — usually within a business day.', 'sage')],
+                ['cnt_form_success', __('Success message', 'sage'), 'textarea', __('Thanks — I have it. I’ll reply within a business day, usually with a few questions and a clear next step.', 'sage')],
             ],
             __('Contact form — fields', 'sage') => [
-                ['cform_fields', __('Form fields', 'sage'), 'repeater', [
-                    ['label' => __('Your name', 'sage'), 'type' => 'text', 'placeholder' => '', 'required' => '1', 'width' => 'half', 'choices' => []],
-                    ['label' => __('Email', 'sage'), 'type' => 'email', 'placeholder' => '', 'required' => '1', 'width' => 'half', 'choices' => []],
-                    ['label' => __('Phone', 'sage'), 'type' => 'tel', 'placeholder' => __('Optional', 'sage'), 'required' => '', 'width' => 'full', 'choices' => []],
-                    ['label' => __('What can I help with?', 'sage'), 'type' => 'textarea', 'placeholder' => '', 'required' => '1', 'width' => 'full', 'choices' => []],
-                ], [
+                ['cquote_fields', __('Quote form fields', 'sage'), 'repeater', contact_field_defaults(), [
                     ['label', __('Field label', 'sage'), 'text'],
                     ['type', __('Field type', 'sage'), 'select', [
+                        'heading'  => __('Section heading (not a field)', 'sage'),
                         'text'     => __('Text', 'sage'),
                         'email'    => __('Email', 'sage'),
                         'tel'      => __('Phone', 'sage'),
@@ -1563,6 +1637,7 @@ function page_field_map(): array
                         'date'     => __('Date', 'sage'),
                         'textarea' => __('Message (multi-line)', 'sage'),
                         'select'   => __('Dropdown', 'sage'),
+                        'radio'    => __('Choice cards (pick one)', 'sage'),
                         'checkbox' => __('Checkbox (agree / opt-in)', 'sage'),
                     ]],
                     ['placeholder', __('Placeholder (optional)', 'sage'), 'text'],
@@ -1572,38 +1647,8 @@ function page_field_map(): array
                         'half'  => __('Half (2 per row)', 'sage'),
                         'third' => __('Third (3 per row)', 'sage'),
                     ]],
-                    ['choices', __('Dropdown options — one per line', 'sage'), 'lines'],
+                    ['choices', __('Choices — one per line (dropdown or cards)', 'sage'), 'lines'],
                 ], 'formbuilder'],
-            ],
-            __('Contact form — design', 'sage') => [
-                ['cform_button', __('Submit button label', 'sage'), 'text', __('Send message', 'sage')],
-                ['cform_button_full', __('Full-width submit button', 'sage'), 'checkbox', '0'],
-                ['cform_button_align', __('Button alignment', 'sage'), 'select', 'left', [
-                    'left'   => __('Left', 'sage'),
-                    'center' => __('Center', 'sage'),
-                    'right'  => __('Right', 'sage'),
-                ]],
-                ['cform_button_icon', __('Button icon', 'sage'), 'select', 'none', [
-                    'none'  => __('None', 'sage'),
-                    'send'  => __('Paper plane (send)', 'sage'),
-                    'email' => __('Envelope', 'sage'),
-                    'chat'  => __('Chat bubble', 'sage'),
-                    'arrow' => __('Arrow', 'sage'),
-                ]],
-                ['cform_button_icon_pos', __('Icon position', 'sage'), 'select', 'before', [
-                    'before' => __('Before the label', 'sage'),
-                    'after'  => __('After the label', 'sage'),
-                ]],
-                ['cform_label_style', __('Field labels', 'sage'), 'select', 'top', [
-                    'top'    => __('Show labels above fields', 'sage'),
-                    'hidden' => __('Hide labels (use placeholders)', 'sage'),
-                ]],
-                ['cform_field_style', __('Field style', 'sage'), 'select', 'box', [
-                    'box'       => __('Boxed (rounded border)', 'sage'),
-                    'soft'      => __('Soft (tinted fill)', 'sage'),
-                    'underline' => __('Underline only', 'sage'),
-                ]],
-                ['cform_success', __('Success message', 'sage'), 'textarea', __('Thanks — your message is on its way. I\'ll reply within one business day.', 'sage')],
             ],
             __('Contact form — auto-reply', 'sage') => [
                 ['cform_ar_enable', __('Send an automatic reply to the sender', 'sage'), 'checkbox', '0'],
@@ -1617,15 +1662,13 @@ function page_field_map(): array
                 ['cform_consent_required', __('Consent is required to submit', 'sage'), 'checkbox', '1'],
             ],
             __('What happens next', 'sage') => [
-                ['cnext_eyebrow', __('Eyebrow', 'sage'), 'text', __('What happens next', 'sage')],
-                ['cnext_items', __('Numbered steps', 'sage'), 'repeater', [
-                    ['strong' => __('I reply — usually within a business day.', 'sage'), 'text' => __('A real, personal response, not an auto-reminder.', 'sage')],
-                    ['strong' => __('A quick, no-pressure chat.', 'sage'), 'text' => __('A short call or email so I understand exactly what you need.', 'sage')],
-                    ['strong' => __('A clear, fixed-scope plan.', 'sage'), 'text' => __('What I\'d build, what it costs, and how long — in writing.', 'sage')],
-                ], [
+                ['cnt_next_eyebrow', __('Eyebrow', 'sage'), 'text', __('What happens next', 'sage')],
+                ['cnt_next', __('Numbered steps', 'sage'), 'repeater', contact_next_defaults(), [
                     ['strong', __('Bold lead-in', 'sage'), 'text'],
                     ['text', __('Rest of the line', 'sage'), 'text'],
                 ]],
+                ['cnt_open_eyebrow', __('Open-door eyebrow', 'sage'), 'text', __('Also here for', 'sage')],
+                ['cnt_open_text', __('Open-door note', 'sage'), 'textarea', __('Introductions, referrals, and a coffee around Gettysburg. If you’re another designer or a local group looking to collaborate, say hello — I’m easy to reach.', 'sage')],
             ],
             __('Reach me directly', 'sage') => [
                 ['creach_eyebrow', __('Eyebrow', 'sage'), 'text', __('Reach me directly', 'sage')],
@@ -1638,7 +1681,7 @@ function page_field_map(): array
                 ['clocal_intro', __('Intro paragraph', 'sage'), 'html', __('<strong>An independent, one-person studio in Gettysburg.</strong> That means real meetings when you want them, quick answers, and a site built by someone who actually knows the towns your customers come from. I work with restaurants, inns, shops, tradespeople, tour operators, realtors, and nonprofits across Adams County and South Central PA.', 'sage')],
                 ['clocal_towns', __('Town chips', 'sage'), 'lines', ['Gettysburg', 'Biglerville', 'Littlestown', 'New Oxford', 'McSherrystown', 'Bonneauville', 'Fairfield', 'Cashtown', 'Abbottstown', 'East Berlin', 'Hanover', 'York Springs']],
                 ['clocal_note', __('Note under the towns', 'sage'), 'textarea', __('Not right in the neighborhood? No problem — plenty of projects run entirely over a call and a shared screen. Wherever you are, you get the same fixed price, the same accessibility-first build, and full ownership at the end.', 'sage')],
-                ['clocal_btn1', __('Primary button label', 'sage'), 'text', __('Start the conversation', 'sage')],
+                ['clocal_btn1', __('Primary button label', 'sage'), 'text', __('Request a quote', 'sage')],
                 ['clocal_btn2', __('Secondary button label', 'sage'), 'text', __('Or just email me', 'sage')],
             ],
         ],
@@ -1885,8 +1928,10 @@ function field_group_hint(string $label): string
         __('Quote', 'sage')            => __('The one-line studio quote and its attribution.', 'sage'),
         __('Founding offer', 'sage')   => __('The limited founding-offer banner: eyebrow, heading, the price accent, the paragraph, and the button. The “what’s included” checklist is set in the template.', 'sage'),
         __('Header', 'sage')           => __('The contact hero: eyebrow, heading, one short lede, the button into the form, and the small note shown under the form.', 'sage'),
+        __('Under the hero', 'sage')   => __('The split under the Contact hero: why this page exists (a conversation, not a pitch) and three cards — quote, not sure yet, just hello.', 'sage'),
+        __('Ways to reach me', 'sage') => __('The four path cards under the intro: quote, email, call (if a number is set), and grade-your-site.', 'sage'),
         __('Contact details', 'sage')  => __('Where enquiries go and how people reach you. Leave the phone blank to hide the call/text option; add a number to show it.', 'sage'),
-        __('Contact form — fields', 'sage') => __('Build the form itself: add, remove, and reorder fields. For each field set a label, a type, whether it’s required, and its column width (full, half, or third). For a Dropdown, list the options one per line. Remove every field to restore the default Name / Email / Phone / Message set.', 'sage'),
+        __('Contact form — fields', 'sage') => __('The quote form itself. Section headings group the fields. Choice cards are the “what do you need?” row. Remove every field to restore the built-in quote form.', 'sage'),
         __('Contact form — design', 'sage') => __('How the form looks: the submit button label and width, whether labels show above the fields or the placeholders stand in for them, the field style, and the message shown after a successful send.', 'sage'),
         __('Contact form — auto-reply', 'sage') => __('Send an automatic confirmation email to the person who submitted the form (uses the email field they filled in). Turn it on, set the subject and message, and optionally include a copy of what they sent.', 'sage'),
         __('Contact form — consent', 'sage') => __('Add a consent / GDPR checkbox above the submit button — useful for opt-in and privacy compliance. Links are allowed in the consent text (e.g. to your privacy policy). Leave “required” on to block submission until it’s ticked.', 'sage'),
@@ -1919,7 +1964,7 @@ function field_group_hint(string $label): string
         __('The design craft', 'sage') => __('The heading, the numbered craft cards, and the closing paragraph.', 'sage'),
         __('Areas served (work)', 'sage') => __('The big areas-served block: heading, lede, town chips, note, and the tagline parts (one per line, shown joined with ·).', 'sage'),
         __('Quick ways to get in touch', 'sage') => __('The three quick-contact cards at the top of the page.', 'sage'),
-        __('Form column', 'sage')      => __('The heading above the contact form.', 'sage'),
+        __('Form column', 'sage')      => __('The heading above the quote form, the short intro, the send button, and the reassurance line under it.', 'sage'),
         __('What happens next', 'sage') => __('The numbered “what happens next” steps beside the form. Each has a bold lead-in and a follow-on line.', 'sage'),
         __('Reach me directly', 'sage') => __('The contact sidebar’s heading and location line (email, phone, and hours come from “Contact details”).', 'sage'),
         __('Local service area', 'sage') => __('The service-area block: heading, intro, town chips, note, and the two button labels.', 'sage'),

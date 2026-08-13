@@ -16,23 +16,49 @@ namespace App;
 /** Field types the builder understands (whitelist — anything else becomes text). */
 function contact_field_types(): array
 {
-    return ['text', 'email', 'tel', 'url', 'number', 'date', 'textarea', 'select', 'checkbox'];
+    return ['text', 'email', 'tel', 'url', 'number', 'date', 'textarea', 'select', 'radio', 'checkbox', 'heading'];
 }
 
-/** The built-in default field set, used when a page has no custom fields yet. */
+/** The built-in quote form, used when a page has no custom fields yet. */
 function contact_field_defaults(): array
 {
     return [
-        ['label' => __('Your name', 'sage'),          'type' => 'text',     'placeholder' => '',                       'required' => '1', 'width' => 'half', 'choices' => []],
-        ['label' => __('Email', 'sage'),              'type' => 'email',    'placeholder' => '',                       'required' => '1', 'width' => 'half', 'choices' => []],
-        ['label' => __('Phone', 'sage'),              'type' => 'tel',      'placeholder' => __('Optional', 'sage'),   'required' => '',  'width' => 'half', 'choices' => []],
-        ['label' => __('Which package?', 'sage'),     'type' => 'select',   'placeholder' => __('Not sure yet', 'sage'), 'required' => '', 'width' => 'half', 'choices' => [
+        ['label' => __('About you', 'sage'), 'type' => 'heading', 'placeholder' => '', 'required' => '', 'width' => 'full', 'choices' => []],
+        ['label' => __('Your name', 'sage'), 'type' => 'text', 'placeholder' => '', 'required' => '1', 'width' => 'half', 'choices' => []],
+        ['label' => __('Email', 'sage'), 'type' => 'email', 'placeholder' => '', 'required' => '1', 'width' => 'half', 'choices' => []],
+        ['label' => __('Phone', 'sage'), 'type' => 'tel', 'placeholder' => __('Optional — if you’d rather a call', 'sage'), 'required' => '', 'width' => 'half', 'choices' => []],
+        ['label' => __('Business name', 'sage'), 'type' => 'text', 'placeholder' => __('Optional', 'sage'), 'required' => '', 'width' => 'half', 'choices' => []],
+        ['label' => __('Town', 'sage'), 'type' => 'text', 'placeholder' => __('Gettysburg, Hanover…', 'sage'), 'required' => '', 'width' => 'half', 'choices' => []],
+        ['label' => __('How should I reach you?', 'sage'), 'type' => 'select', 'placeholder' => __('Email is fine', 'sage'), 'required' => '', 'width' => 'half', 'choices' => [
+            __('Email', 'sage'),
+            __('Phone / text', 'sage'),
+            __('Either', 'sage'),
+        ]],
+        ['label' => __('About the project', 'sage'), 'type' => 'heading', 'placeholder' => '', 'required' => '', 'width' => 'full', 'choices' => []],
+        ['label' => __('What do you need?', 'sage'), 'type' => 'radio', 'placeholder' => '', 'required' => '1', 'width' => 'full', 'choices' => [
+            __('A new website', 'sage'),
+            __('Fix or rescue the one I have', 'sage'),
+            __('Local SEO / Google Maps', 'sage'),
+            __('Care & Grow (ongoing)', 'sage'),
+            __('Just saying hello', 'sage'),
+            __('Not sure yet', 'sage'),
+        ]],
+        ['label' => __('Current website', 'sage'), 'type' => 'url', 'placeholder' => __('https:// — if you have one', 'sage'), 'required' => '', 'width' => 'full', 'choices' => []],
+        ['label' => __('When would you like to launch?', 'sage'), 'type' => 'select', 'placeholder' => __('No rush', 'sage'), 'required' => '', 'width' => 'half', 'choices' => [
+            __('As soon as we can', 'sage'),
+            __('This month', 'sage'),
+            __('In the next few months', 'sage'),
+            __('Just exploring for now', 'sage'),
+        ]],
+        ['label' => __('Which package sounds right?', 'sage'), 'type' => 'select', 'placeholder' => __('Not sure yet — that’s fine', 'sage'), 'required' => '', 'width' => 'half', 'choices' => [
             __('Website Rescue', 'sage'),
             __('Local Launch', 'sage'),
             __('Growth Site', 'sage'),
             __('Care & Grow', 'sage'),
+            __('Not sure yet', 'sage'),
         ]],
-        ['label' => __('What can I help with?', 'sage'), 'type' => 'textarea', 'placeholder' => '',                     'required' => '1', 'width' => 'full', 'choices' => []],
+        ['label' => __('The story', 'sage'), 'type' => 'heading', 'placeholder' => '', 'required' => '', 'width' => 'full', 'choices' => []],
+        ['label' => __('What would a win look like?', 'sage'), 'type' => 'textarea', 'placeholder' => __('A few sentences is plenty — the customers, the snag, what you’d like the site to do.', 'sage'), 'required' => '1', 'width' => 'full', 'choices' => []],
     ];
 }
 
@@ -42,7 +68,9 @@ function contact_field_defaults(): array
  */
 function contact_fields(?int $post_id = null): array
 {
-    $rows = field_rows('cform_fields', contact_field_defaults(), $post_id);
+    // `cquote_fields` is a new key so a real quote form ships past any saved
+    // four-field `cform_fields` meta on the Contact page.
+    $rows = field_rows('cquote_fields', contact_field_defaults(), $post_id);
 
     $out = [];
     foreach ($rows as $row) {
@@ -237,11 +265,15 @@ add_action('init', function () {
     $reply_name  = '';
 
     foreach ($fields as $i => $f) {
+        if (($f['type'] ?? '') === 'heading') {
+            continue;
+        }
+
         $raw   = $_POST['rvf_' . $i] ?? '';
         $value = contact_sanitize_value($f['type'], $raw);
 
-        // Constrain dropdowns to their offered options.
-        if ($f['type'] === 'select' && $f['choices'] && ! in_array($value, $f['choices'], true)) {
+        // Constrain dropdowns and radio groups to their offered options.
+        if (in_array($f['type'], ['select', 'radio'], true) && $f['choices'] && ! in_array($value, $f['choices'], true)) {
             $value = '';
         }
 
@@ -324,7 +356,7 @@ add_action('init', function () {
 
     $to = get_theme_mod('rv_contact_email', get_option('admin_email'));
     /* translators: %s: site name. */
-    $subject = sprintf(__('[%s] New message from the website', 'sage'), wp_specialchars_decode(get_bloginfo('name')));
+    $subject = sprintf(__('[%s] New quote request', 'sage'), wp_specialchars_decode(get_bloginfo('name')));
     if ($inquiry !== '') {
         $subject .= ' — ' . $inquiry;
     }
@@ -371,20 +403,14 @@ function contact_form(?int $post_id = null): void
     // Design options (Page content → “Contact form — design”).
     // strip_field_markers() removes the live-preview click-to-edit markers that
     // field() adds; without it these logic comparisons never match in the preview.
-    $btn_label   = field('cform_button', __('Send message', 'sage'), $post_id) ?: __('Send message', 'sage');
-    $btn_full    = strip_field_markers((string) field('cform_button_full', '0', $post_id)) === '1';
-    $btn_align   = strip_field_markers((string) field('cform_button_align', 'left', $post_id));
-    if (! in_array($btn_align, ['left', 'center', 'right'], true)) {
-        $btn_align = 'left';
-    }
-    $btn_icon    = strip_field_markers((string) field('cform_button_icon', 'none', $post_id));
-    if (! in_array($btn_icon, ['send', 'email', 'chat', 'arrow'], true)) {
-        $btn_icon = '';
-    }
-    $btn_icon_pos = strip_field_markers((string) field('cform_button_icon_pos', 'before', $post_id)) === 'after' ? 'after' : 'before';
+    $btn_label   = field('cnt_form_btn', __('Send my request', 'sage'), $post_id) ?: __('Send my request', 'sage');
+    $btn_full    = true;
+    $btn_align   = 'left';
+    $btn_icon    = 'send';
+    $btn_icon_pos = 'before';
     $label_style = strip_field_markers((string) field('cform_label_style', 'top', $post_id));
     $field_style = strip_field_markers((string) field('cform_field_style', 'box', $post_id));
-    $success_msg = field('cform_success', __('Thanks — your message is on its way. I\'ll reply within one business day.', 'sage'), $post_id);
+    $success_msg = field('cnt_form_success', __('Thanks — I have it. I’ll reply within a business day, usually with a few questions and a clear next step.', 'sage'), $post_id);
 
     $nolabels = ($label_style === 'hidden');
     if (! in_array($field_style, ['box', 'soft', 'underline'], true)) {
@@ -414,7 +440,7 @@ function contact_form(?int $post_id = null): void
         '<form class="%s" method="post" action="%s" aria-label="%s" novalidate>',
         esc_attr($form_class),
         esc_url(home_url(add_query_arg([]))),
-        esc_attr__('Contact form', 'sage')
+        esc_attr__('Quote request', 'sage')
     );
     wp_nonce_field('rv_contact', 'rv_contact_nonce');
     printf('<input type="hidden" name="rv_form_page" value="%d">', (int) $post_id);
@@ -452,6 +478,36 @@ function contact_form(?int $post_id = null): void
         $reqMark  = $req ? ' <span class="rv-req" aria-hidden="true">*</span>' : '';
         $reqAria  = $req ? ' aria-required="true"' : '';
         $auto     = contact_autocomplete($f);
+
+        if ($f['type'] === 'heading') {
+            echo '<div class="rv-ff rv-ff--full rv-ff-heading">';
+            echo '<h3>' . esc_html($f['label']) . '</h3>';
+            echo '</div>';
+            continue;
+        }
+
+        if ($f['type'] === 'radio') {
+            $legend_id = $id . '-legend';
+            echo '<div class="rv-ff rv-ff--' . esc_attr($f['width']) . ' rv-ff-radio-wrap">';
+            printf('<span class="rv-ff-legend" id="%s">%s%s</span>', esc_attr($legend_id), esc_html($f['label']), $reqMark); // phpcs:ignore
+            echo '<div class="rv-ff-radios" role="radiogroup" aria-labelledby="' . esc_attr($legend_id) . '"' . ($req ? ' aria-required="true"' : '') . '>';
+            $inquiry_slug = sanitize_title($inquiry);
+            $first = true;
+            foreach ($f['choices'] as $opt) {
+                $sel = ($inquiry_slug !== '' && (sanitize_title((string) $opt) === $inquiry_slug || strcasecmp((string) $opt, $inquiry) === 0));
+                printf(
+                    '<label class="rv-ff-radio"><input type="radio" name="%1$s" value="%2$s"%3$s%4$s> <span>%5$s</span></label>',
+                    esc_attr($id),
+                    esc_attr($opt),
+                    $sel ? ' checked' : '',
+                    ($first && $req) ? ' required' : '',
+                    esc_html($opt)
+                );
+                $first = false;
+            }
+            echo '</div></div>';
+            continue;
+        }
 
         // Checkbox renders as an inline control with its label beside it.
         if ($f['type'] === 'checkbox') {
@@ -559,7 +615,13 @@ function contact_autocomplete(array $f): string
         return ' autocomplete="tel"';
     }
     if ($f['type'] === 'text' && stripos($f['label'], 'name') !== false) {
+        if (stripos($f['label'], 'business') !== false) {
+            return ' autocomplete="organization"';
+        }
         return ' autocomplete="name"';
+    }
+    if ($f['type'] === 'text' && (stripos($f['label'], 'town') !== false || stripos($f['label'], 'city') !== false)) {
+        return ' autocomplete="address-level2"';
     }
     return '';
 }

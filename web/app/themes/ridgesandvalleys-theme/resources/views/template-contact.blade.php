@@ -4,13 +4,11 @@
 @extends('layouts.app')
 
 @php
-// Editable in the page fields; sensible defaults so the page is useful out of the box.
-// Swap contact_email for a studio address anytime; set contact_phone to show the call/text option.
 $cEmail = \App\field('contact_email', 'matthew.r.hummel@gmail.com');
 $cPhone = trim((string) \App\field('contact_phone', ''));
 $cPhoneHref = $cPhone ? preg_replace('/[^0-9+]/', '', $cPhone) : '';
 $cHours = \App\field('contact_hours', __('Mon–Fri, 9am–5pm · evenings by appointment', 'sage'));
-$ctaHref = \App\cta_href(get_theme_mod('rv_cta_url', '/contact/'));
+$toolsHref = home_url('/website-grader/');
 
 $svgForm  = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M8 4H6a2 2 0 0 0-2 2v13a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2h-2"/><rect x="8" y="2.5" width="8" height="4" rx="1"/><path d="M8 11h8M8 15h5"/></svg>';
 $svgMail  = '<svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/></svg>';
@@ -24,60 +22,102 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
     <span class="rv-stripe" aria-hidden="true"></span>
     @include('partials.hero-bg', ['fallback' => ''])
     <div class="rv-shell rv-hero-inner">
-      {!! \App\eyebrow(\App\field('hero_eyebrow', __('Get in touch', 'sage'))) !!}
-      <h1 id="rv-contact-hero-title" class="rv-hero-title">{{ \App\field('hero_title', __('Let\'s build something', 'sage')) }} <em class="rv-accent">{{ \App\field('hero_accent', __('local.', 'sage')) }}</em></h1>
-      <p class="rv-hero-sub">{{ \App\field('contact_lede', __('Tell me about your Gettysburg or Adams County business — I\'ll come back with a fixed-scope idea, usually within a business day.', 'sage')) }}</p>
+      {!! \App\eyebrow(\App\field('cnt_kicker', __('Gettysburg web design · let’s talk', 'sage'))) !!}
+      <h1 id="rv-contact-hero-title" class="rv-hero-title">{{ \App\field('cnt_h1', __('Tell me about the', 'sage')) }} <em class="rv-accent">{{ \App\field('cnt_h1_accent', __('business.', 'sage')) }}</em></h1>
+      <p class="rv-hero-sub">{{ \App\field('cnt_lede', __('A new site, a second look at the one you have, or just hello — I’ll read it and reply. Usually within a business day. No jargon, no pressure.', 'sage')) }}</p>
       <div class="rv-hero-actions">
-        <a class="rv-btn rv-btn-primary" href="#contact-form">{{ \App\field('contact_hero_btn', __('Send a note', 'sage')) }}</a>
+        <a class="rv-btn rv-btn-primary" href="#contact-form">{{ \App\field('cnt_cta', __('Request a quote', 'sage')) }}</a>
+        <a class="rv-btn rv-btn-ghost" href="mailto:{{ esc_attr($cEmail) }}">{{ \App\field('cnt_cta2', __('Or email me', 'sage')) }}</a>
       </div>
+      <p class="rv-hero-note">{{ \App\field('cnt_note', __('A real person answers · Fixed price · You own the site', 'sage')) }}</p>
     </div>
-  </section>
-
-  {{-- QUICK WAYS TO GET IN TOUCH --}}
-  <section class="rv-shell rv-cways" aria-label="{{ __('Ways to get in touch', 'sage') }}">
-    <a class="rv-cway rv-cway-primary" href="#contact-form">
-      <span class="rv-cway-ico">{!! $svgForm !!}</span>
-      <span class="rv-cway-body"><span class="rv-cway-t">{{ \App\field('cway_form_title', __('Fill out the form', 'sage')) }}</span><span class="rv-cway-d">{{ \App\field('cway_form_desc', __('The fastest way to a fixed-scope quote.', 'sage')) }}</span></span>
-    </a>
-    <a class="rv-cway" href="mailto:{{ esc_attr($cEmail) }}">
-      <span class="rv-cway-ico">{!! $svgMail !!}</span>
-      <span class="rv-cway-body"><span class="rv-cway-t">{{ \App\field('cway_email_title', __('Email me directly', 'sage')) }}</span><span class="rv-cway-d">{{ $cEmail }}</span></span>
-    </a>
-    @if ($cPhone)
-      <a class="rv-cway" href="tel:{{ $cPhoneHref }}">
-        <span class="rv-cway-ico">{!! $svgPhone !!}</span>
-        <span class="rv-cway-body"><span class="rv-cway-t">{{ \App\field('cway_call_title', __('Call or text', 'sage')) }}</span><span class="rv-cway-d">{{ $cPhone }}</span></span>
-      </a>
-    @else
-      <div class="rv-cway rv-cway-static">
-        <span class="rv-cway-ico">{!! $svgPin !!}</span>
-        <span class="rv-cway-body"><span class="rv-cway-t">{{ \App\field('cway_local_title', __('Local to Gettysburg', 'sage')) }}</span><span class="rv-cway-d">{{ \App\field('cway_local_desc', __('Serving Adams County & South Central PA', 'sage')) }}</span></span>
+    @php($cntProof = \App\contact_proof())
+    @if (! empty($cntProof))
+      <div class="rv-hero-proof">
+        <div class="rv-shell">
+          <ul class="rv-hero-stats" aria-label="{{ __('At a glance', 'sage') }}">
+            @foreach ($cntProof as $pf)
+              <li>
+                <span class="rv-hero-stat-v">{{ $pf['v'] ?? '' }}</span>
+                @if (($pf['l'] ?? '') !== '')<span class="rv-hero-stat-l">{{ $pf['l'] }}</span>@endif
+              </li>
+            @endforeach
+          </ul>
+        </div>
       </div>
     @endif
   </section>
 
-  {{-- FORM + SIDEBAR --}}
+  {{-- Under-hero: inviting, not pitchy — quote, not-sure, and hello. --}}
+  <section class="rv-band rv-band-alt rv-cnt-why" aria-labelledby="rv-cnt-why-title">
+    <div class="rv-shell rv-cnt-why-grid">
+      <div class="rv-cnt-why-copy">
+        {!! \App\eyebrow(\App\field('cnt_why_eyebrow', __('How this works', 'sage'))) !!}
+        <h2 id="rv-cnt-why-title" class="rv-section-title">{{ \App\field('cnt_why_title', __('A conversation,', 'sage')) }} <em class="rv-accent">{{ \App\field('cnt_why_accent', __('not a pitch.', 'sage')) }}</em></h2>
+        <p class="rv-page-intro">{!! \App\field('cnt_why_intro', __('<strong>I’m a one-person studio in Gettysburg.</strong> Quotes are welcome. So are introductions, partnerships, and “I’m not sure yet.” Fill in what you can — skip what you can’t. I’ll still read it.', 'sage')) !!}</p>
+        <div class="rv-cnt-why-actions">
+          <a class="rv-btn rv-btn-ghost" href="#contact-form">{{ \App\field('cnt_why_jump', __('Request a quote', 'sage')) }}</a>
+          <a class="rv-cnt-why-jump" href="mailto:{{ esc_attr($cEmail) }}">{{ \App\field('cnt_why_email', __('Or just email me', 'sage')) }} {!! \App\icon('arrow') !!}</a>
+        </div>
+      </div>
+      <div class="rv-cnt-why-list">
+        @foreach (\App\field_rows('cnt_why_items', \App\contact_why_item_defaults()) as $v)
+          <article class="rv-cnt-why-item">
+            @if (($v['kicker'] ?? '') !== '')<span class="rv-cnt-why-kicker">{{ $v['kicker'] }}</span>@endif
+            @if (($v['title'] ?? '') !== '')<h3>{{ $v['title'] }}</h3>@endif
+            @if (($v['text'] ?? '') !== '')<p>{{ $v['text'] }}</p>@endif
+          </article>
+        @endforeach
+      </div>
+    </div>
+  </section>
+
+  {{-- Paths: quote, email, call or tools. --}}
+  <section class="rv-shell rv-cways" aria-label="{{ __('Ways to get in touch', 'sage') }}">
+    <a class="rv-cway rv-cway-primary" href="#contact-form">
+      <span class="rv-cway-ico">{!! $svgForm !!}</span>
+      <span class="rv-cway-body"><span class="rv-cway-t">{{ \App\field('cnt_path_quote', __('Request a quote', 'sage')) }}</span><span class="rv-cway-d">{{ \App\field('cnt_path_quote_d', __('The form below — a few details, a real plan back.', 'sage')) }}</span></span>
+    </a>
+    <a class="rv-cway" href="mailto:{{ esc_attr($cEmail) }}">
+      <span class="rv-cway-ico">{!! $svgMail !!}</span>
+      <span class="rv-cway-body"><span class="rv-cway-t">{{ \App\field('cnt_path_email', __('Email me directly', 'sage')) }}</span><span class="rv-cway-d">{{ $cEmail }}</span></span>
+    </a>
+    @if ($cPhone)
+      <a class="rv-cway" href="tel:{{ $cPhoneHref }}">
+        <span class="rv-cway-ico">{!! $svgPhone !!}</span>
+        <span class="rv-cway-body"><span class="rv-cway-t">{{ \App\field('cnt_path_call', __('Call or text', 'sage')) }}</span><span class="rv-cway-d">{{ $cPhone }}</span></span>
+      </a>
+    @endif
+    <a class="rv-cway" href="{{ $toolsHref }}">
+      <span class="rv-cway-ico">{!! $svgClock !!}</span>
+      <span class="rv-cway-body"><span class="rv-cway-t">{{ \App\field('cnt_path_tools', __('Grade your site first', 'sage')) }}</span><span class="rv-cway-d">{{ \App\field('cnt_path_tools_d', __('Free, no signup — look around, then decide.', 'sage')) }}</span></span>
+    </a>
+  </section>
+
+  {{-- Quote form + what happens next --}}
   <section class="rv-shell rv-band rv-contact-main" id="contact-form">
     <div class="rv-contact-grid">
       <div class="rv-contact-formcol">
-        {!! \App\eyebrow(\App\field('cform_eyebrow', __('Project inquiry', 'sage'))) !!}
-        <h2 class="rv-section-title" style="margin-top:.4rem">{{ \App\field('cform_title', __('Tell me about your', 'sage')) }} <em class="rv-accent">{{ \App\field('cform_accent', __('business.', 'sage')) }}</em></h2>
+        {!! \App\eyebrow(\App\field('cnt_form_eyebrow', __('Quote request', 'sage'))) !!}
+        <h2 class="rv-section-title" style="margin-top:.4rem">{{ \App\field('cnt_form_title', __('A few details.', 'sage')) }} <em class="rv-accent">{{ \App\field('cnt_form_accent', __('That’s enough.', 'sage')) }}</em></h2>
+        <p class="rv-page-intro rv-cnt-form-intro">{{ \App\field('cnt_form_intro', __('Skip anything you’re not sure about. Required fields are name, email, what you need, and what a win would look like.', 'sage')) }}</p>
         <div class="rv-contact-wrap">@php(\App\contact_form())</div>
-        <p class="rv-tool-hint" style="margin-top:1.25rem">{{ \App\field('contact_note', __('The project clock starts when this and your assets are complete. Feedback within two business days keeps launch on schedule.', 'sage')) }}</p>
+        <p class="rv-cnt-fine">{{ \App\field('cnt_form_fine', __('No mailing list. A real reply from Matt — usually within a business day.', 'sage')) }}</p>
       </div>
 
       <div class="rv-contact-side">
         <div class="rv-cside-block">
-          {!! \App\eyebrow(\App\field('cnext_eyebrow', __('What happens next', 'sage'))) !!}
+          {!! \App\eyebrow(\App\field('cnt_next_eyebrow', __('What happens next', 'sage'))) !!}
           <ol class="rv-cnext">
-            @foreach (\App\field_rows('cnext_items', [
-              ['strong' => __('I reply — usually within a business day.', 'sage'), 'text' => __('A real, personal response, not an auto-reminder.', 'sage')],
-              ['strong' => __('A quick, no-pressure chat.', 'sage'), 'text' => __('A short call or email so I understand exactly what you need.', 'sage')],
-              ['strong' => __('A clear, fixed-scope plan.', 'sage'), 'text' => __('What I\'d build, what it costs, and how long — in writing.', 'sage')],
-            ]) as $i => $cn)
+            @foreach (\App\field_rows('cnt_next', \App\contact_next_defaults()) as $i => $cn)
               <li><span class="rv-cnext-n">{{ $i + 1 }}</span><div><strong>{{ $cn['strong'] ?? '' }}</strong> {{ $cn['text'] ?? '' }}</div></li>
             @endforeach
           </ol>
+        </div>
+
+        <div class="rv-cside-block rv-cside-open">
+          {!! \App\eyebrow(\App\field('cnt_open_eyebrow', __('Also here for', 'sage'))) !!}
+          <p class="rv-cside-open-text">{{ \App\field('cnt_open_text', __('Introductions, referrals, and a coffee around Gettysburg. If you’re another designer or a local group looking to collaborate, say hello — I’m easy to reach.', 'sage')) }}</p>
         </div>
 
         <div class="rv-cside-block rv-cside-contact">
@@ -106,7 +146,7 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
       </div>
       <p class="rv-page-intro" style="margin-top:1.75rem">{{ \App\field('clocal_note', __('Not right in the neighborhood? No problem — plenty of projects run entirely over a call and a shared screen. Wherever you are, you get the same fixed price, the same accessibility-first build, and full ownership at the end.', 'sage')) }}</p>
       <div style="display:flex;gap:.85rem;flex-wrap:wrap;margin-top:1.5rem">
-        <a class="rv-btn rv-btn-primary" href="#contact-form">{{ \App\field('clocal_btn1', __('Start the conversation', 'sage')) }}</a>
+        <a class="rv-btn rv-btn-primary" href="#contact-form">{{ \App\field('clocal_btn1', __('Request a quote', 'sage')) }}</a>
         <a class="rv-btn rv-btn-ghost" href="mailto:{{ esc_attr($cEmail) }}">{{ \App\field('clocal_btn2', __('Or just email me', 'sage')) }}</a>
       </div>
     </div>
@@ -129,8 +169,23 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
   <script type="application/ld+json">{!! wp_json_encode($contactSchema, JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE) !!}</script>
 
   <style>
-    /* Quick ways to get in touch */
     #contact-form{scroll-margin-top:6rem}
+    .rv-cnt-why{padding-block:clamp(2.25rem,4.5vw,3.5rem)}
+    .rv-cnt-why-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.08fr);gap:clamp(1.5rem,4vw,2.75rem);align-items:start}
+    .rv-cnt-why-copy .rv-section-title{margin:.35rem 0 .8rem}
+    .rv-cnt-why-copy .rv-page-intro{margin:0}
+    .rv-cnt-why-actions{display:flex;flex-wrap:wrap;align-items:center;gap:.85rem 1.25rem;margin-top:1.25rem}
+    .rv-cnt-why-jump{display:inline-flex;align-items:center;gap:.4rem;font-weight:700;font-size:.9rem;color:var(--color-clay);text-decoration:none}
+    .rv-cnt-why-jump:hover{color:var(--color-pine)}
+    .rv-cnt-why-jump svg{width:15px;height:15px;transition:transform .2s ease}
+    .rv-cnt-why-jump:hover svg{transform:translateX(3px)}
+    .rv-cnt-why-list{display:grid;gap:.8rem}
+    .rv-cnt-why-item{position:relative;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.1rem 1.3rem 1.1rem 1.5rem;overflow:hidden}
+    .rv-cnt-why-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--ridgeline)}
+    .rv-cnt-why-kicker{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-clay)}
+    .rv-cnt-why-item h3{font-family:var(--font-display);font-size:1.12rem;font-weight:700;color:var(--color-ink);margin:.2rem 0 .35rem;line-height:1.2}
+    .rv-cnt-why-item p{margin:0;color:var(--color-body);font-size:.95rem;line-height:1.55}
+    @media(max-width:820px){.rv-cnt-why-grid{grid-template-columns:1fr}}
     .rv-cways{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:clamp(1.5rem,3vw,2.5rem);position:relative;z-index:3}
     .rv-cway{display:flex;align-items:center;gap:1rem;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.25rem 1.35rem;text-decoration:none;position:relative;overflow:hidden;transition:transform .15s ease,border-color .15s ease,box-shadow .2s ease}
     a.rv-cway:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--color-clay) 40%,var(--color-line));box-shadow:var(--shadow-lift)}
@@ -141,14 +196,13 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
     .rv-cway-body{display:flex;flex-direction:column;gap:.15rem;min-width:0}
     .rv-cway-t{font-family:var(--font-display);font-weight:700;font-size:1.02rem;color:var(--color-ink)}
     .rv-cway-d{font-size:.86rem;color:var(--color-muted);overflow:hidden;text-overflow:ellipsis}
-    .rv-cway-static{cursor:default}
-    /* Form + sidebar */
     .rv-contact-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:clamp(2rem,4vw,3.5rem);align-items:start}
     @media(max-width:900px){.rv-contact-grid{grid-template-columns:1fr}}
-    .rv-contact-intro-body{margin-top:1rem;max-width:60ch}
-    .rv-contact-wrap{margin-top:1.5rem}
+    .rv-cnt-form-intro{margin:.85rem 0 0;max-width:46rem}
+    .rv-contact-wrap{margin-top:1.5rem;padding-bottom:0}
     .rv-form-pkg{margin:0 0 1rem;padding:.85rem 1rem;border-left:3px solid var(--color-pine);background:color-mix(in srgb,var(--color-sage) 18%,var(--color-surface));border-radius:0 12px 12px 0;color:var(--color-body);font-size:.95rem;line-height:1.45}
     .rv-form-pkg strong{color:var(--color-ink);font-weight:700}
+    .rv-cnt-fine{margin:1rem 0 0;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.04em;color:var(--color-muted);line-height:1.55}
     .rv-contact-side{display:grid;gap:1.25rem;position:sticky;top:6rem}
     @media(max-width:900px){.rv-contact-side{position:static}}
     .rv-cside-block{background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.5rem 1.6rem;position:relative;overflow:hidden}
@@ -158,14 +212,15 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
     .rv-cnext-n{flex:none;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--color-pine);color:#fff;font-family:var(--font-display);font-weight:800;font-size:.9rem}
     .rv-cnext div{color:var(--color-body);line-height:1.5;font-size:.95rem}
     .rv-cnext strong{color:var(--color-ink);display:block;font-weight:700}
+    .rv-cside-open-text{margin:1rem 0 0;color:var(--color-body);font-size:.95rem;line-height:1.55}
     .rv-cside-list{list-style:none;margin:1rem 0 0;padding:0;display:grid;gap:.85rem}
     .rv-cside-list li{display:flex;align-items:center;gap:.75rem;color:var(--color-body);font-size:.95rem}
     .rv-cside-ico{flex:none;color:var(--color-clay)}
     .rv-cside-list a{color:var(--color-ink);font-weight:600;text-decoration:none;word-break:break-word}
     .rv-cside-list a:hover{color:var(--color-clay)}
-    /* Local service area */
     .rv-clocal-towns{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:2rem}
     .rv-clocal-town{background:var(--color-paper,#fff);border:1px solid var(--color-line);border-radius:999px;padding:.5rem 1rem;font-family:var(--font-display);font-weight:700;font-size:.92rem;color:var(--color-ink)}
     .rv-clocal-town:hover{border-color:var(--color-sage)}
+    @media(prefers-reduced-motion:reduce){a.rv-cway:hover{transform:none}.rv-cnt-why-jump svg{transition:none}}
   </style>
 @endsection
