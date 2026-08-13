@@ -549,7 +549,7 @@ html[data-theme="dark"] .rv-theme-toggle .rv-moon { display: inline; }
 .rv-pkg-feat { border-color: var(--color-clay); box-shadow: var(--shadow-lift); }
 
 /* Region chips */
-.rv-chips { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.25rem; }
+.rv-chips { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 1.25rem; list-style: none; padding: 0; }
 .rv-mchip { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; border: 1.5px solid var(--color-line); color: var(--color-pine); padding: 0.4rem 0.85rem; border-radius: 999px; }
 
 /* Split feature (media + body) */
@@ -567,7 +567,7 @@ html[data-theme="dark"] .rv-theme-toggle .rv-moon { display: inline; }
 .rv-proof-head, .rv-rooted-head { max-width: 62ch; margin-bottom: 1.75rem; }
 .rv-proof {
 	display: grid;
-	grid-template-columns: minmax(0, 1fr) minmax(0, 1.08fr);
+	grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
 	grid-template-rows: minmax(280px, 1fr) auto;
 	border: 1.5px solid var(--color-line);
 	border-radius: 18px;
@@ -577,10 +577,11 @@ html[data-theme="dark"] .rv-theme-toggle .rv-moon { display: inline; }
 }
 .rv-proof-visual { grid-row: 1; min-height: 320px; }
 .rv-proof-body { grid-row: 1; padding: clamp(1.5rem, 3.2vw, 2.4rem); display: flex; flex-direction: column; }
-.rv-proof-title { font-size: clamp(1.35rem, 2.4vw, 1.75rem); margin: 0.35rem 0 0.55rem; }
+.rv-proof-title { font-size: clamp(1.45rem, 2.6vw, 1.95rem); margin: 0.3rem 0 0; }
+.rv-proof-where { margin: 0.45rem 0 0; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
+.rv-proof-body .rv-feature-text { margin-top: 0.7rem; max-width: 46ch; }
 .rv-proof-actions, .rv-rooted-actions { display: flex; flex-wrap: wrap; gap: 0.65rem; margin-top: 1.35rem; }
 .rv-proof-body .rv-proof-actions { margin-top: auto; padding-top: 1.35rem; }
-.rv-rooted-copy .rv-scan { margin-top: 0; }
 .rv-proof-metrics {
 	grid-column: 1 / -1;
 	display: grid;
@@ -588,17 +589,22 @@ html[data-theme="dark"] .rv-theme-toggle .rv-moon { display: inline; }
 	gap: 0.75rem 1.25rem;
 	list-style: none;
 	margin: 0;
-	padding: 1.15rem clamp(1.25rem, 3vw, 2rem);
+	padding: 1.05rem clamp(1.25rem, 3vw, 2rem);
 	background: var(--color-pine-deep);
 }
 .rv-proof-metrics li { display: flex; flex-direction: column; gap: 0.2rem; min-width: 0; }
-.rv-proof-metrics .rv-metric-v { color: var(--color-wheat); font-size: clamp(1.55rem, 3vw, 2.05rem); }
+.rv-proof-metrics .rv-metric-v { color: var(--color-wheat); font-size: clamp(1.35rem, 2.6vw, 1.85rem); }
 .rv-proof-metrics .rv-metric-l { color: #cdd7c6; margin-top: 0; }
-.rv-scan { list-style: none; margin: 1rem 0 0; padding: 0; display: flex; flex-direction: column; gap: 0.85rem; }
-.rv-scan li { display: grid; grid-template-columns: auto minmax(0, 1fr); gap: 0.15rem 0.85rem; align-items: start; }
-.rv-scan-n { font-family: var(--font-serif); font-size: 1.45rem; line-height: 1.1; color: var(--color-clay); }
-.rv-scan h3, .rv-scan h4 { font-size: 1.02rem; margin: 0; line-height: 1.25; }
-.rv-scan p { margin: 0.2rem 0 0; font-size: 0.92rem; line-height: 1.5; color: var(--color-muted); }
+.rv-proof-outcomes { margin-top: 1.5rem; }
+.rv-proof-outcomes-label { font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); margin: 0 0 0.75rem; }
+.rv-proof-outcomes-grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+.rv-proof-outcome { margin: 0; padding: 1.25rem 1.2rem 1.15rem; }
+.rv-proof-outcome h3 { font-size: 1.08rem; margin: 0; line-height: 1.25; }
+.rv-proof-outcome p { margin: 0.45rem 0 0; font-size: 0.94rem; line-height: 1.55; color: var(--color-muted); }
+.rv-reasons { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 1.15rem; }
+.rv-reasons li { margin: 0; padding: 0 0 0 1rem; border-left: 3px solid var(--color-clay); }
+.rv-reasons h3 { font-size: 1.08rem; margin: 0; line-height: 1.25; }
+.rv-reasons p { margin: 0.3rem 0 0; font-size: 0.95rem; line-height: 1.55; color: var(--color-muted); }
 .rv-rooted {
 	display: grid;
 	grid-template-columns: minmax(0, 1.08fr) minmax(0, 0.92fr);
@@ -608,19 +614,31 @@ html[data-theme="dark"] .rv-theme-toggle .rv-moon { display: inline; }
 	box-shadow: var(--shadow-soft);
 	background: var(--color-surface);
 }
-.rv-rooted-copy { padding: clamp(1.5rem, 3.2vw, 2.4rem); }
-.rv-rooted-visual { min-height: 360px; }
-.rv-rooted-places { margin-top: 1.35rem; }
-.rv-rooted-places .rv-chips { margin-top: 0.5rem; }
+.rv-rooted-copy { padding: clamp(1.5rem, 3.2vw, 2.4rem); display: flex; flex-direction: column; }
+.rv-rooted-visual { min-height: 100%; }
+.rv-rooted-pin {
+	position: absolute; z-index: 2; left: 0.85rem; bottom: 0.85rem; margin: 0;
+	font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase;
+	color: #fff; background: rgba(33, 61, 51, 0.9); padding: 0.4rem 0.75rem; border-radius: 999px;
+}
+.rv-rooted-places { margin-top: 1.5rem; }
+.rv-rooted-places-intro { margin: 0 0 0.75rem; font-size: 0.98rem; line-height: 1.5; color: var(--color-body); max-width: 46ch; }
+.rv-rooted-places .rv-chips { margin-top: 0.45rem; }
 .rv-rooted-places-label { font-family: var(--font-mono); font-size: 0.66rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--color-muted); margin: 0; }
+.rv-rooted-copy .rv-rooted-actions { margin-top: auto; padding-top: 1.5rem; }
+@media (max-width: 900px) {
+	.rv-proof-outcomes-grid { grid-template-columns: 1fr; }
+}
 @media (max-width: 820px) {
 	.rv-proof { grid-template-columns: 1fr; grid-template-rows: auto; }
 	.rv-proof-visual { min-height: 220px; aspect-ratio: 16 / 10; }
 	.rv-rooted { grid-template-columns: 1fr; }
 	.rv-rooted-visual { order: -1; min-height: 220px; aspect-ratio: 16 / 10; }
+	.rv-rooted-pin { bottom: 2.4rem; }
 }
-@media (max-width: 520px) {
-	.rv-proof-metrics { grid-template-columns: 1fr; }
+@media (max-width: 640px) {
+	.rv-proof-metrics { gap: 0.5rem 0.75rem; padding: 0.9rem 1rem; }
+	.rv-proof-metrics .rv-metric-v { font-size: 1.15rem; }
 }
 
 /* Metrics row */

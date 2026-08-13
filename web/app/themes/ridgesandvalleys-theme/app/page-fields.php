@@ -365,22 +365,43 @@ function svc_care_packages(?int $post_id = null): array
 }
 
 /**
- * Homepage “Proof, not promises” metrics — shown on every featured-work card
- * so the section stays scannable even when a Project post supplies the story.
+ * Homepage “Proof, not promises” metrics — studio-level fallback when the
+ * featured Project has no metric fields of its own.
  *
  * @return list<array{v:string,l:string}>
  */
 function home_proof_metric_defaults(): array
 {
     return [
-        ['v' => __('7 days', 'sage'), 'l' => __('first draft', 'sage')],
+        ['v' => __('7 days', 'sage'), 'l' => __('to first draft', 'sage')],
         ['v' => __('AA', 'sage'), 'l' => __('accessibility', 'sage')],
         ['v' => __('100%', 'sage'), 'l' => __('you own the site', 'sage')],
     ];
 }
 
 /**
- * Outcome bullets under the featured story (studio-level, not tied to one client).
+ * Project-specific proof stats (_rv_m1..m3). Empty when the post has none,
+ * so the template can fall back to home_proof_metric_defaults().
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function home_proof_project_metrics(int $post_id): array
+{
+    $out = [];
+    for ($n = 1; $n <= 3; $n++) {
+        $v = (string) get_post_meta($post_id, "_rv_m{$n}_value", true);
+        $l = (string) get_post_meta($post_id, "_rv_m{$n}_label", true);
+        if (trim($v) === '') {
+            continue;
+        }
+        $out[] = ['v' => $v, 'l' => $l];
+    }
+
+    return $out;
+}
+
+/**
+ * Outcome cards under the featured story (studio-level, not tied to one client).
  *
  * @return list<array{title:string,text:string}>
  */
@@ -389,11 +410,11 @@ function home_proof_point_defaults(): array
     return [
         [
             'title' => __('Easy to reach', 'sage'),
-            'text'  => __('Hours, phone, and a clear next step on every page — not buried in a PDF.', 'sage'),
+            'text'  => __('Hours, phone, and one clear next step on every page — not buried in a PDF.', 'sage'),
         ],
         [
             'title' => __('Built to be found', 'sage'),
-            'text'  => __('Local SEO and a page Google can index, so Adams County searches can actually land.', 'sage'),
+            'text'  => __('Local SEO so Gettysburg and Adams County searches can land on the right page.', 'sage'),
         ],
         [
             'title' => __('Shipped in days', 'sage'),
@@ -403,7 +424,7 @@ function home_proof_point_defaults(): array
 }
 
 /**
- * “Built here” scan points — why a Gettysburg studio is the point, not a town dump.
+ * “Built here” reasons — why a Gettysburg studio is the point, not a town dump.
  *
  * @return list<array{title:string,text:string}>
  */
@@ -412,15 +433,15 @@ function home_rooted_point_defaults(): array
     return [
         [
             'title' => __('Meet in Gettysburg', 'sage'),
-            'text'  => __('Coffee, a shop visit, or a screen share. You’re talking to the person who builds the site.', 'sage'),
+            'text'  => __('Coffee, a shop visit, or a screen share. You talk to the person who builds the site.', 'sage'),
         ],
         [
             'title' => __('Same-day replies', 'sage'),
             'text'  => __('No account manager, no ticket queue. Questions go straight to the studio.', 'sage'),
         ],
         [
-            'title' => __('We know the ground', 'sage'),
-            'text'  => __('Seasonal traffic, battlefield visitors, and the towns around Adams County — this is home.', 'sage'),
+            'title' => __('We know this ground', 'sage'),
+            'text'  => __('Battlefield weekends, farm-stand seasons, and the towns around Adams County.', 'sage'),
         ],
     ];
 }
@@ -649,20 +670,22 @@ function page_field_map(): array
                 ['proof_eyebrow', __('Eyebrow', 'sage'), 'text', __('Proof, not promises', 'sage')],
                 ['proof_title', __('Heading (before accent)', 'sage'), 'text', __('Gettysburg web design', 'sage')],
                 ['proof_accent', __('Accent word', 'sage'), 'text', __('results.', 'sage')],
-                ['proof_lede', __('Intro under the heading', 'sage'), 'textarea', __('Real work for Adams County businesses — not stock screenshots and a pitch deck. Here’s what a focused rebuild actually looks like.', 'sage')],
+                ['proof_lede', __('Intro under the heading', 'sage'), 'textarea', __('A real project — then the three things every Gettysburg web design rebuild is built to do for Adams County businesses.', 'sage')],
                 ['proof_client', __('Fallback story · client line (used when no Project post exists)', 'sage'), 'text', __('Bradley Goldsmith Law · Local Launch', 'sage')],
                 ['proof_story_title', __('Fallback story · heading', 'sage'), 'text', __('A clearer path from visitor to consultation.', 'sage')],
                 ['proof_story_text', __('Fallback story · paragraph', 'sage'), 'textarea', __('A focused five-page rebuild that made the firm easy to reach and easy to trust — shipped in a week.', 'sage')],
-                ['proof_points', __('What the work delivers', 'sage'), 'repeater', home_proof_point_defaults(), [
+                ['proof_location', __('Fallback story · location line', 'sage'), 'text', __('Gettysburg, PA · Adams County', 'sage')],
+                ['proof_outcomes_label', __('Label above the three outcome cards', 'sage'), 'text', __('What the site has to do', 'sage')],
+                ['proof_points', __('What the work delivers (three cards under the story)', 'sage'), 'repeater', home_proof_point_defaults(), [
                     ['title', __('Point title', 'sage'), 'text'],
                     ['text', __('Point text', 'sage'), 'textarea'],
                 ]],
-                ['proof_metrics', __('Proof stats (bar under the card)', 'sage'), 'repeater', home_proof_metric_defaults(), [
+                ['proof_metrics', __('Fallback stats (used when the featured Project has no metric fields)', 'sage'), 'repeater', home_proof_metric_defaults(), [
                     ['v', __('Value', 'sage'), 'text'],
                     ['l', __('Label', 'sage'), 'text'],
                 ]],
                 ['proof_cta', __('Primary button (no Project post)', 'sage'), 'text', __('See the work', 'sage')],
-                ['proof_cta_case', __('Primary button (when a Project post is featured)', 'sage'), 'text', __('Read the case study', 'sage')],
+                ['proof_cta_case', __('Primary button (when a Project post is featured)', 'sage'), 'text', __('See this project', 'sage')],
                 ['proof_cta2', __('Secondary button', 'sage'), 'text', __('See all work', 'sage')],
             ],
             __('Rooted / local section', 'sage') => [
@@ -670,12 +693,15 @@ function page_field_map(): array
                 ['rooted_h2', __('Heading (before accent)', 'sage'), 'text', __('Built in', 'sage')],
                 ['rooted_h2_accent', __('Accent word', 'sage'), 'text', __('Gettysburg.', 'sage')],
                 ['rooted_h2_end', __('Heading (after accent)', 'sage'), 'text', __('Supported here.', 'sage')],
-                ['rooted_lede', __('Intro under the heading', 'sage'), 'textarea', __('Family-owned web design in Adams County — in-person when you want it, and still here after launch.', 'sage')],
+                ['rooted_lede', __('Intro under the heading', 'sage'), 'textarea', __('A family-owned Gettysburg web design studio. Meet in town when that’s easier, and get the same person after launch — not a ticket queue.', 'sage')],
                 ['rooted_points', __('Why local matters', 'sage'), 'repeater', home_rooted_point_defaults(), [
                     ['title', __('Point title', 'sage'), 'text'],
                     ['text', __('Point text', 'sage'), 'textarea'],
                 ]],
+                ['rooted_places_intro', __('Sentence above the region chips (local SEO)', 'sage'), 'textarea', __('Web design for Gettysburg, Adams County, and the ridges around South Mountain.', 'sage')],
+                ['rooted_places_label', __('Small label over the region chips', 'sage'), 'text', __('Adams County & nearby', 'sage')],
                 ['rooted_regions', __('Region chips (comma-separated)', 'sage'), 'text', 'Gettysburg, Adams County, Cumberland Valley, South Mountain, Michaux'],
+                ['rooted_pin', __('Location chip on the photo', 'sage'), 'text', __('Gettysburg, Pennsylvania', 'sage')],
                 ['rooted_cta', __('Primary button', 'sage'), 'text', __('More about us', 'sage')],
                 ['rooted_cta2', __('Secondary button', 'sage'), 'text', __('Get a quote', 'sage')],
             ],
