@@ -365,6 +365,67 @@ function svc_care_packages(?int $post_id = null): array
 }
 
 /**
+ * Homepage “Proof, not promises” metrics — shown on every featured-work card
+ * so the section stays scannable even when a Project post supplies the story.
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function home_proof_metric_defaults(): array
+{
+    return [
+        ['v' => __('7 days', 'sage'), 'l' => __('first draft', 'sage')],
+        ['v' => __('AA', 'sage'), 'l' => __('accessibility', 'sage')],
+        ['v' => __('100%', 'sage'), 'l' => __('you own the site', 'sage')],
+    ];
+}
+
+/**
+ * Outcome bullets under the featured story (studio-level, not tied to one client).
+ *
+ * @return list<array{title:string,text:string}>
+ */
+function home_proof_point_defaults(): array
+{
+    return [
+        [
+            'title' => __('Easy to reach', 'sage'),
+            'text'  => __('Hours, phone, and a clear next step on every page — not buried in a PDF.', 'sage'),
+        ],
+        [
+            'title' => __('Built to be found', 'sage'),
+            'text'  => __('Local SEO and a page Google can index, so Adams County searches can actually land.', 'sage'),
+        ],
+        [
+            'title' => __('Shipped in days', 'sage'),
+            'text'  => __('A working first draft in about a week, not a three-month agency calendar.', 'sage'),
+        ],
+    ];
+}
+
+/**
+ * “Built here” scan points — why a Gettysburg studio is the point, not a town dump.
+ *
+ * @return list<array{title:string,text:string}>
+ */
+function home_rooted_point_defaults(): array
+{
+    return [
+        [
+            'title' => __('Meet in Gettysburg', 'sage'),
+            'text'  => __('Coffee, a shop visit, or a screen share. You’re talking to the person who builds the site.', 'sage'),
+        ],
+        [
+            'title' => __('Same-day replies', 'sage'),
+            'text'  => __('No account manager, no ticket queue. Questions go straight to the studio.', 'sage'),
+        ],
+        [
+            'title' => __('We know the ground', 'sage'),
+            'text'  => __('Seasonal traffic, battlefield visitors, and the towns around Adams County — this is home.', 'sage'),
+        ],
+    ];
+}
+
+/**
  * Baseline inclusions for the services “What every build includes” grid.
  * Shared by the template defaults and the Page content repeater.
  *
@@ -584,12 +645,39 @@ function page_field_map(): array
                 ['pkg4_desc', __('Package 4 · description', 'sage'), 'textarea', __('Updates, backups, security, small changes, reporting.', 'sage')],
                 ['pkg_cta', __('“Compare all services” button label', 'sage'), 'text', __('Compare all services', 'sage')],
             ],
-            __('Rooted section', 'sage') => [
-                ['rooted_eyebrow', __('Eyebrow', 'sage'), 'text', __('Rooted in the ridges & valleys', 'sage')],
-                ['rooted_title', __('Heading', 'sage'), 'text', __('Built here.', 'sage')],
-                ['rooted_accent', __('Accent word', 'sage'), 'text', __('Supported', 'sage')],
-                ['rooted_text', __('Paragraph', 'sage'), 'textarea', __('From the Cumberland Valley to South Mountain, Michaux, and the fields around Gettysburg — this is home. I build for the businesses that make this place what it is, and I\'m proud of the history that comes with the address.', 'sage')],
-                ['rooted_chips', __('Region chips (comma-separated)', 'sage'), 'text', 'Gettysburg, Adams County, Cumberland Valley, South Mountain, Michaux'],
+            __('Featured work / proof', 'sage') => [
+                ['proof_eyebrow', __('Eyebrow', 'sage'), 'text', __('Proof, not promises', 'sage')],
+                ['proof_title', __('Heading (before accent)', 'sage'), 'text', __('Gettysburg web design', 'sage')],
+                ['proof_accent', __('Accent word', 'sage'), 'text', __('results.', 'sage')],
+                ['proof_lede', __('Intro under the heading', 'sage'), 'textarea', __('Real work for Adams County businesses — not stock screenshots and a pitch deck. Here’s what a focused rebuild actually looks like.', 'sage')],
+                ['proof_client', __('Fallback story · client line (used when no Project post exists)', 'sage'), 'text', __('Bradley Goldsmith Law · Local Launch', 'sage')],
+                ['proof_story_title', __('Fallback story · heading', 'sage'), 'text', __('A clearer path from visitor to consultation.', 'sage')],
+                ['proof_story_text', __('Fallback story · paragraph', 'sage'), 'textarea', __('A focused five-page rebuild that made the firm easy to reach and easy to trust — shipped in a week.', 'sage')],
+                ['proof_points', __('What the work delivers', 'sage'), 'repeater', home_proof_point_defaults(), [
+                    ['title', __('Point title', 'sage'), 'text'],
+                    ['text', __('Point text', 'sage'), 'textarea'],
+                ]],
+                ['proof_metrics', __('Proof stats (bar under the card)', 'sage'), 'repeater', home_proof_metric_defaults(), [
+                    ['v', __('Value', 'sage'), 'text'],
+                    ['l', __('Label', 'sage'), 'text'],
+                ]],
+                ['proof_cta', __('Primary button (no Project post)', 'sage'), 'text', __('See the work', 'sage')],
+                ['proof_cta_case', __('Primary button (when a Project post is featured)', 'sage'), 'text', __('Read the case study', 'sage')],
+                ['proof_cta2', __('Secondary button', 'sage'), 'text', __('See all work', 'sage')],
+            ],
+            __('Rooted / local section', 'sage') => [
+                ['rooted_kicker', __('Eyebrow', 'sage'), 'text', __('A local studio, not a remote agency', 'sage')],
+                ['rooted_h2', __('Heading (before accent)', 'sage'), 'text', __('Built in', 'sage')],
+                ['rooted_h2_accent', __('Accent word', 'sage'), 'text', __('Gettysburg.', 'sage')],
+                ['rooted_h2_end', __('Heading (after accent)', 'sage'), 'text', __('Supported here.', 'sage')],
+                ['rooted_lede', __('Intro under the heading', 'sage'), 'textarea', __('Family-owned web design in Adams County — in-person when you want it, and still here after launch. The towns we serve are listed below.', 'sage')],
+                ['rooted_points', __('Why local matters', 'sage'), 'repeater', home_rooted_point_defaults(), [
+                    ['title', __('Point title', 'sage'), 'text'],
+                    ['text', __('Point text', 'sage'), 'textarea'],
+                ]],
+                ['rooted_regions', __('Region chips (comma-separated)', 'sage'), 'text', 'Gettysburg, Adams County, Cumberland Valley, South Mountain, Michaux'],
+                ['rooted_cta', __('Primary button', 'sage'), 'text', __('More about us', 'sage')],
+                ['rooted_cta2', __('Secondary button', 'sage'), 'text', __('Get a quote', 'sage')],
             ],
             __('Testimonial', 'sage') => [
                 ['testimonial_quote', __('Quote', 'sage'), 'textarea', __('“Matt made it painless — and now people actually call us from the site.”', 'sage')],
@@ -606,6 +694,10 @@ function page_field_map(): array
                 ['hero_btn2_url', __('Hero button 2 link (“See the process”)', 'sage'), 'url', __('e.g. /services/', 'sage')],
                 ['cta_button_url', __('Closing CTA button link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
                 ['pkg_cta_url', __('“Compare all services” button link', 'sage'), 'url', __('e.g. /services/', 'sage')],
+                ['proof_cta_url', __('Featured work · primary button (no Project post)', 'sage'), 'url', '/work/'],
+                ['proof_cta2_url', __('Featured work · “See all work” link', 'sage'), 'url', '/work/'],
+                ['rooted_cta_url', __('Rooted section · “More about us” link', 'sage'), 'url', '/about/'],
+                ['rooted_cta2_url', __('Rooted section · “Get a quote” link', 'sage'), 'url', '/contact/'],
             ],
             __('Hero trust line', 'sage') => [
                 ['hero_trust', __('Trust line under the buttons', 'sage'), 'text', __('15+ yrs building for the web · Accessibility-first · WordPress · Local support', 'sage')],
