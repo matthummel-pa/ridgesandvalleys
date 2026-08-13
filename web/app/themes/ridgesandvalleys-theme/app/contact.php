@@ -102,6 +102,11 @@ function contact_inquiry_package(): string
         return '';
     }
 
+    $from_slug = svc_package_name_from_slug($raw);
+    if ($from_slug !== '') {
+        return $from_slug;
+    }
+
     return $raw;
 }
 

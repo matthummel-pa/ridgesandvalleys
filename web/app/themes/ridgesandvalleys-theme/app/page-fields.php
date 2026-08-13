@@ -309,9 +309,14 @@ function svc_packages(?int $post_id = null): array
 
 /**
  * Button href for a services package. A saved URL wins; otherwise the contact
- * form with this package named in the query string, so each card goes to a
- * distinct destination and the form can pre-fill.
+ * form with this package’s slug in the query string (never the display name —
+ * “Care & Grow” would split on &). The form looks the slug back up to a name.
  */
+function svc_package_slug(array $pkg): string
+{
+    return sanitize_title(strip_field_markers((string) ($pkg['name'] ?? '')));
+}
+
 function svc_package_href(array $pkg): string
 {
     $custom = strip_field_markers((string) ($pkg['url'] ?? ''));
@@ -319,15 +324,32 @@ function svc_package_href(array $pkg): string
         return cta_href($custom);
     }
     $base = cta_href((string) get_theme_mod('rv_cta_url', '/contact/'));
-    $name = trim(strip_field_markers((string) ($pkg['name'] ?? '')));
-    if ($name !== '') {
-        $base = add_query_arg('package', $name, $base);
+    $slug = svc_package_slug($pkg);
+    if ($slug !== '') {
+        $base = add_query_arg('package', $slug, $base);
     }
     if (! str_contains($base, '#')) {
         $base .= '#contact-form';
     }
 
     return $base;
+}
+
+/** Display name for a package slug (website-rescue → Website Rescue). */
+function svc_package_name_from_slug(string $slug): string
+{
+    $slug = sanitize_title($slug);
+    if ($slug === '') {
+        return '';
+    }
+    foreach (svc_package_defaults() as $p) {
+        $name = strip_field_markers((string) ($p['name'] ?? ''));
+        if (sanitize_title($name) === $slug) {
+            return $name;
+        }
+    }
+
+    return '';
 }
 
 /** Project packages (comparison grid) for the services page. */
