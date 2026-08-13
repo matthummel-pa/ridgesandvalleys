@@ -7,12 +7,12 @@
     <ol class="rv-toc-list"></ol>
   </nav>
 
-  {{-- Free audit CTA --}}
+  {{-- Quote CTA — same primary as the Journal closer. --}}
   <div class="rv-side-card rv-side-cta">
-    <span class="rv-side-eyebrow">{{ __('Free · no pressure', 'sage') }}</span>
-    <h2 class="rv-side-title">{{ __('A second set of eyes on your site?', 'sage') }}</h2>
-    <p class="rv-side-text">{{ __("I'll record a free 5-minute video walkthrough of your website — the first things I'd fix. No pitch.", 'sage') }}</p>
-    <a class="rv-btn rv-btn-primary rv-side-btn" href="{{ home_url('/contact/') }}">{{ __('Get my free audit', 'sage') }}</a>
+    <span class="rv-side-eyebrow">{{ __('Fixed price · no pressure', 'sage') }}</span>
+    <h2 class="rv-side-title">{{ __('Ready to build yours?', 'sage') }}</h2>
+    <p class="rv-side-text">{{ __('Tell me about the Gettysburg or Adams County business. I’ll come back with a fixed-scope idea — usually within a business day.', 'sage') }}</p>
+    <a class="rv-btn rv-btn-primary rv-side-btn" href="{{ \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')) }}">{{ __('Get a quote', 'sage') }}</a>
   </div>
 
   {{-- Free website tools (internal links) --}}

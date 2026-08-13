@@ -38,8 +38,8 @@ function rv_seo_meta_map(): array
         ],
         // kw: gettysburg web design blog / local seo tips
         'blog' => [
-            "Web Design & Local SEO Tips for Gettysburg | Ridges & Valleys",
-            "Plain-English web design and local SEO tips for Gettysburg, Adams County & South Central PA business owners — turn your site into more calls. Read the journal.",
+            "Gettysburg Web Design Guides — Then Get a Quote | Ridges & Valleys",
+            "Honest buying guides for Gettysburg & Adams County owners: cost, Google Maps, Wix vs a local designer. Read one, then get a fixed-price quote.",
         ],
         // kw: gettysburg web designer
         'about' => [

@@ -74,58 +74,29 @@
     </div>
   @endif
 
-  <div class="rv-entry" style="margin-top:2.5rem">
+  {{-- Trust, not a competing CTA — the full closer sits full-width under the article. --}}
+  @php($authorName = (string) get_the_author_meta('display_name'))
+  @php($authorName = ($authorName !== '' && ! str_contains($authorName, '@')) ? $authorName : __('Matt Hummel', 'sage'))
+  <div class="rv-entry rv-single-trust">
     <div class="rv-author">
       <span class="rv-author-avatar" aria-hidden="true"></span>
       <div>
-        <strong>{{ get_the_author_meta('display_name') ?: __('Matt Hummel', 'sage') }}</strong><br>
-        <span>{{ get_theme_mod('rv_post_author_bio', __('Founder of Ridges & Valleys Studio. 15 years as a WordPress developer, now building fast, accessible websites for Gettysburg and South Central PA.', 'sage')) }}</span>
+        <span class="rv-author-kicker">{{ __('Written by a Gettysburg web designer', 'sage') }}</span>
+        <strong>{{ $authorName }}</strong>
+        <span class="rv-author-bio">{{ get_theme_mod('rv_post_author_bio', __('Founder of Ridges & Valleys Studio. 15 years as a WordPress developer, now building fast, accessible websites for Gettysburg and South Central PA.', 'sage')) }}</span>
+        <a class="rv-author-more" href="{{ home_url('/gettysburg-web-design/') }}">{{ __('About the studio', 'sage') }} {!! \App\icon('arrow') !!}</a>
       </div>
     </div>
-    <p style="text-align:center;margin-top:1.75rem">
-      <a class="rv-btn rv-btn-primary" href="{{ \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')) }}">{{ get_theme_mod('rv_audit_btn_text', __('Get a free 5-minute audit', 'sage')) }}</a>
-    </p>
   </div>
-
-  @php($related = \App\related_posts(3))
-  @if (! empty($related))
-    <section class="rv-shell rv-single-related" style="margin-top:3.5rem">
-      <h2 class="rv-section-title" style="font-size:clamp(1.4rem,3vw,1.9rem)">{{ __('Read', 'sage') }} <em class="rv-accent">{{ __('next.', 'sage') }}</em></h2>
-      <div class="rv-blog-grid" style="margin-top:1.75rem">
-        @foreach ($related as $rp)
-          <article class="rv-card rv-blogcard">
-            @php($rimg = \App\blog_post_image($rp))
-            <a class="rv-blogcard-thumb {{ $rimg ? '' : 'is-placeholder' }}" href="{{ get_permalink($rp) }}" tabindex="-1" aria-hidden="true">
-              @if ($rimg)<img src="{{ $rimg }}" alt="{{ get_the_title($rp) }}" loading="lazy">@endif
-            </a>
-            <div class="rv-blogcard-body">
-              @php($rcat = get_the_category($rp->ID))
-              @if ($rcat)<span class="rv-eyebrow">{{ html_entity_decode($rcat[0]->name) }}</span>@endif
-              <h3 class="rv-blogcard-title"><a href="{{ get_permalink($rp) }}">{!! get_the_title($rp) !!}</a></h3>
-              <p class="rv-blog-meta">{{ get_the_date('', $rp) }} · {{ \App\reading_time($rp->ID) }}</p>
-            </div>
-          </article>
-        @endforeach
-      </div>
-    </section>
-  @endif
-
-  <footer class="rv-entry rv-single-nav">
-    @php(the_post_navigation(['prev_text' => '<span class="rv-nav-label">' . __('Previous', 'sage') . '</span> <span class="rv-nav-title">%title</span>', 'next_text' => '<span class="rv-nav-label">' . __('Next', 'sage') . '</span> <span class="rv-nav-title">%title</span>']))
-  </footer>
 </article>
 
 @if (get_theme_mod('rv_float_cta_enable', true))
   @php($rvCtaHref = \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')))
   <aside class="rv-floating-cta" id="rv-floating-cta" hidden>
     <button type="button" class="rv-floating-close" aria-label="{{ __('Dismiss', 'sage') }}">&times;</button>
-    <p class="rv-floating-title">{{ get_theme_mod('rv_float_cta_title', __('Want a second set of eyes on your site?', 'sage')) }}</p>
-    <a class="rv-btn rv-btn-primary rv-floating-btn" href="{{ $rvCtaHref }}">{{ get_theme_mod('rv_float_cta_btn', __('Get a free 5-min audit', 'sage')) }}</a>
+    <p class="rv-floating-title">{{ get_theme_mod('rv_float_cta_title', __('Ready to stop guessing?', 'sage')) }}</p>
+    <a class="rv-btn rv-btn-primary rv-floating-btn" href="{{ $rvCtaHref }}">{{ get_theme_mod('rv_float_cta_btn', __('Get a quote', 'sage')) }}</a>
   </aside>
-@endif
-
-@if (comments_open() || get_comments_number())
-  <div class="rv-entry">@php(comments_template())</div>
 @endif
 
 <script>
@@ -172,7 +143,7 @@
         if (thanks) {
           thanks.hidden = false;
           thanks.innerHTML = yes
-            ? 'Glad it helped. If you\'d like this handled for you, <a href="' + cta + '">tell me about your site</a>.'
+            ? 'Glad it helped. If you\'d like this handled for you, <a href="' + cta + '">get a quote</a>.'
             : 'Thanks for the honesty — <a href="' + cta + '">tell me what was missing</a> and I\'ll improve it.';
         }
       });
