@@ -332,7 +332,8 @@ html[data-theme="dark"] .rv-share-btn { color: var(--color-ink); }
 .rv-nav-transparent.rv-nav-static .rv-banner { position: absolute; }
 .rv-nav-transparent .rv-topbar { background: transparent; border-bottom: 0; }
 .rv-nav-transparent .rv-header { background: transparent; border-bottom-color: transparent; -webkit-backdrop-filter: none; backdrop-filter: none; }
-.rv-nav-transparent .rv-hero { padding-top: clamp(7.25rem, 14vw, 10.25rem); }
+.rv-nav-transparent .rv-hero,
+.rv-nav-transparent .rv-entry-hero { padding-top: clamp(7.25rem, 14vw, 10.25rem); }
 /* Light text/icons over the (dark) hero */
 .rv-nav-transparent .rv-nav-list a,
 .rv-nav-transparent .rv-brand-name,

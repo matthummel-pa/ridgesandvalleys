@@ -227,8 +227,11 @@ add_filter('body_class', function ($classes) {
     if (! get_theme_mod('rv_header_sticky', true)) {
         $classes[] = 'rv-nav-static';
     }
-    // Transparent header only where a full-bleed hero exists at the top.
-    if (get_theme_mod('rv_header_transparent', false) && (is_front_page() || is_page() || is_home())) {
+    // Transparent header only where a full-bleed hero exists at the top
+    // (home, pages, Journal index, and journal posts that render .rv-entry-hero).
+    $overlayHero = is_front_page() || is_page() || is_home()
+        || (is_singular('post') && entry_hero_enabled());
+    if (get_theme_mod('rv_header_transparent', false) && $overlayHero) {
         $classes[] = 'rv-nav-transparent';
     }
     if (get_theme_mod('rv_topbar_hide_on_scroll', false)) {
