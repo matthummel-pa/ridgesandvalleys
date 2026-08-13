@@ -292,7 +292,7 @@ add_action('customize_register', function ($wp_customize) {
     $wp_customize->add_setting('rv_header_transparent', ['default' => false, 'sanitize_callback' => 'rest_sanitize_boolean']);
     $wp_customize->add_control('rv_header_transparent', [
         'label'       => __('Transparent header over hero', 'sage'),
-        'description' => __('On pages with a hero, the header overlays the hero image with light text, then turns solid as you scroll.', 'sage'),
+        'description' => __('On pages and journal posts with a hero, the header overlays the hero image with light text, then turns solid as you scroll.', 'sage'),
         'section'     => 'rv_header',
         'type'        => 'checkbox',
     ]);
