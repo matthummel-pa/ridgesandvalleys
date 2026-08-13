@@ -219,6 +219,32 @@ function cta_href(string $url): string
     return (str_starts_with($url, 'http')) ? $url : home_url($url);
 }
 
+/** Live SEO slug for the Services page (the seed slug `services` 404s). */
+function services_path(): string
+{
+    return '/gettysburg-web-design-services/';
+}
+
+/**
+ * Href for the services page. Blank saved values, and the retired `/services/`
+ * path, resolve to the live slug so old homepage links don’t 404.
+ */
+function services_href(string $saved = ''): string
+{
+    $saved = strip_field_markers($saved);
+    if ($saved === '') {
+        return cta_href(services_path());
+    }
+    $path = (string) (parse_url($saved, PHP_URL_PATH) ?: $saved);
+    if (rtrim($path, '/') === '/services') {
+        $hash = parse_url($saved, PHP_URL_FRAGMENT);
+
+        return cta_href(services_path() . ($hash ? '#' . $hash : ''));
+    }
+
+    return cta_href($saved);
+}
+
 /**
  * Attachment IDs for the brand logos, both pulled from the Media Library:
  *  - 'light' is the core Site Identity logo (Customize → Site Identity → Logo)
