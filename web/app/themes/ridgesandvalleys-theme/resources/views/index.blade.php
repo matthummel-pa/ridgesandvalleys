@@ -190,6 +190,7 @@
       .rv-work-empty-all{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--color-clay);cursor:pointer;text-decoration:underline}
       @media(max-width:820px){.rv-jnl-grid{grid-template-columns:1fr}}
       @media(max-width:700px){.rv-work-filters{top:4.75rem}}
+      @media(max-width:640px){.rv-jnl-feature-actions{flex-direction:column;align-items:stretch}.rv-jnl-feature-actions .rv-btn{width:100%;justify-content:center}.rv-jnl-feature-actions .rv-jnl-why-jump{justify-content:center}}
       @media(prefers-reduced-motion:reduce){.rv-jnl-grid{transition:none}.rv-filter{transition:none}.rv-jnl-why-jump svg,.rv-blogcard-more svg{transition:none}}
     </style>
 

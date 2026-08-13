@@ -70,6 +70,7 @@
     .rv-author-more:hover svg{transform:translateX(3px)}
     .rv-single-related{padding-block:clamp(2.25rem,4.5vw,3.5rem)}
     .rv-jnl-related{margin-top:1.5rem}
+    @media(max-width:820px){.rv-jnl-related{grid-template-columns:1fr}}
     .rv-blogcard-more{display:inline-flex;align-items:center;gap:.4rem;margin-top:auto;padding-top:.85rem;font-weight:700;font-size:.85rem;color:var(--color-clay);text-decoration:none}
     .rv-blogcard-more svg{width:15px;height:15px;transition:transform .2s ease}
     .rv-blogcard:hover .rv-blogcard-more svg{transform:translateX(3px)}
