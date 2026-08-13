@@ -758,15 +758,27 @@ html[data-theme="dark"] .rv-plan-care.is-featured { border-color: var(--color-sa
 	.rv-proof-outcomes-grid { grid-template-columns: 1fr; }
 }
 @media (max-width: 820px) {
-	.rv-proof { grid-template-columns: 1fr; grid-template-rows: auto; }
+	/* Reset row/column so photo, copy, and stats stack. Leaving grid-row: 1 on
+	   visual + body creates an implicit second column; metrics (1 / -1) then
+	   only span the skinny explicit track and collapse. */
+	.rv-proof { grid-template-columns: minmax(0, 1fr); grid-template-rows: auto; }
+	.rv-proof-visual,
+	.rv-proof-body,
+	.rv-proof-metrics { grid-column: 1; grid-row: auto; }
 	.rv-proof-visual { min-height: 220px; aspect-ratio: 16 / 10; }
 	.rv-rooted { grid-template-columns: 1fr; }
 	.rv-rooted-visual { order: -1; min-height: 220px; aspect-ratio: 16 / 10; }
 	.rv-rooted-pin { bottom: 2.4rem; }
 }
 @media (max-width: 640px) {
-	.rv-proof-metrics { gap: 0.5rem 0.75rem; padding: 0.9rem 1rem; }
-	.rv-proof-metrics .rv-metric-v { font-size: 1.15rem; }
+	.rv-proof-body { padding: 1.25rem 1.15rem 1.35rem; }
+	.rv-proof-actions { flex-direction: column; align-items: stretch; }
+	.rv-proof-actions .rv-btn { width: 100%; justify-content: center; }
+	.rv-proof-metrics { grid-template-columns: 1fr; gap: 0.7rem; padding: 1rem 1.15rem; }
+	.rv-proof-metrics li { padding-block: 0.15rem; border-block-end: 1px solid rgba(255, 255, 255, 0.12); }
+	.rv-proof-metrics li:last-child { border-block-end: 0; }
+	.rv-proof-metrics .rv-metric-v { font-size: 1.35rem; }
+	.rv-proof-metrics .rv-metric-l { overflow-wrap: anywhere; }
 }
 
 /* Metrics row */
