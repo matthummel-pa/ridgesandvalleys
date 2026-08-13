@@ -43,8 +43,8 @@ function rv_seo_meta_map(): array
         ],
         // kw: gettysburg web designer
         'about' => [
-            "Gettysburg Web Designer, Family-Owned | Ridges & Valleys",
-            "Meet the Gettysburg web designer behind Ridges & Valleys: 15+ years building fast, accessible websites for Adams County & South Central PA. See how I work.",
+            "Gettysburg Web Designer | Ridges & Valleys Studio",
+            "Meet Matt Hummel, a Gettysburg web designer building fast, accessible WordPress sites for Adams County. Family-owned, fixed prices, a site you own. Get a quote.",
         ],
         // kw: gettysburg web design services
         'services' => [
@@ -127,6 +127,9 @@ function rv_seo_meta_current(): ?array
         // Live SEO slug for the Services template (the seed slug is `services`).
         if ($slug === 'gettysburg-web-design-services') {
             return $map['services'] ?? null;
+        }
+        if ($slug === 'gettysburg-web-design') {
+            return $map['about'] ?? null;
         }
         return null;
     }
