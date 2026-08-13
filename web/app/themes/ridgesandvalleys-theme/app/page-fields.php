@@ -207,7 +207,7 @@ function field_rows(string $key, array $default = [], ?int $post_id = null): arr
 
     $rows = (is_array($raw) && $raw !== []) ? array_values($raw) : $default;
     $rows = apply_filters('rv/field_rows', $rows, $key, (int) $post_id, $default);
-    if (empty($rows)) {
+    if (! is_array($rows) || $rows === []) {
         $rows = $default;
     }
 
@@ -551,6 +551,20 @@ function about_proof_defaults(): array
         ['v' => __('WCAG 2.2 AA', 'sage'), 'l' => __('on every page', 'sage')],
         ['v' => __('You own it', 'sage'), 'l' => __('site, domain, hosting', 'sage')],
     ];
+}
+
+/**
+ * About hero proof rows. One-arg-free helper so Blade can call it with
+ * `@php($aboutProof = \App\about_proof())` — nested calls inside `@php(...)`
+ * have been compiled away, leaving `$aboutProof` null and crashing `count()`.
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function about_proof(?int $post_id = null): array
+{
+    $rows = field_rows('about_proof', about_proof_defaults(), $post_id);
+
+    return is_array($rows) ? $rows : about_proof_defaults();
 }
 
 /**

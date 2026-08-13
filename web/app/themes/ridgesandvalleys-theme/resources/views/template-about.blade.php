@@ -19,8 +19,8 @@
       </div>
       <p class="rv-hero-note">{{ \App\field('about_meta', __('Family-owned · Accessibility-first · Serving Gettysburg & South Central PA', 'sage')) }}</p>
     </div>
-    @php($aboutProof = \App\field_rows('about_proof', \App\about_proof_defaults()))
-    @if (count($aboutProof))
+    @php($aboutProof = \App\about_proof())
+    @if (! empty($aboutProof))
       <div class="rv-hero-proof">
         <div class="rv-shell">
           <ul class="rv-hero-stats" aria-label="{{ __('What you can count on', 'sage') }}">
