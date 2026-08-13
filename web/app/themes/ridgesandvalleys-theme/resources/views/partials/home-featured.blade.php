@@ -3,6 +3,7 @@
   $homeId = \App\home_page_id() ?: get_the_ID();
   $featuredImg = \App\field('featured_img', '', $homeId);
   $featuredCredit = \App\field('featured_credit', '', $homeId);
+  $showCredit = false;
   $workHref = \App\cta_href(\App\field('proof_cta2_url', '/work/', $homeId));
   $featured = new WP_Query(['post_type' => 'project', 'posts_per_page' => 1, 'no_found_rows' => true]);
   $hasProject = $featured->have_posts();
@@ -22,7 +23,12 @@
     $storyWhere = (string) get_post_meta($projectId, '_rv_location', true);
     $storyHref = get_permalink();
     $storyCta = \App\field('proof_cta_case', __('See this project', 'sage'), $homeId);
-    $imgSrc = $featuredImg ?: (has_post_thumbnail() ? get_the_post_thumbnail_url($projectId, 'rv-hero') : \App\stock_image('featured'));
+    $projectImg = has_post_thumbnail() ? (string) get_the_post_thumbnail_url($projectId, 'rv-hero') : '';
+    if ($projectImg === '') {
+      $projectImg = (string) get_post_meta($projectId, '_rv_preview', true);
+    }
+    $imgSrc = $projectImg !== '' ? $projectImg : ($featuredImg ?: \App\stock_image('featured'));
+    $showCredit = $projectImg === '';
     $imgAlt = sprintf(/* translators: %s: project title */ __('Gettysburg web design case study: %s', 'sage'), $storyTitlePlain);
     $projectMetrics = \App\home_proof_project_metrics($projectId);
     wp_reset_postdata();
@@ -36,6 +42,7 @@
     $storyCta = \App\field('proof_cta', __('See the work', 'sage'), $homeId);
     $imgSrc = $featuredImg ?: \App\stock_image('featured');
     $imgAlt = __('Gettysburg-area farm buildings — featured Ridges & Valleys web design work', 'sage');
+    $showCredit = true;
   }
   $metrics = $projectMetrics !== [] ? $projectMetrics : \App\field_rows('proof_metrics', \App\home_proof_metric_defaults(), $homeId);
 @endphp
@@ -50,7 +57,7 @@
     <article class="rv-proof">
       <div class="rv-proof-visual rv-media-photo">
         <img src="{{ $imgSrc }}" alt="{{ $imgAlt }}" loading="lazy" onerror="this.style.display='none'">
-        @if (trim($featuredCredit) !== '')<div class="rv-img-credit">{!! nl2br(e($featuredCredit)) !!}</div>@endif
+        @if ($showCredit && trim($featuredCredit) !== '')<div class="rv-img-credit">{!! nl2br(e($featuredCredit)) !!}</div>@endif
       </div>
       <div class="rv-proof-body">
         {!! \App\eyebrow($storyKicker) !!}

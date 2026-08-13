@@ -704,6 +704,7 @@ html[data-theme="dark"] .rv-plan-care.is-featured { border-color: var(--color-sa
 	background: var(--color-surface);
 }
 .rv-proof-visual { grid-row: 1; min-height: 320px; }
+.rv-proof-visual > img { object-position: top center; }
 .rv-proof-body { grid-row: 1; padding: clamp(1.5rem, 3.2vw, 2.4rem); display: flex; flex-direction: column; }
 .rv-proof-title { font-size: clamp(1.45rem, 2.6vw, 1.95rem); margin: 0.3rem 0 0; }
 .rv-proof-where { margin: 0.45rem 0 0; font-family: var(--font-mono); font-size: 0.68rem; letter-spacing: 0.08em; text-transform: uppercase; color: var(--color-muted); }
