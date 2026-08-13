@@ -53,6 +53,7 @@
       html[data-theme="dark"] .rv-service-tag,
       html[data-theme="dark"] .rv-pkg-flag,
       html[data-theme="dark"] .rv-plan-for span,
+      html[data-theme="dark"] .rv-intro-step-n,
       html[data-theme="dark"] .rv-toolcard-badge { color: var(--color-wheat); }
       html[data-theme="dark"] .rv-work-more,
       html[data-theme="dark"] .rv-process-note { color: var(--color-sage); }

@@ -83,6 +83,34 @@ function hero_asides(?int $post_id = null): array
 }
 
 /**
+ * Scan-line bullets under “Who we are” on the homepage intro.
+ *
+ * @return list<string>
+ */
+function home_intro_point_defaults(): array
+{
+    return [
+        __('Family-owned in Gettysburg', 'sage'),
+        __('WCAG 2.2 AA, baked in', 'sage'),
+        __('You own the domain, hosting, and site', 'sage'),
+    ];
+}
+
+/**
+ * Three process steps for the homepage intro “How we work” card.
+ *
+ * @return list<array{title:string,text:string}>
+ */
+function home_intro_step_defaults(): array
+{
+    return [
+        ['title' => __('Short call + intake', 'sage'), 'text' => __('One conversation and one form. That’s the brief.', 'sage')],
+        ['title' => __('A first draft in about 7 days', 'sage'), 'text' => __('A working site you can click through — not a slide deck.', 'sage')],
+        ['title' => __('Launch in 7–10 days', 'sage'), 'text' => __('Most local sites go live the same week we start.', 'sage')],
+    ];
+}
+
+/**
  * The registered input type ('text' | 'textarea' | 'html' | 'url' | 'lines' |
  * 'select' | ...) for a scalar field key, scanning page_field_map() across all
  * templates (first match wins). Defaults to 'text'. The live preview uses this to
@@ -573,21 +601,49 @@ function page_field_map(): array
 
     $map = [
         'front-page.blade.php' => [
-            __('Hero', 'sage') => array_merge($hero(
-                __('Gettysburg · Web design · Local growth', 'sage'),
-                __('A better website, without the agency', 'sage'),
-                __('drag.', 'sage'),
-                __('Fast, accessible WordPress websites for Gettysburg, Adams County, and South Central PA businesses — planned with AI, refined by an experienced local developer, and launched without months of meetings.', 'sage')
-            ), [
-                // Optional hero side columns. Fill either/both to make the hero 2- or
-                // 3-column; leave blank for the normal single-column hero.
+            __('Hero', 'sage') => [
+                ['home_kicker', __('Eyebrow', 'sage'), 'text', __('Web design & local SEO · Gettysburg', 'sage')],
+                ['home_headline', __('Headline (before accent)', 'sage'), 'text', __('Gettysburg web design that gets you', 'sage')],
+                ['home_headline_accent', __('Headline accent', 'sage'), 'text', __('found.', 'sage')],
+                ['home_lede', __('Lede (one short paragraph)', 'sage'), 'textarea', __('Fixed-scope WordPress sites for Adams County — local SEO baked in, a first draft in about seven days, and a site you own.', 'sage')],
+                ['home_cta1', __('Button 1 · label', 'sage'), 'text', __('Get a quote', 'sage')],
+                ['home_cta2', __('Button 2 · label', 'sage'), 'text', __('See packages', 'sage')],
+                ['home_byline', __('Byline under the buttons', 'sage'), 'text', __('Family-owned in Gettysburg · Led by Matt Hummel', 'sage')],
+                ['home_cta1_url', __('Button 1 · link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
+                ['home_cta2_url', __('Button 2 · link', 'sage'), 'url', __('e.g. /gettysburg-web-design-services/#packages', 'sage')],
+                ['hero_btn1_style', __('Button 1 · style', 'sage'), 'select', '', [
+                    ''        => __('Theme default', 'sage'),
+                    'primary' => __('Primary (filled)', 'sage'),
+                    'ghost'   => __('Ghost (outline)', 'sage'),
+                ]],
+                ['hero_btn2_style', __('Button 2 · style', 'sage'), 'select', '', [
+                    ''        => __('Theme default', 'sage'),
+                    'primary' => __('Primary (filled)', 'sage'),
+                    'ghost'   => __('Ghost (outline)', 'sage'),
+                ]],
                 ['hero_col2_title', __('Hero column 2 · heading (optional)', 'sage'), 'text', ''],
                 ['hero_col2_body', __('Hero column 2 · content (optional, HTML allowed)', 'sage'), 'html', ''],
                 ['hero_col3_title', __('Hero column 3 · heading (optional)', 'sage'), 'text', ''],
                 ['hero_col3_body', __('Hero column 3 · content (optional, HTML allowed)', 'sage'), 'html', ''],
-            ]),
-            __('Hero buttons', 'sage') => hero_button_rows(),
-            __('Hero typography', 'sage') => hero_typography_rows(),
+            ],
+            __('Intro section', 'sage') => [
+                ['intro_eyebrow', __('Eyebrow', 'sage'), 'text', __('A local studio', 'sage')],
+                ['intro_title', __('Heading (before accent)', 'sage'), 'text', __('Gettysburg web design that', 'sage')],
+                ['intro_accent', __('Accent phrase', 'sage'), 'text', __('brings in customers.', 'sage')],
+                ['intro_who_title', __('Who we are · heading', 'sage'), 'text', __('Who we are', 'sage')],
+                ['intro_who_text', __('Who we are · paragraph', 'sage'), 'textarea', __('Ridges & Valleys Studio builds fast, accessible WordPress websites for small businesses across Gettysburg, Adams County, and South Central Pennsylvania. Led by Matt Hummel, a local developer with more than 15 years of experience, every site is mobile-first, built toward WCAG 2.2 AA, optimized for local search, and fully owned by you.', 'sage')],
+                ['intro_who_points', __('Who we are · scan lines (one per line)', 'sage'), 'lines', home_intro_point_defaults()],
+                ['intro_how_title', __('How we work · heading', 'sage'), 'text', __('How we work', 'sage')],
+                ['intro_steps', __('How we work · steps', 'sage'), 'repeater', home_intro_step_defaults(), [
+                    ['title', __('Step title', 'sage'), 'text'],
+                    ['text', __('Step text', 'sage'), 'textarea'],
+                ]],
+                ['intro_how_text', __('How we work · closer', 'sage'), 'textarea', __('Clear pricing, straightforward communication, and a site designed to turn visitors into calls.', 'sage')],
+                ['intro_link1', __('Link 1 · label', 'sage'), 'text', __('See web design services', 'sage')],
+                ['intro_link1_url', __('Link 1 · URL', 'sage'), 'url', __('e.g. /gettysburg-web-design-services/', 'sage')],
+                ['intro_link2', __('Link 2 · label', 'sage'), 'text', __('Request a quote', 'sage')],
+                ['intro_link2_url', __('Link 2 · URL', 'sage'), 'url', __('e.g. /contact/', 'sage')],
+            ],
             __('Problems section', 'sage') => [
                 ['problems_eyebrow', __('Eyebrow', 'sage'), 'text', __('If this sounds familiar', 'sage')],
                 ['problems_title', __('Heading (before accent)', 'sage'), 'text', __('Your site should', 'sage')],
@@ -625,12 +681,7 @@ function page_field_map(): array
             ),
             __('Media & links', 'sage') => [
                 ['hero_bg', __('Hero background image', 'sage'), 'image', __('Uses the built-in photo until you choose one.', 'sage')],
-                ['hero_btn1_url', __('Hero button 1 link (“Plan my site”)', 'sage'), 'url', __('e.g. /contact/', 'sage')],
-                ['hero_btn2_url', __('Hero button 2 link (“See the process”)', 'sage'), 'url', __('e.g. /services/', 'sage')],
                 ['cta_button_url', __('Closing CTA button link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
-            ],
-            __('Hero trust line', 'sage') => [
-                ['hero_trust', __('Trust line under the buttons', 'sage'), 'text', __('15+ yrs building for the web · Accessibility-first · WordPress · Local support', 'sage')],
             ],
             __('Included in every build', 'sage') => [
                 ['included_eyebrow', __('Eyebrow', 'sage'), 'text', __('No surprises', 'sage')],
@@ -1462,13 +1513,14 @@ function page_field_map(): array
 function field_group_hint(string $label): string
 {
     $hints = [
-        __('Hero', 'sage')             => __('The banner at the very top of the page: the small eyebrow label above the title, the main headline, the highlighted accent word, and the sentence beneath.', 'sage'),
+        __('Hero', 'sage')             => __('The banner at the top of the page: a short eyebrow, the headline with its accent word, one supporting sentence, and the buttons.', 'sage'),
         __('Problems section', 'sage') => __('The “if this sounds familiar” block — its heading and the three cards that name what’s frustrating about an outdated site.', 'sage'),
         __('Packages section', 'sage') => __('The heading and Compare button for the homepage pricing strip. The cards themselves come from the Services page (Page content → Packages), so home and services stay in sync.', 'sage'),
         __('Rooted section', 'sage')   => __('The local “built here” block — heading, paragraph, and the comma-separated list of region chips.', 'sage'),
         __('Testimonial', 'sage')      => __('The single highlighted client quote and who said it.', 'sage'),
         __('Call to action', 'sage')   => __('The closing banner that invites visitors to reach out — heading, subtext, and the button label.', 'sage'),
         __('Intro', 'sage')            => __('The opening block: eyebrow, the heading with its accent word, and the introduction paragraph.', 'sage'),
+        __('Intro section', 'sage')    => __('The block directly under the hero: a heading plus two cards (Who we are / How we work). This replaced the old page-body columns and photo — edit it here, not in the WordPress content editor.', 'sage'),
         __('Beliefs section', 'sage')  => __('The heading for the “how I work / a few things I believe” block. The three belief cards themselves are set in the template.', 'sage'),
         __('Quote', 'sage')            => __('The one-line studio quote and its attribution.', 'sage'),
         __('Founding offer', 'sage')   => __('The limited founding-offer banner: eyebrow, heading, the price accent, the paragraph, and the button. The “what’s included” checklist is set in the template.', 'sage'),

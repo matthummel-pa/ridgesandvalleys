@@ -276,8 +276,7 @@ h1, h2, h3, h4,
   letter-spacing:-.005em;
 }
 .rv-eyebrow, .rv-intro-eyebrow, .rv-topbar-note,
-.rv-footer-heading, .rv-hero-note, .rv-copyright,
-.rv-intro-cols h3{
+.rv-footer-heading, .rv-hero-note, .rv-copyright{
   font-family:var(--font-mono) !important;
 }
 .rv-home-intro, .rv-fcta, .rv-footer{ position:relative; isolation:isolate; }
