@@ -105,7 +105,7 @@ add_action('wp_head', function () {
         '@type' => 'Person',
         '@id'   => home_url('/#founder'),
         'name'  => seo_opt('rv_seo_founder'),
-        'url'   => home_url('/about/'),
+        'url'   => home_url(about_path()),
     ];
     if ($sameAs) {
         $founder['sameAs'] = $sameAs;

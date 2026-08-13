@@ -567,6 +567,45 @@ function about_proof(?int $post_id = null): array
     return is_array($rows) ? $rows : about_proof_defaults();
 }
 
+/** @return list<array{title:string,text:string}> */
+function about_promise_defaults(): array
+{
+    return [
+        ['title' => __('Get found', 'sage'), 'text' => __('Local SEO and a Google Business Profile, baked in — so neighbors and visitors actually find you.', 'sage')],
+        ['title' => __('Get chosen', 'sage'), 'text' => __('Clear pages, real photos, and a site that works on a phone — the things that turn a visit into a call.', 'sage')],
+        ['title' => __('You own it', 'sage'), 'text' => __('Your domain, hosting, and content. Take the keys and run it, or keep us on a care plan. No lock-in.', 'sage')],
+    ];
+}
+
+/** @return list<array{name:string,role:string,bio:string,photo:string}> */
+function about_people_defaults(): array
+{
+    return [
+        ['name' => __('Matt Hummel', 'sage'), 'role' => __('Founder & lead developer', 'sage'), 'bio' => __('Fifteen years building for the web — university marketing, then government apps, now a Gettysburg studio for Main Street. You’ll work with Matt, not a ticket queue.', 'sage'), 'photo' => ''],
+        ['name' => __('Shannon Hummel', 'sage'), 'role' => __('Studio assistant & client care', 'sage'), 'bio' => __('Keeps projects moving and people looked after — scheduling, follow-through, and a people-first approach so working with the studio feels like a local partnership.', 'sage'), 'photo' => ''],
+    ];
+}
+
+/** @return list<array{title:string,text:string}> */
+function about_value_defaults(): array
+{
+    return [
+        ['title' => __('A person, not a queue', 'sage'), 'text' => __('You talk to Matt. Questions get answers. After launch you still know who to call.', 'sage')],
+        ['title' => __('Calls over chrome', 'sage'), 'text' => __('Your customers care about finding you, trusting you, and booking you. The tech stays in the background.', 'sage')],
+        ['title' => __('Everyone gets in', 'sage'), 'text' => __('A fast, accessible site isn’t a luxury — it’s your front door. We build toward WCAG 2.2 AA on every page.', 'sage')],
+    ];
+}
+
+/** @return list<array{n:string,title:string,text:string}> */
+function about_next_defaults(): array
+{
+    return [
+        ['n' => '01', 'title' => __('Tell me about the business', 'sage'), 'text' => __('A short note or a call. No jargon, no pressure.', 'sage')],
+        ['n' => '02', 'title' => __('A fixed-scope idea', 'sage'), 'text' => __('Usually within a business day — what I’d do, and what it costs, in writing.', 'sage')],
+        ['n' => '03', 'title' => __('A first draft in about a week', 'sage'), 'text' => __('You can click through it. Then we launch, and you own every bit of it.', 'sage')],
+    ];
+}
+
 /**
  * Baseline inclusions for the services “What every build includes” grid.
  * Shared by the template defaults and the Page content repeater.
@@ -911,99 +950,73 @@ function page_field_map(): array
 
         'template-about.blade.php' => [
             __('Intro', 'sage') => [
-                ['hero_eyebrow', __('Eyebrow', 'sage'), 'text', __('Ridges & Valleys Studio', 'sage')],
-                ['about_h1', __('Heading (before accent)', 'sage'), 'text', __('A Gettysburg studio for', 'sage')],
+                ['about_kicker', __('Eyebrow', 'sage'), 'text', __('Gettysburg web designer', 'sage')],
+                ['about_h1', __('Heading (before accent)', 'sage'), 'text', __('A Gettysburg web designer for', 'sage')],
                 ['about_h1_accent', __('Accent phrase', 'sage'), 'text', __('South Central PA.', 'sage')],
-                ['about_lede', __('Hero lede (one short paragraph)', 'sage'), 'textarea', __('Family-owned web design in Gettysburg — accessible WordPress and local SEO for Adams County shops and firms, and a site you own.', 'sage')],
-                ['about_invite', __('Invitation paragraph (partners & welcome)', 'sage'), 'textarea', __('We\'re just as happy to team up with other marketing and design studios, freelancers, and photographers on a project. We\'re new to the neighborhood and all in — so come say hello, and let\'s build something good, right here at home.', 'sage')],
-                ['hero_btn', __('Hero button label', 'sage'), 'text', __('Work with us', 'sage')],
-                ['about_meta', __('Meta line (under the button)', 'sage'), 'text', __('Family-owned · Accessibility-first · Serving Gettysburg & South Central PA', 'sage')],
+                ['about_lede', __('Hero lede (one short paragraph)', 'sage'), 'textarea', __('You work with Matt — a family studio in town — on a fast, accessible WordPress site with local SEO baked in. One fixed price. You keep the keys.', 'sage')],
+                ['about_cta', __('Primary button', 'sage'), 'text', __('Get a quote', 'sage')],
+                ['about_cta_url', __('Primary button link', 'sage'), 'url', __('e.g. /contact/', 'sage')],
+                ['about_cta2', __('Secondary button', 'sage'), 'text', __('See packages', 'sage')],
+                ['about_cta2_url', __('Secondary button link', 'sage'), 'url', __('e.g. /gettysburg-web-design-services/#packages', 'sage')],
+                ['about_meta', __('Meta line (under the buttons)', 'sage'), 'text', __('Family-owned in Gettysburg · Accessibility-first · Adams County & South Central PA', 'sage')],
                 ['about_proof', __('Proof ribbon (four items)', 'sage'), 'repeater', about_proof_defaults(), [
                     ['v', __('Value', 'sage'), 'text'],
                     ['l', __('Label', 'sage'), 'text'],
                 ]],
             ],
-            __('The studio', 'sage') => [
-                ['bio_eyebrow', __('Eyebrow', 'sage'), 'text', __('The studio', 'sage')],
-                ['bio_title', __('Heading (before accent)', 'sage'), 'text', __('Small studio.', 'sage')],
-                ['bio_accent', __('Accent phrase', 'sage'), 'text', __('Serious craft.', 'sage')],
-                ['bio_p1', __('Paragraph 1', 'sage'), 'html', __('<strong>Ridges & Valleys is an independent, family-owned studio.</strong> No account managers, no page-builder bloat, no months of meetings — just websites that load fast, read clearly, and help local businesses get found and get work.', 'sage')],
-                ['bio_p2', __('Paragraph 2', 'sage'), 'html', __('<strong>Every site is accessibility-first.</strong> Clean, standards-based WordPress, strong Core Web Vitals, and WCAG-minded builds, so the result works for everyone, on every device — and tends to rank better while it\'s at it.', 'sage')],
-                ['bio_p3', __('Paragraph 3', 'sage'), 'html', __('<strong>Modern tools for speed, human hands for the craft.</strong> AI helps with research and first drafts; the design decisions, the words, the accessibility, and the final build are done by a person. And when a project needs more than a website, we can build that too.', 'sage')],
-                ['bio_p4', __('Paragraph 4', 'sage'), 'html', __('<strong>Fixed pricing, full ownership, no lock-in.</strong> You own your domain, your hosting, and your site — take the keys and run it yourself, or keep us on a Care & Grow plan.', 'sage')],
-                ['bio_side', __('Capability highlights', 'sage'), 'repeater', [
-                    ['title' => __('Build', 'sage'), 'text' => __('Custom WordPress, no page-builder bloat — semantic, fast, and accessible.', 'sage')],
-                    ['title' => __('Get found', 'sage'), 'text' => __('Local SEO, Google Business Profile, and map-ready details baked in.', 'sage')],
-                    ['title' => __('Go further', 'sage'), 'text' => __('Power Platform apps and automations when a site needs to do more.', 'sage')],
-                ], [
-                    ['title', __('Label', 'sage'), 'text'],
+            __('Why this studio', 'sage') => [
+                ['bio_eyebrow', __('Eyebrow', 'sage'), 'text', __('Why this studio', 'sage')],
+                ['bio_title', __('Heading (before accent)', 'sage'), 'text', __('Small on purpose.', 'sage')],
+                ['bio_accent', __('Accent phrase', 'sage'), 'text', __('Serious about results.', 'sage')],
+                ['studio_lede', __('Intro paragraph', 'sage'), 'textarea', __('Ridges & Valleys is a family-owned Gettysburg web design studio. No account managers, no months of meetings — just a site that loads fast, reads clearly, and helps a local business get found and get work.', 'sage')],
+                ['about_promises', __('Promise cards', 'sage'), 'repeater', about_promise_defaults(), [
+                    ['title', __('Title', 'sage'), 'text'],
                     ['text', __('Text', 'sage'), 'textarea'],
                 ]],
             ],
             __('The team', 'sage') => [
-                ['team_eyebrow', __('Eyebrow', 'sage'), 'text', __('Who runs the studio', 'sage')],
-                ['team_title', __('Heading (before accent)', 'sage'), 'text', __('A small,', 'sage')],
-                ['team_accent', __('Accent phrase', 'sage'), 'text', __('family team.', 'sage')],
-                ['team_intro', __('Intro paragraph', 'sage'), 'textarea', __('Ridges & Valleys is family-owned and run — small on purpose, so every project gets real attention from the people whose name is on it.', 'sage')],
-                ['team_members', __('Team members', 'sage'), 'repeater', [
-                    ['name' => __('Matt Hummel', 'sage'), 'role' => __('Founder & Lead Developer', 'sage'), 'bio' => __('Fifteen years building for the web — first as a WordPress developer in a university marketing department, now splitting his days between the Microsoft Power Platform and the studio. A problem-solver first and a developer second: accessibility-first WordPress, performance, local SEO, and the occasional app or automation. Gettysburg-based, and here to stay.', 'sage'), 'photo' => ''],
-                    ['name' => '', 'role' => __('Studio Assistant & Client Care', 'sage'), 'bio' => __('Keeps projects moving and clients looked after — scheduling, communication, and the behind-the-scenes details that keep every build on track and on time.', 'sage'), 'photo' => ''],
-                ], [
+                ['about_team_kicker', __('Eyebrow', 'sage'), 'text', __('Who you’ll work with', 'sage')],
+                ['about_team_h', __('Heading (before accent)', 'sage'), 'text', __('A family studio in', 'sage')],
+                ['about_team_accent', __('Accent phrase', 'sage'), 'text', __('Gettysburg.', 'sage')],
+                ['about_team_lede', __('Intro paragraph', 'sage'), 'textarea', __('Small on purpose, so every project gets real attention from the people whose name is on it.', 'sage')],
+                ['about_people', __('Team members', 'sage'), 'repeater', about_people_defaults(), [
                     ['name', __('Name', 'sage'), 'text'],
                     ['role', __('Role', 'sage'), 'text'],
                     ['bio', __('Short bio', 'sage'), 'textarea'],
                     ['photo', __('Photo URL (optional)', 'sage'), 'url'],
                 ]],
-                ['team_note', __('Note under the team', 'sage'), 'textarea', __('As the studio grows, we bring in trusted local specialists — photographers, writers, and more — project by project.', 'sage')],
+                ['about_team_note', __('Note under the team', 'sage'), 'textarea', __('When a project needs a photographer or a writer, we bring in trusted local specialists — project by project.', 'sage')],
+                ['about_invite', __('Partner note (studios & freelancers)', 'sage'), 'textarea', __('Other marketing studios, freelancers, and photographers: we’re glad to collaborate. Come say hello.', 'sage')],
             ],
-            __('Beliefs section', 'sage') => [
-                ['beliefs_eyebrow', __('Eyebrow', 'sage'), 'text', __('How we work', 'sage')],
-                ['beliefs_title', __('Heading', 'sage'), 'text', __('A few things we', 'sage')],
-                ['beliefs_accent', __('Accent word', 'sage'), 'text', __('believe.', 'sage')],
-                ['beliefs_items', __('Belief cards', 'sage'), 'repeater', [
-                    ['title' => __('Outcomes over features', 'sage'), 'text' => __('Your customers don\'t care about the tech. They care about finding you, calling you, booking you.', 'sage')],
-                    ['title' => __('Accessible by default', 'sage'), 'text' => __('A fast, accessible site isn\'t a luxury — it\'s your front door. Everyone should get through it.', 'sage')],
-                    ['title' => __('Local and accountable', 'sage'), 'text' => __('You get a real person in the area, not a ticket queue. Proud of the place and the history that comes with it.', 'sage')],
-                ], [
-                    ['title', __('Card title', 'sage'), 'text'],
-                    ['text', __('Card text', 'sage'), 'textarea'],
-                ]],
-            ],
-            __('Credentials / skills', 'sage') => [
-                ['creds_eyebrow', __('Eyebrow', 'sage'), 'text', __('What\'s under the hood', 'sage')],
-                ['creds_title', __('Heading (before accent)', 'sage'), 'text', __('Fifteen years of', 'sage')],
-                ['creds_accent', __('Accent word', 'sage'), 'text', __('range.', 'sage')],
-                ['creds_items', __('Skill cards', 'sage'), 'repeater', [
-                    ['title' => __('WordPress, done right', 'sage'), 'text' => __('Custom themes and clean, page-builder-free builds — the platform that keeps you in control of your own site.', 'sage')],
-                    ['title' => __('Accessibility & front-end', 'sage'), 'text' => __('WCAG 2.1 AA, semantic HTML, performance, and modern CSS/JavaScript that holds up on real devices.', 'sage')],
-                    ['title' => __('Business platforms', 'sage'), 'text' => __('Experience with the Microsoft Power Platform and integrations — useful when a website needs to talk to the rest of your operation.', 'sage')],
-                ], [
+            __('How we work', 'sage') => [
+                ['about_how_kicker', __('Eyebrow', 'sage'), 'text', __('How we work', 'sage')],
+                ['about_how_h', __('Heading (before accent)', 'sage'), 'text', __('What it’s like to', 'sage')],
+                ['about_how_accent', __('Accent phrase', 'sage'), 'text', __('hire us.', 'sage')],
+                ['about_values', __('Value cards', 'sage'), 'repeater', about_value_defaults(), [
                     ['title', __('Card title', 'sage'), 'text'],
                     ['text', __('Card text', 'sage'), 'textarea'],
                 ]],
             ],
             __('Rooted locally', 'sage') => [
-                ['local_eyebrow', __('Eyebrow', 'sage'), 'text', __('Gettysburg & Adams County', 'sage')],
-                ['local_title', __('Heading (before accent)', 'sage'), 'text', __('A web designer who knows', 'sage')],
-                ['local_accent', __('Accent phrase', 'sage'), 'text', __('the ground.', 'sage')],
-                ['local_p1', __('Paragraph 1', 'sage'), 'html', __('<strong>Based right here in Gettysburg</strong> — minutes from Lincoln Square and the edge of the National Military Park. That local knowledge shapes every build: I know the difference between the summer tourist rush on Steinwehr Avenue and a year-round Main Street shop up in Biglerville, and I build your site to speak to the customers you actually get.', 'sage')],
-                ['local_p2', __('Paragraph 2', 'sage'), 'html', __('<strong>This isn\'t a market I picked off a map.</strong> After fifteen years in Virginia, I moved back to Pennsylvania — my home state — and put down roots in the Gettysburg area three years ago. It\'s home now: it\'s where I\'m raising my family, and where I plan to stay. So when I say I want local businesses here to do well, I mean it about my own neighbors.', 'sage')],
-                ['local_p3', __('Paragraph 3', 'sage'), 'html', __('<strong>South Central PA runs on small business</strong> — from the orchards of the Adams County fruit belt to the inns, taverns, and tour companies downtown. I build fast, accessible, mobile-first websites that win local search, so when someone nearby pulls out their phone to decide where to eat, stay, shop, or call, you\'re the one they find.', 'sage')],
-                ['local_button', __('Button label', 'sage'), 'text', __('Get found in Gettysburg', 'sage')],
+                ['about_local_kicker', __('Eyebrow', 'sage'), 'text', __('Gettysburg & Adams County', 'sage')],
+                ['about_local_h', __('Heading (before accent)', 'sage'), 'text', __('This isn’t a market we', 'sage')],
+                ['about_local_accent', __('Accent phrase', 'sage'), 'text', __('picked off a map.', 'sage')],
+                ['about_local_lede', __('Story paragraph', 'sage'), 'html', __('<strong>Matt moved his family home to Gettysburg</strong> after years in Virginia. The studio is staying. We know the summer rush on Steinwehr from a year-round shop in Biglerville — and we build your site for the customers you actually get.', 'sage')],
+                ['local_button', __('Button label', 'sage'), 'text', __('Get a quote', 'sage')],
                 ['local_highlights', __('Highlight cards', 'sage'), 'repeater', [
-                    ['title' => __('In person, not a ticket queue', 'sage'), 'text' => __('A real local you can actually reach — real meetings across Adams County and the towns around it.', 'sage')],
-                    ['title' => __('Built for how people search here', 'sage'), 'text' => __('Google Business Profile, local SEO, and map-ready details so you show up for the “near me” searches that matter.', 'sage')],
-                    ['title' => __('Tourists and locals, covered', 'sage'), 'text' => __('Sites tuned for both the visitor economy and the neighbors who keep you busy all year.', 'sage')],
+                    ['title' => __('In person, not a ticket queue', 'sage'), 'text' => __('A real local you can reach — a call, a screen share, or a meeting around Adams County.', 'sage')],
+                    ['title' => __('Built for how people search here', 'sage'), 'text' => __('Google Business Profile, local SEO, and map-ready details for the “near me” searches that matter.', 'sage')],
+                    ['title' => __('Visitors and neighbors, covered', 'sage'), 'text' => __('Tuned for the visitor economy and the locals who keep you busy all year.', 'sage')],
                 ], [
                     ['title', __('Card title', 'sage'), 'text'],
                     ['text', __('Card text', 'sage'), 'textarea'],
                 ]],
             ],
-            __('Who I build for', 'sage') => [
-                ['serve_eyebrow', __('Eyebrow', 'sage'), 'text', __('Local businesses', 'sage')],
-                ['serve_title', __('Heading (before accent)', 'sage'), 'text', __('Made for South Central PA', 'sage')],
-                ['serve_accent', __('Accent phrase', 'sage'), 'text', __('Main Street.', 'sage')],
-                ['serve_intro', __('Intro paragraph', 'sage'), 'textarea', __('Every kind of local business needs a website that gets found and earns trust. These are the ones I love building for around Gettysburg and Adams County:', 'sage')],
+            __('Who we build for', 'sage') => [
+                ['about_fit_kicker', __('Eyebrow', 'sage'), 'text', __('Local businesses', 'sage')],
+                ['about_fit_h', __('Heading (before accent)', 'sage'), 'text', __('Made for South Central PA', 'sage')],
+                ['about_fit_accent', __('Accent phrase', 'sage'), 'text', __('Main Street.', 'sage')],
+                ['about_fit_lede', __('Intro paragraph', 'sage'), 'textarea', __('If people nearby search for what you do, we can help them find you, trust you, and reach you.', 'sage')],
                 ['serve_items', __('Industry cards', 'sage'), 'repeater', [
                     ['title' => __('Inns & B&Bs', 'sage'), 'text' => __('Direct bookings and a first impression worth the drive.', 'sage')],
                     ['title' => __('Restaurants & taverns', 'sage'), 'text' => __('Menus, hours, and reservations that stay current.', 'sage')],
@@ -1017,18 +1030,53 @@ function page_field_map(): array
                     ['title', __('Industry', 'sage'), 'text'],
                     ['text', __('One-liner', 'sage'), 'textarea'],
                 ]],
-                ['serve_areas_eyebrow', __('“Areas served” eyebrow', 'sage'), 'text', __('Areas served', 'sage')],
-                ['serve_areas_intro', __('“Areas served” intro', 'sage'), 'text', __('Based in Gettysburg, working with businesses across:', 'sage')],
+                ['about_areas_kicker', __('“Areas served” eyebrow', 'sage'), 'text', __('Areas served', 'sage')],
+                ['about_towns_intro', __('“Areas served” intro', 'sage'), 'text', __('Based in Gettysburg, working with businesses across Adams County and nearby:', 'sage')],
                 ['serve_towns', __('Town chips', 'sage'), 'lines', ['Gettysburg', 'Biglerville', 'Littlestown', 'New Oxford', 'McSherrystown', 'Bonneauville', 'Abbottstown', 'Fairfield', 'Cashtown', 'Arendtsville', 'East Berlin', 'York Springs', 'Aspers', 'Hanover']],
-                ['serve_note', __('Footnote', 'sage'), 'textarea', __('Plus the surrounding townships and small businesses throughout Adams, York, and Franklin counties. Not in the neighborhood? Most of my work happens over a call and a shared screen — distance is rarely a dealbreaker.', 'sage')],
+                ['about_towns_note', __('Footnote', 'sage'), 'textarea', __('Plus townships across Adams, York, and Franklin counties. Not next door? Most work happens on a call and a shared screen.', 'sage')],
             ],
-            __('Quote', 'sage') => [
-                ['quote_text', __('Quote', 'sage'), 'textarea', __('“AI handles the blank page. Matt handles the judgment.”', 'sage')],
-                ['quote_who', __('Attribution', 'sage'), 'text', __('The studio, in one line', 'sage')],
+            __('What happens next', 'sage') => [
+                ['next_eyebrow', __('Eyebrow', 'sage'), 'text', __('What happens next', 'sage')],
+                ['next_title', __('Heading (before accent)', 'sage'), 'text', __('From hello to a site', 'sage')],
+                ['next_accent', __('Accent phrase', 'sage'), 'text', __('you own.', 'sage')],
+                ['about_next', __('Steps', 'sage'), 'repeater', about_next_defaults(), [
+                    ['n', __('Number', 'sage'), 'text'],
+                    ['title', __('Step title', 'sage'), 'text'],
+                    ['text', __('Step text', 'sage'), 'textarea'],
+                ]],
             ],
-            __('Media & links', 'sage') => [
-                ['about_image', __('Intro photo', 'sage'), 'image', __('The aerial photo beside the intro. Built-in until you choose one.', 'sage')],
-                ['hero_btn_url', __('Intro button link (“Work with me”)', 'sage'), 'url', __('e.g. /contact/', 'sage')],
+            __('Free tools', 'sage') => [
+                ['tools_eyebrow', __('Eyebrow', 'sage'), 'text', __('Try us before you hire us', 'sage')],
+                ['tools_title', __('Heading (before accent)', 'sage'), 'text', __('Six free tools.', 'sage')],
+                ['tools_accent', __('Accent phrase', 'sage'), 'text', __('No account, no email.', 'sage')],
+                ['tools_intro', __('Intro paragraph', 'sage'), 'textarea', __('Put in your address, get a plain-English report, and fix what you like — with us or without us. The easiest way to see how we think before you spend a dollar.', 'sage')],
+                ['tools_button', __('Button label', 'sage'), 'text', __('See all six free tools', 'sage')],
+            ],
+            __('Pricing & reach', 'sage') => [
+                ['price_eyebrow', __('Eyebrow', 'sage'), 'text', __('How pricing works', 'sage')],
+                ['price_title', __('Heading (before accent)', 'sage'), 'text', __('One fixed price,', 'sage')],
+                ['price_accent', __('Accent phrase', 'sage'), 'text', __('agreed up front.', 'sage')],
+                ['price_p1', __('Pricing intro', 'sage'), 'html', __('<strong>No hourly meter, no surprise invoices.</strong> You get the number before work starts. If you ask for something new, we agree on that price first, too.', 'sage')],
+                ['price_items', __('Package lines', 'sage'), 'repeater', [
+                    ['title' => __('Website Rescue', 'sage'), 'text' => __('$950–$1,500 — fix what you already have.', 'sage')],
+                    ['title' => __('Local Launch', 'sage'), 'text' => __('$2,750–$3,750 — a new site built to get found locally.', 'sage')],
+                    ['title' => __('Growth Site', 'sage'), 'text' => __('$4,500+ — bigger builds with more pages and moving parts.', 'sage')],
+                    ['title' => __('Care & Grow', 'sage'), 'text' => __('$179–$349/mo — updates, backups, and steady improvements.', 'sage')],
+                ], [
+                    ['title', __('Name', 'sage'), 'text'],
+                    ['text', __('Price line', 'sage'), 'text'],
+                ]],
+                ['price_link', __('“See full packages” label', 'sage'), 'text', __('Compare packages', 'sage')],
+                ['reach_eyebrow', __('Eyebrow', 'sage'), 'text', __('How to reach us', 'sage')],
+                ['reach_title', __('Heading (before accent)', 'sage'), 'text', __('Talk to a', 'sage')],
+                ['reach_accent', __('Accent phrase', 'sage'), 'text', __('real person.', 'sage')],
+                ['reach_note', __('Note under contact details', 'sage'), 'textarea', __('We work from a home studio and meet at your place of business, so we don’t publish a street address. Call, email, or ask for a quote — you’ll hear back from Matt, not a call center.', 'sage')],
+                ['reach_button', __('Button label', 'sage'), 'text', __('Get a free quote', 'sage')],
+            ],
+            __('Closing CTA', 'sage') => [
+                ['about_band_title', __('CTA heading', 'sage'), 'text', __('Ready when you are.', 'sage')],
+                ['about_band_sub', __('CTA subtext', 'sage'), 'textarea', __('Tell me about the business. I’ll come back with a clear, fixed-scope idea — usually within a business day.', 'sage')],
+                ['about_band_btn', __('CTA button', 'sage'), 'text', __('Get a quote', 'sage')],
             ],
         ],
 
