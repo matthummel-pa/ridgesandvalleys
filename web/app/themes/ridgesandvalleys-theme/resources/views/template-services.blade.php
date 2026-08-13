@@ -88,23 +88,32 @@
         <a class="rv-btn {{ $isFeatured ? 'rv-btn-primary' : 'rv-btn-ghost' }} rv-plan-btn" href="{{ \App\svc_package_href($s) }}">{{ $s['cta'] ?? __('Get a quote', 'sage') }}</a>
       </article>
     @endforeach
+  </section>
 
-    <div class="rv-svc-included-head">
-      {!! \App\eyebrow(\App\field('svc_incl_eyebrow', __('The fine print, up front', 'sage'))) !!}
-      <h2 class="rv-section-title">{{ \App\field('svc_incl_title', __('What every build', 'sage')) }} <em class="rv-accent">{{ \App\field('svc_incl_accent', __('includes.', 'sage')) }}</em></h2>
-    </div>
-    <div class="rv-svc-included">
-      @foreach (\App\field_rows('svc_detail_items', [
-        ['title' => __('What\'s always included', 'sage'), 'text' => __('Accessibility-first build, mobile-first layout, local SEO basics, analytics, and a training handoff.', 'sage')],
-        ['title' => __('What we don\'t do (yet)', 'sage'), 'text' => __('No paid ads, no full social management, no giant content retainers. We do websites, well.', 'sage')],
-        ['title' => __('The guardrails', 'sage'), 'text' => __('One decision-maker, one consolidated revision round, feedback within two business days, final payment before launch.', 'sage')],
-      ]) as $i => $d)
-        <article class="rv-card rv-feature rv-incl">
-          <span class="rv-incl-num" aria-hidden="true">{{ sprintf('%02d', $i + 1) }}</span>
-          <h3 class="rv-feature-title">{{ $d['title'] ?? '' }}</h3>
-          <p class="rv-feature-text">{{ $d['text'] ?? '' }}</p>
-        </article>
-      @endforeach
+  {{-- WHAT EVERY BUILD INCLUDES --}}
+  <section id="included" class="rv-band rv-band-alt rv-svc-incl-band" aria-labelledby="rv-incl-heading">
+    <div class="rv-shell">
+      <div class="rv-svc-incl-head">
+        {!! \App\eyebrow(\App\field('svc_incl_eyebrow', __('Same baseline, every package', 'sage'))) !!}
+        <h2 id="rv-incl-heading" class="rv-section-title">{{ \App\field('svc_incl_title', __('What every build', 'sage')) }} <em class="rv-accent">{{ \App\field('svc_incl_accent', __('includes.', 'sage')) }}</em></h2>
+        <p class="rv-page-intro">{{ \App\field('svc_incl_intro', __('Rescue, Local Launch, or Growth Site — the price changes with scope. Accessibility, local SEO, and a site you own do not.', 'sage')) }}</p>
+      </div>
+      <ul class="rv-svc-incl">
+        @foreach (\App\field_rows('svc_incl_points', \App\svc_incl_point_defaults()) as $d)
+          <li class="rv-card rv-svc-incl-item">
+            <h3>{{ $d['title'] ?? '' }}</h3>
+            <p>{{ $d['text'] ?? '' }}</p>
+          </li>
+        @endforeach
+      </ul>
+      <div class="rv-svc-bounds">
+        @foreach (\App\field_rows('svc_bound_items', \App\svc_bound_defaults()) as $b)
+          <article class="rv-svc-bound">
+            <h3>{{ $b['title'] ?? '' }}</h3>
+            <p>{{ $b['text'] ?? '' }}</p>
+          </article>
+        @endforeach
+      </div>
     </div>
   </section>
 
@@ -278,16 +287,21 @@
     .rv-plan-care .rv-service-list{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
     .rv-plan-care .rv-plan-btn{width:auto;min-width:12rem}
     @media(max-width:900px){.rv-plan-care{grid-template-columns:1fr;gap:1.1rem;padding:1.45rem 1.35rem 1.35rem}.rv-plan-care .rv-plan-btn{width:100%}}
-    /* What every build includes */
-    .rv-svc-included-head{margin-top:clamp(3rem,6vw,4.75rem)}
-    .rv-svc-included{display:grid;grid-template-columns:repeat(3,1fr);gap:1.15rem;margin-top:1.75rem}
-    @media(max-width:820px){.rv-svc-included{grid-template-columns:1fr}}
-    .rv-svc-included .rv-incl{position:relative;padding:1.7rem 1.6rem 1.55rem;border-radius:var(--radius-lg,16px);overflow:hidden;transition:transform .15s ease,box-shadow .2s ease,border-color .15s ease}
-    .rv-svc-included .rv-incl::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--ridgeline)}
-    .rv-svc-included .rv-incl:hover{transform:translateY(-3px);box-shadow:var(--shadow-soft);border-color:color-mix(in srgb,var(--color-sage) 55%,var(--color-line))}
-    .rv-svc-included .rv-incl-num{font-family:var(--font-display);font-weight:800;font-size:1.05rem;color:color-mix(in srgb,var(--color-clay) 60%,transparent);letter-spacing:.02em}
-    .rv-svc-included .rv-feature-title{margin:.35rem 0 .5rem;font-size:1.16rem}
-    .rv-svc-included .rv-feature-text{margin:0;color:var(--color-body);line-height:1.6}
+    /* What every build includes — scannable checklist, then quieter boundaries */
+    .rv-svc-incl{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:2rem 0 0;padding:0;list-style:none}
+    @media(max-width:900px){.rv-svc-incl{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:620px){.rv-svc-incl{grid-template-columns:1fr}}
+    .rv-svc-incl-item{position:relative;margin:0;padding:1.4rem 1.35rem 1.3rem;border-radius:var(--radius-lg,16px);overflow:hidden;transition:transform .15s ease,box-shadow .2s ease,border-color .15s ease}
+    .rv-svc-incl-item:hover{transform:translateY(-3px);box-shadow:var(--shadow-soft);border-color:color-mix(in srgb,var(--color-sage) 55%,var(--color-line))}
+    .rv-svc-incl-item h3{position:relative;font-family:var(--font-display);font-weight:800;font-size:1.12rem;color:var(--color-ink);margin:0;padding-left:1.85rem;line-height:1.25}
+    .rv-svc-incl-item h3::before{content:"";position:absolute;left:0;top:.12em;width:1.1rem;height:1.1rem;border-radius:50%;background:color-mix(in srgb,var(--color-sage) 28%,transparent)}
+    .rv-svc-incl-item h3::after{content:"";position:absolute;left:.34rem;top:.45em;width:.42rem;height:.22rem;border-left:2px solid var(--color-pine);border-bottom:2px solid var(--color-pine);transform:rotate(-45deg)}
+    .rv-svc-incl-item p{margin:.5rem 0 0;padding-left:1.85rem;color:var(--color-body);font-size:.94rem;line-height:1.55}
+    .rv-svc-bounds{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.15rem}
+    @media(max-width:720px){.rv-svc-bounds{grid-template-columns:1fr}}
+    .rv-svc-bound{padding:1.35rem 1.45rem;border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);background:color-mix(in srgb,var(--color-ink) 3.5%,var(--color-surface))}
+    .rv-svc-bound h3{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-clay);font-weight:700;margin:0 0 .5rem}
+    .rv-svc-bound p{margin:0;color:var(--color-body);font-size:.92rem;line-height:1.55}
     /* Local SEO (on the always-dark pine band) */
     .rv-svc-seo-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:2.25rem}
     .rv-svc-seo-item{position:relative;background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.13);border-radius:var(--radius-lg,16px);padding:1.3rem 1.35rem 1.3rem 1.6rem;overflow:hidden;transition:transform .15s ease,background-color .15s ease}

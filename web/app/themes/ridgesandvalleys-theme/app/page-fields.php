@@ -365,6 +365,61 @@ function svc_care_packages(?int $post_id = null): array
 }
 
 /**
+ * Baseline inclusions for the services “What every build includes” grid.
+ * Shared by the template defaults and the Page content repeater.
+ *
+ * @return list<array{title:string,text:string}>
+ */
+function svc_incl_point_defaults(): array
+{
+    return [
+        [
+            'title' => __('Accessible by default', 'sage'),
+            'text'  => __('WCAG 2.2 AA-minded pages — contrast, keyboard, and screen readers. Not a bolt-on at the end.', 'sage'),
+        ],
+        [
+            'title' => __('Built for phones first', 'sage'),
+            'text'  => __('Most local searches happen on a phone. Layout, type, and tap targets start there.', 'sage'),
+        ],
+        [
+            'title' => __('Local SEO foundations', 'sage'),
+            'text'  => __('On-page titles, LocalBusiness schema, and Google Business Profile setup so Gettysburg searches can find you.', 'sage'),
+        ],
+        [
+            'title' => __('Fast, clean code', 'sage'),
+            'text'  => __('No page-builder bloat. HTTPS, caching, and hosting tuned so the page actually loads.', 'sage'),
+        ],
+        [
+            'title' => __('Analytics in your name', 'sage'),
+            'text'  => __('Analytics and Search Console on accounts you own, plus a plain-English read of what to watch.', 'sage'),
+        ],
+        [
+            'title' => __('A handoff you keep', 'sage'),
+            'text'  => __('A walkthrough and a video. Domain, hosting, and the site stay in your name — no lock-in.', 'sage'),
+        ],
+    ];
+}
+
+/**
+ * Boundary cards under the inclusion grid (not-in-scope + how we work).
+ *
+ * @return list<array{title:string,text:string}>
+ */
+function svc_bound_defaults(): array
+{
+    return [
+        [
+            'title' => __('Not in this studio (yet)', 'sage'),
+            'text'  => __('No paid ads, no full social management, no giant content retainers. We do websites, well.', 'sage'),
+        ],
+        [
+            'title' => __('Guardrails that keep the price honest', 'sage'),
+            'text'  => __('One decision-maker, one consolidated revision round, feedback within two business days, balance before launch.', 'sage'),
+        ],
+    ];
+}
+
+/**
  * Services FAQ as [question, answer] pairs for JSON-LD. Defaults match the
  * template so schema stays in sync when the repeater is empty.
  *
@@ -705,15 +760,16 @@ function page_field_map(): array
                     ['url', __('Button link (blank = contact form for this package)', 'sage'), 'url', null, 'wide'],
                 ]],
             ],
-            __('Package detail cards', 'sage') => [
-                ['svc_incl_eyebrow', __('Eyebrow', 'sage'), 'text', __('The fine print, up front', 'sage')],
+            __('What every build includes', 'sage') => [
+                ['svc_incl_eyebrow', __('Eyebrow', 'sage'), 'text', __('Same baseline, every package', 'sage')],
                 ['svc_incl_title', __('Heading (before accent)', 'sage'), 'text', __('What every build', 'sage')],
                 ['svc_incl_accent', __('Accent word', 'sage'), 'text', __('includes.', 'sage')],
-                ['svc_detail_items', __('Detail cards', 'sage'), 'repeater', [
-                    ['title' => __('What\'s always included', 'sage'), 'text' => __('Accessibility-first build, mobile-first layout, local SEO basics, analytics, and a training handoff.', 'sage')],
-                    ['title' => __('What we don\'t do (yet)', 'sage'), 'text' => __('No paid ads, no full social management, no giant content retainers. We do websites, well.', 'sage')],
-                    ['title' => __('The guardrails', 'sage'), 'text' => __('One decision-maker, one consolidated revision round, feedback within two business days, final payment before launch.', 'sage')],
-                ], [
+                ['svc_incl_intro', __('Intro paragraph', 'sage'), 'textarea', __('Rescue, Local Launch, or Growth Site — the price changes with scope. Accessibility, local SEO, and a site you own do not.', 'sage')],
+                ['svc_incl_points', __('Included items', 'sage'), 'repeater', svc_incl_point_defaults(), [
+                    ['title', __('Item title', 'sage'), 'text'],
+                    ['text', __('Item text', 'sage'), 'textarea'],
+                ]],
+                ['svc_bound_items', __('Boundary cards (not in scope / how we work)', 'sage'), 'repeater', svc_bound_defaults(), [
                     ['title', __('Card title', 'sage'), 'text'],
                     ['text', __('Card text', 'sage'), 'textarea'],
                 ]],
@@ -1363,7 +1419,7 @@ function field_group_hint(string $label): string
         __('Who I build for', 'sage')  => __('The industries you serve (cards), plus the “areas served” heading, town chips, and footnote.', 'sage'),
         __('Before pricing', 'sage')  => __('The three value cards above the pricing — what every package actually buys, before the dollar amounts.', 'sage'),
         __('Packages', 'sage')         => __('The pricing line-up. Three project cards sit in a row; a Care plan uses the full-width bar underneath. Each card has a name, price, “best for” line, one-line outcome, and three features. Leave a button label blank to use the default button above.', 'sage'),
-        __('Package detail cards', 'sage') => __('The “what every build includes” heading and its three fine-print cards under the packages.', 'sage'),
+        __('What every build includes', 'sage') => __('The baseline under the packages: an intro, six included items, then two quieter cards for what’s not in scope and how the work runs.', 'sage'),
         __('Local SEO section', 'sage') => __('The dark local-SEO block: heading, intro, the grid of SEO cards, and the note beneath.', 'sage'),
         __('Process (services)', 'sage') => __('The services timeline: heading and each day step.', 'sage'),
         __('AI-assisted split', 'sage') => __('The “honest split” heading, the two cards, and the disclosure note.', 'sage'),
