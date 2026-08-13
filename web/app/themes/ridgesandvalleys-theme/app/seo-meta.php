@@ -121,7 +121,14 @@ function rv_seo_meta_current(): ?array
     }
     if (is_page()) {
         $slug = (string) get_post_field('post_name', get_queried_object_id());
-        return $map[$slug] ?? null;
+        if (isset($map[$slug])) {
+            return $map[$slug];
+        }
+        // Live SEO slug for the Services template (the seed slug is `services`).
+        if ($slug === 'gettysburg-web-design-services') {
+            return $map['services'] ?? null;
+        }
+        return null;
     }
     return null;
 }

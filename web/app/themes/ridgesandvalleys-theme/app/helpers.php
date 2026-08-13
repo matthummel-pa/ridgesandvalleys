@@ -397,6 +397,57 @@ function faq_schema(array $faqs): string
 }
 
 /**
+ * Offer catalog JSON-LD for the services packages. Price stays a text range
+ * (e.g. "$2,750–$3,750") because these are quoted scopes, not a single SKU.
+ */
+function offer_schema(array $packages, string $url = ''): string
+{
+    $elements = [];
+    $position = 0;
+    foreach ($packages as $p) {
+        $name = strip_field_markers((string) ($p['name'] ?? ''));
+        if ($name === '') {
+            continue;
+        }
+        $position++;
+        $desc  = strip_field_markers((string) ($p['desc'] ?? ''));
+        $price = strip_field_markers((string) ($p['price'] ?? ''));
+        $for   = strip_field_markers((string) ($p['for'] ?? ''));
+        if ($for !== '') {
+            $desc = trim($desc . ($desc !== '' ? ' ' : '') . __('Best for', 'sage') . ' ' . $for . '.');
+        }
+        $offer = [
+            '@type'       => 'Offer',
+            'name'        => $name,
+            'description' => $desc,
+            'url'         => $url !== '' ? $url : (string) get_permalink(),
+            'availability' => 'https://schema.org/InStock',
+            'priceSpecification' => [
+                '@type'         => 'PriceSpecification',
+                'priceCurrency' => 'USD',
+                'description'   => $price,
+            ],
+        ];
+        $elements[] = [
+            '@type'    => 'ListItem',
+            'position' => $position,
+            'item'     => $offer,
+        ];
+    }
+    if ($elements === []) {
+        return '';
+    }
+    $schema = [
+        '@context'        => 'https://schema.org',
+        '@type'           => 'ItemList',
+        'name'            => __('Gettysburg web design packages', 'sage'),
+        'itemListElement' => $elements,
+    ];
+
+    return '<script type="application/ld+json">' . wp_json_encode($schema) . '</script>';
+}
+
+/**
  * Visible breadcrumb nav for single posts. Uses the canonical breadcrumb_items()
  * defined in app/seo.php (single source of truth shared with the schema).
  */

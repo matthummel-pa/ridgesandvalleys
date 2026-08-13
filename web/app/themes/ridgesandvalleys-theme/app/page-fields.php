@@ -189,6 +189,160 @@ function lines($val): array
     return array_values(array_filter(array_map('trim', preg_split('/\r\n|\r|\n/', $s)), static fn ($s) => $s !== ''));
 }
 
+/**
+ * Built-in Gettysburg services packages — one source of truth for the template
+ * defaults and the Page content repeater. Three project packages plus a monthly
+ * care plan. Keep each feature list to three lines so the cards stay scannable.
+ *
+ * @return list<array{name:string,price:string,flag:string,for:string,desc:string,features:list<string>,cta:string,kind:string}>
+ */
+function svc_package_defaults(): array
+{
+    return [
+        [
+            'name'     => __('Website Rescue', 'sage'),
+            'price'    => __('$950–$1,500', 'sage'),
+            'flag'     => '',
+            'for'      => __('A live site that’s slow, dated, or hard to find', 'sage'),
+            'desc'     => __('Fix what’s in the way — without starting over.', 'sage'),
+            'features' => [
+                __('Speed, mobile, and accessibility fixes', 'sage'),
+                __('Content and SEO cleanup', 'sage'),
+                __('A punch-list of what to do next', 'sage'),
+            ],
+            'cta'      => '',
+            'kind'     => 'project',
+        ],
+        [
+            'name'     => __('Local Launch', 'sage'),
+            'price'    => __('$2,750–$3,750', 'sage'),
+            'flag'     => __('Most popular', 'sage'),
+            'for'      => __('Gettysburg shops, inns, and trades ready for a new site', 'sage'),
+            'desc'     => __('A 5-page site that gets you found locally and makes it easy to call.', 'sage'),
+            'features' => [
+                __('Custom design and copy', 'sage'),
+                __('Google Business Profile + local SEO', 'sage'),
+                __('Launch in 7–10 days', 'sage'),
+            ],
+            'cta'      => '',
+            'kind'     => 'project',
+        ],
+        [
+            'name'     => __('Growth Site', 'sage'),
+            'price'    => __('$4,500+', 'sage'),
+            'flag'     => '',
+            'for'      => __('Expanding into more towns or services', 'sage'),
+            'desc'     => __('More pages, stronger local SEO, and room to capture leads.', 'sage'),
+            'features' => [
+                __('Everything in Local Launch', 'sage'),
+                __('Nearby-town and service pages', 'sage'),
+                __('Blog, booking, or lead capture', 'sage'),
+            ],
+            'cta'      => '',
+            'kind'     => 'project',
+        ],
+        [
+            'name'     => __('Care & Grow', 'sage'),
+            'price'    => __('$179–$349/mo', 'sage'),
+            'flag'     => '',
+            'for'      => __('After launch — keep the site healthy without hiring a developer', 'sage'),
+            'desc'     => __('Hosting, updates, and small edits handled for you.', 'sage'),
+            'features' => [
+                __('Managed hosting and backups', 'sage'),
+                __('Monthly edits and security', 'sage'),
+                __('SEO reporting + priority support', 'sage'),
+            ],
+            'cta'      => __('Start a care plan', 'sage'),
+            'kind'     => 'care',
+        ],
+    ];
+}
+
+/**
+ * Services-page packages for the current (or given) page. Saved repeater rows
+ * win; missing keys (new fields like “Best for” / layout) fill from the matching
+ * default by index, then from shared fallbacks so older saved cards still render.
+ *
+ * @return list<array{name:string,price:string,flag:string,for:string,desc:string,features:list<string>,cta:string,kind:string}>
+ */
+function svc_packages(?int $post_id = null): array
+{
+    $defaults = svc_package_defaults();
+    $rows     = field_rows('packages_items', $defaults, $post_id);
+    $shared   = field('packages_btn', __('Get a quote', 'sage'), $post_id);
+
+    foreach ($rows as $i => &$row) {
+        if (! is_array($row)) {
+            $row = $defaults[$i] ?? ['name' => '', 'price' => '', 'flag' => '', 'for' => '', 'desc' => '', 'features' => [], 'cta' => '', 'kind' => 'project'];
+            continue;
+        }
+        $base = $defaults[$i] ?? [];
+        // Only fill keys that older saved cards never had. Name, price, flag,
+        // description, and features stay exactly as stored.
+        foreach (['for', 'cta', 'kind'] as $k) {
+            $raw = strip_field_markers((string) ($row[$k] ?? ''));
+            if ($raw === '' && isset($base[$k]) && $base[$k] !== '') {
+                $row[$k] = $base[$k];
+            }
+        }
+        $cta = strip_field_markers((string) ($row['cta'] ?? ''));
+        if ($cta === '') {
+            $row['cta'] = $shared;
+        }
+        $kind = sanitize_key(strip_field_markers((string) ($row['kind'] ?? '')));
+        if ($kind === '') {
+            $kind = str_contains(strip_field_markers((string) ($row['price'] ?? '')), '/mo') ? 'care' : 'project';
+        }
+        $row['kind'] = $kind === 'care' ? 'care' : 'project';
+    }
+    unset($row);
+
+    return array_values($rows);
+}
+
+/** Project packages (comparison grid) for the services page. */
+function svc_project_packages(?int $post_id = null): array
+{
+    return array_values(array_filter(svc_packages($post_id), static fn ($p) => ($p['kind'] ?? 'project') !== 'care'));
+}
+
+/** Care-plan packages (full-width bar) for the services page. */
+function svc_care_packages(?int $post_id = null): array
+{
+    return array_values(array_filter(svc_packages($post_id), static fn ($p) => ($p['kind'] ?? '') === 'care'));
+}
+
+/**
+ * Services FAQ as [question, answer] pairs for JSON-LD. Defaults match the
+ * template so schema stays in sync when the repeater is empty.
+ *
+ * @return list<array{0:string,1:string}>
+ */
+function svc_faq_pairs(?int $post_id = null): array
+{
+    $rows = field_rows('sfaq_items', [
+        ['q' => __('Do I own my website?', 'sage'), 'a' => __('Completely. The domain, the hosting, and every word and pixel are in your name. Want to move it or hand it to someone else someday? It\'s yours to take.', 'sage')],
+        ['q' => __('How fast can it launch?', 'sage'), 'a' => __('Most local sites go live in 7–10 days once I have your content and assets. Bigger builds take a little longer — and you\'ll know the timeline before we start.', 'sage')],
+        ['q' => __('What if I need changes later?', 'sage'), 'a' => __('You get one consolidated revision round during the build. After launch, a Care & Grow plan covers ongoing edits, or you can request changes as you need them.', 'sage')],
+        ['q' => __('Do you handle hosting and domains?', 'sage'), 'a' => __('Yes — I set everything up in your name and can manage it for you, or hand you the keys. Either way, you\'re never locked in.', 'sage')],
+        ['q' => __('What areas do you serve?', 'sage'), 'a' => __('Gettysburg, Adams County, and across South Central PA — Biglerville, Littlestown, New Oxford, Hanover, and beyond. Farther out? Most of the work happens over a call and a shared screen.', 'sage')],
+        ['q' => __('How does payment work?', 'sage'), 'a' => __('A fixed price agreed up front, a deposit to start, and the balance before launch. No surprise invoices, no hourly meter running.', 'sage')],
+        ['q' => __('Will my site be accessible?', 'sage'), 'a' => __('Always. Every build is WCAG-minded and tested on real devices, so it works for everyone — and accessible sites tend to rank better, too.', 'sage')],
+        ['q' => __('Can you fix my current site instead?', 'sage'), 'a' => __('Absolutely. That\'s the Website Rescue — an audit and targeted fixes for speed, mobile, accessibility, and SEO without a full rebuild.', 'sage')],
+    ], $post_id);
+
+    $pairs = [];
+    foreach ($rows as $f) {
+        $q = trim(strip_field_markers((string) ($f['q'] ?? '')));
+        $a = trim(strip_field_markers((string) ($f['a'] ?? '')));
+        if ($q !== '' && $a !== '') {
+            $pairs[] = [$q, $a];
+        }
+    }
+
+    return $pairs;
+}
+
 /** Which field set applies to a page (front page detected via the reading setting). */
 function page_template_key(int $post_id): string
 {
@@ -459,10 +613,10 @@ function page_field_map(): array
 
         'template-services.blade.php' => [
             __('Hero', 'sage') => $hero(
-                __('Services', 'sage'),
-                __('Websites that earn their', 'sage'),
+                __('Web design & local SEO · Gettysburg', 'sage'),
+                __('Gettysburg web design that earns its', 'sage'),
                 __('keep.', 'sage'),
-                __('Every package leads with one outcome — more calls, more bookings, easier-to-find hours — not a feature list. Fixed scope, honest pricing, no jargon.', 'sage')
+                __('Web design and local SEO packages for Gettysburg and Adams County businesses — each one built around a single outcome: more calls, more bookings, easier-to-find hours. Fixed scope, honest pricing, no jargon.', 'sage')
             ),
             __('Before pricing', 'sage') => [
                 ['svcvalue_eyebrow', __('Eyebrow', 'sage'), 'text', __('Before the pricing', 'sage')],
@@ -479,22 +633,23 @@ function page_field_map(): array
                 ]],
             ],
             __('Packages', 'sage') => [
-                ['plans_eyebrow', __('Eyebrow', 'sage'), 'text', __('Simple, fixed pricing', 'sage')],
+                ['plans_eyebrow', __('Eyebrow', 'sage'), 'text', __('Gettysburg web design packages', 'sage')],
                 ['plans_title', __('Heading (before accent)', 'sage'), 'text', __('Pick the plan that fits', 'sage')],
                 ['plans_accent', __('Accent phrase', 'sage'), 'text', __('where you are.', 'sage')],
-                ['plans_intro', __('Intro paragraph', 'sage'), 'textarea', __('Every package is one fixed price, agreed up front — no hourly meter, no surprise invoices. Start with a rescue, launch a full local site, or keep things growing after. Not sure which fits? Tell me about your business and I\'ll point you to the right one.', 'sage')],
-                ['packages_btn', __('Package button label', 'sage'), 'text', __('Get a quote', 'sage')],
-                ['packages_items', __('Package cards', 'sage'), 'repeater', [
-                    ['name' => __('Website Rescue', 'sage'), 'price' => __('$950–$1,500', 'sage'), 'flag' => '', 'desc' => __('For a site that\'s mostly there. Audit, content cleanup, broken links, mobile fixes, speed and SEO improvements.', 'sage'), 'features' => [__('Speed + mobile fixes', 'sage'), __('Refreshed design + content', 'sage'), __('Accessibility + SEO cleanup', 'sage')]],
-                    ['name' => __('Local Launch', 'sage'), 'price' => __('$2,750–$3,750', 'sage'), 'flag' => __('Most popular', 'sage'), 'desc' => __('Up to 5 pages, contact form, local SEO foundations, analytics, accessibility review, one revision.', 'sage'), 'features' => [__('Custom design + copy', 'sage'), __('Google Business Profile setup', 'sage'), __('Launch in 7–10 days', 'sage')]],
-                    ['name' => __('Growth Site', 'sage'), 'price' => __('$4,500+', 'sage'), 'flag' => '', 'desc' => __('8–12 pages, content migration, booking or ecommerce integration, advanced forms and stronger SEO.', 'sage'), 'features' => [__('Everything in Local Launch', 'sage'), __('Nearby-town pages', 'sage'), __('Blog + lead capture', 'sage')]],
-                    ['name' => __('Care & Grow', 'sage'), 'price' => __('$179–$349/mo', 'sage'), 'flag' => '', 'desc' => __('Updates, backups, security checks, small content changes, reporting, priority support.', 'sage'), 'features' => [__('Managed hosting + backups', 'sage'), __('Monthly edits + updates', 'sage'), __('Ongoing SEO + reporting', 'sage')]],
-                ], [
+                ['plans_intro', __('Intro paragraph', 'sage'), 'textarea', __('Every Gettysburg web design package is one fixed price, agreed up front — no hourly meter, no surprise invoices. Rescue a site you already have, launch a new one for Adams County, or keep it growing after. Not sure which fits? Tell me about your business and I’ll point you to the right one.', 'sage')],
+                ['packages_btn', __('Default button label', 'sage'), 'text', __('Get a quote', 'sage')],
+                ['packages_items', __('Package cards', 'sage'), 'repeater', svc_package_defaults(), [
                     ['name', __('Package name', 'sage'), 'text'],
                     ['price', __('Price', 'sage'), 'text'],
                     ['flag', __('Badge (e.g. “Most popular” — leave blank for none)', 'sage'), 'text'],
-                    ['desc', __('Description', 'sage'), 'textarea'],
-                    ['features', __('Feature list (one per line)', 'sage'), 'lines'],
+                    ['kind', __('Layout', 'sage'), 'select', [
+                        'project' => __('Project card (in the comparison grid)', 'sage'),
+                        'care'    => __('Care plan (full-width bar under the grid)', 'sage'),
+                    ]],
+                    ['for', __('Best for', 'sage'), 'text', null, 'wide'],
+                    ['desc', __('One-line outcome', 'sage'), 'textarea'],
+                    ['features', __('What’s included (one per line — keep to three)', 'sage'), 'lines'],
+                    ['cta', __('Button label (blank = default button above)', 'sage'), 'text', null, 'wide'],
                 ]],
             ],
             __('Package detail cards', 'sage') => [
@@ -1153,7 +1308,9 @@ function field_group_hint(string $label): string
         __('Credentials / skills', 'sage') => __('The “what’s under the hood” heading and its three skill cards.', 'sage'),
         __('Rooted locally', 'sage')   => __('The big local-story block: heading, three paragraphs, the button label, and the three highlight cards.', 'sage'),
         __('Who I build for', 'sage')  => __('The industries you serve (cards), plus the “areas served” heading, town chips, and footnote.', 'sage'),
-        __('Packages', 'sage')         => __('The four package cards. Each has a name, price, description, and a feature list (one feature per line).', 'sage'),
+        __('Before pricing', 'sage')  => __('The three value cards above the pricing — what every package actually buys, before the dollar amounts.', 'sage'),
+        __('Packages', 'sage')         => __('The pricing line-up. Three project cards sit in a row; a Care plan uses the full-width bar underneath. Each card has a name, price, “best for” line, one-line outcome, and three features. Leave a button label blank to use the default button above.', 'sage'),
+        __('Package detail cards', 'sage') => __('The “what every build includes” heading and its three fine-print cards under the packages.', 'sage'),
         __('Local SEO section', 'sage') => __('The dark local-SEO block: heading, intro, the grid of SEO cards, and the note beneath.', 'sage'),
         __('Process (services)', 'sage') => __('The services timeline: heading and each day step.', 'sage'),
         __('AI-assisted split', 'sage') => __('The “honest split” heading, the two cards, and the disclosure note.', 'sage'),
@@ -1251,13 +1408,20 @@ function render_rep_row(string $name, $index, array $sub, array $row): string
     $h .= '<button type="button" class="button-link rv-rep-del" title="' . esc_attr__('Remove', 'sage') . '" aria-label="' . esc_attr__('Remove this item', 'sage') . '">✕</button>';
     $h .= '</div><div class="rv-rep-fields">';
 
+    $heading = trim((string) ($row['name'] ?? $row['title'] ?? $row['q'] ?? ''));
+    if ($heading !== '') {
+        $h .= '<p class="rv-rep-title">' . esc_html($heading) . '</p>';
+    }
+
     foreach ($sub as $sf) {
         $sk     = $sf[0];
         $slabel = $sf[1];
         $stype  = $sf[2] ?? 'text';
         $fname  = $name . '[' . $index . '][' . $sk . ']';
         $val    = $row[$sk] ?? '';
+        $wide   = in_array($stype, ['textarea', 'lines'], true) || (($sf[4] ?? '') === 'wide');
 
+        $h .= '<div class="rv-rep-field' . ($wide ? ' rv-rep-field-wide' : '') . '">';
         $h .= '<label>' . esc_html($slabel) . '</label>';
         switch ($stype) {
             case 'textarea':
@@ -1272,9 +1436,10 @@ function render_rep_row(string $name, $index, array $sub, array $row): string
                 break;
             case 'select':
                 $choices = is_array($sf[3] ?? null) ? $sf[3] : [];
+                $cur     = (string) $val !== '' ? (string) $val : (string) array_key_first($choices);
                 $h .= '<select name="' . esc_attr($fname) . '">';
                 foreach ($choices as $cv => $cl) {
-                    $h .= '<option value="' . esc_attr((string) $cv) . '"' . selected((string) $val, (string) $cv, false) . '>' . esc_html((string) $cl) . '</option>';
+                    $h .= '<option value="' . esc_attr((string) $cv) . '"' . selected($cur, (string) $cv, false) . '>' . esc_html((string) $cl) . '</option>';
                 }
                 $h .= '</select>';
                 break;
@@ -1286,6 +1451,7 @@ function render_rep_row(string $name, $index, array $sub, array $row): string
             default:
                 $h .= '<input type="text" name="' . esc_attr($fname) . '" value="' . esc_attr((string) $val) . '">';
         }
+        $h .= '</div>';
     }
 
     $h .= '</div></div>';
@@ -1424,6 +1590,11 @@ function render_page_fields_box(\WP_Post $post): void
         .rv-rep-fields label{margin:.5em 0 .2em;font-size:12px;color:#50575e;font-weight:600}
         .rv-rep-fields label:first-child{margin-top:0}
         .rv-rep-fields input[type=text],.rv-rep-fields input[type=url],.rv-rep-fields textarea,.rv-rep-fields select{width:100%}
+        .rv-rep-title{grid-column:1/-1;margin:0 0 .15rem;font-size:13px;font-weight:700;color:#1d2327}
+        .rv-rep-compact .rv-rep-fields{display:grid;grid-template-columns:1fr 1fr;gap:.15rem .75rem;align-items:start}
+        .rv-rep-compact .rv-rep-field{min-width:0}
+        .rv-rep-compact .rv-rep-field-wide{grid-column:1/-1}
+        .rv-rep-compact .rv-rep-fields label{margin:.45em 0 .15em}
         .rv-rep-cb{display:inline-flex;align-items:center}
         .rv-rep-cb input[type=checkbox]{margin:0}
         .rv-fields select{max-width:100%}
@@ -1552,7 +1723,8 @@ function render_page_fields_box(\WP_Post $post): void
                         echo render_form_builder($name, $rows, $sub);
                         break;
                     }
-                    echo '<div class="rv-rep" data-rep-name="' . esc_attr($name) . '">';
+                    $compact = count($sub) >= 5 ? ' rv-rep-compact' : '';
+                    echo '<div class="rv-rep' . $compact . '" data-rep-name="' . esc_attr($name) . '">';
                     echo '<div class="rv-rep-rows">';
                     foreach ($rows as $i => $row) {
                         echo render_rep_row($name, (int) $i, $sub, is_array($row) ? $row : []);
