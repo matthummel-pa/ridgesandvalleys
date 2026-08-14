@@ -1,7 +1,5 @@
 name: Deploy Sage theme (SiteGround)
 
-# Diagnostic: previous copies of this workflow never allocated a job
-# (startup_failure). Prove the file can start, then restore build+rsync.
 on:
   push:
     branches: [main]
@@ -15,4 +13,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
-      - run: echo "deploy workflow started"
+      - name: Setup PHP
+        uses: shivammathur/setup-php@2.37.2
+        with:
+          php-version: "8.3"
+      - run: php -v
