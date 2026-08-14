@@ -355,7 +355,7 @@ add_action('init', function () {
     $reply_name  = str_replace(["\r", "\n"], ' ', $reply_name);
     $reply_email = str_replace(["\r", "\n"], '', $reply_email);
 
-    set_transient($key, 1, 30);
+    set_transient($key, 1, 5 * MINUTE_IN_SECONDS);
 
     $to = get_theme_mod('rv_contact_email', get_option('admin_email'));
     /* translators: %s: site name. */

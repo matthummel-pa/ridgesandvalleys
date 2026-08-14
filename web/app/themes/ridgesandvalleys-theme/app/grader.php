@@ -33,14 +33,11 @@ function grader_fetch(string $url): array
     }
 
     $start = microtime(true);
-    $res = wp_safe_remote_get($url, [
-        'timeout'     => 14,
-        'redirection' => 3,
-        'user-agent'  => 'RidgesValleysGrader/1.0 (+https://ridgesandvalleys.com)',
-        'headers'     => ['Accept' => 'text/html,application/xhtml+xml', 'Accept-Encoding' => 'gzip, deflate, br'],
-    ]);
+    $args  = rv_tools_http_args(14, 'RidgesValleysGrader/1.0 (+https://ridgesandvalleys.com)');
+    $args['headers']['Accept-Encoding'] = 'gzip, deflate, br';
+    $res = wp_safe_remote_get($url, $args);
     if (is_wp_error($res)) {
-        return ['ok' => false, 'error' => $res->get_error_message()];
+        return ['ok' => false, 'error' => rv_tools_fetch_error()];
     }
 
     $headers = wp_remote_retrieve_headers($res);
@@ -54,12 +51,14 @@ function grader_fetch(string $url): array
         return is_array($v) ? implode(', ', $v) : (string) $v;
     };
 
+    $html = rv_tools_truncate_body((string) wp_remote_retrieve_body($res));
+
     return [
         'ok'      => true,
         'status'  => (int) wp_remote_retrieve_response_code($res),
-        'html'    => (string) wp_remote_retrieve_body($res),
+        'html'    => $html,
         'ms'      => (int) round((microtime(true) - $start) * 1000),
-        'bytes'   => strlen((string) wp_remote_retrieve_body($res)),
+        'bytes'   => strlen($html),
         'url'     => $url,
         'header'  => $get,
         'final'   => $url,
@@ -96,6 +95,10 @@ add_action('rest_api_init', function () {
  */
 function rv_rest_audit(\WP_REST_Request $req)
 {
+    if ($limited = rv_tools_rate_limited()) {
+        return $limited;
+    }
+
     $fetch = grader_fetch((string) $req->get_param('url'));
     if (! $fetch['ok']) {
         return new \WP_REST_Response(['ok' => false, 'error' => $fetch['error']], 200);

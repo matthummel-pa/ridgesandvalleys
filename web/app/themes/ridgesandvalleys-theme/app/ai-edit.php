@@ -181,7 +181,7 @@ function ai_call_gemini(array $cfg, string $system, string $prompt)
 function ai_parse_response($res, callable $extract)
 {
     if (is_wp_error($res)) {
-        return new \WP_Error('rv_ai_http', $res->get_error_message(), ['status' => 502]);
+        return new \WP_Error('rv_ai_http', __('The AI provider could not be reached. Try again shortly.', 'sage'), ['status' => 502]);
     }
     $code = (int) wp_remote_retrieve_response_code($res);
     $data = json_decode(wp_remote_retrieve_body($res), true);
@@ -233,14 +233,36 @@ function ai_edit_rest(\WP_REST_Request $request)
         );
     }
 
+    $uid     = get_current_user_id();
+    $rl_key  = 'rv_ai_rl_' . $uid;
+    $rl_max  = (int) apply_filters('rv/ai_edit_rate_max', 15);
+    $rl_win  = (int) apply_filters('rv/ai_edit_rate_window', 10 * MINUTE_IN_SECONDS);
+    $rl_n    = (int) get_transient($rl_key);
+    if ($rl_n >= max(1, $rl_max)) {
+        return new \WP_Error(
+            'rv_ai_rate',
+            __('Too many AI edits. Wait a few minutes and try again.', 'sage'),
+            ['status' => 429]
+        );
+    }
+
     $text        = trim((string) $request->get_param('text'));
     $action      = sanitize_key((string) $request->get_param('action'));
     $instruction = trim((string) $request->get_param('instruction'));
     $label       = sanitize_text_field((string) $request->get_param('label'));
 
+    if (strlen($text) > 8000) {
+        $text = substr($text, 0, 8000);
+    }
+    if (strlen($instruction) > 2000) {
+        $instruction = substr($instruction, 0, 2000);
+    }
+
     if ($text === '' && $instruction === '') {
         return new \WP_Error('rv_ai_empty_input', __('There is nothing to edit yet.', 'sage'), ['status' => 400]);
     }
+
+    set_transient($rl_key, $rl_n + 1, max(60, $rl_win));
 
     $actions = ai_edit_actions();
     $task    = $instruction !== '' ? $instruction : ($actions[$action] ?? $actions['improve']);

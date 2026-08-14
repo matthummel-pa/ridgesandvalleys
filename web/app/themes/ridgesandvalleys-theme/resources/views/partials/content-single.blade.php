@@ -142,9 +142,20 @@
         if (btns) btns.style.display = 'none';
         if (thanks) {
           thanks.hidden = false;
-          thanks.innerHTML = yes
-            ? 'Glad it helped. If you\'d like this handled for you, <a href="' + cta + '">get a quote</a>.'
-            : 'Thanks for the honesty — <a href="' + cta + '">tell me what was missing</a> and I\'ll improve it.';
+          thanks.textContent = '';
+          var a = document.createElement('a');
+          a.setAttribute('href', cta);
+          if (yes) {
+            thanks.appendChild(document.createTextNode('Glad it helped. If you\'d like this handled for you, '));
+            a.textContent = 'get a quote';
+            thanks.appendChild(a);
+            thanks.appendChild(document.createTextNode('.'));
+          } else {
+            thanks.appendChild(document.createTextNode('Thanks for the honesty — '));
+            a.textContent = 'tell me what was missing';
+            thanks.appendChild(a);
+            thanks.appendChild(document.createTextNode(' and I\'ll improve it.'));
+          }
         }
       });
     });

@@ -33,7 +33,20 @@ function emailcheck_domain(string $input): string
     }
     $input = preg_replace('#^www\.#', '', $input);
     $input = preg_replace('#[/?].*$#', '', $input);
-    return trim($input);
+    $input = trim($input);
+    if ($input === '' || filter_var($input, FILTER_VALIDATE_IP) || str_contains($input, '..')) {
+        return '';
+    }
+    foreach (['.local', '.internal', '.localhost', '.lan'] as $suffix) {
+        if (str_ends_with($input, $suffix)) {
+            return '';
+        }
+    }
+    if (in_array($input, ['localhost', 'intranet'], true)) {
+        return '';
+    }
+
+    return $input;
 }
 
 /** All TXT strings for a name (empty array on failure). */
@@ -55,6 +68,10 @@ function emailcheck_txt(string $name): array
 
 function rv_rest_email(\WP_REST_Request $req)
 {
+    if ($limited = rv_tools_rate_limited()) {
+        return $limited;
+    }
+
     if (! function_exists('dns_get_record')) {
         return new \WP_REST_Response(['ok' => false, 'error' => __('DNS lookups aren\'t available on this server.', 'sage')], 200);
     }

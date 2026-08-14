@@ -30,9 +30,9 @@
           </div>
         @endif
         <div class="rv-repo-actions">
-          <a class="rv-btn rv-btn-primary" href="{{ $repo['url'] }}" target="_blank" rel="noopener noreferrer">{{ __('View on GitHub', 'sage') }} &nearr;</a>
+          <a class="rv-btn rv-btn-primary" href="{{ esc_url($repo['url']) }}" target="_blank" rel="noopener noreferrer">{{ __('View on GitHub', 'sage') }} &nearr;</a>
           @if ($repo['homepage'])
-            <a class="rv-btn rv-btn-ghost" href="{{ $repo['homepage'] }}" target="_blank" rel="noopener noreferrer">{{ __('Live site', 'sage') }} &nearr;</a>
+            <a class="rv-btn rv-btn-ghost" href="{{ esc_url($repo['homepage']) }}" target="_blank" rel="noopener noreferrer">{{ __('Live site', 'sage') }} &nearr;</a>
           @endif
         </div>
       </header>
@@ -46,7 +46,7 @@
       </div>
 
       <div class="rv-repo-actions rv-repo-actions-end">
-        <a class="rv-btn rv-btn-primary" href="{{ $repo['url'] }}" target="_blank" rel="noopener noreferrer">{{ __('View this project on GitHub', 'sage') }} &nearr;</a>
+        <a class="rv-btn rv-btn-primary" href="{{ esc_url($repo['url']) }}" target="_blank" rel="noopener noreferrer">{{ __('View this project on GitHub', 'sage') }} &nearr;</a>
         <a class="rv-btn rv-btn-ghost" href="{{ home_url('/work/') }}">{{ __('Back to work', 'sage') }}</a>
       </div>
     @else

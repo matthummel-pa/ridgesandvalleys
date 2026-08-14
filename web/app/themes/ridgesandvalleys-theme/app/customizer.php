@@ -222,7 +222,7 @@ add_action('customize_register', function ($wp_customize) {
     $wp_customize->add_section('rv_header_mobile', ['title' => __('Header · Mobile / off-canvas menu', 'sage'), 'panel' => 'rv_theme_options']);
     $wp_customize->add_setting('rv_cta_text', ['default' => __('Get a quote', 'sage'), 'sanitize_callback' => 'sanitize_text_field']);
     $wp_customize->add_control('rv_cta_text', ['label' => __('Header button label', 'sage'), 'section' => 'rv_header', 'type' => 'text']);
-    $wp_customize->add_setting('rv_cta_url', ['default' => '/contact/', 'sanitize_callback' => 'sanitize_text_field']);
+    $wp_customize->add_setting('rv_cta_url', ['default' => '/contact/', 'sanitize_callback' => 'esc_url_raw']);
     $wp_customize->add_control('rv_cta_url', ['label' => __('Header button link', 'sage'), 'section' => 'rv_header', 'type' => 'text']);
     $wp_customize->add_setting('rv_topbar_text', ['default' => __('Gettysburg &amp; South Central PA', 'sage'), 'sanitize_callback' => 'wp_kses_post']);
     $wp_customize->add_control('rv_topbar_text', ['label' => __('Top bar text', 'sage'), 'section' => 'rv_header', 'type' => 'text']);
