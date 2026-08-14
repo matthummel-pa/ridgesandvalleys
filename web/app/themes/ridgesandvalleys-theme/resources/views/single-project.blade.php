@@ -7,7 +7,7 @@
     @php($m = fn ($k) => trim((string) get_post_meta($id, $k, true)))
 
     @php($isConcept = $m('_rv_is_concept') === '1' || strpos((string) $m('_rv_url'), 'github.io/rv-concepts') !== false)
-    @php($preview = $m('_rv_preview'))
+    @php($preview = \App\resolve_preview_url($m('_rv_preview')))
     @php($eyebrow = $m('_rv_eyebrow') ?: ($m('_rv_client') ?: __('Case study', 'sage')))
     @php($summary = $m('_rv_summary'))
     @php($url = $m('_rv_url'))
@@ -256,7 +256,7 @@
           <h2 class="rv-cs-h2">{{ __('See another', 'sage') }} <em class="rv-accent">{{ __('build.', 'sage') }}</em></h2>
           <div class="rv-grid" style="grid-template-columns:repeat(auto-fit,minmax(300px,1fr));margin-top:1.75rem">
             @while($related->have_posts()) @php($related->the_post())
-              @php($rpreview = get_post_meta(get_the_ID(), '_rv_preview', true))
+              @php($rpreview = \App\resolve_preview_url((string) get_post_meta(get_the_ID(), '_rv_preview', true)))
               <article class="rv-card rv-work-card">
                 <a class="rv-work-link" href="{{ get_permalink() }}">
                   @if (has_post_thumbnail())

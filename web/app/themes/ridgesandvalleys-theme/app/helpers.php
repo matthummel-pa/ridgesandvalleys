@@ -605,6 +605,9 @@ function lcp_preload_tags(): string
  */
 function content_img(string $url, string $alt = '', array $attr = []): string
 {
+    if (function_exists(__NAMESPACE__ . '\\resolve_preview_url')) {
+        $url = resolve_preview_url($url);
+    }
     if ($url === '') {
         return '';
     }

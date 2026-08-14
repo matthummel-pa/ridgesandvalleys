@@ -300,7 +300,10 @@ body:not(.home) .rv-page-intro { max-width: 48ch; font-size: 1.05rem; line-heigh
 .rv-hero-stats li { display: flex; flex-direction: column; gap: 0.15rem; min-width: 0; padding-inline: 0.85rem 0.4rem; border-inline-start: 2px solid color-mix(in srgb, var(--color-wheat) 55%, transparent); }
 .rv-hero-stat-v { font-family: var(--font-serif, Georgia, serif); font-weight: 400; font-size: clamp(1.15rem, 2.1vw, 1.4rem); line-height: 1.1; color: #fff; }
 .rv-hero-stat-l { font-family: var(--font-mono, ui-monospace, monospace); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; line-height: 1.35; color: #c5d0c0; }
-@media (max-width: 820px) { .rv-hero-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 820px) {
+  .rv-hero-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .rv-hero:has(.rv-hero-proof) .rv-hero-credit { bottom: auto; top: clamp(0.7rem, 2vw, 1.2rem); }
+}
 @media (max-width: 420px) { .rv-hero-stats { grid-template-columns: 1fr; } }
 
 /* Homepage intro — Who we are / How we work (no page-body image) */

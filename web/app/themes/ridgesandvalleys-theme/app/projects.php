@@ -292,6 +292,47 @@ function concept_demo_url(string $folder, string $file = ''): string
 }
 
 /**
+ * Deployed thumbnail for a concept folder.
+ *
+ * Full concept sites stay off SiteGround (`concept/` is rsync-excluded) and
+ * live on GitHub Pages. Thumbnails are copied to assets/concept-previews/ so
+ * Home / Work cards do not 404.
+ */
+function concept_preview_uri(string $folder): string
+{
+    $folder = sanitize_file_name($folder);
+    if ($folder === '' || $folder === '.' || $folder === '..') {
+        return '';
+    }
+    $deployed = 'assets/concept-previews/' . $folder . '.jpg';
+    if (is_file(get_theme_file_path($deployed))) {
+        return get_theme_file_uri($deployed);
+    }
+    $legacy = 'concept/' . $folder . '/preview.jpg';
+    if (is_file(get_theme_file_path($legacy))) {
+        return get_theme_file_uri($legacy);
+    }
+
+    return '';
+}
+
+/**
+ * Map a stored preview URL onto a file that actually deploys.
+ * Existing Project meta still points at theme/concept/{folder}/preview.jpg.
+ */
+function resolve_preview_url(string $url): string
+{
+    if ($url !== '' && preg_match('#/concept/([^/]+)/preview\.jpg#', $url, $m)) {
+        $mapped = concept_preview_uri(rawurldecode($m[1]));
+        if ($mapped !== '') {
+            return $mapped;
+        }
+    }
+
+    return $url;
+}
+
+/**
  * The concept-site portfolio, seeded once as Project posts so it populates the
  * Projects admin list and the Work grid. Each live demo lives in its own
  * GitHub repo (`{folder}-theme`) and deploys to GitHub Pages.
@@ -454,7 +495,7 @@ function seed_concept_projects(): void
         update_post_meta($post_id, '_rv_location', 'Gettysburg, PA');
         update_post_meta($post_id, '_rv_services', $c['services']);
         update_post_meta($post_id, '_rv_url', concept_demo_url($c['folder']));
-        update_post_meta($post_id, '_rv_preview', get_theme_file_uri('concept/' . $c['folder'] . '/preview.jpg'));
+        update_post_meta($post_id, '_rv_preview', concept_preview_uri($c['folder']));
         update_post_meta($post_id, '_rv_is_concept', '1');
         update_post_meta($post_id, '_rv_challenge', $c['challenge']);
         update_post_meta($post_id, '_rv_approach', $c['approach']);
@@ -661,7 +702,7 @@ function home_proof_box_data(\WP_Post $post, string $fallback_img = ''): array
     }
     $img = (string) get_the_post_thumbnail_url($id, 'rv-hero');
     if ($img === '') {
-        $img = (string) get_post_meta($id, '_rv_preview', true);
+        $img = resolve_preview_url((string) get_post_meta($id, '_rv_preview', true));
     }
     $used_fallback = $img === '';
     if ($used_fallback) {
@@ -713,7 +754,7 @@ function work_card_data(int $id): array
         'url'      => $url,
         'eyebrow'  => $eyebrow,
         'summary'  => $summary,
-        'preview'  => (string) get_post_meta($id, '_rv_preview', true),
+        'preview'  => resolve_preview_url((string) get_post_meta($id, '_rv_preview', true)),
         'industry' => $industry !== '' ? $industry : $cat['label'],
         'location' => trim((string) get_post_meta($id, '_rv_location', true)),
         'metric'   => $m1v !== '' ? trim($m1v . ($m1l !== '' ? ' · ' . $m1l : '')) : '',
