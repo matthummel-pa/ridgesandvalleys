@@ -13,6 +13,11 @@ OWNER="${CONCEPT_REPO_OWNER:-matthummel-pa}"
 PAGES_ORIGIN="${CONCEPT_PAGES_ORIGIN:-https://matthummel-pa.github.io}"
 STAGE_ROOT="${CONCEPT_STAGE_DIR:-$ROOT/.concept-repo-stage}"
 TOKEN="${CONCEPT_REPOS_TOKEN:-${GH_TOKEN:-${GITHUB_TOKEN:-}}}"
+TOKEN="$(printf '%s' "$TOKEN" | tr -d '\r\n' | sed 's/^[[:space:]]*//;s/[[:space:]]*$//')"
+if [[ -n "$TOKEN" ]]; then
+  export CONCEPT_REPOS_TOKEN="$TOKEN"
+  export GH_TOKEN="$TOKEN"
+fi
 
 STAGE_ONLY=0
 PUSH=1

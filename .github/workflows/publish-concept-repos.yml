@@ -28,7 +28,7 @@ jobs:
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Stage all ten concept repos (no push)
         run: |
           chmod +x scripts/publish-concept-repos.sh
@@ -42,7 +42,7 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
       - name: Publish each concept to its named repo
         env:
           CONCEPT_REPOS_TOKEN: ${{ secrets.CONCEPT_REPOS_TOKEN }}
