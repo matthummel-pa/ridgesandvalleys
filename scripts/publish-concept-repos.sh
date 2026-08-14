@@ -1,12 +1,14 @@
 #!/usr/bin/env bash
 # Copy each Work-page concept site into its named GitHub repo and (unless
-# --stage-only) push + enable GitHub Pages so future commits deploy the live demo.
+# --stage-only) push to main and enable GitHub Pages from that branch.
+#
+# Dest repos serve static HTML from main (no Actions workflow), so a
+# fine-grained PAT only needs Contents + Pages write — not Workflows.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
 CONCEPT_DIR="$ROOT/web/app/themes/ridgesandvalleys-theme/concept"
 MAP="$ROOT/scripts/concept-repos.tsv"
-WORKFLOW_SRC="$ROOT/scripts/concept-repo-files/deploy-pages.yml"
 OWNER="${CONCEPT_REPO_OWNER:-matthummel-pa}"
 PAGES_ORIGIN="${CONCEPT_PAGES_ORIGIN:-https://matthummel-pa.github.io}"
 STAGE_ROOT="${CONCEPT_STAGE_DIR:-$ROOT/.concept-repo-stage}"
@@ -24,9 +26,30 @@ if [[ ! -f "$MAP" || ! -d "$CONCEPT_DIR" ]]; then
   exit 1
 fi
 
+if [[ "$PUSH" -eq 1 && -z "$TOKEN" ]]; then
+  echo "Missing CONCEPT_REPOS_TOKEN (or GH_TOKEN)." >&2
+  echo "Create a fine-grained PAT (resource owner matthummel-pa) with Contents and Pages write on the ten *-theme repos, then set it as secret CONCEPT_REPOS_TOKEN." >&2
+  exit 1
+fi
+
 git_identity() {
-  git -C "$1" config user.email >/dev/null 2>&1 || git -C "$1" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-  git -C "$1" config user.name >/dev/null 2>&1 || git -C "$1" config user.name "github-actions[bot]"
+  git -C "$1" config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+  git -C "$1" config user.name "github-actions[bot]"
+  git -C "$1" config commit.gpgsign false
+}
+
+# Fine-grained PATs need a Bearer header. Never put the token in the remote URL
+# (it would show up in git remote -v / Action logs).
+git_authed() {
+  if [[ -n "$TOKEN" ]]; then
+    git -c "http.extraHeader=Authorization: Bearer ${TOKEN}" "$@"
+  else
+    git "$@"
+  fi
+}
+
+public_remote() {
+  printf 'https://github.com/%s/%s.git' "$OWNER" "$1"
 }
 
 rewrite_urls() {
@@ -34,7 +57,7 @@ rewrite_urls() {
   local old="https://example-concept.test/${folder}"
   local new="${PAGES_ORIGIN}/${repo}"
   find "$dir" -type f \( -name '*.html' -o -name '*.js' -o -name '*.css' -o -name '*.md' \) -print0 |
-    xargs -0 sed -i "s#${old}#${new}#g"
+    xargs -0 -r sed -i "s#${old}#${new}#g"
 }
 
 write_readme() {
@@ -46,17 +69,17 @@ Self-initiated concept website by [Ridges & Valleys Studio](https://ridgesandval
 
 **Live demo:** ${PAGES_ORIGIN}/${repo}/
 
-This repo is the source of truth for the working HTML demo. Push to \`main\` and GitHub Pages republishes the live site.
+This repo is the source of truth for the working HTML demo. Push to \`main\` and GitHub Pages republishes the live site from the branch root.
 
 ## Develop
 
 1. Edit the HTML / CSS / JS in this repo (same files as the live demo).
 2. Open \`index.html\` locally, or serve the folder with any static server.
-3. Commit and push to \`main\`. The **Deploy live demo** workflow publishes to GitHub Pages.
+3. Commit and push to \`main\`. GitHub Pages serves \`/\` from \`main\`.
 
 ## First-time Pages setup
 
-If the live URL 404s after the first push: **Settings → Pages → Source: GitHub Actions**.
+If the live URL 404s after the first push: **Settings → Pages → Deploy from a branch → \`main\` / (root)**.
 
 ## Source
 
@@ -81,10 +104,8 @@ stage_one() {
   rm -rf "$dest"
   mkdir -p "$dest"
   rsync -a --exclude 'preview.jpg' "$src/" "$dest/"
-  mkdir -p "$dest/.github/workflows"
-  cp "$WORKFLOW_SRC" "$dest/.github/workflows/deploy-pages.yml"
   touch "$dest/.nojekyll"
-  printf '%s\n' '.DS_Store' '_site/' >>"$dest/.gitignore"
+  printf '%s\n' '.DS_Store' >"$dest/.gitignore"
   write_readme "$dest" "$title" "$repo" "$folder"
   rewrite_urls "$dest" "$folder" "$repo"
 
@@ -95,21 +116,28 @@ stage_one() {
   fi
 }
 
-remote_url() {
-  local repo="$1"
-  if [[ -n "$TOKEN" ]]; then
-    printf 'https://x-access-token:%s@github.com/%s/%s.git' "$TOKEN" "$OWNER" "$repo"
-  else
-    printf 'https://github.com/%s/%s.git' "$OWNER" "$repo"
-  fi
-}
-
 enable_pages() {
   local repo="$1"
-  local payload='{"build_type":"workflow"}'
-  if ! gh api -X POST "repos/${OWNER}/${repo}/pages" --input - <<<"$payload" >/dev/null 2>&1; then
-    gh api -X PUT "repos/${OWNER}/${repo}/pages" --input - <<<"$payload" >/dev/null 2>&1 || true
+  local out rc=0
+  local payload='{"build_type":"legacy","source":{"branch":"main","path":"/"}}'
+
+  set +e
+  out="$(gh api -X POST "repos/${OWNER}/${repo}/pages" --input - <<<"$payload" 2>&1)"
+  rc=$?
+  if [[ "$rc" -ne 0 ]]; then
+    out="$(gh api -X PUT "repos/${OWNER}/${repo}/pages" --input - <<<"$payload" 2>&1)"
+    rc=$?
   fi
+  set -e
+
+  if [[ "$rc" -ne 0 ]]; then
+    echo "Could not enable Pages API for ${repo} (PAT needs Pages: write)."
+    echo "$out"
+    echo "Enable once in the GitHub UI: Settings → Pages → Deploy from a branch → main / (root)."
+  else
+    echo "Pages set to main / (root) for ${repo}"
+  fi
+
   gh api -X PATCH "repos/${OWNER}/${repo}" \
     -f "homepage=${PAGES_ORIGIN}/${repo}/" >/dev/null 2>&1 || true
 }
@@ -118,12 +146,13 @@ push_one() {
   local repo="$1" dest="$STAGE_ROOT/$repo"
   local tmp url heads
   tmp="$(mktemp -d)"
-  url="$(remote_url "$repo")"
+  url="$(public_remote "$repo")"
 
-  heads="$(git ls-remote "$url" HEAD 2>/dev/null || true)"
+  heads="$(git_authed ls-remote "$url" HEAD 2>/dev/null || true)"
   if [[ -n "$heads" ]]; then
-    git clone --depth 1 "$url" "$tmp/repo"
+    git_authed clone --depth 1 "$url" "$tmp/repo"
   else
+    echo "Empty dest repo ${repo}; initializing main"
     mkdir -p "$tmp/repo"
     git -C "$tmp/repo" init -b main
     git -C "$tmp/repo" remote add origin "$url"
@@ -143,7 +172,8 @@ push_one() {
     echo "No changes for $repo"
   else
     git -C "$tmp/repo" commit -m "Publish ${repo} live demo from ridgesandvalleys concept site"
-    git -C "$tmp/repo" push -u origin HEAD:main
+    git_authed -C "$tmp/repo" push -u origin HEAD:main
+    echo "Pushed ${OWNER}/${repo} main"
   fi
 
   enable_pages "$repo"

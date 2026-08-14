@@ -1,11 +1,16 @@
 name: Publish concept repos
 
-# Copies each Work-page concept site into its named GitHub repo
-# (`{folder}-theme`) and pushes to main so GitHub Pages can serve the live demo.
+# Copies each Work-page concept into its named GitHub repo (`{folder}-theme`)
+# and pushes to main. Those repos serve GitHub Pages from the branch root
+# (no dest-repo Actions workflow, so the PAT does not need Workflows write).
 #
-# Pushing requires a PAT (or fine-grained token) with Contents + Pages write on
-# those repos, stored as Actions secret CONCEPT_REPOS_TOKEN. The Cursor GitHub
-# App for this marketing repo cannot push to the other repositories.
+# This file must live on the default branch or GitHub will not show
+# Actions → Publish concept repos → Run workflow.
+#
+# Secret CONCEPT_REPOS_TOKEN: fine-grained PAT, resource owner matthummel-pa,
+# only the ten *-theme repos, permissions:
+#   Contents: Read and write
+#   Pages: Read and write
 on:
   workflow_dispatch:
   pull_request:
@@ -13,7 +18,6 @@ on:
       - "web/app/themes/ridgesandvalleys-theme/concept/**"
       - "scripts/publish-concept-repos.sh"
       - "scripts/concept-repos.tsv"
-      - "scripts/concept-repo-files/**"
       - ".github/workflows/publish-concept-repos.yml"
 
 permissions:
@@ -30,6 +34,8 @@ jobs:
           chmod +x scripts/publish-concept-repos.sh
           ./scripts/publish-concept-repos.sh --stage-only
           test -f .concept-repo-stage/gettysburg-hotel-theme/index.html
+          test -f .concept-repo-stage/gettysburg-hotel-theme/.nojekyll
+          test ! -e .concept-repo-stage/gettysburg-hotel-theme/.github/workflows/deploy-pages.yml
           ! grep -R --include='*.html' -q 'example-concept.test' .concept-repo-stage
 
   publish:
@@ -43,10 +49,15 @@ jobs:
           GH_TOKEN: ${{ secrets.CONCEPT_REPOS_TOKEN }}
         run: |
           if [ -z "${CONCEPT_REPOS_TOKEN}" ]; then
-            echo "Missing secret CONCEPT_REPOS_TOKEN."
-            echo "Create a fine-grained PAT with Contents + Pages write on the ten *-theme repos,"
-            echo "add it as that secret, and re-run this workflow."
-            echo "Or grant the Cursor GitHub App access to those repos and ask the agent to push."
+            echo "::error::Missing secret CONCEPT_REPOS_TOKEN"
+            echo "GitHub → Settings → Developer settings → Fine-grained tokens → Generate:"
+            echo "  Resource owner: matthummel-pa"
+            echo "  Repository access: only the ten *-theme concept repos"
+            echo "  Permissions: Contents (read/write), Pages (read/write)"
+            echo "Then: this repo → Settings → Secrets and variables → Actions → New repository secret"
+            echo "  Name: CONCEPT_REPOS_TOKEN"
+            echo "  Value: the PAT"
+            echo "Re-run Actions → Publish concept repos."
             exit 1
           fi
           chmod +x scripts/publish-concept-repos.sh
