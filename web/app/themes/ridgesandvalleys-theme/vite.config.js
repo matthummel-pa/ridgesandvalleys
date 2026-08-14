@@ -19,7 +19,6 @@ export default defineConfig({
     tailwindcss(),
     laravel({
       input: [
-        'resources/css/app.css',
         'resources/js/app.ts',
         'resources/js/tools.ts',
         'resources/css/editor.css',

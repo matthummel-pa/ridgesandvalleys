@@ -465,6 +465,11 @@ function hero_bg_markup(string $fallback = '', ?int $post_id = null): string
         'sizes'         => '100vw',
     ];
 
+    $srcset = $id > 0 ? hero_srcset_capped($id, 1600) : '';
+    if ($srcset !== '') {
+        $attrs['srcset'] = $srcset;
+    }
+
     if ($id > 0) {
         $img = wp_get_attachment_image($id, 'rv-hero', false, $attrs);
     } else {
@@ -475,6 +480,124 @@ function hero_bg_markup(string $fallback = '', ?int $post_id = null): string
     }
 
     return '<span class="rv-hero-bg" aria-hidden="true">' . $img . '</span>';
+}
+
+/**
+ * Drop srcset candidates wider than $max_w so LCP does not fetch a 2048px file.
+ */
+function hero_srcset_capped(int $attachment_id, int $max_w = 1600): string
+{
+    $srcset = (string) wp_get_attachment_image_srcset($attachment_id, 'rv-hero');
+    if ($srcset === '') {
+        return '';
+    }
+
+    $keep = [];
+    foreach (explode(',', $srcset) as $part) {
+        $part = trim($part);
+        if ($part === '') {
+            continue;
+        }
+        if (preg_match('/\s(\d+)w$/', $part, $m) && (int) $m[1] > $max_w) {
+            continue;
+        }
+        $keep[] = $part;
+    }
+
+    return implode(', ', $keep);
+}
+
+/**
+ * Server-rendered hero caption (avoids a footer script that mutates layout).
+ */
+function hero_credit_markup(?int $post_id = null): string
+{
+    $id = $post_id ?: (int) get_queried_object_id();
+    if ($id < 1) {
+        return '';
+    }
+
+    $hero = (string) get_post_meta($id, 'rv_f_hero_credit', true);
+    $show = (string) get_post_meta($id, 'rv_f_hero_credit_show', true);
+    if (trim($hero) === '' || $show === '0') {
+        return '';
+    }
+
+    return '<div class="rv-hero-credit">' . nl2br(esc_html($hero)) . '</div>';
+}
+
+/**
+ * Early LCP image preload (emitted before CSS so the photo starts with the
+ * stylesheet, not after plugin tags). Mobile and desktop get different files
+ * so a 1600px JPEG is not forced on a phone.
+ */
+function lcp_preload_tags(): string
+{
+    $id  = 0;
+    $lcp = '';
+    if (is_singular('post')) {
+        $id  = (int) get_post_thumbnail_id();
+        $lcp = $id ? (string) get_the_post_thumbnail_url(null, 'rv-hero') : blog_post_image();
+    } elseif (is_front_page()) {
+        $id  = hero_bg_attachment_id();
+        $lcp = hero_bg_url(stock_image('hero-home'));
+    } elseif (is_home()) {
+        $postsId = (int) get_option('page_for_posts');
+        $id      = hero_bg_attachment_id($postsId ?: null);
+        $lcp     = hero_bg_url(stock_image('process'), $postsId);
+    } elseif (is_page()) {
+        $id  = hero_bg_attachment_id();
+        $lcp = hero_bg_url();
+    }
+
+    $out  = '';
+    $font = get_theme_file_uri('public/fonts/Outfit-Variable.woff2');
+    $out .= sprintf(
+        '<link rel="preload" as="font" type="font/woff2" crossorigin href="%s">' . "\n",
+        esc_url($font)
+    );
+
+    if ($lcp === '') {
+        return $out;
+    }
+    $host = wp_parse_url($lcp, PHP_URL_HOST);
+    if ($host === 'images.pexels.com') {
+        $out .= '<link rel="preconnect" href="https://images.pexels.com">' . "\n";
+    } elseif ($host === 'upload.wikimedia.org' || $host === 'commons.wikimedia.org') {
+        $out .= '<link rel="preconnect" href="https://upload.wikimedia.org">' . "\n";
+        $out .= '<link rel="dns-prefetch" href="https://commons.wikimedia.org">' . "\n";
+    }
+
+    $desktop = $lcp;
+    $mobile  = '';
+    if ($id > 0) {
+        $wide = wp_get_attachment_image_src($id, 'rv-hero');
+        $mid  = wp_get_attachment_image_src($id, 'medium_large');
+        if (is_array($wide) && ! empty($wide[0])) {
+            $desktop = (string) $wide[0];
+        }
+        if (is_array($mid) && ! empty($mid[0]) && (int) ($mid[1] ?? 0) <= 800) {
+            $mobile = (string) $mid[0];
+        }
+    }
+
+    if ($mobile !== '' && $mobile !== $desktop) {
+        $out .= sprintf(
+            '<link rel="preload" as="image" href="%s" media="(max-width: 800px)" fetchpriority="high">' . "\n",
+            esc_url($mobile)
+        );
+        $out .= sprintf(
+            '<link rel="preload" as="image" href="%s" media="(min-width: 801px)" fetchpriority="high">' . "\n",
+            esc_url($desktop)
+        );
+    } else {
+        $out .= sprintf(
+            '<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n",
+            esc_url($desktop)
+        );
+    }
+
+    return $out;
 }
 
 /**

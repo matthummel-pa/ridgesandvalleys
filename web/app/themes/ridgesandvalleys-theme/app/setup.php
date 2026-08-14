@@ -17,10 +17,7 @@ function rv_font_face_css(): string
 {
     $u = get_theme_file_uri('public/fonts');
 
-    return "@font-face{font-family:'Outfit';font-style:normal;font-weight:100 900;font-display:swap;src:url('{$u}/Outfit-Variable.woff2') format('woff2');}"
-        . "@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:optional;src:url('{$u}/InstrumentSerif-Regular.woff2') format('woff2');}"
-        . "@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:optional;src:url('{$u}/InstrumentSerif-Italic.woff2') format('woff2');}"
-        . "@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 600;font-display:optional;src:url('{$u}/JetBrainsMono-Variable.woff2') format('woff2');}";
+    return "@font-face{font-family:'Outfit';font-style:normal;font-weight:100 900;font-display:optional;src:url('{$u}/Outfit-Variable.woff2') format('woff2');}";
 }
 
 add_action('wp_enqueue_scripts', function () {
@@ -30,86 +27,12 @@ add_action('wp_enqueue_scripts', function () {
 }, 100);
 
 /**
- * Bundled enhancement styles.
- *
- * These rules were authored in the Customizer during design and are shipped as a
- * static theme file (assets/rv-enhancements.css) so the full design travels with
- * the theme — independent of the Vite build and of the site database. Loaded
- * after the compiled stylesheet so its component styles apply as intended.
- */
-add_action('wp_enqueue_scripts', function () {
-    $rel  = 'assets/rv-enhancements.css';
-    $path = get_theme_file_path($rel);
-
-    wp_enqueue_style(
-        'rv-enhancements',
-        get_theme_file_uri($rel),
-        [],
-        file_exists($path) ? (string) filemtime($path) : '1.0.0'
-    );
-}, 20);
-
-/**
- * Emit @font-face + preload the primary font, before the stylesheet.
+ * Emit @font-face for the UI font. Display/heading faces live in contour_css().
+ * font-display:optional avoids a late swap (forced reflow / LCP text delay).
  */
 add_action('wp_head', function () {
-    $fonts = get_theme_file_uri('public/fonts');
-    printf(
-        '<link rel="preload" as="font" type="font/woff2" crossorigin href="%s/Outfit-Variable.woff2">' . "\n",
-        esc_url($fonts)
-    );
-    printf(
-        '<link rel="preload" as="font" type="font/woff2" crossorigin href="%s/YoungSerif-Regular.woff2">' . "\n",
-        esc_url($fonts)
-    );
     echo '<style id="rv-fonts">' . rv_font_face_css() . "</style>\n"; // phpcs:ignore
 }, 1);
-
-/**
- * Performance: preconnect only to the CDN that actually serves this page's LCP
- * image, and preload that image so it starts loading immediately.
- */
-add_action('wp_head', function () {
-    $id  = 0;
-    $lcp = '';
-    if (is_singular('post')) {
-        $id  = (int) get_post_thumbnail_id();
-        $lcp = $id ? (string) get_the_post_thumbnail_url(null, 'rv-hero') : blog_post_image();
-    } elseif (is_front_page()) {
-        $id  = hero_bg_attachment_id();
-        $lcp = hero_bg_url(stock_image('hero-home'));
-    } elseif (is_home()) {
-        $postsId = (int) get_option('page_for_posts');
-        $id      = hero_bg_attachment_id($postsId ?: null);
-        $lcp     = hero_bg_url(stock_image('process'), $postsId);
-    } elseif (is_page()) {
-        $id  = hero_bg_attachment_id();
-        $lcp = hero_bg_url();
-    }
-
-    if (! $lcp) {
-        return;
-    }
-
-    $host = wp_parse_url($lcp, PHP_URL_HOST);
-    if ($host === 'images.pexels.com') {
-        echo '<link rel="preconnect" href="https://images.pexels.com">' . "\n";
-    } elseif ($host === 'upload.wikimedia.org' || $host === 'commons.wikimedia.org') {
-        echo '<link rel="preconnect" href="https://upload.wikimedia.org">' . "\n";
-        echo '<link rel="dns-prefetch" href="https://commons.wikimedia.org">' . "\n";
-    }
-
-    $srcset = $id ? wp_get_attachment_image_srcset($id, 'rv-hero') : '';
-    if ($srcset) {
-        printf(
-            '<link rel="preload" as="image" href="%s" imagesrcset="%s" imagesizes="100vw" fetchpriority="high">' . "\n",
-            esc_url($lcp),
-            esc_attr($srcset)
-        );
-    } else {
-        printf('<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n", esc_url($lcp));
-    }
-}, 2);
 
 /**
  * Site icons / favicons.
@@ -294,7 +217,7 @@ function contour_font_face(): string
 {
     $u = get_theme_file_uri('public/fonts');
 
-    return "@font-face{font-family:'Young Serif';font-style:normal;font-weight:400;font-display:swap;src:url('{$u}/YoungSerif-Regular.woff2') format('woff2');}"
+    return "@font-face{font-family:'Young Serif';font-style:normal;font-weight:400;font-display:optional;src:url('{$u}/YoungSerif-Regular.woff2') format('woff2');}"
         . "@font-face{font-family:'Geist Mono';font-style:normal;font-weight:400;font-display:optional;src:url('{$u}/GeistMono-Regular.woff2') format('woff2');}"
         . "@font-face{font-family:'Geist Mono';font-style:normal;font-weight:500 700;font-display:optional;src:url('{$u}/GeistMono-Bold.woff2') format('woff2');}";
 }

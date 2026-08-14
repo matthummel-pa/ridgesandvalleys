@@ -110,21 +110,15 @@ add_action('save_post', function ($post_id) {
  * ---------------------------------------------------------------------- */
 
 add_action('wp_footer', function () {
-    if (! is_singular()) {
+    if (! is_singular() || is_front_page()) {
         return;
     }
     $id = (int) get_queried_object_id();
 
-    // Hero credit.
-    $hero = (string) get_post_meta($id, 'rv_f_hero_credit', true);
-    $show = (string) get_post_meta($id, 'rv_f_hero_credit_show', true);
-    $heroHtml = (trim($hero) !== '' && $show !== '0') ? nl2br(esc_html($hero)) : '';
-
-    // Content-photo credits: one per line → the Nth .rv-split-media photo.
     $lines = preg_split('/\r\n|\r|\n/', (string) get_post_meta($id, 'rv_f_img_credits', true)) ?: [];
     $imgHtml = array_map(static fn ($l) => trim($l) === '' ? '' : esc_html(trim($l)), $lines);
 
-    if ($heroHtml === '' && ! array_filter($imgHtml)) {
+    if (! array_filter($imgHtml)) {
         return;
     }
 
@@ -133,7 +127,6 @@ add_action('wp_footer', function () {
         . 'var d=document.createElement("div");d.className=c;d.innerHTML=html;host.appendChild(d);}';
 
     echo '<script>(function(){var add=' . $add . ';'
-        . 'add(document.querySelector(".rv-hero"),' . wp_json_encode($heroHtml) . ');'
         . 'var creds=' . wp_json_encode(array_values($imgHtml)) . ';'
         . 'var m=document.querySelectorAll(".rv-split-media");'
         . 'for(var i=0;i<m.length;i++){add(m[i],creds[i]||"");}})();</script>' . "\n";

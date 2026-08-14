@@ -87,10 +87,37 @@ add_action('customize_register', function ($wp_customize) {
 function rv_code_emit(string $id): void
 {
     $code = trim((string) get_theme_mod($id, ''));
-    if ($code !== '') {
-        // Raw by design — this is a code-injection field for trusted admins.
-        echo "\n" . $code . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    if ($code === '') {
+        return;
     }
+    if (! empty(perf()['delay3p'])) {
+        $code = rv_strip_third_party_scripts($code);
+    }
+    if (trim($code) === '') {
+        return;
+    }
+    echo "\n" . $code . "\n"; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+}
+
+/**
+ * Drop GTM/gtag/HubSpot snippets from Customizer slots — they load via the
+ * delayed third-party loader in performance.php (once, not twice).
+ */
+function rv_strip_third_party_scripts(string $code): string
+{
+    $code = preg_replace(
+        '#<script\b[^>]*src=["\'][^"\']*(?:googletagmanager|google-analytics|gtag/js|hs-scripts)[^"\']*["\'][^>]*>\s*</script>#is',
+        '',
+        $code
+    ) ?? $code;
+    $code = preg_replace(
+        '#<script\b[^>]*>[\s\S]*?(?:googletagmanager\.com/gtm\.js|GTM-[A-Z0-9]+|function gtag\(|\bgtag\()[\s\S]*?</script>#is',
+        '',
+        $code
+    ) ?? $code;
+    $code = preg_replace('#<!--\s*Google Tag Manager[\s\S]*?End Google Tag Manager\s*-->#is', '', $code) ?? $code;
+
+    return $code;
 }
 
 add_action('wp_head', function () {

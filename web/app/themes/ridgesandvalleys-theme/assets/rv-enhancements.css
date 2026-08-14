@@ -2,9 +2,8 @@
  * Ridges & Valleys Studio — bundled enhancement styles.
  *
  * Authored during design and baked into the theme so the full design ships with
- * the theme files (independent of the Customizer/database). Enqueued from
- * app/setup.php. All surfaces/borders/text use the theme's color tokens so every
- * component adapts correctly in BOTH light and dark mode.
+ * the theme files. Imported from resources/js/app.ts so it rides in the Vite
+ * bundle (one stylesheet, no extra render-blocking request).
  */
 
 /* ============================================================

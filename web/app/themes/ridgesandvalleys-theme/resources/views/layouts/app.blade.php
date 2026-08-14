@@ -26,12 +26,12 @@
       })();
     </script>
     @php(do_action('get_header'))
-    @php(wp_head())
-
-    @vite(['resources/css/app.css', 'resources/js/app.ts'])
+    {!! \App\lcp_preload_tags() !!}
+    @vite(['resources/js/app.ts'])
     @if (\App\needs_tools_assets())
       @vite(['resources/js/tools.ts'])
     @endif
+    @php(wp_head())
   </head>
 
   <body @php(body_class())>

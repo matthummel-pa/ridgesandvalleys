@@ -10,6 +10,7 @@
     <span class="rv-stripe" aria-hidden="true"></span>
     @if ($rvHero['hero_bg'])
       {!! \App\hero_bg_markup() !!}
+      {!! \App\hero_credit_markup() !!}
     @endif
     <div class="rv-shell rv-hero-inner">
       <h1 class="rv-hero-title">{!! wp_kses_post($rvHero['hero_title']) !!}</h1>

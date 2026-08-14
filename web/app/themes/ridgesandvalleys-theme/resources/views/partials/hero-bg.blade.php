@@ -9,3 +9,4 @@
     @include('partials.hero-bg', ['fallback' => \App\stock_image('process'), 'postId' => $blogId])
 --}}
 {!! \App\hero_bg_markup($fallback ?? '', $postId ?? null) !!}
+{!! \App\hero_credit_markup($postId ?? null) !!}

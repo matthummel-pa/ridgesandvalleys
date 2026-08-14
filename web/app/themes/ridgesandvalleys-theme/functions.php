@@ -88,7 +88,7 @@ add_action('wp_enqueue_scripts', function () {
     wp_enqueue_style(
         'rv-page-sections',
         get_theme_file_uri($cssRel),
-        ['rv-enhancements'],
+        [],
         file_exists($cssPath) ? (string) filemtime($cssPath) : '1.0.0'
     );
 
