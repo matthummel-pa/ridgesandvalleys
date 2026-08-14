@@ -113,16 +113,16 @@ add_filter('script_loader_tag', function ($tag, $handle) {
  * Homepage does not render Gutenberg content — skip WP's large global-styles
  * and block-library CSS (parse cost on LCP).
  */
-add_action('wp_enqueue_scripts', function () {
+add_action('wp', function () {
     if (! is_front_page()) {
         return;
     }
-    wp_dequeue_style('wp-block-library');
-    wp_dequeue_style('wp-block-library-theme');
+    remove_action('wp_enqueue_scripts', 'wp_enqueue_global_styles');
+    remove_action('wp_footer', 'wp_enqueue_global_styles', 1);
+    remove_action('wp_body_open', 'wp_global_styles_render_svg_filters');
     wp_dequeue_style('global-styles');
-    wp_dequeue_style('classic-theme-styles');
-    wp_dequeue_style('core-block-supports');
-}, 100);
+    wp_deregister_style('global-styles');
+});
 
 /** Interior page-section CSS is not needed for first paint. */
 add_filter('style_loader_tag', function ($tag, $handle) {
@@ -150,6 +150,18 @@ add_action('template_redirect', function () {
     add_filter('googlesitekit_tagmanager_tag_blocked', '__return_true');
     add_filter('googlesitekit_ads_tag_blocked', '__return_true');
     add_filter('googlesitekit_adsense_tag_blocked', '__return_true');
+
+    // HubSpot (and similar) print gtag as raw <head> HTML, not an enqueued handle.
+    add_action('wp_head', static function () {
+        ob_start();
+    }, 0);
+    add_action('wp_head', static function () {
+        $chunk = ob_get_clean();
+        if ($chunk === false || $chunk === '') {
+            return;
+        }
+        echo rv_strip_third_party_scripts($chunk); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+    }, PHP_INT_MAX);
 });
 
 add_action('wp_enqueue_scripts', function () {
