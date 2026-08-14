@@ -36,6 +36,7 @@
 
   <body @php(body_class())>
     @php(wp_body_open())
+    <span id="top"></span>
 
     <div id="page" class="rv-site">
       @include('sections.header')

@@ -116,7 +116,94 @@ function initThemeToggle(): void {
   });
 }
 
+/**
+ * Footer nav columns use <details> as a mobile accordion. Keep them open on
+ * desktop so the lists stay visible without a click.
+ */
+function initFooterAccordion(): void {
+  const items = document.querySelectorAll<HTMLDetailsElement>('.rv-footer-acc');
+  if (!items.length) return;
+
+  const mq = window.matchMedia('(min-width: 768px)');
+  const sync = (): void => {
+    items.forEach((el) => {
+      el.open = mq.matches;
+    });
+  };
+
+  mq.addEventListener('change', sync);
+  sync();
+}
+
+/**
+ * Footer newsletter → HubSpot Forms API. Portal + form GUID live on the form
+ * as data attributes so this stays out of the Blade template.
+ */
+function initFooterNewsletter(): void {
+  const form = document.getElementById('rv-fnews-form') as HTMLFormElement | null;
+  if (!form) return;
+
+  const emailEl = document.getElementById('rv-fnews-email') as HTMLInputElement | null;
+  const statusEl = document.getElementById('rv-fnews-status');
+  const btn = form.querySelector<HTMLButtonElement>('.rv-fnews-btn');
+  const portal = form.dataset.hsPortal;
+  const guid = form.dataset.hsForm;
+  if (!emailEl || !statusEl || !btn || !portal || !guid) return;
+
+  const endpoint = `https://api.hsforms.com/submissions/v3/integration/submit/${portal}/${guid}`;
+  const show = (msg: string, state: string): void => {
+    statusEl.hidden = false;
+    statusEl.textContent = msg;
+    statusEl.setAttribute('data-state', state);
+  };
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const email = (emailEl.value || '').trim();
+    if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      show('Please enter a valid email address.', 'err');
+      emailEl.focus();
+      return;
+    }
+
+    btn.disabled = true;
+    show('Signing you up…', 'pending');
+
+    fetch(endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        fields: [{ name: 'email', value: email }],
+        context: { pageUri: location.href, pageName: document.title },
+      }),
+    })
+      .then(async (r) => {
+        const j = (await r.json().catch(() => ({}))) as {
+          inlineMessage?: string;
+          errors?: { message?: string }[];
+        };
+        return { ok: r.ok, j };
+      })
+      .then((res) => {
+        btn.disabled = false;
+        if (res.ok) {
+          form.reset();
+          const raw = res.j.inlineMessage;
+          show(raw ? raw.replace(/<[^>]*>/g, '') : 'Thanks — you are on the list.', 'ok');
+          return;
+        }
+        show(res.j.errors?.[0]?.message || 'Something went wrong. Please try again.', 'err');
+      })
+      .catch(() => {
+        btn.disabled = false;
+        show('Network error. Please try again.', 'err');
+      });
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initOffcanvas();
   initThemeToggle();
+  initFooterAccordion();
+  initFooterNewsletter();
 });
