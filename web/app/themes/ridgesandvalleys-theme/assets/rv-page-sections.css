@@ -32,7 +32,7 @@ body:not(.home) .rv-main { overflow-x: hidden; }
 body:not(.home) .rv-hero .rv-hero-title {
 	font-size: clamp(2rem, 4.4vw, 3.15rem);
 	line-height: 1.08;
-	max-width: 22ch;
+	max-width: 32ch;
 	margin-bottom: .5rem;
 }
 body:not(.home) .rv-hero .rv-hero-sub {
