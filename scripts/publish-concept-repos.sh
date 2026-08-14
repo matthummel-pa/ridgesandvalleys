@@ -38,18 +38,33 @@ git_identity() {
   git -C "$1" config commit.gpgsign false
 }
 
-# Fine-grained PATs need a Bearer header. Never put the token in the remote URL
-# (it would show up in git remote -v / Action logs).
-git_authed() {
+public_remote() {
+  printf 'https://github.com/%s/%s.git' "$OWNER" "$1"
+}
+
+# Fine-grained PATs authenticate git over HTTPS as x-access-token. A Bearer
+# extraHeader is easy to split on spaces (git -c) and then GitHub 401s, which
+# surfaces as "could not read Username for 'https://github.com'".
+configure_git_auth() {
+  export GIT_TERMINAL_PROMPT=0
+  unset GIT_ASKPASS || true
   if [[ -n "$TOKEN" ]]; then
-    git -c "http.extraHeader=Authorization: Bearer ${TOKEN}" "$@"
-  else
-    git "$@"
+    git config --global --unset-all url.https://github.com/.insteadof >/dev/null 2>&1 || true
+    git config --global url."https://x-access-token:${TOKEN}@github.com/".insteadOf "https://github.com/"
   fi
 }
 
-public_remote() {
-  printf 'https://github.com/%s/%s.git' "$OWNER" "$1"
+preflight_token() {
+  local repo="gettysburg-hotel-theme"
+  echo "Checking CONCEPT_REPOS_TOKEN can access ${OWNER}/${repo}"
+  if ! gh api "repos/${OWNER}/${repo}" --jq .full_name >/dev/null; then
+    echo "PAT cannot read ${OWNER}/${repo}. Recreate the fine-grained token with Contents + Pages write on all ten *-theme repos." >&2
+    exit 1
+  fi
+  if ! git ls-remote "$(public_remote "$repo")" HEAD >/dev/null; then
+    echo "git could not authenticate to ${OWNER}/${repo} with this PAT." >&2
+    exit 1
+  fi
 }
 
 rewrite_urls() {
@@ -148,9 +163,9 @@ push_one() {
   tmp="$(mktemp -d)"
   url="$(public_remote "$repo")"
 
-  heads="$(git_authed ls-remote "$url" HEAD 2>/dev/null || true)"
+  heads="$(git ls-remote "$url" HEAD 2>/dev/null || true)"
   if [[ -n "$heads" ]]; then
-    git_authed clone --depth 1 "$url" "$tmp/repo"
+    git clone --depth 1 "$url" "$tmp/repo"
   else
     echo "Empty dest repo ${repo}; initializing main"
     mkdir -p "$tmp/repo"
@@ -172,7 +187,7 @@ push_one() {
     echo "No changes for $repo"
   else
     git -C "$tmp/repo" commit -m "Publish ${repo} live demo from ridgesandvalleys concept site"
-    git_authed -C "$tmp/repo" push -u origin HEAD:main
+    git -C "$tmp/repo" push -u origin HEAD:main
     echo "Pushed ${OWNER}/${repo} main"
   fi
 
@@ -181,6 +196,10 @@ push_one() {
 }
 
 mkdir -p "$STAGE_ROOT"
+if [[ "$PUSH" -eq 1 ]]; then
+  configure_git_auth
+  preflight_token
+fi
 echo "Staging concept repos into $STAGE_ROOT"
 
 while IFS=$'\t' read -r folder repo title; do

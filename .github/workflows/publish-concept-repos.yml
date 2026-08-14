@@ -61,4 +61,5 @@ jobs:
             exit 1
           fi
           chmod +x scripts/publish-concept-repos.sh
+          gh auth setup-git
           ./scripts/publish-concept-repos.sh
