@@ -186,7 +186,8 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
     .rv-cnt-why-item h3{font-family:var(--font-display);font-size:1.12rem;font-weight:700;color:var(--color-ink);margin:.2rem 0 .35rem;line-height:1.2}
     .rv-cnt-why-item p{margin:0;color:var(--color-body);font-size:.95rem;line-height:1.55}
     @media(max-width:820px){.rv-cnt-why-grid{grid-template-columns:1fr}}
-    .rv-cways{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:clamp(1.5rem,3vw,2.5rem);position:relative;z-index:3}
+    @media(max-width:480px){.rv-cnt-why-actions{flex-direction:column;align-items:stretch}.rv-cnt-why-actions .rv-btn{justify-content:center}.rv-cnt-why-jump{justify-content:center}}
+    .rv-cways{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,200px),1fr));gap:1rem;margin-top:clamp(1.5rem,3vw,2.5rem);position:relative;z-index:3}
     .rv-cway{display:flex;align-items:center;gap:1rem;background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.25rem 1.35rem;text-decoration:none;position:relative;overflow:hidden;transition:transform .15s ease,border-color .15s ease,box-shadow .2s ease}
     a.rv-cway:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--color-clay) 40%,var(--color-line));box-shadow:var(--shadow-lift)}
     .rv-cway-primary{background:var(--color-pine);border-color:var(--color-pine)}
@@ -195,9 +196,11 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
     .rv-cway-ico{flex:none;width:48px;height:48px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--color-clay) 12%,var(--color-surface));color:var(--color-clay)}
     .rv-cway-body{display:flex;flex-direction:column;gap:.15rem;min-width:0}
     .rv-cway-t{font-family:var(--font-display);font-weight:700;font-size:1.02rem;color:var(--color-ink)}
-    .rv-cway-d{font-size:.86rem;color:var(--color-muted);overflow:hidden;text-overflow:ellipsis}
+    .rv-cway-d{font-size:.86rem;color:var(--color-muted);overflow-wrap:anywhere;word-break:break-word}
     .rv-contact-grid{display:grid;grid-template-columns:1.55fr 1fr;gap:clamp(2rem,4vw,3.5rem);align-items:start}
+    @media(max-width:1100px){.rv-cways{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(max-width:900px){.rv-contact-grid{grid-template-columns:1fr}}
+    @media(max-width:560px){.rv-cways{grid-template-columns:1fr}}
     .rv-cnt-form-intro{margin:.85rem 0 0;max-width:46rem}
     .rv-contact-wrap{margin-top:1.5rem;padding-bottom:0}
     .rv-form-pkg{margin:0 0 1rem;padding:.85rem 1rem;border-left:3px solid var(--color-pine);background:color-mix(in srgb,var(--color-sage) 18%,var(--color-surface));border-radius:0 12px 12px 0;color:var(--color-body);font-size:.95rem;line-height:1.45}

@@ -17,7 +17,7 @@
 .rv-form--dynamic .rv-ff{display:flex;flex-direction:column;gap:.4rem;margin:0;min-width:0;grid-column:span 6}
 .rv-form--dynamic .rv-ff--half{grid-column:span 3}
 .rv-form--dynamic .rv-ff--third{grid-column:span 2}
-@media(max-width:480px){
+@media(max-width:640px){
   .rv-form--dynamic .rv-ff,
   .rv-form--dynamic .rv-ff--half,
   .rv-form--dynamic .rv-ff--third{grid-column:span 6}
@@ -63,7 +63,7 @@
 .rv-form--dynamic .rv-ff-radio:hover{border-color:color-mix(in srgb,var(--color-clay) 40%,var(--color-line))}
 .rv-form--dynamic .rv-ff-radio:has(input:checked){border-color:var(--color-pine);background:color-mix(in srgb,var(--color-pine) 8%,var(--color-surface))}
 .rv-form--dynamic .rv-ff-radio:focus-within{outline:2px solid var(--color-clay);outline-offset:2px}
-@media(max-width:640px){.rv-form--dynamic .rv-ff-radios{grid-template-columns:1fr}}
+@media(max-width:1100px){.rv-form--dynamic .rv-ff-radios{grid-template-columns:1fr}}
 @media(prefers-reduced-motion:reduce){.rv-form--dynamic .rv-ff-radio{transition:none}}
 
 /* ============================================================
@@ -75,6 +75,13 @@
 html[data-theme="dark"] .rv-brand-logo-link .rv-logo-light{display:none}
 html[data-theme="dark"] .rv-brand-logo-link .rv-logo-dark{display:block}
 @media(max-width:600px){.rv-brand-logo-link .rv-logo{height:38px}}
+/* Topic / industry chips: swipe on phones instead of wrapping into a tall stack. */
+@media(max-width:640px){
+  /* Two classes beat the page-template `.rv-work-cats{flex-wrap:wrap}` (loads later). */
+  .rv-work-cats.rv-work-filters{flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:.45rem;scrollbar-width:thin}
+  .rv-work-cats.rv-work-filters .rv-work-cat,.rv-work-cats.rv-work-filters .rv-filter{flex:0 0 auto;padding:.55rem 1rem}
+  .rv-work-cats.rv-work-filters .rv-work-cats-label{flex:0 0 auto}
+}
 /* Text-only wordmark fallback (no Media Library logo set) */
 .rv-brand-text-link{display:inline-flex;align-items:center;text-decoration:none}
 /* Footer logo (dark band): use a purpose-made dark logo as-is; invert a
@@ -209,7 +216,7 @@ html[data-theme="dark"] .rv-brand-logo-link .rv-logo-dark{display:block}
 .rv-floating-close:hover{color:var(--color-ink)}
 .rv-floating-title{margin:.15rem 0 .75rem;font-weight:600;font-size:.95rem;padding-right:1.1rem;color:var(--color-ink)}
 .rv-floating-btn{width:100%;justify-content:center}
-@media(max-width:600px){.rv-floating-cta{left:1rem;right:1rem;bottom:1rem;width:auto}}
+@media(max-width:600px){.rv-floating-cta{left:1rem;right:1rem;bottom:calc(1rem + env(safe-area-inset-bottom,0px));width:auto}}
 
 /* ============================================================
    Performance / Core Web Vitals

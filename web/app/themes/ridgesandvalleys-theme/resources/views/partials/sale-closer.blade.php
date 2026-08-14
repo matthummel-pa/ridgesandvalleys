@@ -59,7 +59,7 @@
   .rv-closer .rv-cway-ico{flex:none;width:48px;height:48px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;background:color-mix(in srgb,var(--color-clay) 12%,var(--color-surface));color:var(--color-clay)}
   .rv-closer .rv-cway-body{display:flex;flex-direction:column;gap:.15rem;min-width:0}
   .rv-closer .rv-cway-t{font-family:var(--font-display);font-weight:700;font-size:1.02rem;color:var(--color-ink)}
-  .rv-closer .rv-cway-d{font-size:.86rem;color:var(--color-muted)}
+  .rv-closer .rv-cway-d{font-size:.86rem;color:var(--color-muted);overflow-wrap:anywhere;word-break:break-word}
   .rv-closer-split{margin-top:clamp(1.5rem,3vw,2.25rem);display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,.8fr);gap:clamp(1.25rem,3vw,2rem);align-items:end}
   .rv-closer .rv-cside-block{background:var(--color-surface);border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);padding:1.5rem 1.6rem;position:relative;overflow:hidden}
   .rv-closer .rv-cside-block::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--ridgeline)}
@@ -68,7 +68,7 @@
   .rv-closer .rv-cnext-n{flex:none;width:30px;height:30px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--color-pine);color:#fff;font-family:var(--font-display);font-weight:800;font-size:.9rem}
   .rv-closer .rv-cnext div{color:var(--color-body);line-height:1.5;font-size:.95rem}
   .rv-closer .rv-cnext strong{color:var(--color-ink);display:block;font-weight:700}
-  .rv-closer-fine{margin:0;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.04em;color:var(--color-muted);line-height:1.55}
-  @media(max-width:820px){.rv-closer-paths{grid-template-columns:1fr}.rv-closer-split{grid-template-columns:1fr}}
+  .rv-closer-fine{margin:0;font-family:var(--font-mono);font-size:.78rem;letter-spacing:.04em;color:var(--color-muted);line-height:1.55;overflow-wrap:anywhere}
+  @media(max-width:900px){.rv-closer-paths{grid-template-columns:1fr}.rv-closer-split{grid-template-columns:1fr;align-items:start}.rv-closer-fine{margin-top:.35rem}}
   @media(prefers-reduced-motion:reduce){.rv-closer a.rv-cway:hover{transform:none}}
 </style>
