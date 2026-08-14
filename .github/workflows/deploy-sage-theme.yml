@@ -46,20 +46,6 @@ jobs:
           mkdir -p ~/.ssh
           printf '%s\n' "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/deploy_key
           chmod 600 ~/.ssh/deploy_key
-          host="${{ secrets.SSH_HOST }}"
-          port="${{ secrets.SSH_PORT }}"
-          ok=0
-          for i in 1 2 3 4 5 6; do
-            if ssh-keyscan -T 15 -p "$port" "$host" >> ~/.ssh/known_hosts 2>/dev/null; then
-              ok=1
-              break
-            fi
-            sleep $((i * 3))
-          done
-          if [ "$ok" -ne 1 ]; then
-            echo "ssh-keyscan failed after retries"
-            exit 1
-          fi
 
       - name: Deploy theme via rsync
         run: |
@@ -78,12 +64,12 @@ jobs:
             --exclude "tsconfig.json" \
             --exclude "eslint.config.js" \
             --exclude ".wp-env.json" \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }}" \
+            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=accept-new -o ConnectTimeout=30" \
             web/app/themes/ridgesandvalleys-theme/ \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
 
       - name: Clear Acorn view cache + flush WordPress + SiteGround cache
         run: |
-          ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" \
+          ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" -o StrictHostKeyChecking=accept-new -o ConnectTimeout=30 \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
             "cd ~/www/ridgesandvalleys.com/public_html && wp acorn view:clear; wp acorn optimize:clear; wp cache flush; wp sg purge" || true
