@@ -338,6 +338,34 @@ function rv_render_calculator(): string
     <?php return (string) ob_get_clean();
 }
 
+/**
+ * True when this request needs the tools TypeScript bundle.
+ */
+function needs_tools_assets(): bool
+{
+    if (is_page() && get_page_template_slug() === 'template-tools.blade.php') {
+        return true;
+    }
+
+    if (! is_singular()) {
+        return false;
+    }
+
+    foreach ([
+        'rv/accessibility-checker',
+        'rv/site-grader',
+        'rv/contrast-checker',
+        'rv/quote-estimator',
+        'rv/cost-calculator',
+    ] as $block) {
+        if (has_block($block)) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
 /* =========================================================== Registration === */
 
 add_action('init', function () {

@@ -5,7 +5,6 @@
  * focus returned to the toggle on close, click-outside to dismiss.
  */
 import '@styles/app.css';
-import './tools';
 
 type Focusable = HTMLElement;
 

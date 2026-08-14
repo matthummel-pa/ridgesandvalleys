@@ -18,9 +18,9 @@ function rv_font_face_css(): string
     $u = get_theme_file_uri('public/fonts');
 
     return "@font-face{font-family:'Outfit';font-style:normal;font-weight:100 900;font-display:swap;src:url('{$u}/Outfit-Variable.woff2') format('woff2');}"
-        . "@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:swap;src:url('{$u}/InstrumentSerif-Regular.woff2') format('woff2');}"
-        . "@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:swap;src:url('{$u}/InstrumentSerif-Italic.woff2') format('woff2');}"
-        . "@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 600;font-display:swap;src:url('{$u}/JetBrainsMono-Variable.woff2') format('woff2');}";
+        . "@font-face{font-family:'Instrument Serif';font-style:normal;font-weight:400;font-display:optional;src:url('{$u}/InstrumentSerif-Regular.woff2') format('woff2');}"
+        . "@font-face{font-family:'Instrument Serif';font-style:italic;font-weight:400;font-display:optional;src:url('{$u}/InstrumentSerif-Italic.woff2') format('woff2');}"
+        . "@font-face{font-family:'JetBrains Mono';font-style:normal;font-weight:400 600;font-display:optional;src:url('{$u}/JetBrainsMono-Variable.woff2') format('woff2');}";
 }
 
 add_action('wp_enqueue_scripts', function () {
@@ -53,24 +53,23 @@ add_action('wp_enqueue_scripts', function () {
  * Emit @font-face + preload the primary font, before the stylesheet.
  */
 add_action('wp_head', function () {
+    $fonts = get_theme_file_uri('public/fonts');
     printf(
         '<link rel="preload" as="font" type="font/woff2" crossorigin href="%s/Outfit-Variable.woff2">' . "\n",
-        esc_url(get_theme_file_uri('public/fonts'))
+        esc_url($fonts)
+    );
+    printf(
+        '<link rel="preload" as="font" type="font/woff2" crossorigin href="%s/YoungSerif-Regular.woff2">' . "\n",
+        esc_url($fonts)
     );
     echo '<style id="rv-fonts">' . rv_font_face_css() . "</style>\n"; // phpcs:ignore
 }, 1);
 
 /**
- * Performance: preconnect to the image CDNs used by hotlinked hero imagery, and
- * preload the page's Largest Contentful Paint (LCP) image so it starts loading
- * immediately instead of being discovered late. This is the main lever for a
- * top PageSpeed / Core Web Vitals score on image-led pages.
+ * Performance: preconnect only to the CDN that actually serves this page's LCP
+ * image, and preload that image so it starts loading immediately.
  */
 add_action('wp_head', function () {
-    echo '<link rel="preconnect" href="https://images.pexels.com">' . "\n";
-    echo '<link rel="preconnect" href="https://upload.wikimedia.org">' . "\n";
-    echo '<link rel="dns-prefetch" href="https://commons.wikimedia.org">' . "\n";
-
     $lcp = '';
     if (is_singular('post')) {
         $lcp = has_post_thumbnail() ? (string) get_the_post_thumbnail_url(null, 'rv-hero') : blog_post_image();
@@ -79,13 +78,22 @@ add_action('wp_head', function () {
     } elseif (is_home()) {
         $lcp = hero_bg_url(stock_image('process'), (int) get_option('page_for_posts'));
     } elseif (is_page()) {
-        // Page heroes are Featured-Image-driven; preload it when one is set.
         $lcp = hero_bg_url();
     }
 
-    if ($lcp) {
-        printf('<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n", esc_url($lcp));
+    if (! $lcp) {
+        return;
     }
+
+    $host = wp_parse_url($lcp, PHP_URL_HOST);
+    if ($host === 'images.pexels.com') {
+        echo '<link rel="preconnect" href="https://images.pexels.com">' . "\n";
+    } elseif ($host === 'upload.wikimedia.org' || $host === 'commons.wikimedia.org') {
+        echo '<link rel="preconnect" href="https://upload.wikimedia.org">' . "\n";
+        echo '<link rel="dns-prefetch" href="https://commons.wikimedia.org">' . "\n";
+    }
+
+    printf('<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n", esc_url($lcp));
 }, 2);
 
 /**
@@ -152,9 +160,9 @@ add_filter('theme_file_path', function ($path, $file) {
 }, 10, 2);
 
 /**
- * Load all core block assets (we style them globally).
+ * Load CSS only for core blocks actually present on the page.
  */
-add_filter('should_load_separate_core_block_assets', '__return_false');
+add_filter('should_load_separate_core_block_assets', '__return_true');
 
 /**
  * Theme supports, menus, image sizes.
@@ -253,8 +261,8 @@ function contour_font_face(): string
     $u = get_theme_file_uri('public/fonts');
 
     return "@font-face{font-family:'Young Serif';font-style:normal;font-weight:400;font-display:swap;src:url('{$u}/YoungSerif-Regular.woff2') format('woff2');}"
-        . "@font-face{font-family:'Geist Mono';font-style:normal;font-weight:400;font-display:swap;src:url('{$u}/GeistMono-Regular.woff2') format('woff2');}"
-        . "@font-face{font-family:'Geist Mono';font-style:normal;font-weight:500 700;font-display:swap;src:url('{$u}/GeistMono-Bold.woff2') format('woff2');}";
+        . "@font-face{font-family:'Geist Mono';font-style:normal;font-weight:400;font-display:optional;src:url('{$u}/GeistMono-Regular.woff2') format('woff2');}"
+        . "@font-face{font-family:'Geist Mono';font-style:normal;font-weight:500 700;font-display:optional;src:url('{$u}/GeistMono-Bold.woff2') format('woff2');}";
 }
 
 function contour_css(): string
@@ -293,13 +301,6 @@ h1, h2, h3, h4,
 
 CSS;
 }
-
-add_action('wp_head', function () {
-    printf(
-        '<link rel="preload" as="font" type="font/woff2" crossorigin href="%s/YoungSerif-Regular.woff2">' . "\n",
-        esc_url(get_theme_file_uri('public/fonts'))
-    );
-}, 1);
 
 add_action('wp_head', function () {
     echo '<style id="rv-contour-brand">' . contour_css() . "</style>\n"; // phpcs:ignore

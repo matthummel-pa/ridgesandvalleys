@@ -1,9 +1,9 @@
 /**
  * Free tools suite — front-end behaviour (TypeScript).
  *
- * Each init() is a no-op unless its tool markup is on the page, so this is safe
- * to load site-wide (imported by app.ts). Server-rendered shells live in
- * app/tools.php; the URL tools call the rv-tools/v1 REST endpoints.
+ * Loaded only on pages that render tool widgets (Free Tools template or an
+ * rv/* tool block). Server-rendered shells live in app/tools.php; the URL
+ * tools call the rv-tools/v1 REST endpoints.
  */
 
 /* ------------------------------------------------------------------ helpers */

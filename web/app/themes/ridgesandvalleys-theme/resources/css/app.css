@@ -66,7 +66,7 @@ body {
 	background: var(--color-paper);
 	color: var(--color-body);
 	font-family: var(--font-body);
-	font-size: 1.0625rem;
+	font-size: 1.125rem;
 	line-height: 1.65;
 	-webkit-font-smoothing: antialiased;
 	text-rendering: optimizeLegibility;
@@ -1050,3 +1050,38 @@ html[data-theme="dark"] .rv-serp-desc { color: #bdc1c6; }
 #comments .rvc-field textarea { min-height: 130px; }
 #comments .rv-comment-submit { margin-top: 0.5rem; }
 #comments .comment-edit-link { color: #9d4a31; } /* darker clay: clears 4.5:1 AA at small size */
+
+/* ===================================================== Layout polish
+   Lived in an inline <style> in the document head; kept here so it caches
+   with the main stylesheet instead of inflating every HTML response. */
+.rv-main > .rv-shell-full:last-child { padding-bottom: clamp(3.5rem, 7vw, 6rem); }
+.rv-main > .rv-single:last-child { padding-bottom: clamp(3.5rem, 7vw, 6rem); }
+.rv-cta-band :focus-visible,
+.rv-band-pine :focus-visible,
+.rv-footer :focus-visible { outline-color: var(--color-wheat); }
+html[data-theme="dark"] .rv-btn-primary,
+html[data-theme="dark"] .rv-btn-primary:hover { color: #fff; }
+html[data-theme="dark"] .rv-btn-on-dark,
+html[data-theme="dark"] .rv-btn-on-dark:hover { color: #241d10; }
+html[data-theme="dark"] .rv-service-tag,
+html[data-theme="dark"] .rv-pkg-flag,
+html[data-theme="dark"] .rv-plan-for span,
+html[data-theme="dark"] .rv-intro-step-n,
+html[data-theme="dark"] .rv-pain-fix span,
+html[data-theme="dark"] .rv-incl-bound h3,
+html[data-theme="dark"] .rv-toolcard-badge { color: var(--color-wheat); }
+html[data-theme="dark"] .rv-work-more,
+html[data-theme="dark"] .rv-process-note { color: var(--color-sage); }
+.rv-accent { color: var(--color-clay); }
+.rv-hero .rv-accent,
+.rv-band-pine .rv-accent,
+.rv-cta-band .rv-accent { color: var(--color-wheat); }
+html[data-theme="dark"] .rv-accent { color: var(--color-wheat); }
+.rv-metric-v { color: var(--color-clay); }
+.rv-tl-day { color: #9e4a32; }
+html[data-theme="dark"] .rv-metric-v,
+html[data-theme="dark"] .rv-tl-day { color: var(--color-wheat); }
+.rv-cta-inner { text-align: left; }
+.rv-cta-sub { margin-left: 0; margin-right: 0; }
+.rv-quote-block { text-align: left; margin-inline-start: 0; }
+.rv-headstack { max-width: none; margin-inline: 0; }

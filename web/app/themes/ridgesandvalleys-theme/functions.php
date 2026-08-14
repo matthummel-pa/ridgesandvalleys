@@ -76,6 +76,13 @@ collect(['setup', 'filters', 'helpers', 'projects', 'contact', 'customizer', 'cu
 */
 
 add_action('wp_enqueue_scripts', function () {
+    if (is_front_page() || is_home()) {
+        return;
+    }
+    if (! is_page() && ! is_singular(['post', 'project'])) {
+        return;
+    }
+
     $cssRel  = 'assets/rv-page-sections.css';
     $cssPath = get_theme_file_path($cssRel);
     wp_enqueue_style(

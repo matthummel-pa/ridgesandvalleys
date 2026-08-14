@@ -4,8 +4,8 @@
  * Performance & bloat control.
  *
  * Trims common WordPress front-end bloat with safe, opt-out defaults: removes
- * the emoji script/styles, jQuery Migrate, XML-RPC/pingbacks, Dashicons for
- * logged-out visitors, and the assorted <head> meta links (generator, RSD,
+ * the emoji script/styles, jQuery Migrate, wp-embed, XML-RPC/pingbacks, Dashicons
+ * for logged-out visitors, and the assorted <head> meta links (generator, RSD,
  * WLW, shortlink, REST discovery). Each toggle is filterable via
  * `rv/perf` so a site can flip any of them off without editing the theme:
  *
@@ -22,6 +22,7 @@ function perf(): array
         'migrate'    => true,   // drop jquery-migrate
         'xmlrpc'     => true,   // disable XML-RPC + pingback
         'dashicons'  => true,   // dequeue dashicons for logged-out visitors
+        'embed'      => true,   // dequeue wp-embed.js (oEmbed is unused on the front)
         'headclean'  => true,   // remove generator/rsd/wlw/shortlink/rest links
         'defer'      => true,   // defer non-critical front-end scripts
         'preconnect' => [],     // extra origins to preconnect (fonts are self-hosted)
@@ -75,6 +76,10 @@ add_action('wp_enqueue_scripts', function () {
     if (! empty(perf()['dashicons']) && ! is_user_logged_in()) {
         wp_dequeue_style('dashicons');
         wp_deregister_style('dashicons');
+    }
+    if (! empty(perf()['embed'])) {
+        wp_dequeue_script('wp-embed');
+        wp_deregister_script('wp-embed');
     }
 }, 100);
 
