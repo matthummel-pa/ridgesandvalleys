@@ -49,24 +49,37 @@ jobs:
 
       - name: Deploy theme via rsync
         run: |
-          rsync -az --delete \
-            --exclude ".git" \
-            --exclude "node_modules" \
-            --exclude ".dev-wp" \
-            --exclude "dev" \
-            --exclude "concept" \
-            --exclude "docs" \
-            --exclude "resources/css" \
-            --exclude "resources/js" \
-            --exclude "package.json" \
-            --exclude "package-lock.json" \
-            --exclude "vite.config.js" \
-            --exclude "tsconfig.json" \
-            --exclude "eslint.config.js" \
-            --exclude ".wp-env.json" \
-            -e "ssh -i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=accept-new -o ConnectTimeout=30" \
-            web/app/themes/ridgesandvalleys-theme/ \
-            "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"
+          ssh_opts="-i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -4 -o StrictHostKeyChecking=accept-new -o ConnectTimeout=60 -o BatchMode=yes"
+          ok=0
+          for i in 1 2 3 4 5 6; do
+            if rsync -az --delete \
+              --exclude ".git" \
+              --exclude "node_modules" \
+              --exclude ".dev-wp" \
+              --exclude "dev" \
+              --exclude "concept" \
+              --exclude "docs" \
+              --exclude "resources/css" \
+              --exclude "resources/js" \
+              --exclude "package.json" \
+              --exclude "package-lock.json" \
+              --exclude "vite.config.js" \
+              --exclude "tsconfig.json" \
+              --exclude "eslint.config.js" \
+              --exclude ".wp-env.json" \
+              -e "ssh $ssh_opts" \
+              web/app/themes/ridgesandvalleys-theme/ \
+              "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}:${{ secrets.DEPLOY_PATH }}/"; then
+              ok=1
+              break
+            fi
+            echo "rsync attempt $i failed; retrying..."
+            sleep $((i * 10))
+          done
+          if [ "$ok" -ne 1 ]; then
+            echo "rsync failed after retries (SiteGround SSH timed out from GitHub)"
+            exit 1
+          fi
 
       - name: Clear Acorn view cache + flush WordPress + SiteGround cache
         run: |
