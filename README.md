@@ -72,7 +72,7 @@ localhost:8080                           (code only)                        real
 | `web/app/` | `wp-content` (themes, plugins, mu-plugins, uploads) |
 | `web/app/themes/ridgesandvalleys-theme/` | **The Sage theme — what you edit and what gets deployed** |
 | `web/app/uploads/` | Media — lives on the server, **gitignored** |
-| `.github/workflows/deploy-theme.yml` | Production deploy (build theme → rsync to live over SSH) |
+| `.github/workflows/deploy-sage-theme.yml` | Production deploy (build theme → rsync to live over SSH) |
 | `.github/workflows/deploy-staging.yml` | Full-Bedrock staging deploy — **idle**, dispatch-only |
 | `wp-cli.yml` | Points WP-CLI at `web/wp` with docroot `web` |
 | `CHANGELOG.md` | Human-readable release history ([Keep a Changelog](https://keepachangelog.com/en/1.1.0/) + SemVer) |
@@ -222,7 +222,7 @@ git commit -m "describe your theme change"
 git push origin main
 ```
 
-That's the entire deploy. What happens next, automatically (workflow: `.github/workflows/deploy-theme.yml`):
+That's the entire deploy. What happens next, automatically (workflow: `.github/workflows/deploy-sage-theme.yml`):
 
 1. `composer install --no-dev` + `npm ci` + `npm run build` on a clean runner (PHP 8.3, Node 20).
 2. `rsync` the built theme to the live theme directory over SSH — **`--delete` scoped to the theme dir
@@ -239,13 +239,13 @@ WordPress object cache, and `sg purge` clears SG Optimizer's full-page cache in 
 A run takes ~1–2 minutes. **Watch it:**
 
 ```bash
-gh run watch $(gh run list --workflow=deploy-theme.yml -L1 --json databaseId -q '.[0].databaseId')
+gh run watch $(gh run list --workflow=deploy-sage-theme.yml -L1 --json databaseId -q '.[0].databaseId')
 ```
 
 or GitHub → **Actions** tab. To redeploy the current `main` without a code change, trigger it manually:
 
 ```bash
-gh workflow run deploy-theme.yml --ref main
+gh workflow run deploy-sage-theme.yml --ref main
 ```
 
 **Triggers:** a push to `main` that touches `web/app/themes/ridgesandvalleys-theme/**` or the workflow
@@ -278,7 +278,7 @@ gh run list --limit 5
 If the newest run's SHA is older than `origin/main`'s HEAD, you have a commit that was pushed but
 never deployed — usually because it touched nothing under the theme path, so the workflow's path
 filter skipped it. This happened with `3fc3371` on 2026-08-06. Fix it by pushing any theme-touching
-commit, or with `gh workflow run deploy-theme.yml --ref main`.
+commit, or with `gh workflow run deploy-sage-theme.yml --ref main`.
 
 **2. Compare the Vite manifest hashes.** Vite fingerprints every built asset, so this is the
 fastest honest signal:
@@ -417,7 +417,7 @@ version of the issues hit while standing this up.
 | `composer install` won't place WP/plugins correctly | Missing installer path config | Root `composer.json` `extra.installer-paths` + `wordpress-install-dir: web/wp` handle this — run from repo root. |
 | Deployed CSS/JS doesn't update on live | Acorn view cache, WP object cache, or SG Optimizer page cache | The deploy now ends with `wp acorn view:clear; wp acorn optimize:clear; wp cache flush; wp sg purge`. If you deployed by hand, run all four. |
 | Live manifest URL returns 404 | Used the Bedrock path on a managed-WordPress install | Live is `/wp-content/themes/...`, not `/app/themes/...`. |
-| Pushed to `origin/main` but live is stale | The commit touched nothing under the theme path, so the workflow's path filter skipped it | Match the run to the SHA (`gh run list`), then push a theme-touching commit or `gh workflow run deploy-theme.yml --ref main`. |
+| Pushed to `origin/main` but live is stale | The commit touched nothing under the theme path, so the workflow's path filter skipped it | Match the run to the SHA (`gh run list`), then push a theme-touching commit or `gh workflow run deploy-sage-theme.yml --ref main`. |
 | Local `main` silently behind `origin/main` | Two worktrees share one `.git` | `git rev-list --left-right --count origin/main...main`, then stash → `git pull --rebase origin main` → stash pop. |
 | Local site shows live URLs / mixed content | DB imported without URL rewrite | Re-run the `wp search-replace` step above. |
 

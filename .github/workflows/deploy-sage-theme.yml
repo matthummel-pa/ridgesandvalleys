@@ -1,27 +1,24 @@
-name: Deploy theme to SiteGround
+name: Deploy Sage theme (SiteGround)
 
 # Builds the Sage theme and rsyncs it to the live theme folder over SSH.
 # Deploys CODE ONLY -- never the database or uploads. Content is never touched.
+#
+# New workflow file/name: the previous "Deploy theme to SiteGround" workflow
+# (deploy-theme.yml) has returned startup_failure with no jobs since 14 Aug 2026,
+# including manual workflow_dispatch from the repo owner.
 on:
   push:
     branches: [main]
     paths:
       - "web/app/themes/ridgesandvalleys-theme/**"
-      - ".github/workflows/deploy-theme.yml"
+      - ".github/workflows/deploy-sage-theme.yml"
   workflow_dispatch:
-
-permissions:
-  contents: read
-
-concurrency:
-  group: deploy-production
-  cancel-in-progress: false
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Setup PHP
         uses: shivammathur/setup-php@v2

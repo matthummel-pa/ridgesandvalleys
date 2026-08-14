@@ -4,7 +4,7 @@
  * Theme updater — push the latest committed theme to the live site from
  * wp-admin. Lives at Appearance → "Update Theme".
  *
- * Clicking "Update from GitHub" triggers the repo's deploy-theme.yml workflow
+ * Clicking "Update from GitHub" triggers the repo's deploy-sage-theme.yml workflow
  * via the GitHub Actions API (workflow_dispatch). CI then builds the Sage theme
  * and rsyncs it to the live theme folder over SSH — the exact same pipeline a
  * `git push` uses. Code only; it never touches the database, uploads, or content.
@@ -25,7 +25,7 @@ function updater_repo(): array
     return [
         'owner'    => (string) apply_filters('rv/updater_owner', function_exists(__NAMESPACE__ . '\\github_owner') ? github_owner() : 'matthummel-pa'),
         'repo'     => (string) apply_filters('rv/updater_repo', 'ridgesandvalleys'),
-        'workflow' => (string) apply_filters('rv/updater_workflow', 'deploy-theme.yml'),
+        'workflow' => (string) apply_filters('rv/updater_workflow', 'deploy-sage-theme.yml'),
         'ref'      => (string) apply_filters('rv/updater_ref', 'main'),
     ];
 }
