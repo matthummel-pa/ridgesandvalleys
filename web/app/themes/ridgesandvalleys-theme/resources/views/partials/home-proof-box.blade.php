@@ -6,7 +6,7 @@
   <article class="rv-proof">
     <div class="rv-proof-visual rv-media-photo">
       @if (($box['img'] ?? '') !== '')
-        <img src="{{ $box['img'] }}" alt="{{ $box['alt'] ?? '' }}" loading="lazy" onerror="this.style.display='none'">
+        {!! \App\content_img($box['img'], $box['alt'] ?? '') !!}
       @endif
       @if (! empty($box['show_credit']) && trim($credit ?? '') !== '')<div class="rv-img-credit">{!! nl2br(e($credit)) !!}</div>@endif
     </div>

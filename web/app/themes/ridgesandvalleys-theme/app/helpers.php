@@ -341,7 +341,7 @@ function brand_logo(string $context = 'header'): string
     if ($context === 'footer') {
         $id  = $ids['dark'] ?: $ids['light'];
         $cls = 'rv-logo rv-footer-logo' . ($ids['dark'] ? '' : ' rv-footer-logo--invert');
-        $img = wp_get_attachment_image($id, 'full', false, ['class' => $cls, 'alt' => '']);
+        $img = wp_get_attachment_image($id, 'medium_large', false, brand_logo_img_attr($cls, true));
         return sprintf(
             '<a class="rv-brand-lockup rv-brand-logo-link" href="%s" rel="home" aria-label="%s">%s</a>',
             $home,
@@ -352,10 +352,10 @@ function brand_logo(string $context = 'header'): string
 
     // Header: both variants → mode swap; otherwise the single logo shows in both.
     if ($ids['light'] && $ids['dark']) {
-        $img = wp_get_attachment_image($ids['light'], 'full', false, ['class' => 'rv-logo rv-logo-light', 'alt' => ''])
-             . wp_get_attachment_image($ids['dark'], 'full', false, ['class' => 'rv-logo rv-logo-dark', 'alt' => '']);
+        $img = wp_get_attachment_image($ids['light'], 'medium_large', false, brand_logo_img_attr('rv-logo rv-logo-light'))
+             . wp_get_attachment_image($ids['dark'], 'medium_large', false, brand_logo_img_attr('rv-logo rv-logo-dark', true));
     } else {
-        $img = wp_get_attachment_image($ids['light'] ?: $ids['dark'], 'full', false, ['class' => 'rv-logo', 'alt' => '']);
+        $img = wp_get_attachment_image($ids['light'] ?: $ids['dark'], 'medium_large', false, brand_logo_img_attr('rv-logo'));
     }
 
     return sprintf(
@@ -364,6 +364,24 @@ function brand_logo(string $context = 'header'): string
         esc_attr($name),
         $img
     );
+}
+
+/**
+ * Attributes for header/footer logo <img> tags.
+ *
+ * WordPress treats the first image as LCP and stamps fetchpriority=high plus
+ * sizes="100vw". The logo is ~200–420px wide, so that downloads a 2x 2560px PNG.
+ */
+function brand_logo_img_attr(string $class, bool $lazy = false): array
+{
+    return [
+        'class'          => $class,
+        'alt'            => '',
+        'decoding'       => 'async',
+        'fetchpriority'  => 'low',
+        'loading'        => $lazy ? 'lazy' : 'eager',
+        'sizes'          => '(max-width: 600px) 200px, 420px',
+    ];
 }
 
 /**
@@ -387,6 +405,111 @@ function hero_bg_url(string $fallback = '', ?int $post_id = null): string
 
     $field = function_exists(__NAMESPACE__ . '\\field') ? field('hero_bg', '', $post_id) : '';
     return ($field !== '') ? $field : $fallback;
+}
+
+/**
+ * Attachment ID for the current hero image, when it lives in the Media Library.
+ */
+function hero_bg_attachment_id(?int $post_id = null): int
+{
+    $has = $post_id ? has_post_thumbnail($post_id) : has_post_thumbnail();
+    if ($has) {
+        return (int) get_post_thumbnail_id($post_id ?: null);
+    }
+
+    $field = function_exists(__NAMESPACE__ . '\\field') ? field('hero_bg', '', $post_id) : '';
+    if ($field === '') {
+        return 0;
+    }
+
+    return media_id_from_url($field);
+}
+
+/**
+ * Best-effort Media Library ID from an image URL (handles -150x150 sized files).
+ */
+function media_id_from_url(string $url): int
+{
+    $url = strtok($url, '?') ?: $url;
+    $id  = (int) attachment_url_to_postid($url);
+    if ($id > 0) {
+        return $id;
+    }
+
+    $stripped = (string) preg_replace('/-\d+x\d+(?=\.[a-zA-Z]+$)/', '', $url);
+    if ($stripped !== $url) {
+        return (int) attachment_url_to_postid($stripped);
+    }
+
+    return 0;
+}
+
+/**
+ * Hero photo markup: a real <img> (srcset + fetchpriority) so LCP is not hidden
+ * behind CSS background-image (which PageSpeed only discovers after CSS).
+ */
+function hero_bg_markup(string $fallback = '', ?int $post_id = null): string
+{
+    $id  = hero_bg_attachment_id($post_id);
+    $url = hero_bg_url($fallback, $post_id);
+    if ($id < 1 && $url === '') {
+        return '';
+    }
+
+    $attrs = [
+        'class'         => 'rv-hero-photo',
+        'alt'           => '',
+        'decoding'      => 'async',
+        'fetchpriority' => 'high',
+        'loading'       => 'eager',
+        'sizes'         => '100vw',
+    ];
+
+    if ($id > 0) {
+        $img = wp_get_attachment_image($id, 'rv-hero', false, $attrs);
+    } else {
+        $img = sprintf(
+            '<img class="rv-hero-photo" src="%s" alt="" width="1600" height="900" decoding="async" fetchpriority="high" loading="eager" sizes="100vw">',
+            esc_url($url)
+        );
+    }
+
+    return '<span class="rv-hero-bg" aria-hidden="true">' . $img . '</span>';
+}
+
+/**
+ * Responsive <img> for content photos that may be a Media Library URL or a raw src.
+ */
+function content_img(string $url, string $alt = '', array $attr = []): string
+{
+    if ($url === '') {
+        return '';
+    }
+
+    $size = $attr['size'] ?? 'rv-card';
+    unset($attr['size']);
+
+    $attr = array_merge([
+        'alt'      => $alt,
+        'loading'  => 'lazy',
+        'decoding' => 'async',
+        'onerror'  => "this.style.display='none'",
+    ], $attr);
+
+    $id = media_id_from_url($url);
+    if ($id > 0) {
+        return wp_get_attachment_image($id, $size, false, $attr);
+    }
+
+    $html = '<img src="' . esc_url($url) . '"';
+    foreach ($attr as $name => $value) {
+        if ($value === '' || $value === false || $value === null) {
+            continue;
+        }
+        $html .= ' ' . $name . '="' . esc_attr((string) $value) . '"';
+    }
+
+    return $html . '>';
 }
 
 /**

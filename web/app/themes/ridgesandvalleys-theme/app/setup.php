@@ -70,14 +70,20 @@ add_action('wp_head', function () {
  * image, and preload that image so it starts loading immediately.
  */
 add_action('wp_head', function () {
+    $id  = 0;
     $lcp = '';
     if (is_singular('post')) {
-        $lcp = has_post_thumbnail() ? (string) get_the_post_thumbnail_url(null, 'rv-hero') : blog_post_image();
+        $id  = (int) get_post_thumbnail_id();
+        $lcp = $id ? (string) get_the_post_thumbnail_url(null, 'rv-hero') : blog_post_image();
     } elseif (is_front_page()) {
+        $id  = hero_bg_attachment_id();
         $lcp = hero_bg_url(stock_image('hero-home'));
     } elseif (is_home()) {
-        $lcp = hero_bg_url(stock_image('process'), (int) get_option('page_for_posts'));
+        $postsId = (int) get_option('page_for_posts');
+        $id      = hero_bg_attachment_id($postsId ?: null);
+        $lcp     = hero_bg_url(stock_image('process'), $postsId);
     } elseif (is_page()) {
+        $id  = hero_bg_attachment_id();
         $lcp = hero_bg_url();
     }
 
@@ -93,7 +99,16 @@ add_action('wp_head', function () {
         echo '<link rel="dns-prefetch" href="https://commons.wikimedia.org">' . "\n";
     }
 
-    printf('<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n", esc_url($lcp));
+    $srcset = $id ? wp_get_attachment_image_srcset($id, 'rv-hero') : '';
+    if ($srcset) {
+        printf(
+            '<link rel="preload" as="image" href="%s" imagesrcset="%s" imagesizes="100vw" fetchpriority="high">' . "\n",
+            esc_url($lcp),
+            esc_attr($srcset)
+        );
+    } else {
+        printf('<link rel="preload" as="image" href="%s" fetchpriority="high">' . "\n", esc_url($lcp));
+    }
 }, 2);
 
 /**
@@ -193,8 +208,27 @@ add_action('after_setup_theme', function () {
     ]);
 
     add_image_size('rv-card', 720, 480, true);
+    add_image_size('rv-hero-md', 960, 540, true);
     add_image_size('rv-hero', 1600, 900, true);
 }, 20);
+
+/**
+ * Keep fetchpriority=high on the hero photo, not the header logo (first <img>).
+ */
+add_filter('wp_get_loading_optimization_attributes', function ($loading_attrs, $tag_name, $attr) {
+    if ($tag_name !== 'img' || ! is_array($attr)) {
+        return $loading_attrs;
+    }
+    $class = (string) ($attr['class'] ?? '');
+    if (str_contains($class, 'rv-logo')) {
+        $loading_attrs['fetchpriority'] = 'low';
+    }
+    if (str_contains($class, 'rv-hero-photo')) {
+        $loading_attrs['fetchpriority'] = 'high';
+    }
+
+    return $loading_attrs;
+}, 10, 3);
 
 /**
  * Content width.

@@ -96,32 +96,10 @@
 @if (get_theme_mod('rv_header_transparent', false) || get_theme_mod('rv_topbar_hide_on_scroll', false))
 <script>
 (function () {
-  document.addEventListener('DOMContentLoaded', function () {
-    var body = document.body;
-    var banner = document.querySelector('.rv-banner');
-    // Transparent header: overlay the hero and pad the content below it.
-    if (body.classList.contains('rv-nav-transparent')) {
-      var hero = document.querySelector('.rv-hero');
-      if (!hero || !banner) {
-        body.classList.remove('rv-nav-transparent'); // no hero — fall back to solid
-      } else {
-        // Never shrink below the CSS fallback — banner+offset can sit under the overlay nav.
-        var fit = function () {
-          hero.style.paddingTop = '';
-          var cssPad = parseFloat(window.getComputedStyle(hero).paddingTop) || 0;
-          hero.style.paddingTop = Math.max(banner.offsetHeight + 56, cssPad) + 'px';
-        };
-        fit();
-        window.addEventListener('resize', fit, { passive: true });
-      }
-    }
-    // Shared scroll flag — drives the transparent solidify + hide-top-bar-on-scroll.
-    var onScroll = function () {
-      body.classList.toggle('rv-scrolled', (window.scrollY || window.pageYOffset) > 30);
-    };
-    window.addEventListener('scroll', onScroll, { passive: true });
-    onScroll();
-  });
+  var onScroll = function () {
+    document.body.classList.toggle('rv-scrolled', (window.scrollY || window.pageYOffset) > 30);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
 })();
 </script>
 @endif

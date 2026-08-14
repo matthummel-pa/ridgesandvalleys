@@ -103,16 +103,22 @@
 (function () {
   var article = document.querySelector('article.rv-single');
 
-  /* Reading progress bar */
+  /* Reading progress bar — measure on scroll only, batched to a frame. */
   var bar = document.querySelector('.rv-progress-bar');
   if (bar && article) {
+    var ticking = false;
     var upd = function () {
-      var total = article.offsetHeight - window.innerHeight;
-      var scrolled = Math.min(Math.max(-article.getBoundingClientRect().top, 0), Math.max(total, 1));
-      bar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(function () {
+        ticking = false;
+        var total = article.offsetHeight - window.innerHeight;
+        var scrolled = Math.min(Math.max(-article.getBoundingClientRect().top, 0), Math.max(total, 1));
+        bar.style.width = (total > 0 ? (scrolled / total) * 100 : 0) + '%';
+      });
     };
     window.addEventListener('scroll', upd, { passive: true });
-    window.addEventListener('resize', upd); upd();
+    window.addEventListener('resize', upd, { passive: true });
   }
 
   /* Floating CTA: appear after the first screen, hide near the footer, dismissible */
@@ -127,7 +133,7 @@
       var nearBottom = (window.innerHeight + y) > (document.body.offsetHeight - 900);
       fc.hidden = !(y > 700 && !nearBottom);
     };
-    window.addEventListener('scroll', fcUpd, { passive: true }); fcUpd();
+    window.addEventListener('scroll', fcUpd, { passive: true });
   }
 
   /* Was this helpful? -> reveal a soft CTA */

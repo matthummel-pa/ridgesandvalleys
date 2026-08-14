@@ -40,7 +40,7 @@
         </div>
       </div>
       <div class="rv-rooted-visual rv-media-photo">
-        <img src="{{ \App\field('rooted_img', '', $homeId) ?: \App\stock_image('rooted') }}" alt="{{ __('Gettysburg set among the farmland and ridges of Adams County — home of Ridges & Valleys web design', 'sage') }}" loading="lazy" onerror="this.style.display='none'">
+        {!! \App\content_img(\App\field('rooted_img', '', $homeId) ?: \App\stock_image('rooted'), __('Gettysburg set among the farmland and ridges of Adams County — home of Ridges & Valleys web design', 'sage')) !!}
         @if (trim($rootedPin) !== '')<p class="rv-rooted-pin">{{ $rootedPin }}</p>@endif
         @if (trim($rootedCredit) !== '')<div class="rv-img-credit">{!! nl2br(e($rootedCredit)) !!}</div>@endif
       </div>
