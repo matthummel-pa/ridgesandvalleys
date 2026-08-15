@@ -140,6 +140,10 @@
     .rv-sec-next p{margin:0;color:var(--color-body);font-size:.95rem;line-height:1.5;max-width:46ch}
     .rv-sec-next .rv-btn{white-space:nowrap}
     @media(max-width:720px){.rv-sec-bounds{grid-template-columns:1fr}.rv-sec-next{grid-template-columns:1fr}.rv-sec-next .rv-btn{width:100%;justify-content:center}}
+    .rv-crit.is-na .rv-crit-tick{background:var(--color-slate);border-color:var(--color-slate)}
+    .rv-crit.is-na .rv-crit-tick::after{content:"–";color:#fff;font-size:.95rem}
+    .rv-crit.is-na .rv-crit-state{background:#e6ebed;color:#33454a}
+    .rv-cat-score[data-grade="N/A"],.rv-cat-score[data-grade="Info"]{background:var(--color-cream);color:var(--color-muted);border:1px solid var(--color-line)}
   </style>
 
   <script>
@@ -157,7 +161,7 @@
       var out    = document.getElementById('rv-sec-results');
       var endpoint = root.getAttribute('data-endpoint');
       var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      var LABEL = { pass: 'Pass', warn: 'Review', fail: 'Fail' };
+      var LABEL = { pass: 'Pass', warn: 'Review', fail: 'Fail', na: 'N/A' };
       var timers = [];
       var ctaHref = root.getAttribute('data-cta') || '/contact/';
 
@@ -182,7 +186,7 @@
         if (live) live.textContent = 'Enter a site to run the security scan.';
       }
       function checkRow(chk, alwaysWhy) {
-        var why = chk.why && (alwaysWhy || chk.status === 'fail' || chk.status === 'warn')
+        var why = chk.why && (alwaysWhy || chk.status === 'fail' || chk.status === 'warn' || chk.status === 'na')
           ? '<span class="rv-crit-why"><b>Why:</b> ' + esc(chk.why) + '</span>'
           : '';
         return '<li class="rv-crit is-' + chk.status + '">'
@@ -196,6 +200,7 @@
       function firstIssues(d) {
         var items = [];
         (d.categories || []).forEach(function (c) {
+          if (c.key === 'wordpress') return;
           (c.checks || []).forEach(function (chk) {
             if (chk.status === 'fail' || chk.status === 'warn') {
               items.push({
@@ -238,20 +243,26 @@
       }
       function categoryBlock(c) {
         var rows = (c.checks || []).map(function (chk) { return checkRow(chk, false); }).join('');
+        var grade = (c.grade === 'N/A' || c.grade === 'Info') ? esc(c.grade) : (c.score + ' · ' + esc(c.grade));
         return '<div class="rv-cat"><div class="rv-cat-head">'
           + '<span class="rv-pour-letter rv-code" aria-hidden="true">' + esc(c.code) + '</span>'
           + '<div><h4 class="rv-cat-name">' + esc(c.name) + '</h4><p class="rv-cat-desc">' + esc(c.desc) + '</p></div>'
-          + '<span class="rv-cat-score" data-grade="' + esc(c.grade) + '">' + c.score + ' · ' + esc(c.grade) + '</span>'
+          + '<span class="rv-cat-score" data-grade="' + esc(c.grade) + '">' + grade + '</span>'
           + '</div><ul class="rv-crit-list">' + rows + '</ul></div>';
       }
       function overallBlock(d) {
         var m = d.meta || {};
+        var scripts = m.scripts || [];
+        var scriptLine = scripts.length
+          ? scripts.slice(0, 3).map(esc).join(', ') + (scripts.length > 3 ? ' +' + (scripts.length - 3) : '')
+          : ((m.thirdparty || 0) + ' third-party scripts');
         return '<div class="rv-grade-overall"><div class="rv-grade-dial rv-score" data-grade="' + esc(d.overall.grade) + '">'
           + '<span class="rv-score-num">' + d.overall.score + '</span><span class="rv-score-grade">' + esc(d.overall.grade) + '</span></div>'
           + '<div class="rv-grade-headline"><h3>Security score</h3>'
           + '<p>Scanned ' + esc(d.url) + '.</p>'
-          + '<div class="rv-grade-meta"><span>' + (m.https ? 'HTTPS ✓' : 'No HTTPS') + '</span><span>' + (m.headers || 0) + '/6 security headers</span><span>' + (m.mixed || 0) + ' mixed content</span><span>' + (m.thirdparty || 0) + ' third-party scripts</span></div>'
-          + '</div></div>';
+          + '<div class="rv-grade-meta"><span>' + (m.https ? 'HTTPS ✓' : 'No HTTPS') + '</span><span>' + (m.headers || 0) + '/6 security headers</span><span>' + scriptLine + '</span>'
+          + (m.wordpress ? '<span>Looks like WordPress</span>' : '')
+          + '</div></div></div>';
       }
 
       if (form) form.addEventListener('submit', function (e) {

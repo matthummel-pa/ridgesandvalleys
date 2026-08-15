@@ -1003,7 +1003,8 @@ function security_cover_yes_defaults(): array
         __('Security headers browsers use as free extra locks', 'sage'),
         __('Whether the server advertises its exact software', 'sage'),
         __('Cookie flags, if this page sets cookies', 'sage'),
-        __('Unsafe new-tab links and third-party scripts', 'sage'),
+        __('Third-party scripts, named (Tag Manager, Pixel, and the rest)', 'sage'),
+        __('WordPress login and xmlrpc, when the site looks like WordPress', 'sage'),
     ];
 }
 

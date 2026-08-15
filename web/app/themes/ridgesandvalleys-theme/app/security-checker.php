@@ -7,9 +7,10 @@
  * response headers for the security signals a browser (and an attacker) sees:
  * HTTPS + HSTS, the modern security headers (CSP, nosniff, clickjacking,
  * Referrer-Policy, Permissions-Policy), information disclosure (server/version
- * leakage), cookie flags, and front-end risks (mixed content, tabnabbing,
- * third-party script sprawl). It also probes whether http:// redirects to
- * https://.
+ * leakage), cookie flags, named third-party scripts, and — when the page looks
+ * like WordPress — whether wp-login.php and xmlrpc.php sit at the default URLs.
+ * It also probes whether http:// redirects to https://. Cookie checks are N/A
+ * when the page sets none, so they do not inflate the grade.
  *
  * Every check returns status (pass | warn | fail), the value found, and a
  * plain-English "why it matters". This reads headers and markup — it is not a
@@ -48,6 +49,90 @@ function seccheck_redirects_to_https(string $host): ?bool
         return str_starts_with(strtolower((string) wp_remote_retrieve_header($res, 'location')), 'https://');
     }
     return false;
+}
+
+/** HTTP status for a URL, or null if the request failed. Does not follow redirects. */
+function seccheck_probe(string $url): ?int
+{
+    $res = wp_safe_remote_get($url, [
+        'timeout'     => 6,
+        'redirection' => 0,
+        'user-agent'  => 'RidgesValleysSecurity/1.0',
+    ]);
+    if (is_wp_error($res)) {
+        return null;
+    }
+
+    return (int) wp_remote_retrieve_response_code($res);
+}
+
+/** Owner-facing name for a third-party script host. */
+function seccheck_script_label(string $host): string
+{
+    $host = strtolower($host);
+    $map  = [
+        'googletagmanager.com'     => __('Google Tag Manager', 'sage'),
+        'google-analytics.com'     => __('Google Analytics', 'sage'),
+        'googlesyndication.com'    => __('Google Ads', 'sage'),
+        'googleadservices.com'     => __('Google Ads', 'sage'),
+        'doubleclick.net'          => __('Google Ads', 'sage'),
+        'gstatic.com'              => __('Google', 'sage'),
+        'googleapis.com'           => __('Google APIs', 'sage'),
+        'recaptcha.net'            => __('reCAPTCHA', 'sage'),
+        'connect.facebook.net'     => __('Facebook Pixel', 'sage'),
+        'facebook.net'             => __('Facebook Pixel', 'sage'),
+        'facebook.com'             => __('Facebook', 'sage'),
+        'hotjar.com'               => __('Hotjar', 'sage'),
+        'clarity.ms'               => __('Microsoft Clarity', 'sage'),
+        'hs-scripts.com'           => __('HubSpot', 'sage'),
+        'hsforms.net'              => __('HubSpot Forms', 'sage'),
+        'hs-banner.com'            => __('HubSpot', 'sage'),
+        'hubspot.com'              => __('HubSpot', 'sage'),
+        'hscollectedforms.net'     => __('HubSpot', 'sage'),
+        'stripe.com'               => __('Stripe', 'sage'),
+        'js.stripe.com'            => __('Stripe', 'sage'),
+        'youtube.com'              => __('YouTube', 'sage'),
+        'youtu.be'                 => __('YouTube', 'sage'),
+        'ytimg.com'                => __('YouTube', 'sage'),
+        'vimeo.com'                => __('Vimeo', 'sage'),
+        'maps.googleapis.com'      => __('Google Maps', 'sage'),
+        'maps.google.com'          => __('Google Maps', 'sage'),
+        'cloudflareinsights.com'   => __('Cloudflare Insights', 'sage'),
+        'cdnjs.cloudflare.com'     => __('Cloudflare CDN', 'sage'),
+        'ajax.googleapis.com'      => __('Google CDN', 'sage'),
+        'code.jquery.com'          => __('jQuery', 'sage'),
+        'snap.licdn.com'           => __('LinkedIn Insight', 'sage'),
+        'ads-twitter.com'          => __('X / Twitter ads', 'sage'),
+        'platform.twitter.com'     => __('X / Twitter', 'sage'),
+        'instagram.com'            => __('Instagram', 'sage'),
+        'tiktok.com'               => __('TikTok', 'sage'),
+        'chimpstatic.com'          => __('Mailchimp', 'sage'),
+        'list-manage.com'          => __('Mailchimp', 'sage'),
+        'mcauto-images-production.sendgrid.net' => __('SendGrid', 'sage'),
+        'shopify.com'              => __('Shopify', 'sage'),
+        'wp.com'                   => __('WordPress.com', 'sage'),
+        'stats.wp.com'             => __('Jetpack Stats', 'sage'),
+        'jetpack.com'              => __('Jetpack', 'sage'),
+        'cookiebot.com'            => __('Cookiebot', 'sage'),
+        'cookielaw.org'            => __('OneTrust', 'sage'),
+        'onetrust.com'             => __('OneTrust', 'sage'),
+        'cdn.userway.org'          => __('UserWay', 'sage'),
+        'widget.trustpilot.com'    => __('Trustpilot', 'sage'),
+        'static.addtoany.com'      => __('AddToAny', 'sage'),
+        'js-na1.hs-scripts.com'    => __('HubSpot', 'sage'),
+    ];
+    foreach ($map as $needle => $label) {
+        if ($host === $needle) {
+            return $label;
+        }
+    }
+    foreach ($map as $needle => $label) {
+        if (str_ends_with($host, '.' . $needle)) {
+            return $label;
+        }
+    }
+
+    return preg_replace('/^www\./', '', $host) ?: $host;
 }
 
 function rv_rest_security(\WP_REST_Request $req)
@@ -111,13 +196,28 @@ function rv_rest_security(\WP_REST_Request $req)
         if (trim($s->textContent) !== '') $inlineScripts++;
     }
 
-    // third-party script hosts
+    // third-party script hosts → owner-facing names
     $thirdParty = [];
     foreach ($xp->query('//script[@src]/@src') as $src) {
         $h = wp_parse_url($src->nodeValue, PHP_URL_HOST);
-        if ($h && $h !== $host) $thirdParty[$h] = true;
+        if ($h && strcasecmp($h, $host) !== 0) {
+            $thirdParty[$h] = true;
+        }
     }
-    $thirdPartyCount = count($thirdParty);
+    $scriptLabels = [];
+    foreach (array_keys($thirdParty) as $h) {
+        $scriptLabels[seccheck_script_label((string) $h)] = true;
+    }
+    $scriptLabels     = array_keys($scriptLabels);
+    natcasesort($scriptLabels);
+    $scriptLabels     = array_values($scriptLabels);
+    $thirdPartyCount  = count($thirdParty);
+    $scriptDetail     = __('None found.', 'sage');
+    if ($scriptLabels !== []) {
+        $shown        = array_slice($scriptLabels, 0, 4);
+        $extra        = count($scriptLabels) - count($shown);
+        $scriptDetail = implode(', ', $shown) . ($extra > 0 ? sprintf(__(' + %d more', 'sage'), $extra) : '');
+    }
 
     // cookie flags (only meaningful if cookies are set)
     $hasCookies = $setCookie !== '';
@@ -126,6 +226,13 @@ function rv_rest_security(\WP_REST_Request $req)
     $ckSameSite = stripos($setCookie, 'samesite') !== false;
 
     $redirect = $https ? seccheck_redirects_to_https($host) : false;
+
+    $origin  = (($https ? 'https://' : 'http://') . $host);
+    $looksWp = (bool) preg_match('/wordpress/i', $generator)
+        || str_contains($html, '/wp-content/')
+        || str_contains($html, '/wp-includes/')
+        || str_contains($html, 'wp-json')
+        || (bool) preg_match('/wordpress/i', $poweredBy);
 
     /* ---- categories ---- */
     $categories = [];
@@ -197,9 +304,9 @@ function rv_rest_security(\WP_REST_Request $req)
             $ckSameSite ? __('SameSite set.', 'sage') : __('No SameSite attribute.', 'sage'),
             __('SameSite limits when cookies are sent cross-site, blunting cross-site request forgery (CSRF) attacks.', 'sage'));
     } else {
-        $add('cookies', __('No cookies set on this page', 'sage'), 'pass', 4,
-            __('This response sets no cookies.', 'sage'),
-            __('Fewer cookies means less to protect — a good default for public pages that don\'t need to track anything.', 'sage'));
+        $add('cookies', __('No cookies set on this page', 'sage'), 'na', 0,
+            __('This response sets no cookies — so there is nothing to grade here.', 'sage'),
+            __('A public page with no cookies is fine. It is not the same as “cookies are locked down.” Logins and forms on other pages may still set them.', 'sage'));
     }
 
     /* --- Front-end risks --- */
@@ -213,9 +320,31 @@ function rv_rest_security(\WP_REST_Request $req)
     $add('frontend', __('Limited inline scripts', 'sage'), $inlineScripts <= 3 ? 'pass' : ($inlineScripts <= 8 ? 'warn' : 'fail'), 4,
         sprintf(__('%d inline <script> blocks.', 'sage'), $inlineScripts),
         __('Lots of inline JavaScript makes a strict CSP hard to adopt and is harder to audit for tampering.', 'sage'));
-    $add('frontend', __('Third-party script sprawl', 'sage'), $thirdPartyCount <= 4 ? 'pass' : ($thirdPartyCount <= 8 ? 'warn' : 'fail'), 5,
-        sprintf(__('%d third-party script source(s).', 'sage'), $thirdPartyCount),
+    $add('frontend', __('Third-party scripts', 'sage'), $thirdPartyCount <= 4 ? 'pass' : ($thirdPartyCount <= 8 ? 'warn' : 'fail'), 5,
+        $thirdPartyCount === 0 ? $scriptDetail : sprintf(
+            /* translators: 1: count, 2: named sources */
+            _n('%d source: %s', '%d sources: %s', $thirdPartyCount, 'sage'),
+            $thirdPartyCount,
+            $scriptDetail
+        ),
         __('Every external script is code you don\'t control running on your site — each one is a supply-chain risk if it\'s compromised.', 'sage'));
+
+    /* --- WordPress fingerprint (only when the page looks like WP) --- */
+    if ($looksWp) {
+        $loginCode  = seccheck_probe($origin . '/wp-login.php');
+        $xmlrpcCode = seccheck_probe($origin . '/xmlrpc.php');
+        $loginOpen  = in_array($loginCode, [200, 301, 302, 303, 307, 308], true);
+        $xmlrpcOpen = in_array($xmlrpcCode, [200, 405], true);
+        $xmlrpcOff  = in_array($xmlrpcCode, [404, 403, 410], true);
+
+        $cat('wordpress', 'WP', __('Looks like WordPress', 'sage'), __('A fingerprint, not a hack test — the usual login and xmlrpc addresses that most WordPress sites still expose.', 'sage'));
+        $add('wordpress', __('Login not sitting at the default URL', 'sage'), $loginOpen ? 'warn' : ($loginCode === null ? 'na' : 'pass'), $loginCode === null ? 0 : 4,
+            $loginOpen ? __('wp-login.php loads (or redirects there).', 'sage') : ($loginCode === null ? __('Couldn\'t check.', 'sage') : sprintf(__('HTTP %d at wp-login.php.', 'sage'), (int) $loginCode)),
+            __('Bots hammer /wp-login.php. Moving or gating it does not replace updates and strong passwords — it just takes you off the easiest list.', 'sage'));
+        $add('wordpress', __('xmlrpc.php not wide open', 'sage'), $xmlrpcOpen ? 'warn' : ($xmlrpcCode === null ? 'na' : ($xmlrpcOff ? 'pass' : 'warn')), $xmlrpcCode === null ? 0 : 5,
+            $xmlrpcOpen ? __('xmlrpc.php responds — bots use this to brute-force logins.', 'sage') : ($xmlrpcCode === null ? __('Couldn\'t check.', 'sage') : sprintf(__('HTTP %d at xmlrpc.php.', 'sage'), (int) $xmlrpcCode)),
+            __('xmlrpc is an old WordPress API. If you do not need the WordPress mobile app talking to the site, turning it off removes a noisy attack path.', 'sage'));
+    }
 
     /* ---- scoring ---- */
     $catOut = []; $totEarned = 0; $totPossible = 0; $headersPresent = 0;
@@ -225,14 +354,29 @@ function rv_rest_security(\WP_REST_Request $req)
     foreach ($categories as $c) {
         $earned = 0; $possible = 0;
         foreach ($c['checks'] as $chk) {
+            if (($chk['status'] ?? '') === 'na' || (int) ($chk['weight'] ?? 0) <= 0) {
+                continue;
+            }
             $possible += $chk['weight'];
             $earned += $chk['status'] === 'pass' ? $chk['weight'] : ($chk['status'] === 'warn' ? $chk['weight'] * 0.5 : 0);
         }
-        $score = (int) round($earned / max(1, $possible) * 100);
-        $c['score'] = $score;
-        $c['grade'] = rv_tools_letter($score);
+        if (($c['key'] ?? '') === 'wordpress') {
+            $c['score'] = 0;
+            $c['grade'] = 'Info';
+            $catOut[] = $c;
+            continue;
+        }
+        if ($possible <= 0) {
+            $c['score'] = 0;
+            $c['grade'] = 'N/A';
+        } else {
+            $score = (int) round($earned / $possible * 100);
+            $c['score'] = $score;
+            $c['grade'] = rv_tools_letter($score);
+            $totEarned += $earned;
+            $totPossible += $possible;
+        }
         $catOut[] = $c;
-        $totEarned += $earned; $totPossible += $possible;
     }
     $overall = (int) round($totEarned / max(1, $totPossible) * 100);
 
@@ -240,7 +384,15 @@ function rv_rest_security(\WP_REST_Request $req)
         'ok'         => true,
         'url'        => $url,
         'overall'    => ['score' => $overall, 'grade' => rv_tools_letter($overall)],
-        'meta'       => ['https' => $https, 'headers' => $headersPresent, 'mixed' => $mixed, 'thirdparty' => $thirdPartyCount, 'status' => $fetch['status']],
+        'meta'       => [
+            'https'      => $https,
+            'headers'    => $headersPresent,
+            'mixed'      => $mixed,
+            'thirdparty' => $thirdPartyCount,
+            'scripts'    => $scriptLabels,
+            'wordpress'  => $looksWp,
+            'status'     => $fetch['status'],
+        ],
         'categories' => $catOut,
     ], 200);
 }
