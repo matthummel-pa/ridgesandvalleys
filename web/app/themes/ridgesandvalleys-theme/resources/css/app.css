@@ -235,9 +235,9 @@ pre code { background: none; padding: 0; color: inherit; }
 .rv-hero > .rv-stripe { position: absolute; top: 0; left: 0; right: 0; z-index: 2; }
 .rv-hero-inner { padding-block: clamp(4rem, 10vw, 7rem); text-align: left; }
 .rv-hero .rv-eyebrow { color: var(--color-wheat); }
-.rv-hero-title { font-size: var(--text-huge); color: #fff; max-width: 18ch; margin-inline: 0; line-height: 1.08; text-wrap: balance; }
+.rv-hero-title { font-size: var(--text-huge); color: #fff; max-width: 28ch; margin-inline: 0; line-height: 1.08; text-wrap: balance; }
 .rv-accent { font-family: var(--font-serif); font-style: italic; font-weight: 400; color: var(--color-wheat); letter-spacing: 0; }
-.rv-hero-sub { font-size: clamp(1.02rem, 1.7vw, 1.15rem); line-height: 1.55; color: #dce4d8; max-width: 40ch; margin: 0.9rem 0 0; text-align: left; }
+.rv-hero-sub { font-size: clamp(1.02rem, 1.7vw, 1.15rem); line-height: 1.55; color: #dce4d8; max-width: 52ch; margin: 0.9rem 0 0; text-align: left; }
 .rv-hero-actions { display: flex; gap: 0.85rem; justify-content: flex-start; flex-wrap: wrap; margin-top: 1.45rem; }
 .rv-hero .rv-hero-actions .rv-btn-ghost { background: rgba(255, 255, 255, 0.08); color: #fff; border-color: rgba(255, 255, 255, 0.42); }
 .rv-hero .rv-hero-actions .rv-btn-ghost:hover { border-color: #fff; background: rgba(255, 255, 255, 0.16); }
@@ -253,9 +253,10 @@ pre code { background: none; padding: 0; color: inherit; }
 .rv-hero-bg::after { content: ""; position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18, 21, 15, 0.92) 0%, rgba(18, 21, 15, 0.72) 42%, rgba(18, 21, 15, 0.28) 100%), linear-gradient(180deg, rgba(18, 21, 15, 0.22) 0%, rgba(18, 21, 15, 0.7) 100%); }
 .rv-hero > .rv-shell { position: relative; z-index: 1; }
 
-/* Homepage: extra top padding (header sits over the photo) and a slightly larger H1. */
-.home .rv-hero-inner { padding-block: clamp(5.25rem, 11vw, 7.25rem) clamp(1.75rem, 4vw, 2.5rem); }
-.home .rv-hero-title { max-width: 22ch; font-size: clamp(2.35rem, 5vw, 3.55rem); }
+/* Homepage: extra top padding so copy sits clearly below the header, and a wider H1. */
+.home .rv-hero-inner { padding-block: clamp(6.75rem, 14vw, 9.5rem) clamp(1.75rem, 4vw, 2.5rem); }
+.home .rv-hero-title { max-width: 32ch; font-size: clamp(2.35rem, 5vw, 3.55rem); }
+.home .rv-hero-sub { max-width: 54ch; }
 
 /* Interior pages + journal posts (.rv-entry-hero): one shared hero height,
    always above the fold. Homepage keeps its own taller, content-sized hero.
@@ -285,17 +286,17 @@ body.single-post .rv-entry-hero > .rv-hero-inner {
   padding-block: clamp(1.25rem, 2.5vw, 2rem) clamp(1.5rem, 3.5vw, 2.25rem);
 }
 body:not(.home) .rv-hero-proof { flex: 0 0 auto; }
-body:not(.home) .rv-hero-title { font-size: clamp(2.05rem, 4.2vw, 3.05rem); max-width: 16ch; }
-body:not(.home) .rv-hero-sub { max-width: 42ch; }
+body:not(.home) .rv-hero-title { font-size: clamp(2.05rem, 4.2vw, 3.05rem); max-width: 28ch; }
+body:not(.home) .rv-hero-sub { max-width: 54ch; }
 
 /* Overlay header: pad the hero in CSS instead of measuring offsetHeight in JS
    (that read-then-write is a forced reflow on every page load). */
 body.rv-nav-transparent .rv-hero {
-  padding-top: calc(var(--rv-banner-stack, 8.75rem) + 3.5rem);
+  padding-top: calc(var(--rv-banner-stack, 8.75rem) + 4.75rem);
 }
 @media (max-width: 640px) {
   body.rv-nav-transparent .rv-hero {
-    padding-top: calc(var(--rv-header-h, 4.75rem) + 3.5rem);
+    padding-top: calc(var(--rv-header-h, 4.75rem) + 4.25rem);
   }
 }
 
