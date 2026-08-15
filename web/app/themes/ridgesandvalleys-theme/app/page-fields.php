@@ -981,6 +981,20 @@ function svc_after_point_defaults(): array
     ];
 }
 
+/**
+ * Security checker closer — three concrete lock-down promises next to the CTA.
+ *
+ * @return list<array{kicker:string,title:string,text:string}>
+ */
+function security_lock_item_defaults(): array
+{
+    return [
+        ['kicker' => __('Close it', 'sage'), 'title' => __('The gaps the scan just found', 'sage'), 'text' => __('HTTPS, headers, mixed content, cookie flags. I fix what’s actually broken — and tell you what it means.', 'sage')],
+        ['kicker' => __('Keep it', 'sage'), 'title' => __('Patched, backed up, current', 'sage'), 'text' => __('WordPress, plugins, and PHP stay up to date so last month’s exploit isn’t next week’s headache.', 'sage')],
+        ['kicker' => __('Watch it', 'sage'), 'title' => __('A human still looking', 'sage'), 'text' => __('Malware checks, backups, and someone who notices when something’s off. Not a ticket queue.', 'sage')],
+    ];
+}
+
 /** Which field set applies to a page (front page detected via the reading setting). */
 function page_template_key(int $post_id): string
 {
@@ -1890,11 +1904,21 @@ function page_field_map(): array
                 __('locked up?', 'sage'),
                 __('HTTPS, headers, leaks, cookies — each result in plain English, and why it matters.', 'sage')
             ),
-            __('Call to action', 'sage') => $cta(
-                __('Want your site locked down and kept that way?', 'sage'),
-                __('I harden the fixable items above and keep sites patched, backed up, and monitored on a Care & Grow plan.', 'sage'),
-                __('Secure my site', 'sage')
-            ),
+            __('Lock it down', 'sage') => [
+                ['sec_lock_eyebrow', __('Eyebrow', 'sage'), 'text', __('After the scan', 'sage')],
+                ['sec_lock_title', __('Heading (before accent)', 'sage'), 'text', __('Want it locked down.', 'sage')],
+                ['sec_lock_accent', __('Accent phrase', 'sage'), 'text', __('And kept that way.', 'sage')],
+                ['sec_lock_lede', __('Intro paragraph', 'sage'), 'textarea', __('The checker finds the gaps. I close them — HTTPS, headers, backups, updates — and keep an eye on the site so it stays that way. Optional Care & Grow from $179 a month. Cancel anytime. You keep the keys.', 'sage')],
+                ['sec_lock_items', __('Three promises', 'sage'), 'repeater', security_lock_item_defaults(), [
+                    ['kicker', __('Kicker', 'sage'), 'text'],
+                    ['title', __('Heading', 'sage'), 'text'],
+                    ['text', __('Text', 'sage'), 'textarea'],
+                ]],
+                ['sec_lock_btn', __('Primary button', 'sage'), 'text', __('Secure my site', 'sage')],
+                ['sec_lock_btn2', __('Secondary button', 'sage'), 'text', __('See Care & Grow', 'sage')],
+                ['sec_lock_care_url', __('Secondary button link', 'sage'), 'url', __('e.g. /gettysburg-web-design-services/#care', 'sage')],
+                ['sec_lock_fine', __('Reassurance line', 'sage'), 'text', __('Fixed price · You own the site · A real person answers', 'sage')],
+            ],
         ],
 
         'template-email.blade.php' => [

@@ -77,14 +77,51 @@
     </div>
   </section>
 
-  {{-- CTA --}}
-  <section class="rv-cta-band">
-    <div class="rv-shell rv-cta-inner">
-      <h2 class="rv-cta-title">{{ \App\field('cta_title', __('Want your site locked down and kept that way?', 'sage')) }}</h2>
-      <p class="rv-cta-sub">{{ \App\field('cta_sub', __('I harden the fixable items above and keep sites patched, backed up, and monitored on a Care & Grow plan.', 'sage')) }}</p>
-      <a class="rv-btn rv-btn-on-dark" href="{{ $ctaHref }}">{{ \App\field('cta_button', __('Secure my site', 'sage')) }}</a>
+  {{-- LOCKDOWN CLOSER --}}
+  @php($careHref = \App\cta_href(\App\field('sec_lock_care_url', \App\services_path() . '#care')))
+  <section class="rv-cta-band rv-sec-lock" aria-labelledby="rv-sec-lock-title">
+    <div class="rv-shell rv-sec-lock-inner">
+      <div class="rv-sec-lock-copy">
+        {!! \App\eyebrow(\App\field('sec_lock_eyebrow', __('After the scan', 'sage'))) !!}
+        <h2 id="rv-sec-lock-title" class="rv-cta-title">{{ \App\field('sec_lock_title', __('Want it locked down.', 'sage')) }} <em class="rv-accent">{{ \App\field('sec_lock_accent', __('And kept that way.', 'sage')) }}</em></h2>
+        <p class="rv-cta-sub">{{ \App\field('sec_lock_lede', __('The checker finds the gaps. I close them — HTTPS, headers, backups, updates — and keep an eye on the site so it stays that way. Optional Care & Grow from $179 a month. Cancel anytime. You keep the keys.', 'sage')) }}</p>
+        <div class="rv-hero-actions rv-sec-lock-actions">
+          <a class="rv-btn rv-btn-on-dark" href="{{ $ctaHref }}">{{ \App\field('sec_lock_btn', __('Secure my site', 'sage')) }}</a>
+          <a class="rv-btn rv-btn-ghost rv-sec-lock-ghost" href="{{ $careHref }}">{{ \App\field('sec_lock_btn2', __('See Care & Grow', 'sage')) }}</a>
+        </div>
+        <p class="rv-sec-lock-fine">{{ \App\field('sec_lock_fine', __('Fixed price · You own the site · A real person answers', 'sage')) }}</p>
+      </div>
+      <ul class="rv-sec-lock-list">
+        @foreach (\App\field_rows('sec_lock_items', \App\security_lock_item_defaults()) as $item)
+          <li class="rv-sec-lock-item">
+            @if (($item['kicker'] ?? '') !== '')<span class="rv-sec-lock-kicker">{{ $item['kicker'] }}</span>@endif
+            @if (($item['title'] ?? '') !== '')<h3>{{ $item['title'] }}</h3>@endif
+            @if (($item['text'] ?? '') !== '')<p>{{ $item['text'] }}</p>@endif
+          </li>
+        @endforeach
+      </ul>
     </div>
   </section>
+  <style>
+    .rv-sec-lock{position:relative;overflow:hidden;background:linear-gradient(105deg,rgba(18,21,15,.84) 0%,rgba(33,61,51,.58) 48%,rgba(176,85,58,.38) 100%),var(--ridgeline)}
+    .rv-sec-lock::before{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--stripe);z-index:1}
+    .rv-sec-lock-inner{position:relative;z-index:1;display:grid;grid-template-columns:minmax(0,1.08fr) minmax(0,.92fr);gap:clamp(1.75rem,4vw,3rem);align-items:center;padding-block:clamp(2.75rem,6vw,4.5rem)}
+    .rv-sec-lock .rv-eyebrow{color:var(--color-wheat)}
+    .rv-sec-lock .rv-cta-title{margin:.2rem 0 .9rem;max-width:22ch;font-size:clamp(1.9rem,3.8vw,2.85rem);line-height:1.08}
+    .rv-sec-lock .rv-cta-sub{max-width:46ch;margin:0;color:rgba(255,255,255,.9);font-size:1.05rem;line-height:1.6}
+    .rv-sec-lock-actions{justify-content:flex-start;margin-top:1.5rem}
+    .rv-sec-lock-ghost{background:rgba(255,255,255,.08);color:#fff;border-color:rgba(255,255,255,.42)}
+    .rv-sec-lock-ghost:hover{border-color:#fff;background:rgba(255,255,255,.16);color:#fff}
+    .rv-sec-lock-fine{margin:1rem 0 0;font-family:var(--font-mono);font-size:.75rem;letter-spacing:.04em;color:rgba(247,241,230,.72)}
+    .rv-sec-lock-list{list-style:none;margin:0;padding:0;display:grid;gap:.8rem}
+    .rv-sec-lock-item{position:relative;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.16);border-radius:var(--radius-lg,16px);padding:1.1rem 1.25rem 1.1rem 1.45rem;overflow:hidden}
+    .rv-sec-lock-item::before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--color-wheat)}
+    .rv-sec-lock-kicker{display:block;font-family:var(--font-mono);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;color:var(--color-wheat);font-weight:600}
+    .rv-sec-lock-item h3{font-family:var(--font-display);font-size:1.08rem;font-weight:700;color:#fff;margin:.2rem 0 .3rem;line-height:1.2}
+    .rv-sec-lock-item p{margin:0;color:rgba(255,255,255,.84);font-size:.92rem;line-height:1.5}
+    @media(max-width:820px){.rv-sec-lock-inner{grid-template-columns:1fr}.rv-sec-lock .rv-cta-title{max-width:none}}
+    @media(prefers-reduced-motion:reduce){.rv-sec-lock-ghost:hover{transform:none}}
+  </style>
 
   <script>
     (function () {
