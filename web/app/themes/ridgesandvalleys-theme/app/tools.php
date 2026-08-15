@@ -17,6 +17,22 @@ namespace App;
 /* =========================================================== Fetch engine === */
 
 /**
+ * Accept a pasted domain ("mysite.com") as well as a full http(s) URL.
+ */
+function tools_normalize_url(string $url): string
+{
+    $url = preg_replace('/\s+/', '', trim($url)) ?? '';
+    if ($url === '') {
+        return '';
+    }
+    if (! preg_match('#^[a-z][a-z0-9+.-]*:#i', $url)) {
+        $url = 'https://' . ltrim($url, '/');
+    }
+
+    return $url;
+}
+
+/**
  * SSRF-guarded server-side page fetch.
  */
 function rv_tools_fetch(string $url): array

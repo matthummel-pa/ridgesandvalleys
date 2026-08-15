@@ -52,7 +52,7 @@ function seccheck_redirects_to_https(string $host): ?bool
 
 function rv_rest_security(\WP_REST_Request $req)
 {
-    $fetch = grader_fetch((string) $req->get_param('url'));
+    $fetch = grader_fetch(tools_normalize_url((string) $req->get_param('url')));
     if (! $fetch['ok']) {
         return new \WP_REST_Response(['ok' => false, 'error' => $fetch['error']], 200);
     }

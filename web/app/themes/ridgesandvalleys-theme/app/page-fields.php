@@ -995,6 +995,28 @@ function security_lock_item_defaults(): array
     ];
 }
 
+/** @return list<string> */
+function security_cover_yes_defaults(): array
+{
+    return [
+        __('HTTPS, the padlock, and whether http still loads', 'sage'),
+        __('Security headers browsers use as free extra locks', 'sage'),
+        __('Whether the server advertises its exact software', 'sage'),
+        __('Cookie flags, if this page sets cookies', 'sage'),
+        __('Unsafe new-tab links and third-party scripts', 'sage'),
+    ];
+}
+
+/** @return list<string> */
+function security_cover_no_defaults(): array
+{
+    return [
+        __('Passwords, plugins, or malware', 'sage'),
+        __('Your hosting, firewall, or backups', 'sage'),
+        __('A real penetration test', 'sage'),
+    ];
+}
+
 /** Which field set applies to a page (front page detected via the reading setting). */
 function page_template_key(int $post_id): string
 {
@@ -1904,6 +1926,16 @@ function page_field_map(): array
                 __('locked up?', 'sage'),
                 __('HTTPS, headers, leaks, cookies — each result in plain English, and why it matters.', 'sage')
             ),
+            __('What this scan covers', 'sage') => [
+                ['sec_cover_eyebrow', __('Eyebrow', 'sage'), 'text', __('What this scan covers', 'sage')],
+                ['sec_cover_title', __('Heading (before accent)', 'sage'), 'text', __('A hygiene check,', 'sage')],
+                ['sec_cover_accent', __('Accent phrase', 'sage'), 'text', __('not a pentest.', 'sage')],
+                ['sec_cover_lede', __('Intro paragraph', 'sage'), 'textarea', __('It reads what browsers — and attackers — see in your page and its headers. Free, no email. The closer below is for the work this scan cannot do.', 'sage')],
+                ['sec_cover_yes_title', __('Covers · heading', 'sage'), 'text', __('This scan looks at', 'sage')],
+                ['sec_cover_yes', __('Covers · list', 'sage'), 'lines', security_cover_yes_defaults()],
+                ['sec_cover_no_title', __('Does not cover · heading', 'sage'), 'text', __('It does not check', 'sage')],
+                ['sec_cover_no', __('Does not cover · list', 'sage'), 'lines', security_cover_no_defaults()],
+            ],
             __('Lock it down', 'sage') => [
                 ['sec_lock_eyebrow', __('Eyebrow', 'sage'), 'text', __('After the scan', 'sage')],
                 ['sec_lock_title', __('Heading (before accent)', 'sage'), 'text', __('Want it locked down.', 'sage')],

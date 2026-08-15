@@ -5,6 +5,7 @@
 
 @section('content')
   @php($ctaHref = \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')))
+  @php($careHref = \App\cta_href(\App\field('sec_lock_care_url', \App\services_path() . '#care')))
 
   {{-- HERO --}}
   <section class="rv-hero">
@@ -25,22 +26,22 @@
   <section id="security" class="rv-shell rv-band">
     {!! \App\eyebrow(__('Instant security scan', 'sage')) !!}
     <h2 class="rv-section-title">{{ __('Scan a page for', 'sage') }} <em class="rv-accent">{{ __('safety.', 'sage') }}</em></h2>
-    <p class="rv-page-intro">{{ __('Enter a URL for a fast hygiene check of what browsers (and attackers) see in your page and its response headers. Free, no email. It\'s a first-pass check, not a penetration test.', 'sage') }}</p>
+    <p class="rv-page-intro">{{ __('Paste your site — yourbusiness.com is fine. Free, no email. A first-pass check of what browsers see, not a penetration test.', 'sage') }}</p>
 
-    <div class="rv-scan" id="rv-sec" data-endpoint="{{ esc_url(rest_url('rv-tools/v1/security')) }}" style="margin-top:2rem" aria-label="{{ __('Security checker', 'sage') }}">
+    <div class="rv-scan" id="rv-sec" data-endpoint="{{ esc_url(rest_url('rv-tools/v1/security')) }}" data-cta="{{ esc_url($ctaHref) }}" style="margin-top:2rem" aria-label="{{ __('Security checker', 'sage') }}">
       <div class="rv-scan-head">
         <div class="rv-scan-head-row">
           <h3 class="rv-scan-title">{{ __('Security report', 'sage') }}</h3>
           <span class="rv-scan-count" id="rv-sec-count"></span>
         </div>
         <form class="rv-audit-form" id="rv-sec-form">
-          <label class="screen-reader-text" for="rv-sec-url">{{ __('Website URL to scan', 'sage') }}</label>
-          <input type="url" id="rv-sec-url" name="url" placeholder="https://your-site.com" required>
+          <label class="screen-reader-text" for="rv-sec-url">{{ __('Website to scan', 'sage') }}</label>
+          <input type="text" id="rv-sec-url" name="url" inputmode="url" autocomplete="url" spellcheck="false" placeholder="yourbusiness.com" required>
           <button type="submit" class="rv-btn rv-btn-primary" id="rv-sec-run">{{ __('Check security', 'sage') }}</button>
         </form>
         <div class="rv-scan-bar"><span class="rv-scan-bar-fill" id="rv-sec-fill"></span></div>
         <p class="rv-scan-status" id="rv-sec-status" role="status" aria-live="polite">
-          <span class="rv-scan-live">{{ __('Enter a URL to run the security scan.', 'sage') }}</span>
+          <span class="rv-scan-live">{{ __('Enter a site to run the security scan.', 'sage') }}</span>
         </p>
       </div>
       <div class="rv-scan-body" id="rv-sec-results" hidden></div>
@@ -51,34 +52,34 @@
     <p class="rv-audit-note">{{ __('This checks configuration and headers, not your passwords, plugins, or server internals. Want a real hardening pass and ongoing monitoring?', 'sage') }} <a href="{{ $ctaHref }}">{{ __('Talk to me', 'sage') }}</a>.</p>
   </section>
 
-  {{-- WHAT WE CHECK --}}
-  <section class="rv-band rv-band-alt">
+  {{-- COVERS / DOESN'T COVER --}}
+  <section class="rv-band rv-band-alt rv-sec-cover" aria-labelledby="rv-sec-cover-title">
     <div class="rv-shell">
-      {!! \App\eyebrow(__('What the scan covers', 'sage')) !!}
-      <h2 class="rv-section-title">{{ __('Five layers of', 'sage') }} <em class="rv-accent">{{ __('everyday', 'sage') }}</em> {{ __('protection.', 'sage') }}</h2>
-      <div class="rv-grid rv-grid-3" style="margin-top:2rem">
-        @php($areas = [
-          [__('HTTPS & transport', 'sage'), __('HTTPS, an http→https redirect, HSTS, mixed content, and secure form submissions.', 'sage'), __('This is the encryption between your visitor and your site. Without it, data can be read or altered in transit and browsers show a “Not secure” warning.', 'sage')],
-          [__('Security headers', 'sage'), __('Content-Security-Policy, X-Content-Type-Options, clickjacking protection, Referrer-Policy, and Permissions-Policy.', 'sage'), __('These headers are free, built-in browser defences against the most common web attacks — most small-business sites simply never turn them on.', 'sage')],
-          [__('Information disclosure', 'sage'), __('Whether the server, framework, and CMS quietly advertise their exact versions.', 'sage'), __('Version numbers are a roadmap for attackers — they tell bots precisely which known exploits are worth trying against you.', 'sage')],
-          [__('Cookie safety', 'sage'), __('The Secure, HttpOnly, and SameSite flags on any cookies the page sets.', 'sage'), __('Properly flagged cookies can\'t be stolen by injected scripts or replayed from other sites — critical if anyone ever logs in.', 'sage')],
-          [__('Front-end risks', 'sage'), __('Tabnabbing-safe links, inline scripts and handlers, and third-party script sprawl.', 'sage'), __('Every external script is code you don\'t control running on your site. Fewer, safer scripts mean a smaller attack surface.', 'sage')],
-          [__('Beyond the scan', 'sage'), __('Strong passwords, two-factor login, updates, backups, a firewall, and malware monitoring.', 'sage'), __('Real security is ongoing, not a one-time score. A Care & Grow plan keeps the site patched, backed up, and watched.', 'sage')],
-        ])
-        @foreach ($areas as $a)
-          <article class="rv-card rv-feature">
-            <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
-            <h3 class="rv-feature-title">{{ $a[0] }}</h3>
-            <p class="rv-feature-text" style="margin-bottom:.6rem">{{ $a[1] }}</p>
-            <p class="rv-feature-text" style="color:var(--color-muted);font-size:.9rem"><b style="color:var(--color-body)">{{ __('Why it matters:', 'sage') }}</b> {{ $a[2] }}</p>
-          </article>
-        @endforeach
+      {!! \App\eyebrow(\App\field('sec_cover_eyebrow', __('What this scan covers', 'sage'))) !!}
+      <h2 id="rv-sec-cover-title" class="rv-section-title">{{ \App\field('sec_cover_title', __('A hygiene check,', 'sage')) }} <em class="rv-accent">{{ \App\field('sec_cover_accent', __('not a pentest.', 'sage')) }}</em></h2>
+      <p class="rv-page-intro">{{ \App\field('sec_cover_lede', __('It reads what browsers — and attackers — see in your page and its headers. Free, no email. The closer below is for the work this scan cannot do.', 'sage')) }}</p>
+      <div class="rv-sec-bounds">
+        <div class="rv-sec-bound">
+          <h3>{{ \App\field('sec_cover_yes_title', __('This scan looks at', 'sage')) }}</h3>
+          <ul>
+            @foreach (\App\field_lines('sec_cover_yes', \App\security_cover_yes_defaults()) as $line)
+              <li>{{ $line }}</li>
+            @endforeach
+          </ul>
+        </div>
+        <div class="rv-sec-bound rv-sec-bound-no">
+          <h3>{{ \App\field('sec_cover_no_title', __('It does not check', 'sage')) }}</h3>
+          <ul>
+            @foreach (\App\field_lines('sec_cover_no', \App\security_cover_no_defaults()) as $line)
+              <li>{{ $line }}</li>
+            @endforeach
+          </ul>
+        </div>
       </div>
     </div>
   </section>
 
   {{-- LOCKDOWN CLOSER --}}
-  @php($careHref = \App\cta_href(\App\field('sec_lock_care_url', \App\services_path() . '#care')))
   <section class="rv-cta-band rv-sec-lock" aria-labelledby="rv-sec-lock-title">
     <div class="rv-shell rv-sec-lock-inner">
       <div class="rv-sec-lock-copy">
@@ -121,6 +122,24 @@
     .rv-sec-lock-item p{margin:0;color:rgba(255,255,255,.84);font-size:.92rem;line-height:1.5}
     @media(max-width:820px){.rv-sec-lock-inner{grid-template-columns:1fr}.rv-sec-lock .rv-cta-title{max-width:none}}
     @media(prefers-reduced-motion:reduce){.rv-sec-lock-ghost:hover{transform:none}}
+    .rv-scan{scroll-margin-top:6rem}
+    .rv-sec-cover .rv-page-intro{max-width:54ch}
+    .rv-sec-bounds{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-top:1.35rem}
+    .rv-sec-bound{padding:1.35rem 1.45rem;border:1px solid var(--color-line);border-radius:var(--radius-lg,16px);background:var(--color-surface)}
+    .rv-sec-bound h3{font-family:var(--font-mono);font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-clay);font-weight:700;margin:0 0 .7rem}
+    .rv-sec-bound ul{list-style:none;margin:0;padding:0;display:grid;gap:.45rem}
+    .rv-sec-bound li{position:relative;padding-left:1.45rem;color:var(--color-body);font-size:.95rem;line-height:1.45}
+    .rv-sec-bound li::before{content:"";position:absolute;left:0;top:.35em;width:.55rem;height:.55rem;border-radius:50%;background:var(--color-pine)}
+    .rv-sec-bound-no li::before{background:var(--color-clay)}
+    .rv-sec-first{padding:1.35rem 1.6rem 1.2rem;border-bottom:1.5px solid var(--color-line);background:var(--color-paper)}
+    .rv-sec-first h3{margin:0;font-size:1.15rem}
+    .rv-sec-first-lead{margin:.35rem 0 0;color:var(--color-muted);font-size:.95rem}
+    .rv-sec-first .rv-crit-list{padding:0;margin-top:.85rem}
+    .rv-sec-next{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:1rem 1.5rem;align-items:center;padding:1.35rem 1.6rem;border-bottom:1.5px solid var(--color-line);background:color-mix(in srgb,var(--color-pine) 9%,var(--color-surface))}
+    .rv-sec-next h3{margin:0 0 .3rem;font-size:1.12rem}
+    .rv-sec-next p{margin:0;color:var(--color-body);font-size:.95rem;line-height:1.5;max-width:46ch}
+    .rv-sec-next .rv-btn{white-space:nowrap}
+    @media(max-width:720px){.rv-sec-bounds{grid-template-columns:1fr}.rv-sec-next{grid-template-columns:1fr}.rv-sec-next .rv-btn{width:100%;justify-content:center}}
   </style>
 
   <script>
@@ -140,11 +159,18 @@
       var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
       var LABEL = { pass: 'Pass', warn: 'Review', fail: 'Fail' };
       var timers = [];
+      var ctaHref = root.getAttribute('data-cta') || '/contact/';
 
       function esc(s) {
         return String(s == null ? '' : s).replace(/[&<>"]/g, function (c) {
           return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
         });
+      }
+      function normalizeUrl(u) {
+        u = String(u || '').trim().replace(/\s+/g, '');
+        if (!u) return u;
+        if (!/^[a-z][a-z0-9+.-]*:/i.test(u)) u = 'https://' + u.replace(/^\/+/, '');
+        return u;
       }
       function clearTimers() { timers.forEach(clearTimeout); timers = []; }
       function reset() {
@@ -153,19 +179,65 @@
         if (count) count.textContent = '';
         if (fill) fill.style.width = '0';
         if (status) status.classList.remove('is-done', 'is-error');
-        if (live) live.textContent = 'Enter a URL to run the security scan.';
+        if (live) live.textContent = 'Enter a site to run the security scan.';
       }
-      function checkRow(chk) {
+      function checkRow(chk, alwaysWhy) {
+        var why = chk.why && (alwaysWhy || chk.status === 'fail' || chk.status === 'warn')
+          ? '<span class="rv-crit-why"><b>Why:</b> ' + esc(chk.why) + '</span>'
+          : '';
         return '<li class="rv-crit is-' + chk.status + '">'
           + '<span class="rv-crit-tick" aria-hidden="true">'
           + (chk.status === 'pass' ? '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>' : '')
           + '</span><span class="rv-crit-main">'
           + '<span class="rv-crit-name">' + esc(chk.label) + (chk.detail ? ' <span class="rv-crit-num">· ' + esc(chk.detail) + '</span>' : '') + '</span>'
-          + (chk.why ? '<span class="rv-crit-why"><b>Why:</b> ' + esc(chk.why) + '</span>' : '')
+          + why
           + '</span><span class="rv-crit-side"><span class="rv-crit-state">' + (LABEL[chk.status] || '') + '</span></span></li>';
       }
+      function firstIssues(d) {
+        var items = [];
+        (d.categories || []).forEach(function (c) {
+          (c.checks || []).forEach(function (chk) {
+            if (chk.status === 'fail' || chk.status === 'warn') {
+              items.push({
+                status: chk.status,
+                label: chk.label,
+                detail: chk.detail || '',
+                why: chk.why || '',
+                weight: chk.weight || 0
+              });
+            }
+          });
+        });
+        items.sort(function (a, b) {
+          if (a.status !== b.status) return a.status === 'fail' ? -1 : 1;
+          return (b.weight || 0) - (a.weight || 0);
+        });
+        return items.slice(0, 3);
+      }
+      function firstBlock(issues) {
+        var hasFail = issues.some(function (i) { return i.status === 'fail'; });
+        var lead = issues.length === 0
+          ? 'This page looks clean on the checks I can run from here.'
+          : (hasFail
+            ? 'Start here — these are the ones that actually fail or need a look.'
+            : 'Nothing is on fire. These are the gaps I would close first.');
+        var title = issues.length === 0 ? 'Nothing urgent on this page.' : 'Fix these first.';
+        var rows = issues.map(function (chk) { return checkRow(chk, true); }).join('');
+        return '<div class="rv-sec-first"><h3>' + title + '</h3>'
+          + '<p class="rv-sec-first-lead">' + lead + '</p>'
+          + (rows ? '<ul class="rv-crit-list">' + rows + '</ul>' : '')
+          + '</div>';
+      }
+      function nextStepBlock(hasIssues) {
+        var title = hasIssues ? 'Want me to close these?' : 'Want it kept that way?';
+        var sub = hasIssues
+          ? 'I fix the headers and hygiene, then watch the site on a Care & Grow plan. You still own the keys.'
+          : 'A clean scan is a start. Updates, backups, and a human watching are what keep it that way.';
+        return '<div class="rv-sec-next"><div class="rv-sec-next-copy"><h3>' + title + '</h3><p>' + sub + '</p></div>'
+          + '<a class="rv-btn rv-btn-primary" href="' + esc(ctaHref) + '">Secure my site</a></div>';
+      }
       function categoryBlock(c) {
-        var rows = (c.checks || []).map(checkRow).join('');
+        var rows = (c.checks || []).map(function (chk) { return checkRow(chk, false); }).join('');
         return '<div class="rv-cat"><div class="rv-cat-head">'
           + '<span class="rv-pour-letter rv-code" aria-hidden="true">' + esc(c.code) + '</span>'
           + '<div><h4 class="rv-cat-name">' + esc(c.name) + '</h4><p class="rv-cat-desc">' + esc(c.desc) + '</p></div>'
@@ -184,8 +256,9 @@
 
       if (form) form.addEventListener('submit', function (e) {
         e.preventDefault();
-        var u = input.value.trim();
+        var u = normalizeUrl(input.value);
         if (!u) return;
+        input.value = u;
         if (runBtn) runBtn.disabled = true;
         clearTimers();
         if (out) { out.hidden = true; out.innerHTML = ''; }
@@ -202,8 +275,10 @@
               if (runBtn) runBtn.disabled = false;
               return;
             }
+            var issues = firstIssues(data);
             out.hidden = false;
-            out.innerHTML = overallBlock(data);
+            out.innerHTML = overallBlock(data) + firstBlock(issues) + nextStepBlock(issues.length > 0);
+            try { root.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' }); } catch (err) {}
             var cats = data.categories || [], total = cats.length, i = 0;
             function revealNext() {
               if (i >= total) {
