@@ -174,7 +174,7 @@
       .rv-work-cats-label{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin-right:.2rem}
       .rv-work-cat{background:color-mix(in srgb,var(--color-clay) 10%,var(--color-surface));border:1px solid color-mix(in srgb,var(--color-clay) 30%,var(--color-line));border-radius:999px;padding:.45rem .95rem;font-family:var(--font-display);font-weight:700;font-size:.92rem;color:var(--color-ink)}
       .rv-work-cat-n{font-family:var(--font-mono);font-size:.68rem;font-weight:600;opacity:.7;margin-left:.2rem}
-      .rv-work-filters{position:sticky;top:5.5rem;z-index:6;padding:.7rem 0;background:color-mix(in srgb,var(--color-paper) 92%,transparent);backdrop-filter:blur(10px)}
+      .rv-work-filters{padding:.7rem 0}
       .rv-filter{cursor:pointer;line-height:1.2;-webkit-appearance:none;appearance:none;transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .15s ease}
       .rv-filter:hover{transform:translateY(-1px);border-color:var(--color-clay);color:var(--color-clay)}
       .rv-filter:focus-visible{outline:2px solid var(--color-clay);outline-offset:2px}
@@ -189,7 +189,6 @@
       .rv-filter-empty{margin:1.25rem 0 0}
       .rv-work-empty-all{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--color-clay);cursor:pointer;text-decoration:underline}
       @media(max-width:820px){.rv-jnl-grid{grid-template-columns:1fr}}
-      @media(max-width:700px){.rv-work-filters{top:4.75rem}}
       @media(prefers-reduced-motion:reduce){.rv-jnl-grid{transition:none}.rv-filter{transition:none}.rv-jnl-why-jump svg,.rv-blogcard-more svg{transition:none}}
     </style>
 
