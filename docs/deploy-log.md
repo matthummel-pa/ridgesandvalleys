@@ -46,6 +46,15 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-16 — Free Tools hub redesign — Run 31978415604 — success — `f6b12b3`
+
+- **Shipped:** field-driven `/free-tools/` hub (no Gutenberg), chooser + filters +
+  FAQ/privacy/next-step sections, wider hero H1/lede, more space under the nav.
+- **Verified:** Actions run `31978415604` for merge SHA `f6b12b3` finished green.
+  Live `manifest.json` matches local (`app-DDqUIA0y.css`, `app-DwnLZxif.js`).
+  Live HTML includes `rv-hero--tools`.
+
+
 ### 2026-08-06 — About page rebuild + docs + SiteGround cache purge
 
 - **Shipped:** About page proof strip, six-free-tools band, pricing + NAP band;
