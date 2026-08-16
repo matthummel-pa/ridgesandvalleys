@@ -3136,6 +3136,35 @@ add_action('admin_init', function () {
 });
 
 /**
+ * One-time: drop leftover Gutenberg markup on Free Tools pages so the live
+ * database matches the field-driven template after this theme ships.
+ */
+add_action('admin_init', function () {
+    if (get_option('rv_tools_cleared_blocks') === '1') {
+        return;
+    }
+    if (! current_user_can('edit_pages')) {
+        return;
+    }
+    update_option('rv_tools_cleared_blocks', '1');
+    $pages = get_posts([
+        'post_type'      => 'page',
+        'post_status'    => 'any',
+        'posts_per_page' => 20,
+        'meta_key'       => '_wp_page_template',
+        'meta_value'     => 'template-tools.blade.php',
+    ]);
+    foreach ($pages as $p) {
+        if ($p->post_content !== '') {
+            wp_update_post([
+                'ID'           => $p->ID,
+                'post_content' => '',
+            ]);
+        }
+    }
+});
+
+/**
  * Free Tools is a field-driven template. Hide Gutenberg / classic content so
  * leftover blocks cannot silently reappear, and strip post_content on save.
  */

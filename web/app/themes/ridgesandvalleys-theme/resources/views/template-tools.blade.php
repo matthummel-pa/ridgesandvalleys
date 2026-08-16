@@ -77,8 +77,7 @@ $whyLabel  = \App\field('chk_why_label', __('Why it matters:', 'sage'));
       </div>
       <div class="rv-tools-pick-grid">
         @foreach ($picks as $i => $pick)
-          @php($href = \App\cta_href(\App\strip_field_markers((string) ($pick['url'] ?? '/website-grader/'))))
-          <a class="rv-card rv-tools-pick-card" href="{{ $href }}">
+          <a class="rv-card rv-tools-pick-card" href="{{ \App\cta_href(\App\strip_field_markers((string) ($pick['url'] ?? '/website-grader/'))) }}">
             <span class="rv-tools-pick-n" aria-hidden="true">{{ $i + 1 }}</span>
             @if (($pick['kicker'] ?? '') !== '')<span class="rv-toolcard-badge">{{ $pick['kicker'] }}</span>@endif
             <h3>{{ $pick['title'] ?? '' }}</h3>
@@ -113,12 +112,7 @@ $whyLabel  = \App\field('chk_why_label', __('Why it matters:', 'sage'));
 
     <div class="rv-toolhub" data-rv-toolhub>
       @foreach ($checkers as $t)
-        @php
-          $href = \App\cta_href(\App\strip_field_markers((string) ($t['url'] ?? '/free-tools/')));
-          $group = \App\strip_field_markers((string) ($t['group'] ?? 'search'));
-          $featured = (string) ($t['featured'] ?? '') === '1';
-        @endphp
-        <a class="rv-card rv-feature rv-toolcard{{ $featured ? ' is-featured' : '' }}" href="{{ $href }}" data-group="{{ $group }}">
+        <a class="rv-card rv-feature rv-toolcard{{ ((string) ($t['featured'] ?? '') === '1') ? ' is-featured' : '' }}" href="{{ \App\cta_href(\App\strip_field_markers((string) ($t['url'] ?? '/free-tools/'))) }}" data-group="{{ \App\strip_field_markers((string) ($t['group'] ?? 'search')) }}">
           <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
           <span class="rv-toolcard-meta">
             @if (($t['flag'] ?? '') !== '')<span class="rv-toolcard-badge">{{ $t['flag'] }}</span>@endif
@@ -219,8 +213,7 @@ $whyLabel  = \App\field('chk_why_label', __('Why it matters:', 'sage'));
       </div>
       <div class="rv-grid rv-grid-3">
         @foreach ($next as $item)
-          @php($href = \App\cta_href(\App\strip_field_markers((string) ($item['url'] ?? '/contact/'))))
-          <a class="rv-card rv-feature rv-toolcard" href="{{ $href }}">
+          <a class="rv-card rv-feature rv-toolcard" href="{{ \App\cta_href(\App\strip_field_markers((string) ($item['url'] ?? '/contact/'))) }}">
             <span class="rv-stripe rv-stripe-thin" aria-hidden="true"></span>
             <h3 class="rv-feature-title">{{ $item['title'] ?? '' }}</h3>
             <p class="rv-feature-text">{{ $item['text'] ?? '' }}</p>
