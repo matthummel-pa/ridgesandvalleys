@@ -43,6 +43,24 @@ body:not(.home) .rv-hero .rv-hero-sub {
 }
 body:not(.home) .rv-hero-actions { margin-top: 1.1rem; }
 
+body:not(.home) .rv-hero.rv-hero--tools .rv-hero-title {
+	max-width: none;
+	width: 100%;
+	font-size: clamp(2.2rem, 4.6vw, 3.35rem);
+	text-wrap: wrap;
+}
+body:not(.home) .rv-hero.rv-hero--tools .rv-hero-sub,
+body:not(.home) .rv-hero.rv-hero--tools .rv-hero-note {
+	max-width: min(62rem, 100%);
+}
+body:not(.home) .rv-hero.rv-hero--tools {
+	padding-top: clamp(2.25rem, 5vw, 3.75rem);
+}
+body:not(.home) .rv-hero.rv-hero--tools > .rv-hero-inner {
+	justify-content: flex-start;
+	padding-top: clamp(4.5rem, 9vw, 7.25rem);
+}
+
 /* ---- 3. Content section: full-bleed Contour band ------------------------ */
 body.page:not(.home) .rv-reading.rv-prose {
 	position: relative;

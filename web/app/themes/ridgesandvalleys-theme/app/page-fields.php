@@ -1018,6 +1018,245 @@ function security_cover_no_defaults(): array
     ];
 }
 
+/**
+ * Free Tools hub — proof ribbon under the hero.
+ *
+ * @return list<array{v:string,l:string}>
+ */
+function tools_proof_defaults(): array
+{
+    return [
+        ['v' => __('6', 'sage'), 'l' => __('URL checkers', 'sage')],
+        ['v' => __('0', 'sage'), 'l' => __('emails collected', 'sage')],
+        ['v' => __('~30s', 'sage'), 'l' => __('to a first grade', 'sage')],
+        ['v' => __('PA', 'sage'), 'l' => __('built in Gettysburg', 'sage')],
+    ];
+}
+
+/**
+ * “Not sure where to start” chooser cards.
+ *
+ * @return list<array{kicker:string,title:string,text:string,cta:string,url:string}>
+ */
+function tools_pick_defaults(): array
+{
+    return [
+        [
+            'kicker' => __('Start here', 'sage'),
+            'title'  => __('Not sure what to check?', 'sage'),
+            'text'   => __('Run the Website Grader. It scores seven areas and points you at the dedicated checker for whatever scored lowest.', 'sage'),
+            'cta'    => __('Open the grader', 'sage'),
+            'url'    => '/website-grader/',
+        ],
+        [
+            'kicker' => __('Get found', 'sage'),
+            'title'  => __('Want nearby customers to find you?', 'sage'),
+            'text'   => __('Use the SEO Checker for Google’s view of a page, then the Local SEO Scorecard for Maps, NAP, and reviews.', 'sage'),
+            'cta'    => __('Check search', 'sage'),
+            'url'    => '/seo-checker/',
+        ],
+        [
+            'kicker' => __('Earn trust', 'sage'),
+            'title'  => __('Worried about safety or access?', 'sage'),
+            'text'   => __('Security and email records protect customers. Accessibility opens the door for everyone — including Google.', 'sage'),
+            'cta'    => __('Check trust', 'sage'),
+            'url'    => '/security-checker/',
+        ],
+    ];
+}
+
+/**
+ * URL checker cards on the Free Tools hub.
+ *
+ * @return list<array{flag:string,title:string,url:string,text:string,why:string,time:string,group:string,featured:string}>
+ */
+function tools_checker_defaults(): array
+{
+    return [
+        [
+            'flag'     => __('Start here', 'sage'),
+            'title'    => __('Website Grader', 'sage'),
+            'url'      => '/website-grader/',
+            'text'     => __('Your whole site, graded across seven areas — SEO, page speed, mobile, readability, security, technical health, and social sharing.', 'sage'),
+            'why'      => __('The fastest way to see where you stand and what to fix first.', 'sage'),
+            'time'     => __('~30 sec', 'sage'),
+            'group'    => 'search',
+            'featured' => '1',
+        ],
+        [
+            'flag'     => '',
+            'title'    => __('SEO Checker', 'sage'),
+            'url'      => '/seo-checker/',
+            'text'     => __('A deep search audit with a live Google snippet preview, target-keyword analysis, crawlability (robots.txt + sitemap), and structured data.', 'sage'),
+            'why'      => __('Shows exactly why you are — or aren’t — showing up in search.', 'sage'),
+            'time'     => __('~20 sec', 'sage'),
+            'group'    => 'search',
+            'featured' => '0',
+        ],
+        [
+            'flag'     => '',
+            'title'    => __('Local SEO Scorecard', 'sage'),
+            'url'      => '/local-seo/',
+            'text'     => __('Scores the local signals — NAP, LocalBusiness schema, maps, and reviews — that get you into Google’s map pack.', 'sage'),
+            'why'      => __('Where much of a local business’s real traffic comes from.', 'sage'),
+            'time'     => __('~20 sec', 'sage'),
+            'group'    => 'local',
+            'featured' => '0',
+        ],
+        [
+            'flag'     => '',
+            'title'    => __('Accessibility Checker', 'sage'),
+            'url'      => '/accessibility/',
+            'text'     => __('Scan any page against WCAG 2.2 AA — the latest W3C standard — with a live, running checklist.', 'sage'),
+            'why'      => __('Reach more customers and lower your legal risk.', 'sage'),
+            'time'     => __('~25 sec', 'sage'),
+            'group'    => 'access',
+            'featured' => '0',
+        ],
+        [
+            'flag'     => '',
+            'title'    => __('Security Checker', 'sage'),
+            'url'      => '/security-checker/',
+            'text'     => __('HTTPS and HSTS, the modern browser security headers, cookie safety, information leaks, and front-end risks.', 'sage'),
+            'why'      => __('Protect your customers’ trust — and your reputation.', 'sage'),
+            'time'     => __('~15 sec', 'sage'),
+            'group'    => 'trust',
+            'featured' => '0',
+        ],
+        [
+            'flag'     => '',
+            'title'    => __('Email Deliverability Checker', 'sage'),
+            'url'      => '/email-checker/',
+            'text'     => __('Checks the DNS records — SPF, DKIM, and DMARC — that decide whether your email is trusted or lands in spam.', 'sage'),
+            'why'      => __('Stop your invoices landing in junk, and stop scammers spoofing you.', 'sage'),
+            'time'     => __('~15 sec', 'sage'),
+            'group'    => 'trust',
+            'featured' => '0',
+        ],
+    ];
+}
+
+/**
+ * Filter chips for the checker grid. `key` must match a checker’s `group` (or `all`).
+ *
+ * @return list<array{key:string,label:string}>
+ */
+function tools_filter_defaults(): array
+{
+    return [
+        ['key' => 'all', 'label' => __('All', 'sage')],
+        ['key' => 'search', 'label' => __('Search', 'sage')],
+        ['key' => 'local', 'label' => __('Local', 'sage')],
+        ['key' => 'trust', 'label' => __('Trust', 'sage')],
+        ['key' => 'access', 'label' => __('Access', 'sage')],
+    ];
+}
+
+/**
+ * How to use these tools — numbered steps.
+ *
+ * @return list<array{title:string,text:string}>
+ */
+function tools_how_defaults(): array
+{
+    return [
+        ['title' => __('Start with the grader', 'sage'), 'text' => __('Run the Website Grader first for the big picture, then open the dedicated checker for whichever area scored lowest.', 'sage')],
+        ['title' => __('Fix the reds first', 'sage'), 'text' => __('A red Fail is something a visitor or search engine hits today. Amber Review items are worth a look; greens are already working.', 'sage')],
+        ['title' => __('Check a competitor', 'sage'), 'text' => __('These work on any public URL. Grade a nearby shop to see where you can leapfrog them — often speed, mobile, or local SEO.', 'sage')],
+        ['title' => __('Re-check after a change', 'sage'), 'text' => __('Made a fix? Run the tool again. Scores update on the spot, so you can see progress instead of guessing.', 'sage')],
+    ];
+}
+
+/** @return list<string> */
+function tools_cover_yes_defaults(): array
+{
+    return [
+        __('HTTPS, titles, meta, and headings', 'sage'),
+        __('Whether search engines are allowed to index the page', 'sage'),
+        __('Mobile basics, speed clues, and social sharing tags', 'sage'),
+        __('Security headers, cookie flags, and email DNS (SPF / DKIM / DMARC)', 'sage'),
+        __('Local signals: NAP, schema, maps, and reviews', 'sage'),
+        __('Common accessibility misses a machine can see', 'sage'),
+    ];
+}
+
+/** @return list<string> */
+function tools_cover_no_defaults(): array
+{
+    return [
+        __('Whether your message actually lands with a customer', 'sage'),
+        __('The path from visit to a phone call or booking', 'sage'),
+        __('Passwords, plugins, malware, or a real pentest', 'sage'),
+        __('Screen-reader and keyboard testing a person has to do', 'sage'),
+        __('Your Google Business Profile behind a login', 'sage'),
+        __('Copy, photos, and whether the site sounds like you', 'sage'),
+    ];
+}
+
+/**
+ * Privacy / “no catch” promises.
+ *
+ * @return list<array{title:string,text:string}>
+ */
+function tools_privacy_defaults(): array
+{
+    return [
+        ['title' => __('No email. No account.', 'sage'), 'text' => __('Enter a URL (and, for SEO, an optional keyword). Results show on the spot. Nothing is gated.', 'sage')],
+        ['title' => __('We don’t keep your scores.', 'sage'), 'text' => __('Each run fetches the page to analyze it, then throws the report away. Run it as often as you like.', 'sage')],
+        ['title' => __('No surprise sales call.', 'sage'), 'text' => __('The tools work with no strings. If you want the issues fixed, ask — that’s your call.', 'sage')],
+    ];
+}
+
+/**
+ * After-the-score next steps into paid work.
+ *
+ * @return list<array{title:string,text:string,cta:string,url:string}>
+ */
+function tools_next_defaults(): array
+{
+    return [
+        [
+            'title' => __('Website Rescue', 'sage'),
+            'text'  => __('A live site that’s slow, dated, or hard to find — fix what’s in the way without starting over.', 'sage'),
+            'cta'   => __('See Rescue', 'sage'),
+            'url'   => '/gettysburg-web-design-services/#packages',
+        ],
+        [
+            'title' => __('Local Launch', 'sage'),
+            'text'  => __('A new 5-page site with local SEO baked in. First draft in about seven days. You own it.', 'sage'),
+            'cta'   => __('See packages', 'sage'),
+            'url'   => '/gettysburg-web-design-services/#packages',
+        ],
+        [
+            'title' => __('A prioritized plan', 'sage'),
+            'text'  => __('Send the URL. I’ll turn the reds into a short punch-list in plain English — and I can do the work.', 'sage'),
+            'cta'   => __('Get a quote', 'sage'),
+            'url'   => '/contact/',
+        ],
+    ];
+}
+
+/**
+ * Free Tools FAQ rows.
+ *
+ * @return list<array{q:string,a:string}>
+ */
+function tools_faq_defaults(): array
+{
+    return [
+        ['q' => __('Are these tools really free?', 'sage'), 'a' => __('Yes — completely. There’s no account to create, no email to hand over, and no credit card. Run them as often as you like, on any site you like.', 'sage')],
+        ['q' => __('Do I have to give you my email or sign up?', 'sage'), 'a' => __('No. Enter a URL (and, for the SEO checker, an optional keyword) and you get your results on the spot. Nothing is gated behind a form.', 'sage')],
+        ['q' => __('How accurate are the results?', 'sage'), 'a' => __('The URL tools read your page’s actual code and its server responses, so they’re reliable for the things a machine can measure — HTTPS, meta tags, headings, security headers, and the like. Judgment calls like design, message clarity, and deep accessibility still need a human. That’s the part I finish by hand.', 'sage')],
+        ['q' => __('What’s the difference between the Website Grader and the SEO Checker?', 'sage'), 'a' => __('The Website Grader is a broad, seven-area report card — a quick overall health check. The SEO Checker goes deep on search specifically, with a Google snippet preview, keyword analysis, crawlability (robots.txt and sitemap), and structured data. Use the grader for the big picture, the SEO checker to dig into rankings.', 'sage')],
+        ['q' => __('Will you try to sell me something?', 'sage'), 'a' => __('Only if you ask. The tools work with no strings attached. If you’d like the issues fixed for you, I’m happy to help — but that’s your call, not a catch.', 'sage')],
+        ['q' => __('Can you fix what the tools find?', 'sage'), 'a' => __('Yes. Send me your URL and I’ll turn the results into a short, prioritized plan in plain English — and I can do the work, from a quick Website Rescue to a full rebuild.', 'sage')],
+        ['q' => __('Do you work with businesses in my town?', 'sage'), 'a' => __('I serve Gettysburg, Adams County, and the surrounding South Central PA area — Hanover, Littlestown, New Oxford, McSherrystown, Biglerville, Fairfield, and nearby. If you’re local, we’re a fit.', 'sage')],
+        ['q' => __('Do the tools store my website’s data?', 'sage'), 'a' => __('They fetch the page you enter in order to analyze it, and they don’t save your results. Each run is a fresh, on-the-spot check.', 'sage')],
+        ['q' => __('What do the colors mean?', 'sage'), 'a' => __('Green is a pass — that check is working. Amber means review: not broken, but worth a look. Red is a fail: a real problem a visitor or search engine can hit today. Start with the reds.', 'sage')],
+        ['q' => __('Can I run these on a site that isn’t live yet?', 'sage'), 'a' => __('They need a public URL the tool can fetch. A staging site works if it isn’t password-gated. A local-only or login-walled page won’t return a useful scan.', 'sage')],
+    ];
+}
+
 /** Which field set applies to a page (front page detected via the reading setting). */
 function page_template_key(int $post_id): string
 {
@@ -1879,15 +2118,128 @@ function page_field_map(): array
         ],
 
         'template-tools.blade.php' => [
-            __('Hero', 'sage') => $hero(
+            __('Hero', 'sage') => array_merge($hero(
                 __('Free website tools · No email required', 'sage'),
                 __('Free tools to check your', 'sage'),
                 __('website.', 'sage'),
                 __('Grade your site, check SEO, accessibility, and security — free, in seconds, no signup.', 'sage')
-            ),
+            ), [
+                ['hero_note', __('Trust line under the buttons', 'sage'), 'text', __('No account · No email · Instant results · Built in Gettysburg', 'sage')],
+                ['tools_proof', __('Proof ribbon (four items)', 'sage'), 'repeater', tools_proof_defaults(), [
+                    ['v', __('Value', 'sage'), 'text'],
+                    ['l', __('Label', 'sage'), 'text'],
+                ]],
+            ]),
+            __('Media & links', 'sage') => [
+                ['hero_bg', __('Hero background image', 'sage'), 'image', __('Built-in until you choose one.', 'sage')],
+            ],
+            __('Why these tools', 'sage') => [
+                ['intro_p1', __('Paragraph 1', 'sage'), 'textarea', __('Your website is working for you around the clock — but is it actually doing its job? Most small-business owners have no easy way to tell whether their site loads fast enough, shows up on Google, works on a phone, or keeps visitors\' information safe.', 'sage')],
+                ['intro_p2', __('Paragraph 2', 'sage'), 'textarea', __('These tools answer those questions in plain English, so you can see exactly where your site stands before you spend a dollar fixing it. No catch: every checker runs instantly, with no account and no sales call required.', 'sage')],
+            ],
+            __('How to pick', 'sage') => [
+                ['pick_eyebrow', __('Eyebrow', 'sage'), 'text', __('Not sure where to start?', 'sage')],
+                ['pick_title', __('Heading (before accent)', 'sage'), 'text', __('Pick the check that', 'sage')],
+                ['pick_accent', __('Accent phrase', 'sage'), 'text', __('matches the snag.', 'sage')],
+                ['pick_intro', __('Intro paragraph', 'sage'), 'textarea', __('Three doors. One minute to choose. If you only run one thing today, make it the Website Grader.', 'sage')],
+                ['pick_items', __('Chooser cards', 'sage'), 'repeater', tools_pick_defaults(), [
+                    ['kicker', __('Kicker', 'sage'), 'text'],
+                    ['title', __('Heading', 'sage'), 'text'],
+                    ['text', __('Text', 'sage'), 'textarea'],
+                    ['cta', __('Link label', 'sage'), 'text'],
+                    ['url', __('Link', 'sage'), 'url'],
+                ]],
+            ],
+            __('The checkers', 'sage') => [
+                ['chk_eyebrow', __('Eyebrow', 'sage'), 'text', __('The checkers', 'sage')],
+                ['chk_title', __('Heading (before accent)', 'sage'), 'text', __('Six instant', 'sage')],
+                ['chk_accent', __('Accent phrase', 'sage'), 'text', __('report cards.', 'sage')],
+                ['chk_intro', __('Intro paragraph', 'sage'), 'textarea', __('Enter your URL and get a clear, color-coded grade with every check explained — and why it matters for your business.', 'sage')],
+                ['chk_legend_pass', __('Score legend · pass', 'sage'), 'text', __('Pass — already working', 'sage')],
+                ['chk_legend_review', __('Score legend · review', 'sage'), 'text', __('Review — worth a look', 'sage')],
+                ['chk_legend_fail', __('Score legend · fail', 'sage'), 'text', __('Fail — fix this first', 'sage')],
+                ['chk_open', __('Card link label', 'sage'), 'text', __('Open the tool', 'sage')],
+                ['chk_why_label', __('“Why it matters” label', 'sage'), 'text', __('Why it matters:', 'sage')],
+                ['chk_filters', __('Filter chips', 'sage'), 'repeater', tools_filter_defaults(), [
+                    ['key', __('Filter key (all, search, local, trust, access)', 'sage'), 'text'],
+                    ['label', __('Chip label', 'sage'), 'text'],
+                ]],
+                ['chk_items', __('Tool cards', 'sage'), 'repeater', tools_checker_defaults(), [
+                    ['flag', __('Badge (optional)', 'sage'), 'text'],
+                    ['title', __('Name', 'sage'), 'text'],
+                    ['url', __('Link', 'sage'), 'url'],
+                    ['text', __('What it does', 'sage'), 'textarea'],
+                    ['why', __('Why it matters', 'sage'), 'textarea'],
+                    ['time', __('Time estimate', 'sage'), 'text'],
+                    ['group', __('Filter group', 'sage'), 'select', [
+                        'search' => __('Search', 'sage'),
+                        'local'  => __('Local', 'sage'),
+                        'trust'  => __('Trust', 'sage'),
+                        'access' => __('Access', 'sage'),
+                    ]],
+                    ['featured', __('Featured (wide card)', 'sage'), 'checkbox'],
+                ]],
+            ],
+            __('Quick tools', 'sage') => [
+                ['quick_eyebrow', __('Eyebrow', 'sage'), 'text', __('Quick tools', 'sage')],
+                ['quick_title', __('Heading (before accent)', 'sage'), 'text', __('Handy calculators &', 'sage')],
+                ['quick_accent', __('Accent phrase', 'sage'), 'text', __('checks.', 'sage')],
+                ['quick_intro', __('Intro paragraph', 'sage'), 'textarea', __('No URL needed — these run right here on the page. Test a color combination, ballpark a project, or estimate a care plan.', 'sage')],
+            ],
+            __('How to use', 'sage') => [
+                ['howt_eyebrow', __('Eyebrow', 'sage'), 'text', __('Getting the most from them', 'sage')],
+                ['howt_title', __('Heading (before accent)', 'sage'), 'text', __('How to use these', 'sage')],
+                ['howt_accent', __('Accent phrase', 'sage'), 'text', __('tools.', 'sage')],
+                ['howt_intro', __('Intro paragraph', 'sage'), 'textarea', __('A four-step loop. You can stop after step one and still walk away smarter.', 'sage')],
+                ['howt_items', __('Steps (numbered automatically)', 'sage'), 'repeater', tools_how_defaults(), [
+                    ['title', __('Step title', 'sage'), 'text'],
+                    ['text', __('Step text', 'sage'), 'textarea'],
+                ]],
+            ],
+            __('What they can tell you', 'sage') => [
+                ['lim_eyebrow', __('Eyebrow', 'sage'), 'text', __('Honest limits', 'sage')],
+                ['lim_title', __('Heading (before accent)', 'sage'), 'text', __('What a machine can', 'sage')],
+                ['lim_accent', __('Accent phrase', 'sage'), 'text', __('and can’t see.', 'sage')],
+                ['lim_intro', __('Intro paragraph', 'sage'), 'textarea', __('Automated checks catch the concrete stuff that holds a local site back. They cannot judge whether the site says the right thing to the right person. A perfect technical score still loses if the message is wrong — that’s the work I finish by hand.', 'sage')],
+                ['lim_yes_title', __('Covers · heading', 'sage'), 'text', __('These tools look at', 'sage')],
+                ['lim_yes', __('Covers · list', 'sage'), 'lines', tools_cover_yes_defaults()],
+                ['lim_no_title', __('Does not cover · heading', 'sage'), 'text', __('They do not judge', 'sage')],
+                ['lim_no', __('Does not cover · list', 'sage'), 'lines', tools_cover_no_defaults()],
+            ],
+            __('Privacy', 'sage') => [
+                ['priv_eyebrow', __('Eyebrow', 'sage'), 'text', __('No catch', 'sage')],
+                ['priv_title', __('Heading (before accent)', 'sage'), 'text', __('Built for local businesses,', 'sage')],
+                ['priv_accent', __('Accent phrase', 'sage'), 'text', __('given away for free.', 'sage')],
+                ['priv_intro', __('Intro paragraph', 'sage'), 'textarea', __('I’m Matt Hummel, a Gettysburg-based web developer with 15+ years of experience. I built these because most small businesses in Adams County are paying for websites that quietly underperform — and they have no easy way to see it. A clear checkup shouldn’t cost anything.', 'sage')],
+                ['priv_items', __('Promises', 'sage'), 'repeater', tools_privacy_defaults(), [
+                    ['title', __('Heading', 'sage'), 'text'],
+                    ['text', __('Text', 'sage'), 'textarea'],
+                ]],
+            ],
+            __('After the score', 'sage') => [
+                ['nxt_eyebrow', __('Eyebrow', 'sage'), 'text', __('After the score', 'sage')],
+                ['nxt_title', __('Heading (before accent)', 'sage'), 'text', __('Want the fixes, not just', 'sage')],
+                ['nxt_accent', __('Accent phrase', 'sage'), 'text', __('the report?', 'sage')],
+                ['nxt_intro', __('Intro paragraph', 'sage'), 'textarea', __('Keep the results and DIY, or hand me the URL. Either way you already know more than you did ten minutes ago.', 'sage')],
+                ['nxt_items', __('Next-step cards', 'sage'), 'repeater', tools_next_defaults(), [
+                    ['title', __('Heading', 'sage'), 'text'],
+                    ['text', __('Text', 'sage'), 'textarea'],
+                    ['cta', __('Link label', 'sage'), 'text'],
+                    ['url', __('Link', 'sage'), 'url'],
+                ]],
+            ],
+            __('FAQ', 'sage') => [
+                ['tfq_eyebrow', __('Eyebrow', 'sage'), 'text', __('Common questions', 'sage')],
+                ['tfq_title', __('Heading (before accent)', 'sage'), 'text', __('Free tools,', 'sage')],
+                ['tfq_accent', __('Accent phrase', 'sage'), 'text', __('answered.', 'sage')],
+                ['tfq_items', __('Questions', 'sage'), 'repeater', tools_faq_defaults(), [
+                    ['q', __('Question', 'sage'), 'text'],
+                    ['a', __('Answer', 'sage'), 'textarea'],
+                ]],
+            ],
             __('Call to action', 'sage') => $cta(
                 __('Want a hand with what the tools turned up?', 'sage'),
-                __('I fix these for Gettysburg and South Central PA businesses every week. Tell me your site and I\'ll take a real look.', 'sage'),
+                __('I fix these for Gettysburg and South Central PA businesses every week. Tell me your site and I’ll take a real look.', 'sage'),
                 __('Get a quote', 'sage')
             ),
         ],
@@ -2149,6 +2501,15 @@ function field_group_hint(string $label): string
         __('Closing CTA', 'sage')      => __('The final call-to-action banner at the bottom of the page.', 'sage'),
         __('Hero trust line', 'sage')  => __('The small trust line shown under the hero buttons.', 'sage'),
         __('Hero buttons', 'sage')     => __('The labels on the two hero buttons.', 'sage'),
+        __('Why these tools', 'sage')  => __('Two short paragraphs under the hero. This page does not use the WordPress content editor.', 'sage'),
+        __('How to pick', 'sage')      => __('Three chooser cards that send people to the right checker. Each has a kicker, heading, text, and a link.', 'sage'),
+        __('The checkers', 'sage')     => __('The URL tool cards. Filter chips group them. Tick Featured on one card to make it wide. The WordPress block editor is not used on this page.', 'sage'),
+        __('Quick tools', 'sage')      => __('Heading for the on-page contrast checker, quote estimator, and care calculator. The tools themselves are built in.', 'sage'),
+        __('How to use', 'sage')       => __('Numbered steps for getting a useful result from the checkers.', 'sage'),
+        __('What they can tell you', 'sage') => __('Honest limits: two lists — what the tools measure, and what still needs a person.', 'sage'),
+        __('Privacy', 'sage')          => __('Why the tools are free, plus the no-email / no-saved-scores promises.', 'sage'),
+        __('After the score', 'sage')  => __('Three next-step cards into Rescue, packages, or a quote.', 'sage'),
+        __('FAQ', 'sage')              => __('Questions and answers on the Free Tools page. Shown as an accordion with FAQ schema.', 'sage'),
     ];
     return $hints[$label] ?? '';
 }
@@ -2358,6 +2719,10 @@ function render_page_fields_box(\WP_Post $post): void
     }
 
     wp_nonce_field('rv_page_fields', 'rv_page_fields_nonce');
+
+    if ($key === 'template-tools.blade.php') {
+        echo '<p class="rv-ghint" style="margin:0 0 1rem">' . esc_html__('This page is edited only in these fields. The WordPress block editor is hidden, and any leftover block content is not shown on the live page.', 'sage') . '</p>';
+    }
 
     $permalink = get_permalink($post->ID);
     $canPreview = ! empty($permalink) && $post->post_status === 'publish';
@@ -2769,3 +3134,70 @@ add_action('admin_init', function () {
     seed_page_fields();
     update_option('rv_page_fields_seed_v', '1');
 });
+
+/**
+ * One-time: drop leftover Gutenberg markup on Free Tools pages so the live
+ * database matches the field-driven template after this theme ships.
+ */
+add_action('admin_init', function () {
+    if (get_option('rv_tools_cleared_blocks') === '1') {
+        return;
+    }
+    if (! current_user_can('edit_pages')) {
+        return;
+    }
+    update_option('rv_tools_cleared_blocks', '1');
+    $pages = get_posts([
+        'post_type'      => 'page',
+        'post_status'    => 'any',
+        'posts_per_page' => 20,
+        'meta_key'       => '_wp_page_template',
+        'meta_value'     => 'template-tools.blade.php',
+    ]);
+    foreach ($pages as $p) {
+        if ($p->post_content !== '') {
+            wp_update_post([
+                'ID'           => $p->ID,
+                'post_content' => '',
+            ]);
+        }
+    }
+});
+
+/**
+ * Free Tools is a field-driven template. Hide Gutenberg / classic content so
+ * leftover blocks cannot silently reappear, and strip post_content on save.
+ */
+add_filter('use_block_editor_for_post', function ($use, $post) {
+    if ($post instanceof \WP_Post && $post->post_type === 'page'
+        && get_page_template_slug($post->ID) === 'template-tools.blade.php') {
+        return false;
+    }
+    return $use;
+}, 10, 2);
+
+add_action('admin_head', function () {
+    $screen = get_current_screen();
+    if (! $screen || $screen->base !== 'post' || $screen->post_type !== 'page') {
+        return;
+    }
+    global $post;
+    if (! $post instanceof \WP_Post || get_page_template_slug($post->ID) !== 'template-tools.blade.php') {
+        return;
+    }
+    echo '<style id="rv-hide-tools-editor">#postdivrich,.block-editor,#post-status-info{display:none!important}</style>';
+});
+
+add_filter('wp_insert_post_data', function ($data, $postarr) {
+    if (($data['post_type'] ?? '') !== 'page') {
+        return $data;
+    }
+    $tpl = (string) ($postarr['page_template'] ?? '');
+    if ($tpl === '' && ! empty($postarr['ID'])) {
+        $tpl = (string) get_page_template_slug((int) $postarr['ID']);
+    }
+    if ($tpl === 'template-tools.blade.php') {
+        $data['post_content'] = '';
+    }
+    return $data;
+}, 20, 2);

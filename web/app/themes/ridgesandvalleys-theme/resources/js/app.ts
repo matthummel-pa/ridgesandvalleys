@@ -201,9 +201,39 @@ function initFooterNewsletter(): void {
   });
 }
 
+function initToolFilters(): void {
+  const bar = document.querySelector<HTMLElement>('[data-rv-tool-filters]');
+  const hub = document.querySelector<HTMLElement>('[data-rv-toolhub]');
+  if (!bar || !hub) return;
+
+  const chips = Array.from(bar.querySelectorAll<HTMLButtonElement>('[data-filter]'));
+  const cards = Array.from(hub.querySelectorAll<HTMLElement>('[data-group]'));
+  if (!chips.length || !cards.length) return;
+
+  const apply = (key: string): void => {
+    chips.forEach((chip) => {
+      const on = chip.dataset.filter === key;
+      chip.classList.toggle('is-on', on);
+      chip.setAttribute('aria-pressed', on ? 'true' : 'false');
+    });
+    cards.forEach((card) => {
+      const group = card.dataset.group || '';
+      const show = key === 'all' || group === key;
+      card.classList.toggle('is-hidden', !show);
+    });
+  };
+
+  bar.addEventListener('click', (e) => {
+    const btn = (e.target as HTMLElement).closest<HTMLButtonElement>('[data-filter]');
+    if (!btn || !bar.contains(btn)) return;
+    apply(btn.dataset.filter || 'all');
+  });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   initOffcanvas();
   initThemeToggle();
   initFooterAccordion();
   initFooterNewsletter();
+  initToolFilters();
 });

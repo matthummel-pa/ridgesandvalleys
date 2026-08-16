@@ -25,6 +25,10 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
 ### Added
 
+- **Free Tools hub: chooser, filters, limits, privacy, and next steps** — all
+  copy lives in Page content fields (no Gutenberg). New sections help people
+  pick a checker, read the score colors, see what a machine cannot judge, and
+  move from a report to Rescue / Local Launch / a quote.
 - **About page: proof strip in the hero** — 15+ yrs, ~7 days to first draft,
   WCAG 2.1 AA, You own it. Every item is a claim we can back up in under a minute.
 - **About page: "Try us before you hire us" band** — links all six free tools
@@ -41,6 +45,10 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
 ### Changed
 
+- **Free Tools page design** — featured Website Grader card, filter chips,
+  numbered how-to, proof ribbon in the hero, and on-page calculators kept as
+  built-in tools (not blocks). Hero H1/lede use the full content width, with
+  extra space between the eyebrow and the main navigation.
 - **README expanded** — four new sections: "Editing page copy without a deploy" (the
   `\App\field()` / `field_lines()` / `field_rows()` helpers, and why routine copy
   changes should never need a deploy), "Verifying a deploy actually landed" (match the
@@ -55,6 +63,12 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   WordPress object cache flush, on both the production and staging pipelines. Without
   it, SG Optimizer's page cache could keep serving the old markup for minutes after a
   successful deploy, which looked like a failed deploy.
+
+### Removed
+
+- **Gutenberg on the Free Tools template** — the block editor is hidden, and
+  leftover block markup is cleared on save so the page cannot drift back to
+  editor content.
 
 ### Fixed
 
