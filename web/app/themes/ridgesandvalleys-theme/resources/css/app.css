@@ -288,6 +288,32 @@ body:not(.home) .rv-hero-proof { flex: 0 0 auto; }
 body:not(.home) .rv-hero-title { font-size: clamp(2.05rem, 4.2vw, 3.05rem); max-width: 16ch; }
 body:not(.home) .rv-hero-sub { max-width: 42ch; }
 
+/* Free Tools hub: a wider headline/lede, and more air under the overlay nav
+   so the eyebrow is not tucked against the menu. */
+body:not(.home) .rv-hero.rv-hero--tools .rv-hero-title {
+  max-width: 32ch;
+  font-size: clamp(2.2rem, 4.6vw, 3.35rem);
+}
+body:not(.home) .rv-hero.rv-hero--tools .rv-hero-sub {
+  max-width: 70ch;
+}
+body:not(.home) .rv-hero.rv-hero--tools .rv-hero-note {
+  max-width: 70ch;
+}
+body:not(.home) .rv-hero.rv-hero--tools {
+  height: min(40rem, 78svh);
+  min-height: min(40rem, 78svh);
+  max-height: min(40rem, 78svh);
+}
+body.rv-nav-transparent .rv-hero.rv-hero--tools {
+  padding-top: calc(var(--rv-banner-stack, 8.75rem) + 5.75rem);
+}
+@media (max-width: 640px) {
+  body.rv-nav-transparent .rv-hero.rv-hero--tools {
+    padding-top: calc(var(--rv-header-h, 4.75rem) + 5rem);
+  }
+}
+
 /* Overlay header: pad the hero in CSS instead of measuring offsetHeight in JS
    (that read-then-write is a forced reflow on every page load). */
 body.rv-nav-transparent .rv-hero {

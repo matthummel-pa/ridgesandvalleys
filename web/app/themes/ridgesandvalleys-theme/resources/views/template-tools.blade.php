@@ -31,7 +31,7 @@ $whyLabel  = \App\field('chk_why_label', __('Why it matters:', 'sage'));
 @endphp
 
 @section('content')
-  <section class="rv-hero" aria-labelledby="rv-tools-hero-title">
+  <section class="rv-hero rv-hero--tools" aria-labelledby="rv-tools-hero-title">
     <span class="rv-stripe" aria-hidden="true"></span>
     @include('partials.hero-bg', ['fallback' => ''])
     <div class="rv-shell rv-hero-inner">

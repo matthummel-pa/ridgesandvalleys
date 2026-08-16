@@ -43,6 +43,14 @@ body:not(.home) .rv-hero .rv-hero-sub {
 }
 body:not(.home) .rv-hero-actions { margin-top: 1.1rem; }
 
+body:not(.home) .rv-hero.rv-hero--tools .rv-hero-title {
+	max-width: 32ch;
+	font-size: clamp(2.2rem, 4.6vw, 3.35rem);
+}
+body:not(.home) .rv-hero.rv-hero--tools .rv-hero-sub {
+	max-width: 70ch;
+}
+
 /* ---- 3. Content section: full-bleed Contour band ------------------------ */
 body.page:not(.home) .rv-reading.rv-prose {
 	position: relative;
