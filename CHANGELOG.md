@@ -47,8 +47,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
 - **Free Tools page design** — featured Website Grader card, filter chips,
   numbered how-to, proof ribbon in the hero, and on-page calculators kept as
-  built-in tools (not blocks). Wider hero H1/lede and more space under the
-  main navigation.
+  built-in tools (not blocks). Hero H1/lede use the full content width, with
+  extra space between the eyebrow and the main navigation.
 - **README expanded** — four new sections: "Editing page copy without a deploy" (the
   `\App\field()` / `field_lines()` / `field_rows()` helpers, and why routine copy
   changes should never need a deploy), "Verifying a deploy actually landed" (match the
