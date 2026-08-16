@@ -49,9 +49,16 @@ jobs:
 
       - name: Deploy theme via rsync
         run: |
-          ssh_opts="-i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -4 -o StrictHostKeyChecking=accept-new -o ConnectTimeout=60 -o BatchMode=yes"
+          ssh_base="-i ~/.ssh/deploy_key -p ${{ secrets.SSH_PORT }} -o StrictHostKeyChecking=accept-new -o ConnectTimeout=60 -o ConnectionAttempts=2 -o ServerAliveInterval=15 -o ServerAliveCountMax=4 -o BatchMode=yes"
           ok=0
           for i in 1 2 3 4 5 6; do
+            # Prefer IPv4 (SiteGround); fall back to the default address family after three timeouts.
+            ipflag="-4"
+            if [ "$i" -ge 4 ]; then
+              ipflag=""
+            fi
+            ssh_opts="$ssh_base $ipflag"
+            echo "rsync attempt $i (ssh $ipflag)"
             if rsync -az --delete \
               --exclude ".git" \
               --exclude "node_modules" \
