@@ -46,6 +46,14 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-16 — Interior heroes match Free Tools — Run 31979027202 — success — `50ffa06`
+
+- **Shipped:** interior page and journal-post heroes use the same full-width H1/lede
+  and top padding as Free Tools. Homepage hero unchanged.
+- **Verified:** Actions run `31979027202` for merge SHA `50ffa06` finished green.
+  Live `manifest.json` matches (`app-DGhFVETg.css`, `app-JTdqm83a.js`). About
+  serves that CSS bundle.
+
 ### 2026-08-16 — Free Tools hub redesign — Run 31978415604 — success — `f6b12b3`
 
 - **Shipped:** field-driven `/free-tools/` hub (no Gutenberg), chooser + filters +
