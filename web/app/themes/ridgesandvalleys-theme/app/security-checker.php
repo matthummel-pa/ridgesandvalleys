@@ -32,14 +32,12 @@ add_action('rest_api_init', function () {
  */
 function seccheck_redirects_to_https(string $host): ?bool
 {
-    if ($host === '') {
+    if ($host === '' || ! wp_http_validate_url('http://' . $host . '/')) {
         return null;
     }
-    $res = wp_safe_remote_get('http://' . $host . '/', [
-        'timeout'     => 7,
-        'redirection' => 0,
-        'user-agent'  => 'RidgesValleysSecurity/1.0',
-    ]);
+    $args = rv_tools_http_args(7, 'RidgesValleysSecurity/1.0');
+    $args['redirection'] = 0;
+    $res = wp_safe_remote_get('http://' . $host . '/', $args);
     if (is_wp_error($res)) {
         return null;
     }
@@ -52,6 +50,10 @@ function seccheck_redirects_to_https(string $host): ?bool
 
 function rv_rest_security(\WP_REST_Request $req)
 {
+    if ($limited = rv_tools_rate_limited()) {
+        return $limited;
+    }
+
     $fetch = grader_fetch((string) $req->get_param('url'));
     if (! $fetch['ok']) {
         return new \WP_REST_Response(['ok' => false, 'error' => $fetch['error']], 200);

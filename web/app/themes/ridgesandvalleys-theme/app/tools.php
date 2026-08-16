@@ -16,6 +16,68 @@ namespace App;
 
 /* =========================================================== Fetch engine === */
 
+/** Max bytes to keep from a fetched page (filterable). */
+function rv_tools_max_bytes(): int
+{
+    return (int) apply_filters('rv/tools_max_bytes', 524288);
+}
+
+/** Generic fetch failure — never leak WP_HTTP / cURL internals. */
+function rv_tools_fetch_error(): string
+{
+    return __('Could not fetch that page. Check the URL is public and try again.', 'sage');
+}
+
+function rv_tools_client_ip(): string
+{
+    $ip = isset($_SERVER['REMOTE_ADDR']) ? sanitize_text_field(wp_unslash($_SERVER['REMOTE_ADDR'])) : '0';
+
+    return $ip !== '' ? $ip : '0';
+}
+
+/**
+ * Per-IP rate limit for public tool endpoints. Returns a 429 response when
+ * exceeded, otherwise null. Shared across all rv-tools/v1 routes.
+ */
+function rv_tools_rate_limited(?string $bucket = null): ?\WP_REST_Response
+{
+    $bucket = $bucket ?: 'public';
+    $max    = (int) apply_filters('rv/tools_rate_max', 12);
+    $window = (int) apply_filters('rv/tools_rate_window', 120);
+    $key    = 'rv_rl_' . sanitize_key($bucket) . '_' . md5(rv_tools_client_ip());
+    $count  = (int) get_transient($key);
+    if ($count >= max(1, $max)) {
+        return new \WP_REST_Response([
+            'ok'    => false,
+            'error' => __('Too many checks. Wait a minute and try again.', 'sage'),
+        ], 429);
+    }
+    set_transient($key, $count + 1, max(30, $window));
+
+    return null;
+}
+
+function rv_tools_http_args(int $timeout, string $ua): array
+{
+    return [
+        'timeout'             => $timeout,
+        'redirection'         => 3,
+        'user-agent'          => $ua,
+        'headers'             => ['Accept' => 'text/html,application/xhtml+xml'],
+        'limit_response_size' => rv_tools_max_bytes(),
+    ];
+}
+
+function rv_tools_truncate_body(string $body): string
+{
+    $max = rv_tools_max_bytes();
+    if ($max > 0 && strlen($body) > $max) {
+        return substr($body, 0, $max);
+    }
+
+    return $body;
+}
+
 /**
  * SSRF-guarded server-side page fetch.
  */
@@ -27,19 +89,14 @@ function rv_tools_fetch(string $url): array
     }
 
     $start = microtime(true);
-    $res   = wp_safe_remote_get($url, [
-        'timeout'     => 12,
-        'redirection' => 3,
-        'user-agent'  => 'RidgesValleysTools/1.0 (+https://ridgesandvalleys.com)',
-        'headers'     => ['Accept' => 'text/html,application/xhtml+xml'],
-    ]);
+    $res   = wp_safe_remote_get($url, rv_tools_http_args(12, 'RidgesValleysTools/1.0 (+https://ridgesandvalleys.com)'));
 
     if (is_wp_error($res)) {
-        return ['ok' => false, 'error' => $res->get_error_message()];
+        return ['ok' => false, 'error' => rv_tools_fetch_error()];
     }
 
     $code = (int) wp_remote_retrieve_response_code($res);
-    $body = (string) wp_remote_retrieve_body($res);
+    $body = rv_tools_truncate_body((string) wp_remote_retrieve_body($res));
 
     return [
         'ok'     => true,
@@ -81,6 +138,10 @@ add_action('rest_api_init', function () {
  */
 function rv_rest_grade(\WP_REST_Request $req)
 {
+    if ($limited = rv_tools_rate_limited()) {
+        return $limited;
+    }
+
     $fetch = rv_tools_fetch((string) $req->get_param('url'));
     if (! $fetch['ok']) {
         return new \WP_REST_Response(['ok' => false, 'error' => $fetch['error']], 200);
@@ -147,6 +208,10 @@ function rv_rest_grade(\WP_REST_Request $req)
  */
 function rv_rest_a11y(\WP_REST_Request $req)
 {
+    if ($limited = rv_tools_rate_limited()) {
+        return $limited;
+    }
+
     $fetch = rv_tools_fetch((string) $req->get_param('url'));
     if (! $fetch['ok']) {
         return new \WP_REST_Response(['ok' => false, 'error' => $fetch['error']], 200);

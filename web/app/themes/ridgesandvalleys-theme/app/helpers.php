@@ -216,7 +216,18 @@ function social_links(string $class = 'rv-social'): string
  */
 function cta_href(string $url): string
 {
-    return (str_starts_with($url, 'http')) ? $url : home_url($url);
+    $url = trim(strip_field_markers($url));
+    $fallback = home_url('/contact/');
+    if ($url === '') {
+        return $fallback;
+    }
+    if (preg_match('#^[a-z][a-z0-9+.-]*:#i', $url) && ! preg_match('#^https?:#i', $url)) {
+        return $fallback;
+    }
+    $href = str_starts_with($url, 'http') ? $url : home_url('/' . ltrim($url, '/'));
+    $safe = esc_url($href, ['http', 'https']);
+
+    return $safe !== '' ? $safe : $fallback;
 }
 
 /** Live SEO slug for the Services page (the seed slug `services` 404s). */

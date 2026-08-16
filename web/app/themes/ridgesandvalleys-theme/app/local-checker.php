@@ -53,6 +53,10 @@ function localcheck_scan($node, array &$flags): void
 
 function rv_rest_local(\WP_REST_Request $req)
 {
+    if ($limited = rv_tools_rate_limited()) {
+        return $limited;
+    }
+
     $fetch = grader_fetch((string) $req->get_param('url'));
     if (! $fetch['ok']) {
         return new \WP_REST_Response(['ok' => false, 'error' => $fetch['error']], 200);

@@ -47,11 +47,14 @@ function seocheck_robots(string $pageUrl): array
         return ['ok' => false, 'body' => '', 'sitemaps' => []];
     }
     $robots = $parts['scheme'] . '://' . $parts['host'] . (isset($parts['port']) ? ':' . $parts['port'] : '') . '/robots.txt';
-    $res = wp_safe_remote_get($robots, ['timeout' => 8, 'redirection' => 2, 'user-agent' => 'RidgesValleysSEO/1.0']);
+    if (! wp_http_validate_url($robots)) {
+        return ['ok' => false, 'body' => '', 'sitemaps' => []];
+    }
+    $res = wp_safe_remote_get($robots, rv_tools_http_args(8, 'RidgesValleysSEO/1.0'));
     if (is_wp_error($res) || (int) wp_remote_retrieve_response_code($res) !== 200) {
         return ['ok' => false, 'body' => '', 'sitemaps' => []];
     }
-    $body = (string) wp_remote_retrieve_body($res);
+    $body = rv_tools_truncate_body((string) wp_remote_retrieve_body($res));
     $sitemaps = [];
     if (preg_match_all('/^\s*sitemap:\s*(\S+)/im', $body, $m)) {
         $sitemaps = $m[1];
@@ -61,6 +64,10 @@ function seocheck_robots(string $pageUrl): array
 
 function rv_rest_seo(\WP_REST_Request $req)
 {
+    if ($limited = rv_tools_rate_limited()) {
+        return $limited;
+    }
+
     $fetch = grader_fetch((string) $req->get_param('url'));
     if (! $fetch['ok']) {
         return new \WP_REST_Response(['ok' => false, 'error' => $fetch['error']], 200);
