@@ -257,22 +257,24 @@ pre code { background: none; padding: 0; color: inherit; }
 .home .rv-hero-inner { padding-block: clamp(5.25rem, 11vw, 7.25rem) clamp(1.75rem, 4vw, 2.5rem); }
 .home .rv-hero-title { max-width: 22ch; font-size: clamp(2.35rem, 5vw, 3.55rem); }
 
-/* Interior pages + journal posts (.rv-entry-hero): one shared hero height,
-   always above the fold. Homepage keeps its own taller, content-sized hero.
-   Overlay-nav padding-top is included (border-box) so copy stays below the menu. */
+/* Interior pages + journal posts (.rv-entry-hero): one shared hero — full-width
+   H1/lede and extra space under the nav (same measure as Free Tools).
+   Homepage keeps its own taller, content-sized hero. Overlay-nav padding-top
+   is included (border-box) so copy stays below the menu. */
 body:not(.home) .rv-hero,
 body.single-post .rv-entry-hero {
   box-sizing: border-box;
-  height: min(36rem, 72svh);
-  min-height: min(36rem, 72svh);
-  max-height: min(36rem, 72svh);
+  height: min(42rem, 82svh);
+  min-height: min(42rem, 82svh);
+  max-height: min(42rem, 82svh);
+  padding-top: clamp(2.25rem, 5vw, 3.75rem);
 }
 @media (max-width: 700px) {
   body:not(.home) .rv-hero,
   body.single-post .rv-entry-hero {
-    height: min(34rem, 86svh);
-    min-height: min(34rem, 86svh);
-    max-height: min(34rem, 86svh);
+    height: min(36rem, 86svh);
+    min-height: min(36rem, 86svh);
+    max-height: min(36rem, 86svh);
   }
 }
 body:not(.home) .rv-hero > .rv-hero-inner,
@@ -281,56 +283,43 @@ body.single-post .rv-entry-hero > .rv-hero-inner {
   flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
-  justify-content: flex-end;
-  padding-block: clamp(1.25rem, 2.5vw, 2rem) clamp(1.5rem, 3.5vw, 2.25rem);
+  justify-content: flex-start;
+  padding-top: clamp(4.5rem, 9vw, 7.25rem);
+  padding-bottom: clamp(1.75rem, 4vw, 2.5rem);
 }
 body:not(.home) .rv-hero-proof { flex: 0 0 auto; }
-body:not(.home) .rv-hero-title { font-size: clamp(2.05rem, 4.2vw, 3.05rem); max-width: 16ch; }
-body:not(.home) .rv-hero-sub { max-width: 42ch; }
-
-/* Free Tools hub: headline/lede use the full shell width, and the
-   eyebrow sits well below the main navigation. */
-body:not(.home) .rv-hero.rv-hero--tools .rv-hero-title {
+body:not(.home) .rv-hero-title {
   max-width: none;
   width: 100%;
   font-size: clamp(2.2rem, 4.6vw, 3.35rem);
   text-wrap: wrap;
 }
-body:not(.home) .rv-hero.rv-hero--tools .rv-hero-sub,
-body:not(.home) .rv-hero.rv-hero--tools .rv-hero-note {
+body:not(.home) .rv-hero-sub,
+body:not(.home) .rv-hero-note {
   max-width: min(62rem, 100%);
-}
-body:not(.home) .rv-hero.rv-hero--tools {
-  height: min(42rem, 82svh);
-  min-height: min(42rem, 82svh);
-  max-height: min(42rem, 82svh);
-  padding-top: clamp(2.25rem, 5vw, 3.75rem);
-}
-body:not(.home) .rv-hero.rv-hero--tools > .rv-hero-inner {
-  justify-content: flex-start;
-  padding-top: clamp(4.5rem, 9vw, 7.25rem);
-  padding-bottom: clamp(1.75rem, 4vw, 2.5rem);
-}
-body.rv-nav-transparent .rv-hero.rv-hero--tools {
-  padding-top: calc(var(--rv-banner-stack, 8.75rem) + 6.5rem);
-}
-body.rv-nav-transparent .rv-hero.rv-hero--tools > .rv-hero-inner {
-  padding-top: clamp(2.25rem, 5vw, 3.5rem);
-}
-@media (max-width: 640px) {
-  body.rv-nav-transparent .rv-hero.rv-hero--tools {
-    padding-top: calc(var(--rv-header-h, 4.75rem) + 5.5rem);
-  }
 }
 
 /* Overlay header: pad the hero in CSS instead of measuring offsetHeight in JS
-   (that read-then-write is a forced reflow on every page load). */
+   (that read-then-write is a forced reflow on every page load). Homepage keeps
+   the tighter overlay inset; interior pages/posts match Free Tools. */
 body.rv-nav-transparent .rv-hero {
   padding-top: calc(var(--rv-banner-stack, 8.75rem) + 3.5rem);
+}
+body:not(.home).rv-nav-transparent .rv-hero,
+body.rv-nav-transparent .rv-entry-hero {
+  padding-top: calc(var(--rv-banner-stack, 8.75rem) + 6.5rem);
+}
+body:not(.home).rv-nav-transparent .rv-hero > .rv-hero-inner,
+body.rv-nav-transparent .rv-entry-hero > .rv-hero-inner {
+  padding-top: clamp(2.25rem, 5vw, 3.5rem);
 }
 @media (max-width: 640px) {
   body.rv-nav-transparent .rv-hero {
     padding-top: calc(var(--rv-header-h, 4.75rem) + 3.5rem);
+  }
+  body:not(.home).rv-nav-transparent .rv-hero,
+  body.rv-nav-transparent .rv-entry-hero {
+    padding-top: calc(var(--rv-header-h, 4.75rem) + 5.5rem);
   }
 }
 
