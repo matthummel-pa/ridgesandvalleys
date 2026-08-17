@@ -255,6 +255,7 @@ body.single-post .rv-entry-hero .rv-hero-title {
 /* ============================================================
    In-article summary + table of contents box (single posts)
    aside.rv-tldr prefix beats a stale Additional CSS snapshot of these rules.
+   Deploy retry 2026-08-17: overlapping rsync left the previous SHA live.
    ============================================================ */
 /* The content grid already supplies the top rhythm; removing the article's
    duplicate top padding aligns this first block with the sidebar. */
