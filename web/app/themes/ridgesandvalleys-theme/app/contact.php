@@ -195,8 +195,8 @@ function contact_mail(
         return false;
     }
 
-    $from_name   = trim(str_replace(["\r", "\n"], ' ', $from_name));
-    $reply_name  = trim(str_replace(["\r", "\n"], ' ', $reply_name));
+    $from_name   = contact_safe_display_name($from_name);
+    $reply_name  = contact_safe_display_name($reply_name);
     $reply_email = ($reply_email !== '' && is_email($reply_email)) ? $reply_email : $from_email;
     $envelope    = contact_recipient_email();
     $from_label  = $from_name !== '' ? $from_name : $from_email;
@@ -230,7 +230,13 @@ function contact_mail(
     add_filter('wp_mail_from_name', $name_filter, PHP_INT_MAX);
     add_action('phpmailer_init', $phpmailer_cb, PHP_INT_MAX);
 
-    $sent = wp_mail($to, $subject, $body, ['Content-Type: text/plain; charset=UTF-8']);
+    $from_header = ($from_label !== '' && $from_label !== $from_email)
+        ? sprintf('%s <%s>', $from_label, $from_email)
+        : $from_email;
+    $sent = wp_mail($to, $subject, $body, [
+        'Content-Type: text/plain; charset=UTF-8',
+        'From: ' . $from_header,
+    ]);
 
     remove_filter('wp_mail_from', $from_filter, PHP_INT_MAX);
     remove_filter('wp_mail_from_name', $name_filter, PHP_INT_MAX);
@@ -249,6 +255,29 @@ function contact_display_email(?int $post_id = null): string
     }
 
     return $saved;
+}
+
+/** True when a form label is the visitor’s name, not a business/company name. */
+function contact_label_is_person_name(string $label): bool
+{
+    $label = strtolower(trim(strip_field_markers($label)));
+    if ($label === '') {
+        return false;
+    }
+    if (preg_match('/business|company|organization|studio|brand/', $label)) {
+        return false;
+    }
+
+    return (bool) preg_match('/\bname\b/', $label);
+}
+
+/** Strip characters that would break a From: display name. */
+function contact_safe_display_name(string $name): string
+{
+    $name = trim(str_replace(["\r", "\n"], ' ', $name));
+    $name = str_replace(['<', '>', '"'], '', $name);
+
+    return trim($name);
 }
 
 /** @return list<array{strong:string,text:string}> */
@@ -460,8 +489,8 @@ add_action('init', function () {
             $reply_email = $value;
         }
         if ($reply_name === '' && $f['type'] === 'text' && $value !== ''
-            && stripos($f['label'], 'name') !== false) {
-            $reply_name = $value;
+            && contact_label_is_person_name($f['label'])) {
+            $reply_name = contact_safe_display_name($value);
         }
 
         // Build the emailed message.
@@ -502,7 +531,7 @@ add_action('init', function () {
     }
 
     // Belt-and-suspenders against email header injection.
-    $reply_name  = str_replace(["\r", "\n"], ' ', $reply_name);
+    $reply_name  = contact_safe_display_name($reply_name);
     $reply_email = str_replace(["\r", "\n"], '', $reply_email);
 
     set_transient($key, 1, 30);
@@ -510,25 +539,37 @@ add_action('init', function () {
     $to = contact_recipient_email();
     /* translators: %s: site name. */
     $subject = sprintf(__('[%s] New quote request', 'sage'), wp_specialchars_decode(get_bloginfo('name')));
+    if ($reply_name !== '') {
+        $subject .= ' — ' . $reply_name;
+    }
     if ($inquiry !== '') {
         $subject .= ' — ' . $inquiry;
     }
     $body = implode("\n", $lines) . "\n";
 
-    $sent = false;
+    $from_name = $reply_name !== '' ? $reply_name : $reply_email;
+    $sent      = false;
     if ($reply_email !== '') {
         $sent = contact_mail(
             $to,
             $subject,
             $body,
             $reply_email,
-            $reply_name,
+            $from_name,
             $reply_email,
-            $reply_name
+            $from_name
         );
     }
     if (! $sent) {
-        $sent = contact_mail($to, $subject, $body, $to, __('Ridges & Valleys Studio', 'sage'), $reply_email, $reply_name);
+        $sent = contact_mail(
+            $to,
+            $subject,
+            $body,
+            $to,
+            $from_name !== '' ? $from_name : __('Ridges & Valleys Studio', 'sage'),
+            $reply_email,
+            $from_name
+        );
     }
 
     if ($sent && $reply_email !== '') {

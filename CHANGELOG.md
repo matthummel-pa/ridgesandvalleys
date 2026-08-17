@@ -63,7 +63,7 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   phrasing), on a closed-by-default toggle that shows **Open** or **Close**.
 - **Contact form delivers to `matt@ridgesandvalleys.com`.** A Customizer
   address only wins if it is already `@ridgesandvalleys.com`. The quote
-  email’s From line is the visitor’s address (not `wordpress@…`); Reply
+  email’s From line is the visitor’s name and email (not `wordpress@…`); Reply
   still goes to them.
 - **Successful quote requests show a confirmation** (sent, when you’ll hear
   back, what happens next) and email the same note to the sender.
