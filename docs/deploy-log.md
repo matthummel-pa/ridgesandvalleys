@@ -46,6 +46,16 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-17 — Homepage proof photos equal height — Run 31985271108 — success — `e69e96f`
+
+- **Shipped:** homepage project-card photos share a 16:10 frame and fill it
+  (`object-fit: cover`, top-aligned). Pine-green letterbox under the screenshots
+  is gone.
+- **Verified:** Actions run `31985271108` for merge SHA `e69e96f` finished green
+  (~1m18s). Live `manifest.json` is `app-CpBTynwu.css` / `app-CKdy6D6D.js`. Live
+  CSS includes `.rv-proof-visual{…aspect-ratio:16/10…}` and
+  `.rv-proof-visual.rv-media-photo>img{object-fit:cover…}`.
+
 ### 2026-08-17 — Homepage proof grid (3 columns, max 3) — Run 31984277317 — success — `14fa47d`
 
 - **Shipped:** homepage featured work is a filterable three-column project grid.
