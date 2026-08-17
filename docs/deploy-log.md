@@ -46,6 +46,15 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-17 — Homepage concept screenshots uncropped — Run 31982374759 — success — `608c0df`
+
+- **Shipped:** homepage concept-section images use the full attachment (`size-full`)
+  instead of the cropped `rv-hero` size. CSS shows those photos at natural height
+  (`object-fit: contain`) with no 16/10 mobile crop. Work grid thumbs unchanged.
+- **Verified:** Actions run `31982374759` for merge SHA `608c0df` finished green.
+  Live `manifest.json` is `app-DqLwjtMd.css` / `app-BvzXGmcA.js`. Homepage markup
+  includes `attachment-full size-full`.
+
 ### 2026-08-17 — Homepage hero matches interior measure — Run 31981360829 — success — `3bf10cc`
 
 - **Shipped:** homepage H1/lede use the same full-width measure and nav gap as
