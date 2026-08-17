@@ -46,6 +46,16 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-17 — In this article H2 toggle (Open/Close) — Run 31997179843 — success — `9d9357c`
+
+- **Shipped:** Journal TOC heading is an H2 “In this article” on a closed-by-default
+  disclosure. The control shows **Open** or **Close**. Official theme stayed active.
+- **Verified:** Run `31997179843` green (~1m30s). Live CSS `app-3ihLce8G.css` from
+  `ridgesandvalleys-theme`. Post HTML has `<h2 class="rv-tldr-heading">In this article</h2>`,
+  closed by default with Open, expands to Close + diamond jump links.
+- **Note:** `31995813362` (`d5a1576`) also rsynced this CSS, but overlapping run
+  `31994853331` (`6bba438`, “In this post”) won the race until this retry.
+
 ### 2026-08-17 — Journal short-version toggle + official theme activated — Run 31990803653 — success — `71682d0`
 
 - **Shipped:** “The short version” is a closed `<details>` toggle; sidebar “In this article” is gone; article lists use diamond markers. Deploy SSH now runs `wp theme activate ridgesandvalleys-theme` so visitors get the rsynced folder.
