@@ -419,6 +419,19 @@ body:not(.home) .rv-page-intro { max-width: 48ch; font-size: 1.05rem; line-heigh
 .rv-work-body { display: block; padding: 1.35rem 1.4rem 1.5rem; }
 .rv-work-title { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.2rem; color: var(--color-ink); }
 .rv-work-excerpt { display: block; color: var(--color-muted); font-size: 0.95rem; margin-top: 0.5rem; }
+
+/* Journal + Work topic chips stay in document flow. Never pin under the header. */
+.rv-work-filters {
+	position: static !important;
+	top: auto !important;
+	bottom: auto !important;
+	inset: auto !important;
+	z-index: auto;
+	background: transparent;
+	-webkit-backdrop-filter: none;
+	backdrop-filter: none;
+}
+
 .rv-mini-post { padding: 1.6rem 1.4rem; }
 .rv-mini-title { font-size: 1.2rem; margin: 0; }
 .rv-mini-title a { text-decoration: none; color: var(--color-ink); }

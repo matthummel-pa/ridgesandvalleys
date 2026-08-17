@@ -52,7 +52,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - **Interior page and post heroes** match that same H1/lede width and top
   padding. The homepage hero now uses the same measure.
 - **Journal and Work category filters** scroll with the page instead of
-  sticking under the header.
+  pinning under the header (`position: static`, including a `!important`
+  override so leftover Customizer or cached sticky rules cannot win).
 - **Homepage concept images** show the full screenshot instead of cropping
   it to a 16:9 frame.
 - **Homepage featured work** is a filterable three-column grid (max three
