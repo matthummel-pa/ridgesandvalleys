@@ -57,6 +57,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   it to a 16:9 frame.
 - **Homepage featured work** is a filterable three-column grid (max three
   projects at a time), with the screenshot on top and the story underneath.
+- **WordPress toolbar** is hidden on the public site when you are logged in,
+  so the header matches what visitors see. It still shows inside wp-admin.
 - **README expanded** — four new sections: "Editing page copy without a deploy" (the
   `\App\field()` / `field_lines()` / `field_rows()` helpers, and why routine copy
   changes should never need a deploy), "Verifying a deploy actually landed" (match the

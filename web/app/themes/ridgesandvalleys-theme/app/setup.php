@@ -183,6 +183,18 @@ add_action('widgets_init', function () {
 });
 
 /**
+ * Hide the WordPress toolbar on the public site. Logged-in editors then see
+ * the same header and spacing as visitors. The toolbar still shows in wp-admin.
+ */
+add_filter('show_admin_bar', function ($show) {
+    if (is_admin()) {
+        return $show;
+    }
+
+    return false;
+});
+
+/**
  * Body classes for layout state.
  */
 add_filter('body_class', function ($classes) {
