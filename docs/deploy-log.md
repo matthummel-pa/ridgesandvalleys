@@ -46,6 +46,12 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-17 — Journal short-version toggle + official theme activated — Run 31990803653 — success — `71682d0`
+
+- **Shipped:** “The short version” is a closed `<details>` toggle; sidebar “In this article” is gone; article lists use diamond markers. Deploy SSH now runs `wp theme activate ridgesandvalleys-theme` so visitors get the rsynced folder.
+- **Verified:** Actions run `31990803653` for SHA `71682d0` finished green (~1m28s). WP-CLI: `Success: Switched to 'Ridges & Valleys Studio' theme.` Active stylesheet is `ridgesandvalleys-theme`. Live post HTML loads `app-BF7ZVMr2.css` from `ridgesandvalleys-theme` (not `ridgesandvalleys-theme-wpvibe-backup`). Closed toggle, diamond jump links, and quote CTA as first sidebar card confirmed on `/do-i-need-a-website-small-business/`.
+- **Prior run:** `31990358542` (`ecbbd51`) rsynced the same build but visitors still saw the WPVibe backup until this activate step.
+
 ### 2026-08-17 — Journal filters forced to scroll with the page — Run 31989328213 — success — `23d40e3`
 
 - **Shipped:** `.rv-work-filters` is `position: static !important` (Journal + Work),
@@ -54,10 +60,9 @@ Newest first. "Run" is the GitHub Actions run ID.
   (~1m23s). The deployed theme `manifest.json` is `app-C2gT-I9L.css` /
   `app-ClM6M_wh.js` and that CSS includes `position:static!important` on
   `.rv-work-filters`.
-- **Note:** live HTML is currently loading stylesheet URLs from
-  `ridgesandvalleys-theme-wpvibe-backup` (`app-CpBTynwu.css`). Until WordPress
-  is using the deployed `ridgesandvalleys-theme` folder, Journal may still
-  show the older copy.
+- **Note (resolved 2026-08-17):** live HTML was still loading
+  `ridgesandvalleys-theme-wpvibe-backup` until run `31990803653` activated
+  `ridgesandvalleys-theme`.
 
 ### 2026-08-17 — Homepage proof photos equal height — Run 31985271108 — success — `e69e96f`
 
