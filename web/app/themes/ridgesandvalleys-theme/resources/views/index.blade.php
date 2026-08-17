@@ -174,7 +174,7 @@
       .rv-work-cats-label{font-family:var(--font-mono);font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:var(--color-muted);margin-right:.2rem}
       .rv-work-cat{background:color-mix(in srgb,var(--color-clay) 10%,var(--color-surface));border:1px solid color-mix(in srgb,var(--color-clay) 30%,var(--color-line));border-radius:999px;padding:.45rem .95rem;font-family:var(--font-display);font-weight:700;font-size:.92rem;color:var(--color-ink)}
       .rv-work-cat-n{font-family:var(--font-mono);font-size:.68rem;font-weight:600;opacity:.7;margin-left:.2rem}
-      .rv-work-filters{padding:.7rem 0} /* stay in flow; do not stick under the header */
+      .rv-work-filters{position:static!important;top:auto!important;bottom:auto!important;z-index:auto;padding:.7rem 0;background:transparent;-webkit-backdrop-filter:none;backdrop-filter:none}
       .rv-filter{cursor:pointer;line-height:1.2;-webkit-appearance:none;appearance:none;transition:background-color .18s ease,border-color .18s ease,color .18s ease,transform .15s ease}
       .rv-filter:hover{transform:translateY(-1px);border-color:var(--color-clay);color:var(--color-clay)}
       .rv-filter:focus-visible{outline:2px solid var(--color-clay);outline-offset:2px}
