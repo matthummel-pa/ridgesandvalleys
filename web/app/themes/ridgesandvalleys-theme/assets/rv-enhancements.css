@@ -97,23 +97,24 @@ html[data-theme="dark"] .rv-brand-logo-link .rv-logo-dark{display:block}
 
 /* ============================================================
    In-article summary + table of contents box (single posts)
+   aside.rv-tldr prefix beats a stale Additional CSS snapshot of these rules.
    ============================================================ */
-.rv-tldr{margin:1.75rem 0 2.5rem;padding:1.5rem 1.6rem;background:var(--color-surface);border:1px solid var(--color-line);border-left:4px solid var(--color-pine);border-radius:12px;box-shadow:var(--shadow-soft)}
-.rv-tldr-toggle{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:.75rem;font-family:var(--font-mono,ui-monospace,monospace);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--color-clay);margin:0;min-height:2.5rem}
-.rv-tldr-toggle::-webkit-details-marker{display:none}
-.rv-tldr-toggle::marker{content:""}
-.rv-tldr-toggle::after{content:"";width:.42rem;height:.42rem;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);flex:none;margin-top:-.2rem;transition:transform .2s ease}
-.rv-tldr-summary[open]>.rv-tldr-toggle::after{transform:rotate(225deg);margin-top:.12rem}
-.rv-tldr-summary p{margin:.15rem 0 0;font-size:1.02rem;line-height:1.62;color:var(--color-ink)}
-.rv-tldr-toc{margin-top:1.15rem}
-.rv-tldr-summary+.rv-tldr-toc{padding-top:1.15rem;border-top:1px solid var(--color-line)}
-.rv-tldr-list{margin:0;padding:0;list-style:none;display:grid;gap:.45rem}
-.rv-tldr-list li{display:flex;gap:.7rem;align-items:flex-start;line-height:1.4}
-.rv-tldr-list li::before{content:"";flex:none;width:.42rem;height:.42rem;margin-top:.45em;background:linear-gradient(135deg,var(--color-clay),var(--color-pine));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 0 3px color-mix(in srgb,var(--color-pine) 12%,transparent)}
-.rv-tldr-list a{color:var(--color-ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s,color .15s}
-.rv-tldr-list a:hover,.rv-tldr-list a:focus{color:var(--color-pine);border-bottom-color:var(--color-pine)}
+aside.rv-tldr{margin:1.75rem 0 2.5rem;padding:1.5rem 1.6rem;background:var(--color-surface);border:1px solid var(--color-line);border-left:4px solid var(--color-pine);border-radius:12px;box-shadow:var(--shadow-soft)}
+aside.rv-tldr .rv-tldr-toggle{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:.75rem;font-family:var(--font-mono,ui-monospace,monospace);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--color-clay);margin:0;min-height:2.5rem}
+aside.rv-tldr .rv-tldr-toggle::-webkit-details-marker{display:none}
+aside.rv-tldr .rv-tldr-toggle::marker{content:""}
+aside.rv-tldr .rv-tldr-toggle::after{content:"";width:.42rem;height:.42rem;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);flex:none;margin-top:-.2rem;transition:transform .2s ease}
+aside.rv-tldr .rv-tldr-summary[open]>.rv-tldr-toggle::after{transform:rotate(225deg);margin-top:.12rem}
+aside.rv-tldr .rv-tldr-summary p{margin:.15rem 0 0;font-size:1.02rem;line-height:1.62;color:var(--color-ink)}
+aside.rv-tldr .rv-tldr-toc{margin-top:1.15rem;padding-top:0;border-top:0}
+aside.rv-tldr .rv-tldr-summary+.rv-tldr-toc{padding-top:1.15rem;border-top:1px solid var(--color-line)}
+aside.rv-tldr .rv-tldr-list{margin:0;padding:0;list-style:none;counter-reset:none;display:grid;gap:.45rem}
+aside.rv-tldr .rv-tldr-list li{counter-increment:none;display:flex;gap:.7rem;align-items:flex-start;line-height:1.4}
+aside.rv-tldr .rv-tldr-list li::before{content:"";flex:none;width:.42rem;height:.42rem;min-width:.42rem;margin-top:.45em;font-size:0;font-weight:400;background:linear-gradient(135deg,var(--color-clay),var(--color-pine));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 0 3px color-mix(in srgb,var(--color-pine) 12%,transparent);color:transparent}
+aside.rv-tldr .rv-tldr-list a{color:var(--color-ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s,color .15s}
+aside.rv-tldr .rv-tldr-list a:hover,aside.rv-tldr .rv-tldr-list a:focus{color:var(--color-pine);border-bottom-color:var(--color-pine)}
 .rv-prose h2{scroll-margin-top:5.5rem}
-@media(min-width:720px){.rv-tldr{padding:1.75rem 1.9rem}}
+@media(min-width:720px){aside.rv-tldr{padding:1.75rem 1.9rem}}
 
 /* ============================================================
    Comment section (single posts) — see comments.php
@@ -230,24 +231,24 @@ html[data-theme="dark"] .rv-brand-logo-link .rv-logo-dark{display:block}
    clay-on-dark need shifting to the dark accents (wheat/sage), matching the
    theme's own dark treatment. Surfaces already adapt via the tokens above.
    ============================================================ */
-html[data-theme="dark"] .rv-tldr-toggle,
+html[data-theme="dark"] aside.rv-tldr .rv-tldr-toggle,
 html[data-theme="dark"] .rv-comments-count,
 html[data-theme="dark"] .rv-comment-awaiting-moderation,
 html[data-theme="dark"] .rvc-field .rvc-req,
 html[data-theme="dark"] .rv-cancel-reply a,
 html[data-theme="dark"] .rv-comment-list .comment-metadata .edit-link a { color: var(--color-wheat); }
 
-html[data-theme="dark"] .rv-tldr-list a:hover,
-html[data-theme="dark"] .rv-tldr-list a:focus,
+html[data-theme="dark"] aside.rv-tldr .rv-tldr-list a { color: var(--color-ink); }
+html[data-theme="dark"] aside.rv-tldr .rv-tldr-list a:hover,
+html[data-theme="dark"] aside.rv-tldr .rv-tldr-list a:focus,
 html[data-theme="dark"] .rv-comment-list .comment-metadata a:hover,
 html[data-theme="dark"] .rv-comment-list .comment-reply-link,
 html[data-theme="dark"] .rv-helpful-btn,
 html[data-theme="dark"] .rv-helpful-thanks a { color: var(--color-sage); }
 
-html[data-theme="dark"] .rv-tldr-list a { color: var(--color-ink); }
-html[data-theme="dark"] .rv-tldr-list a:hover,
-html[data-theme="dark"] .rv-tldr-list a:focus { border-bottom-color: var(--color-sage); }
-html[data-theme="dark"] .rv-tldr-list li::before,
+html[data-theme="dark"] aside.rv-tldr .rv-tldr-list a:hover,
+html[data-theme="dark"] aside.rv-tldr .rv-tldr-list a:focus { border-bottom-color: var(--color-sage); }
+html[data-theme="dark"] aside.rv-tldr .rv-tldr-list li::before,
 html[data-theme="dark"] .rv-prose ul:not(.rv-tags) > li::before {
   background: linear-gradient(135deg, var(--color-wheat), var(--color-sage));
   box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-sage) 20%, transparent);

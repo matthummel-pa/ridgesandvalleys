@@ -63,6 +63,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   one click away instead of always open. Jump links stay visible below it.
 - **Journal article lists** use a small clay-to-pine diamond marker (with a
   soft halo) instead of default discs — including in-article jump links.
+  Jump-link styles are scoped to `aside.rv-tldr` so they still win if
+  Additional CSS holds an older copy of the numbered TOC.
 - **README expanded** — four new sections: "Editing page copy without a deploy" (the
   `\App\field()` / `field_lines()` / `field_rows()` helpers, and why routine copy
   changes should never need a deploy), "Verifying a deploy actually landed" (match the
