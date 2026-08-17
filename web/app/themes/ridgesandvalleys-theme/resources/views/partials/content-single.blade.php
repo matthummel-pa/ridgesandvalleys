@@ -27,23 +27,29 @@
   @php($rvToc = \App\post_toc_data())
   @php($rvSummary = \App\entry_hero_enabled() ? '' : \App\post_summary())
   @if ($rvSummary || count($rvToc['items']) > 1)
-    <div class="rv-entry">
-      <aside class="rv-tldr" aria-label="{{ __('Article summary and contents', 'sage') }}">
-        @if ($rvSummary)
-          <details class="rv-tldr-summary">
-            <summary class="rv-tldr-toggle">{{ __('The short version', 'sage') }}</summary>
-            <p>{{ $rvSummary }}</p>
-          </details>
-        @endif
-        @if (count($rvToc['items']) > 1)
-          <nav class="rv-tldr-toc" aria-label="{{ __('Jump to a section', 'sage') }}">
-            <ul class="rv-tldr-list">
-              @foreach ($rvToc['items'] as $rvItem)
-                <li><a href="#{{ $rvItem['id'] }}">{{ $rvItem['text'] }}</a></li>
-              @endforeach
-            </ul>
-          </nav>
-        @endif
+    <div class="rv-entry rv-tldr-wrap">
+      <aside class="rv-tldr" aria-label="{{ __('In this post', 'sage') }}">
+        <details class="rv-tldr-disclosure">
+          <summary class="rv-tldr-toggle">
+            <span class="rv-tldr-heading">{{ __('In this post', 'sage') }}</span>
+          </summary>
+          <div class="rv-tldr-body">
+            @if ($rvSummary)
+              <div class="rv-tldr-summary">
+                <p>{{ $rvSummary }}</p>
+              </div>
+            @endif
+            @if (count($rvToc['items']) > 1)
+              <nav class="rv-tldr-toc" aria-label="{{ __('Jump to a section', 'sage') }}">
+                <ul class="rv-tldr-list">
+                  @foreach ($rvToc['items'] as $rvItem)
+                    <li><a href="#{{ $rvItem['id'] }}">{{ $rvItem['text'] }}</a></li>
+                  @endforeach
+                </ul>
+              </nav>
+            @endif
+          </div>
+        </details>
       </aside>
     </div>
   @endif

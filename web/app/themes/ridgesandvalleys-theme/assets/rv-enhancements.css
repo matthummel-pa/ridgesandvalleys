@@ -256,22 +256,33 @@ body.single-post .rv-entry-hero .rv-hero-title {
    In-article summary + table of contents box (single posts)
    aside.rv-tldr prefix beats a stale Additional CSS snapshot of these rules.
    ============================================================ */
-aside.rv-tldr{margin:1.75rem 0 2.5rem;padding:1.5rem 1.6rem;background:var(--color-surface);border:1px solid var(--color-line);border-left:4px solid var(--color-pine);border-radius:12px;box-shadow:var(--shadow-soft)}
-aside.rv-tldr .rv-tldr-toggle{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:.75rem;font-family:var(--font-mono,ui-monospace,monospace);font-size:.72rem;letter-spacing:.09em;text-transform:uppercase;color:var(--color-clay);margin:0;min-height:2.5rem}
+/* The content grid already supplies the top rhythm; removing the article's
+   duplicate top padding aligns this first block with the sidebar. */
+body.single-post .rv-content > article.rv-single{padding-top:0}
+aside.rv-tldr{margin:0 0 2.5rem;padding:0;background:var(--color-surface);border:1px solid var(--color-line);border-left:4px solid var(--color-pine);border-radius:12px;box-shadow:var(--shadow-soft);overflow:hidden}
+aside.rv-tldr .rv-tldr-disclosure{margin:0}
+aside.rv-tldr .rv-tldr-toggle{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:.85rem;min-height:3.25rem;margin:0;padding:.85rem 1.15rem;color:var(--color-ink);background:color-mix(in srgb,var(--color-pine) 6%,var(--color-surface));font-family:var(--font-display);font-size:1.05rem;font-weight:750;line-height:1.25}
 aside.rv-tldr .rv-tldr-toggle::-webkit-details-marker{display:none}
 aside.rv-tldr .rv-tldr-toggle::marker{content:""}
-aside.rv-tldr .rv-tldr-toggle::after{content:"";width:.42rem;height:.42rem;border-right:2px solid currentColor;border-bottom:2px solid currentColor;transform:rotate(45deg);flex:none;margin-top:-.2rem;transition:transform .2s ease}
-aside.rv-tldr .rv-tldr-summary[open]>.rv-tldr-toggle::after{transform:rotate(225deg);margin-top:.12rem}
-aside.rv-tldr .rv-tldr-summary p{margin:.15rem 0 0;font-size:1.02rem;line-height:1.62;color:var(--color-ink)}
-aside.rv-tldr .rv-tldr-toc{margin-top:1.15rem;padding-top:0;border-top:0}
-aside.rv-tldr .rv-tldr-summary+.rv-tldr-toc{padding-top:1.15rem;border-top:1px solid var(--color-line)}
-aside.rv-tldr .rv-tldr-list{margin:0;padding:0;list-style:none;counter-reset:none;display:grid;gap:.45rem}
+aside.rv-tldr .rv-tldr-toggle:hover{background:color-mix(in srgb,var(--color-pine) 10%,var(--color-surface))}
+aside.rv-tldr .rv-tldr-toggle:focus-visible{outline:2px solid var(--color-clay);outline-offset:-4px;border-radius:8px}
+aside.rv-tldr .rv-tldr-toggle::after{content:"";width:.52rem;height:.52rem;border-right:2px solid var(--color-clay);border-bottom:2px solid var(--color-clay);transform:rotate(45deg);flex:none;margin-top:-.28rem;transition:transform .2s ease}
+aside.rv-tldr .rv-tldr-disclosure[open]>.rv-tldr-toggle::after{transform:rotate(225deg);margin-top:.2rem}
+aside.rv-tldr .rv-tldr-body{padding:1.15rem 1.2rem 1.3rem;border-top:1px solid var(--color-line)}
+aside.rv-tldr .rv-tldr-summary p{margin:0;font-size:1.02rem;line-height:1.62;color:var(--color-ink)}
+aside.rv-tldr .rv-tldr-toc{margin:0;padding:0;border:0}
+aside.rv-tldr .rv-tldr-summary+.rv-tldr-toc{margin-top:1.15rem;padding-top:1.15rem;border-top:1px solid var(--color-line)}
+aside.rv-tldr .rv-tldr-list{margin:0;padding:0;list-style:none;counter-reset:none;display:grid;gap:.55rem}
 aside.rv-tldr .rv-tldr-list li{counter-increment:none;display:flex;gap:.7rem;align-items:flex-start;line-height:1.4}
 aside.rv-tldr .rv-tldr-list li::before{content:"";flex:none;width:.42rem;height:.42rem;min-width:.42rem;margin-top:.45em;font-size:0;font-weight:400;background:linear-gradient(135deg,var(--color-clay),var(--color-pine));border-radius:2px;transform:rotate(45deg);box-shadow:0 0 0 3px color-mix(in srgb,var(--color-pine) 12%,transparent);color:transparent}
 aside.rv-tldr .rv-tldr-list a{color:var(--color-ink);text-decoration:none;border-bottom:1px solid transparent;transition:border-color .15s,color .15s}
 aside.rv-tldr .rv-tldr-list a:hover,aside.rv-tldr .rv-tldr-list a:focus{color:var(--color-pine);border-bottom-color:var(--color-pine)}
 .rv-prose h2{scroll-margin-top:5.5rem}
-@media(min-width:720px){aside.rv-tldr{padding:1.75rem 1.9rem}}
+@media(min-width:720px){
+  aside.rv-tldr .rv-tldr-toggle{padding:.95rem 1.35rem}
+  aside.rv-tldr .rv-tldr-body{padding:1.3rem 1.45rem 1.5rem}
+}
+@media(prefers-reduced-motion:reduce){aside.rv-tldr .rv-tldr-toggle::after{transition:none}}
 
 /* ============================================================
    Comment section (single posts) — see comments.php
