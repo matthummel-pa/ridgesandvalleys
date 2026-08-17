@@ -57,6 +57,7 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   it to a 16:9 frame.
 - **Homepage featured work** is a filterable three-column grid (max three
   projects at a time), with the screenshot on top and the story underneath.
+  Card photos share one height and fill the frame (no pine-green letterbox).
 - **README expanded** — four new sections: "Editing page copy without a deploy" (the
   `\App\field()` / `field_lines()` / `field_rows()` helpers, and why routine copy
   changes should never need a deploy), "Verifying a deploy actually landed" (match the

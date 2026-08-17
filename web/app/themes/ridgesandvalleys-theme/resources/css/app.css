@@ -877,15 +877,15 @@ html[data-theme="dark"] .rv-plan-care.is-featured { border-color: var(--color-sa
 	box-shadow: var(--shadow-soft);
 	background: var(--color-surface);
 }
-.rv-proof-visual { grid-area: visual; min-height: 0; background: var(--color-cream); aspect-ratio: 4 / 3; display: flex; align-items: center; justify-content: center; }
-.rv-proof-visual.rv-media-photo { overflow: hidden; }
+.rv-proof-visual { grid-area: visual; min-height: 0; background: var(--color-surface); aspect-ratio: 16 / 10; }
+.rv-proof-visual.rv-media-photo { overflow: hidden; background: var(--color-surface); }
 .rv-proof-visual.rv-media-photo > img {
 	position: absolute;
 	inset: 0;
 	width: 100%;
 	height: 100%;
 	max-width: none;
-	object-fit: contain;
+	object-fit: cover;
 	object-position: center top;
 	display: block;
 }
