@@ -46,6 +46,14 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-17 — Homepage hero matches interior measure — Run 31981360829 — success — `3bf10cc`
+
+- **Shipped:** homepage H1/lede use the same full-width measure and nav gap as
+  Free Tools and the other interior heroes.
+- **Verified:** Actions run `31981360829` for merge SHA `3bf10cc` finished green.
+  Live `manifest.json` is `app-DiaM2rpk.css` / `app-DH8r0nrR.js`. Live CSS
+  includes `.home .rv-hero-title{…max-width:none…}`.
+
 ### 2026-08-17 — Unstick Journal/Work filters — Run 31981126711 — success — `65d71d4`
 
 - **Shipped:** Journal and Work category chips scroll with the page (no
