@@ -176,6 +176,69 @@ function contact_recipient_email(): string
     return $studio;
 }
 
+/**
+ * Send one contact-form message with an explicit From / Reply-To.
+ * Quote notices use the visitor’s address as From so they don’t show as
+ * wordpress@ridgesandvalleys.com. The SMTP envelope stays on our domain
+ * so SiteGround will still accept the send.
+ */
+function contact_mail(
+    string $to,
+    string $subject,
+    string $body,
+    string $from_email,
+    string $from_name = '',
+    string $reply_email = '',
+    string $reply_name = ''
+): bool {
+    if (! is_email($to) || ! is_email($from_email)) {
+        return false;
+    }
+
+    $from_name   = trim(str_replace(["\r", "\n"], ' ', $from_name));
+    $reply_name  = trim(str_replace(["\r", "\n"], ' ', $reply_name));
+    $reply_email = ($reply_email !== '' && is_email($reply_email)) ? $reply_email : $from_email;
+    $envelope    = contact_recipient_email();
+    $from_label  = $from_name !== '' ? $from_name : $from_email;
+
+    $from_filter = static function () use ($from_email) {
+        return $from_email;
+    };
+    $name_filter = static function () use ($from_label) {
+        return $from_label;
+    };
+    $phpmailer_cb = static function ($phpmailer) use ($from_email, $from_label, $reply_email, $reply_name, $envelope) {
+        try {
+            $phpmailer->setFrom($from_email, $from_label, false);
+        } catch (\Throwable $e) {
+            return;
+        }
+        if (is_email($envelope)) {
+            $phpmailer->Sender = $envelope;
+        }
+        $phpmailer->clearReplyTos();
+        if (is_email($reply_email)) {
+            try {
+                $phpmailer->addReplyTo($reply_email, $reply_name !== '' ? $reply_name : $reply_email);
+            } catch (\Throwable $e) {
+                // Reply-To is best-effort; the From address still identifies the visitor.
+            }
+        }
+    };
+
+    add_filter('wp_mail_from', $from_filter, PHP_INT_MAX);
+    add_filter('wp_mail_from_name', $name_filter, PHP_INT_MAX);
+    add_action('phpmailer_init', $phpmailer_cb, PHP_INT_MAX);
+
+    $sent = wp_mail($to, $subject, $body, ['Content-Type: text/plain; charset=UTF-8']);
+
+    remove_filter('wp_mail_from', $from_filter, PHP_INT_MAX);
+    remove_filter('wp_mail_from_name', $name_filter, PHP_INT_MAX);
+    remove_action('phpmailer_init', $phpmailer_cb, PHP_INT_MAX);
+
+    return (bool) $sent;
+}
+
 /** Public email shown on the Contact page (never a leftover Gmail default). */
 function contact_display_email(?int $post_id = null): string
 {
@@ -450,15 +513,23 @@ add_action('init', function () {
     if ($inquiry !== '') {
         $subject .= ' — ' . $inquiry;
     }
-    $body    = implode("\n", $lines) . "\n";
+    $body = implode("\n", $lines) . "\n";
 
-    $headers = ['Content-Type: text/plain; charset=UTF-8'];
+    $sent = false;
     if ($reply_email !== '') {
-        $from = $reply_name !== '' ? $reply_name . ' <' . $reply_email . '>' : $reply_email;
-        $headers[] = 'Reply-To: ' . $from;
+        $sent = contact_mail(
+            $to,
+            $subject,
+            $body,
+            $reply_email,
+            $reply_name,
+            $reply_email,
+            $reply_name
+        );
     }
-
-    $sent = wp_mail($to, $subject, $body, $headers);
+    if (! $sent) {
+        $sent = contact_mail($to, $subject, $body, $to, __('Ridges & Valleys Studio', 'sage'), $reply_email, $reply_name);
+    }
 
     if ($sent && $reply_email !== '') {
         $ar_subject = field(
@@ -471,11 +542,15 @@ add_action('init', function () {
             ? $custom_body . "\n\n" . __('Here’s a copy of what you sent:', 'sage') . "\n" . implode("\n", $lines)
             : contact_sender_confirmation_body($reply_name, $lines, $page_id);
 
-        $ar_headers = [
-            'Content-Type: text/plain; charset=UTF-8',
-            'Reply-To: Ridges & Valleys Studio <' . $to . '>',
-        ];
-        wp_mail($reply_email, $ar_subject, trim($ar_body) . "\n", $ar_headers);
+        contact_mail(
+            $reply_email,
+            $ar_subject,
+            trim($ar_body) . "\n",
+            $to,
+            __('Matt Hummel', 'sage'),
+            $to,
+            __('Ridges & Valleys Studio', 'sage')
+        );
     }
 
     wp_safe_redirect(add_query_arg('contact', $sent ? 'success' : 'error', $redirect));
