@@ -92,4 +92,4 @@ jobs:
         run: |
           ssh -i ~/.ssh/deploy_key -p "${{ secrets.SSH_PORT }}" -o StrictHostKeyChecking=accept-new -o ConnectTimeout=30 \
             "${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }}" \
-            "cd ~/www/ridgesandvalleys.com/public_html && wp acorn view:clear; wp acorn optimize:clear; wp cache flush; wp sg purge" || true
+            "cd ~/www/ridgesandvalleys.com/public_html && wp theme activate ridgesandvalleys-theme && wp theme list --status=active && wp acorn view:clear && wp acorn optimize:clear && wp cache flush && wp sg purge" || true

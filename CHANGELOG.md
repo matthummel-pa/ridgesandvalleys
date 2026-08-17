@@ -65,6 +65,9 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   soft halo) instead of default discs — including in-article jump links.
   Jump-link styles are scoped to `aside.rv-tldr` so they still win if
   Additional CSS holds an older copy of the numbered TOC.
+- **Live deploys activate `ridgesandvalleys-theme`.** WordPress had been
+  serving `ridgesandvalleys-theme-wpvibe-backup`, so rsync of the official
+  folder never reached visitors.
 - **README expanded** — four new sections: "Editing page copy without a deploy" (the
   `\App\field()` / `field_lines()` / `field_rows()` helpers, and why routine copy
   changes should never need a deploy), "Verifying a deploy actually landed" (match the
