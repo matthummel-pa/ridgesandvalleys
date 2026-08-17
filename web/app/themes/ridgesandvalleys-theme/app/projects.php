@@ -634,9 +634,15 @@ function work_filter_categories(array $posts): array
     return $ordered;
 }
 
+/** How many project cards the homepage proof grid shows at once. */
+function home_proof_grid_limit(): int
+{
+    return 3;
+}
+
 /**
- * One published Project per industry bucket for the homepage proof list.
- * Prefers concept/demo posts; skips empty buckets. Order follows work_industry_defs().
+ * Published projects for the homepage proof grid (filterable, max three shown).
+ * Concepts first within each industry; order follows work_industry_defs().
  *
  * @return list<\WP_Post>
  */
@@ -650,30 +656,33 @@ function home_proof_type_projects(): array
         'orderby'        => 'date',
         'order'          => 'DESC',
     ]);
-    $concepts = [];
-    $any = [];
+    $by = [];
     foreach ($q->posts as $p) {
         $slug = work_project_category((int) $p->ID)['slug'];
-        if (get_post_meta($p->ID, '_rv_is_concept', true) === '1' && ! isset($concepts[$slug])) {
-            $concepts[$slug] = $p;
+        if (! isset($by[$slug])) {
+            $by[$slug] = ['concepts' => [], 'rest' => []];
         }
-        if (! isset($any[$slug])) {
-            $any[$slug] = $p;
+        if (get_post_meta($p->ID, '_rv_is_concept', true) === '1') {
+            $by[$slug]['concepts'][] = $p;
+        } else {
+            $by[$slug]['rest'][] = $p;
         }
     }
 
     $picked = [];
     $seen = [];
-    foreach (work_industry_defs() as $d) {
-        $p = $concepts[$d['slug']] ?? $any[$d['slug']] ?? null;
-        if ($p && ! isset($seen[$p->ID])) {
+    $slugs = array_map(static fn ($d) => $d['slug'], work_industry_defs());
+    $slugs[] = 'other';
+    foreach ($slugs as $slug) {
+        if (! isset($by[$slug])) {
+            continue;
+        }
+        foreach (array_merge($by[$slug]['concepts'], $by[$slug]['rest']) as $p) {
+            if (isset($seen[$p->ID])) {
+                continue;
+            }
             $picked[] = $p;
             $seen[$p->ID] = true;
-        }
-    }
-    foreach ($concepts as $slug => $p) {
-        if ($slug === 'other' && ! isset($seen[$p->ID])) {
-            $picked[] = $p;
         }
     }
 
@@ -683,7 +692,7 @@ function home_proof_type_projects(): array
 /**
  * Template data for one homepage proof project box.
  *
- * @return array{id:int,type:string,kicker:string,title:string,where:string,text:string,href:string,img:string,alt:string,show_credit:bool,metrics:list<array{v:string,l:string}>}
+ * @return array{id:int,cat:string,type:string,kicker:string,title:string,where:string,text:string,href:string,img:string,alt:string,show_credit:bool,metrics:list<array{v:string,l:string}>}
  */
 function home_proof_box_data(\WP_Post $post, string $fallback_img = ''): array
 {
@@ -711,6 +720,7 @@ function home_proof_box_data(\WP_Post $post, string $fallback_img = ''): array
 
     return [
         'id'          => $id,
+        'cat'         => $cat['slug'],
         'type'        => $cat['label'],
         'kicker'      => $kicker,
         'title'       => $title,
