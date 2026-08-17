@@ -46,6 +46,16 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-17 — Guest contact form + dual inbox — Run 32000093431 — success — `26705a1`
+
+- **Shipped:** Guests can send quote requests. From name is the visitor; From
+  address is the studio domain; Reply-To is their email. Notices go to
+  `matt@ridgesandvalleys.com` and `matt@matthummel.com`. Success shows a
+  confirmation and emails the sender.
+- **Verified:** Run `32000093431` green after a failed rsync (`31999061371`).
+  Live guest submit at `/contact/` returned `?contact=success` (“Your request
+  was sent”) using name Form Test Visitor and email `matt@matthummel.com`.
+
 ### 2026-08-17 — In this article H2 toggle (Open/Close) — Run 31997179843 — success — `9d9357c`
 
 - **Shipped:** Journal TOC heading is an H2 “In this article” on a closed-by-default
