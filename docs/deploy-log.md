@@ -46,6 +46,16 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-17 — Unstick Journal/Work filters — Run 31981126711 — success — `65d71d4`
+
+- **Shipped:** Journal and Work category chips scroll with the page (no
+  `position: sticky`).
+- **First attempt failed:** run `31980238423` for merge `1e8ee6e` timed out on
+  SiteGround SSH (`rsync` code 255, six retries). Retry `65d71d4` ran green.
+- **Verified:** live `/journal/` and `/work/` CSS is
+  `.rv-work-filters{padding:.7rem 0}` / `{margin-top:1.5rem;padding:.7rem 0}`
+  with no sticky.
+
 ### 2026-08-16 — Interior heroes match Free Tools — Run 31979027202 — success — `50ffa06`
 
 - **Shipped:** interior page and journal-post heroes use the same full-width H1/lede
