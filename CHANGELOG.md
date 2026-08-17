@@ -61,10 +61,10 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   Card photos share one height and fill the frame (no pine-green letterbox).
 - **Journal TOC heading is “In this article”** (H2, Google’s jump-link
   phrasing), on a closed-by-default toggle that shows **Open** or **Close**.
-- **Contact form delivers to `matt@ridgesandvalleys.com`.** A Customizer
-  address only wins if it is already `@ridgesandvalleys.com`. The quote
-  email’s From line is the visitor’s name and email (not `wordpress@…`); Reply
-  still goes to them.
+- **Contact form delivers to `matt@ridgesandvalleys.com` and `matt@matthummel.com`.**
+  Guests (no WordPress account, Gmail/etc. addresses) can send: From name is
+  theirs, From address stays on the studio domain so the mail server accepts
+  it, Reply-To is their email.
 - **Successful quote requests show a confirmation** (sent, when you’ll hear
   back, what happens next) and email the same note to the sender.
 - **Journal article lists** use a small clay-to-pine diamond marker (with a

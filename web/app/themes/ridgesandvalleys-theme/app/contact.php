@@ -162,18 +162,47 @@ function contact_studio_email(): string
 }
 
 /**
- * Where quote requests are delivered. Always a @ridgesandvalleys.com address,
- * defaulting to Matt’s inbox. A Customizer address on that domain still wins.
+ * Where quote requests are delivered. Studio inbox plus Matt’s personal
+ * address so guest submissions are not lost if one mailbox is quiet.
+ *
+ * @return list<string>
  */
-function contact_recipient_email(): string
+function contact_recipient_emails(): array
 {
-    $studio = contact_studio_email();
-    $mod    = strtolower(sanitize_email((string) get_theme_mod('rv_contact_email', $studio)));
-    if (is_email($mod) && str_ends_with($mod, '@ridgesandvalleys.com')) {
-        return $mod;
+    $emails = [];
+    foreach ([
+        get_theme_mod('rv_contact_email', ''),
+        contact_studio_email(),
+        'matt@matthummel.com',
+    ] as $raw) {
+        $email = strtolower(sanitize_email((string) $raw));
+        if (is_email($email)) {
+            $emails[$email] = $email;
+        }
     }
 
-    return $studio;
+    return array_values($emails);
+}
+
+function contact_recipient_email(): string
+{
+    $emails = contact_recipient_emails();
+
+    return $emails[0] ?? contact_studio_email();
+}
+
+/**
+ * From address the mail server will accept. Guest (non-domain) addresses
+ * cannot be used as From on SiteGround — they go in Reply-To instead.
+ */
+function contact_from_email_for_visitor(string $visitor_email): string
+{
+    $visitor_email = strtolower(sanitize_email($visitor_email));
+    if (is_email($visitor_email) && str_ends_with($visitor_email, '@ridgesandvalleys.com')) {
+        return $visitor_email;
+    }
+
+    return contact_studio_email();
 }
 
 /**
@@ -183,7 +212,7 @@ function contact_recipient_email(): string
  * so SiteGround will still accept the send.
  */
 function contact_mail(
-    string $to,
+    string|array $to,
     string $subject,
     string $body,
     string $from_email,
@@ -191,14 +220,16 @@ function contact_mail(
     string $reply_email = '',
     string $reply_name = ''
 ): bool {
-    if (! is_email($to) || ! is_email($from_email)) {
+    $tos = is_array($to) ? $to : [$to];
+    $tos = array_values(array_unique(array_filter(array_map('sanitize_email', $tos), 'is_email')));
+    if ($tos === [] || ! is_email($from_email)) {
         return false;
     }
 
     $from_name   = contact_safe_display_name($from_name);
     $reply_name  = contact_safe_display_name($reply_name);
     $reply_email = ($reply_email !== '' && is_email($reply_email)) ? $reply_email : $from_email;
-    $envelope    = contact_recipient_email();
+    $envelope    = contact_studio_email();
     $from_label  = $from_name !== '' ? $from_name : $from_email;
 
     $from_filter = static function () use ($from_email) {
@@ -233,7 +264,7 @@ function contact_mail(
     $from_header = ($from_label !== '' && $from_label !== $from_email)
         ? sprintf('%s <%s>', $from_label, $from_email)
         : $from_email;
-    $sent = wp_mail($to, $subject, $body, [
+    $sent = wp_mail($tos, $subject, $body, [
         'Content-Type: text/plain; charset=UTF-8',
         'From: ' . $from_header,
     ]);
@@ -534,9 +565,7 @@ add_action('init', function () {
     $reply_name  = contact_safe_display_name($reply_name);
     $reply_email = str_replace(["\r", "\n"], '', $reply_email);
 
-    set_transient($key, 1, 30);
-
-    $to = contact_recipient_email();
+    $to = contact_recipient_emails();
     /* translators: %s: site name. */
     $subject = sprintf(__('[%s] New quote request', 'sage'), wp_specialchars_decode(get_bloginfo('name')));
     if ($reply_name !== '') {
@@ -546,33 +575,28 @@ add_action('init', function () {
         $subject .= ' — ' . $inquiry;
     }
     $body = implode("\n", $lines) . "\n";
-
-    $from_name = $reply_name !== '' ? $reply_name : $reply_email;
-    $sent      = false;
     if ($reply_email !== '') {
-        $sent = contact_mail(
-            $to,
-            $subject,
-            $body,
-            $reply_email,
-            $from_name,
-            $reply_email,
-            $from_name
-        );
+        $body .= "\n" . __('Visitor email (Reply-To)', 'sage') . ': ' . $reply_email . "\n";
     }
-    if (! $sent) {
-        $sent = contact_mail(
-            $to,
-            $subject,
-            $body,
-            $to,
-            $from_name !== '' ? $from_name : __('Ridges & Valleys Studio', 'sage'),
-            $reply_email,
-            $from_name
-        );
+
+    $from_name    = $reply_name !== '' ? $reply_name : ($reply_email !== '' ? $reply_email : __('Website visitor', 'sage'));
+    $from_address = contact_from_email_for_visitor($reply_email);
+    $sent         = contact_mail(
+        $to,
+        $subject,
+        $body,
+        $from_address,
+        $from_name,
+        $reply_email,
+        $from_name
+    );
+
+    if ($sent) {
+        set_transient($key, 1, 30);
     }
 
     if ($sent && $reply_email !== '') {
+        $studio = contact_studio_email();
         $ar_subject = field(
             'cform_ar_subject',
             __('Your quote request was sent — Ridges & Valleys Studio', 'sage'),
@@ -587,9 +611,9 @@ add_action('init', function () {
             $reply_email,
             $ar_subject,
             trim($ar_body) . "\n",
-            $to,
+            $studio,
             __('Matt Hummel', 'sage'),
-            $to,
+            $studio,
             __('Ridges & Valleys Studio', 'sage')
         );
     }
