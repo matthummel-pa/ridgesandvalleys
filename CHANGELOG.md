@@ -59,8 +59,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - **Homepage featured work** is a filterable three-column grid (max three
   projects at a time), with the screenshot on top and the story underneath.
   Card photos share one height and fill the frame (no pine-green letterbox).
-- **Journal posts: “The short version” is a closed toggle** so the summary is
-  one click away instead of always open. Jump links stay visible below it.
+- **Journal TOC heading is “In this article”** (H2, Google’s jump-link
+  phrasing), on a closed-by-default toggle that shows **Open** or **Close**.
 - **Journal article lists** use a small clay-to-pine diamond marker (with a
   soft halo) instead of default discs — including in-article jump links.
   Jump-link styles are scoped to `aside.rv-tldr` so they still win if
