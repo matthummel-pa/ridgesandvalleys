@@ -46,6 +46,15 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-17 — Homepage proof grid (3 columns, max 3) — Run 31984277317 — success — `14fa47d`
+
+- **Shipped:** homepage featured work is a filterable three-column project grid.
+  At most three cards show at once. Screenshot on top, story underneath. Industry
+  chips swap which projects appear.
+- **Verified:** Actions run `31984277317` for merge SHA `14fa47d` finished green
+  (~1m22s). Live `manifest.json` is `app-CrAnTunf.css` / `app-CgiHLrX6.js`. Live
+  JS includes `data-rv-home-proof` filter logic.
+
 ### 2026-08-17 — Homepage concept screenshots uncropped — Run 31982374759 — success — `608c0df`
 
 - **Shipped:** homepage concept-section images use the full attachment (`size-full`)
