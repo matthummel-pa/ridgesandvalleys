@@ -46,6 +46,19 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-17 — Journal filters forced to scroll with the page — Run 31989328213 — success — `23d40e3`
+
+- **Shipped:** `.rv-work-filters` is `position: static !important` (Journal + Work),
+  so topic chips cannot pin under the header.
+- **Verified:** Actions run `31989328213` for merge SHA `23d40e3` finished green
+  (~1m23s). The deployed theme `manifest.json` is `app-C2gT-I9L.css` /
+  `app-ClM6M_wh.js` and that CSS includes `position:static!important` on
+  `.rv-work-filters`.
+- **Note:** live HTML is currently loading stylesheet URLs from
+  `ridgesandvalleys-theme-wpvibe-backup` (`app-CpBTynwu.css`). Until WordPress
+  is using the deployed `ridgesandvalleys-theme` folder, Journal may still
+  show the older copy.
+
 ### 2026-08-17 — Homepage proof photos equal height — Run 31985271108 — success — `e69e96f`
 
 - **Shipped:** homepage project-card photos share a 16:10 frame and fill it
