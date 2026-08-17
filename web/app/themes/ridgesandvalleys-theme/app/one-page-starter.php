@@ -137,9 +137,7 @@ add_action('wp_enqueue_scripts', function () {
         return;
     }
 
-    $css = 'assets/rv-one-page-starter.css';
-    $js  = 'assets/rv-one-page-starter.js';
-    wp_enqueue_style('rv-one-page-starter', get_theme_file_uri($css), [], (string) filemtime(get_theme_file_path($css)) . '-2');
+    $js = 'assets/rv-one-page-starter.js';
     wp_enqueue_script('rv-one-page-starter', get_theme_file_uri($js), [], (string) filemtime(get_theme_file_path($js)) . '-2', true);
 }, 24);
 

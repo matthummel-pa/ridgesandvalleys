@@ -6,6 +6,7 @@
  */
 import '@styles/app.css';
 import '../../assets/rv-enhancements.css';
+import '../../assets/rv-one-page-starter.css';
 
 type Focusable = HTMLElement;
 
