@@ -470,6 +470,48 @@ body:not(.home) .rv-page-intro { max-width: 48ch; font-size: 1.05rem; line-heigh
 .rv-prose ul:not(.rv-tags) > li::before { content: ""; position: absolute; left: 0.12rem; top: 0.62em; width: 0.42rem; height: 0.42rem; background: linear-gradient(135deg, var(--color-clay), var(--color-pine)); border-radius: 2px; transform: rotate(45deg); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-pine) 12%, transparent); }
 .rv-prose ul:not(.rv-tags) > li > ul { margin: 0.45em 0 0; }
 .rv-prose ol { padding-left: 1.35rem; }
+
+/* Journal ordered lists: editorial step cards with native numbering retained. */
+body.single-post .rv-prose > ol {
+  position: relative;
+  margin: clamp(1.5rem, 3vw, 2.25rem) 0 clamp(2rem, 4vw, 3rem);
+  padding: 0.35rem 0 0.35rem 3.75rem;
+  list-style-type: decimal-leading-zero;
+}
+body.single-post .rv-prose > ol::before {
+  content: "";
+  position: absolute;
+  inset: 1.4rem auto 1.4rem 1.2rem;
+  width: 1px;
+  background: color-mix(in srgb, var(--color-clay) 35%, var(--color-line));
+}
+body.single-post .rv-prose > ol > li {
+  position: relative;
+  margin: 0 0 0.8rem;
+  padding: 0.95rem 1.05rem 1rem;
+  background: color-mix(in srgb, var(--color-surface) 92%, var(--color-cream));
+  border: 1px solid var(--color-line);
+  border-radius: 14px;
+  box-shadow: 0 4px 14px color-mix(in srgb, var(--color-ink) 6%, transparent);
+}
+body.single-post .rv-prose > ol > li:last-child { margin-bottom: 0; }
+body.single-post .rv-prose > ol > li::marker {
+  color: var(--color-clay);
+  font-family: var(--font-mono);
+  font-size: 0.78em;
+  font-weight: 700;
+  letter-spacing: -0.04em;
+}
+body.single-post .rv-prose > ol > li > :last-child { margin-bottom: 0; }
+body.single-post .rv-prose > ol > li > ol {
+  margin: 0.7rem 0 0;
+  padding-left: 1.45rem;
+}
+@media (max-width: 600px) {
+  body.single-post .rv-prose > ol { padding-left: 3rem; }
+  body.single-post .rv-prose > ol::before { left: 0.88rem; }
+  body.single-post .rv-prose > ol > li { padding: 0.85rem 0.9rem 0.9rem; }
+}
 .rv-prose li { margin-bottom: 0.4em; }
 .rv-prose ul:not(.rv-tags) a { text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--color-pine) 28%, transparent); text-underline-offset: 0.15em; }
 .rv-prose ul:not(.rv-tags) a:hover { color: var(--color-pine); border-bottom-color: var(--color-pine); }
