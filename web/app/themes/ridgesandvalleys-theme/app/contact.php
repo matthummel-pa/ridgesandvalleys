@@ -9,6 +9,7 @@
  * definition, so the form is fully dynamic — add, remove, reorder, and lay out
  * fields with no code and no form plugin. Security stays built in: nonce +
  * honeypot + per-IP rate limit + wp_mail.
+ * Deploy retry 2026-08-17: prior rsync timed out.
  */
 
 namespace App;
