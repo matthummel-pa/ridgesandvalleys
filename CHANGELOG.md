@@ -51,6 +51,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   extra space between the eyebrow and the main navigation.
 - **Interior page and post heroes** match that same H1/lede width and top
   padding. The homepage hero now uses the same measure.
+- **Journal and Work category filters** scroll with the page instead of
+  sticking under the header.
 - **README expanded** — four new sections: "Editing page copy without a deploy" (the
   `\App\field()` / `field_lines()` / `field_rows()` helpers, and why routine copy
   changes should never need a deploy), "Verifying a deploy actually landed" (match the
