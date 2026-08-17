@@ -700,7 +700,7 @@ function home_proof_box_data(\WP_Post $post, string $fallback_img = ''): array
     if ($kicker === '') {
         $kicker = __('Featured work', 'sage');
     }
-    $img = (string) get_the_post_thumbnail_url($id, 'rv-hero');
+    $img = (string) get_the_post_thumbnail_url($id, 'full');
     if ($img === '') {
         $img = resolve_preview_url((string) get_post_meta($id, '_rv_preview', true));
     }
