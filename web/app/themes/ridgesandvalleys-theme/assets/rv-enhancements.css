@@ -95,6 +95,163 @@ html[data-theme="dark"] .rv-brand-logo-link .rv-logo-dark{display:block}
 .rv-single-hero .rv-post-meta, .rv-single-hero .rv-eyebrow { text-align: left; }
 .rv-single-hero .rv-post-meta { justify-content: flex-start; }
 
+/* ---- Journal hero information: editorial hierarchy with resilient contrast. ---- */
+body.single-post .rv-entry-hero {
+  height:auto;
+  min-height:clamp(36rem, 78svh, 46rem);
+  max-height:none;
+}
+body.single-post .rv-entry-hero > .rv-hero-inner {
+  justify-content:center;
+  padding-bottom:clamp(2rem, 5vw, 4rem);
+}
+.rv-entry-hero-copy {
+  width:100%;
+  max-width:72rem;
+  display:grid;
+  gap:clamp(.85rem, 2vw, 1.2rem);
+}
+body.single-post .rv-entry-hero .rv-hero-title {
+  max-width:22ch;
+  margin:0;
+  color:#fff;
+  text-wrap:balance;
+}
+.rv-entry-hero-dek {
+  max-width:68ch;
+  margin:0;
+  color:#f2f4ef;
+  font-size:clamp(1.05rem, 1.7vw, 1.22rem);
+  line-height:1.58;
+  font-weight:450;
+  text-wrap:pretty;
+  text-shadow:0 1px 2px rgba(0,0,0,.35);
+}
+.rv-entry-hero-info {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.65rem 1rem;
+}
+.rv-entry-hero-category {
+  display:inline-flex;
+  align-items:center;
+  min-height:2rem;
+  padding:.32rem .72rem;
+  color:#241d10;
+  background:var(--color-wheat);
+  border-radius:999px;
+  font-family:var(--font-mono);
+  font-size:.68rem;
+  font-weight:700;
+  letter-spacing:.07em;
+  line-height:1.2;
+  text-decoration:none;
+  text-transform:uppercase;
+}
+.rv-entry-hero-category:hover,
+.rv-entry-hero-category:focus-visible {
+  color:#241d10;
+  background:#f0bb52;
+  text-decoration:underline;
+  text-underline-offset:.18em;
+}
+.rv-entry-hero-facts {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.55rem;
+  margin:0;
+  padding:0;
+  color:#f2f4ef;
+  list-style:none;
+  font-family:var(--font-mono);
+  font-size:.74rem;
+  font-weight:600;
+  letter-spacing:.035em;
+}
+.rv-entry-hero-facts li + li::before {
+  content:"";
+  display:inline-block;
+  width:4px;
+  height:4px;
+  margin:0 .55rem .12em 0;
+  background:var(--color-wheat);
+  border-radius:50%;
+}
+.rv-entry-hero .rv-breadcrumbs {
+  width:100%;
+  margin-top:.2rem;
+  padding-top:.9rem;
+  border-top:1px solid rgba(255,255,255,.3);
+  color:#f2f4ef;
+  font-family:var(--font-mono);
+  font-size:.7rem;
+  font-weight:550;
+  letter-spacing:.035em;
+  line-height:1.45;
+}
+.rv-breadcrumbs ol {
+  display:flex;
+  flex-wrap:wrap;
+  align-items:center;
+  gap:.35rem .55rem;
+  margin:0;
+  padding:0;
+  list-style:none;
+}
+.rv-breadcrumbs li {
+  display:flex;
+  align-items:center;
+  min-width:0;
+}
+.rv-breadcrumbs li + li::before {
+  content:"/";
+  margin-right:.55rem;
+  color:currentColor;
+  opacity:.65;
+}
+.rv-entry-hero .rv-breadcrumbs a {
+  color:#fff;
+  text-decoration:underline;
+  text-decoration-color:rgba(255,255,255,.55);
+  text-underline-offset:.2em;
+}
+.rv-entry-hero .rv-breadcrumbs a:hover,
+.rv-entry-hero .rv-breadcrumbs a:focus-visible {
+  color:var(--color-wheat);
+  text-decoration-color:currentColor;
+}
+.rv-entry-hero .rv-breadcrumbs [aria-current="page"] {
+  display:block;
+  max-width:min(42ch, 48vw);
+  overflow:hidden;
+  color:#f2f4ef;
+  text-overflow:ellipsis;
+  white-space:nowrap;
+}
+.rv-single-hero .rv-breadcrumbs {
+  margin-bottom:1.1rem;
+  color:var(--color-muted);
+  font-family:var(--font-mono);
+  font-size:.72rem;
+  letter-spacing:.04em;
+  line-height:1.45;
+  text-transform:uppercase;
+}
+.rv-single-hero .rv-breadcrumbs a { color:inherit; text-decoration:none; }
+.rv-single-hero .rv-breadcrumbs [aria-current="page"] { color:var(--color-ink); }
+@media(max-width:640px) {
+  body.single-post .rv-entry-hero { min-height:38rem; }
+  body.single-post .rv-entry-hero > .rv-hero-inner { justify-content:flex-end; }
+  .rv-entry-hero-copy { gap:.8rem; }
+  .rv-entry-hero-dek { font-size:1rem; line-height:1.52; }
+  .rv-entry-hero-info { align-items:flex-start; flex-direction:column; gap:.65rem; }
+  .rv-entry-hero .rv-breadcrumbs [aria-current="page"] {
+    max-width:calc(100vw - (2 * var(--gutter)) - 1.5rem);
+  }
+}
+
 /* ============================================================
    In-article summary + table of contents box (single posts)
    aside.rv-tldr prefix beats a stale Additional CSS snapshot of these rules.

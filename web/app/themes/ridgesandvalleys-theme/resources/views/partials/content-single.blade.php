@@ -1,17 +1,19 @@
 <div class="rv-progress" aria-hidden="true"><span class="rv-progress-bar"></span></div>
 
 <article @php(post_class('rv-single'))>
-  <header class="rv-single-hero">
-    <div class="rv-entry">
-      {!! \App\breadcrumbs() !!}
-      @php($cats = get_the_category())
-      @if (! empty($cats))
-        {!! \App\eyebrow($cats[0]->name) !!}
-      @endif
-      @unless (\App\entry_hero_enabled())<h1 class="rv-single-title">{!! get_the_title() !!}</h1>@endunless
-      {!! \App\post_meta() !!}
-    </div>
-  </header>
+  @unless (\App\entry_hero_enabled())
+    <header class="rv-single-hero">
+      <div class="rv-entry">
+        {!! \App\breadcrumbs() !!}
+        @php($cats = get_the_category())
+        @if (! empty($cats))
+          {!! \App\eyebrow($cats[0]->name) !!}
+        @endif
+        <h1 class="rv-single-title">{!! get_the_title() !!}</h1>
+        {!! \App\post_meta() !!}
+      </div>
+    </header>
+  @endunless
 
   @if (! \App\entry_hero_enabled() && has_post_thumbnail())
     <figure class="rv-single-figure">@php(the_post_thumbnail('rv-hero', ['class' => 'rv-single-image', 'loading' => 'eager', 'fetchpriority' => 'high', 'decoding' => 'async']))</figure>
@@ -23,7 +25,7 @@
   @endif
 
   @php($rvToc = \App\post_toc_data())
-  @php($rvSummary = \App\post_summary())
+  @php($rvSummary = \App\entry_hero_enabled() ? '' : \App\post_summary())
   @if ($rvSummary || count($rvToc['items']) > 1)
     <div class="rv-entry">
       <aside class="rv-tldr" aria-label="{{ __('Article summary and contents', 'sage') }}">

@@ -775,15 +775,14 @@ function breadcrumbs(): string
 
     foreach ($items as $i => $it) {
         if ($i === $last) {
-            $links[] = '<span aria-current="page" style="color:var(--color-ink)">' . esc_html($it['name']) . '</span>';
+            $links[] = '<li><span aria-current="page">' . esc_html($it['name']) . '</span></li>';
         } else {
-            $links[] = '<a href="' . esc_url($it['url']) . '" style="color:inherit;text-decoration:none">' . esc_html($it['name']) . '</a>';
+            $links[] = '<li><a href="' . esc_url($it['url']) . '">' . esc_html($it['name']) . '</a></li>';
         }
     }
 
-    return '<nav class="rv-breadcrumbs" aria-label="' . esc_attr__('Breadcrumb', 'sage')
-        . '" style="font-family:var(--font-mono);font-size:.72rem;letter-spacing:.04em;text-transform:uppercase;color:var(--color-muted);margin-bottom:1.1rem;display:flex;flex-wrap:wrap;gap:.45rem;align-items:center">'
-        . implode('<span aria-hidden="true" style="opacity:.55">/</span>', $links)
+    return '<nav class="rv-breadcrumbs" aria-label="' . esc_attr__('Breadcrumb', 'sage') . '">'
+        . '<ol>' . implode('', $links) . '</ol>'
         . '</nav>';
 }
 
