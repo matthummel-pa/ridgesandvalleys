@@ -1923,7 +1923,7 @@ function page_field_map(): array
                 ['hero_bg', __('Hero background image', 'sage'), 'image', __('Built-in until you choose one.', 'sage')],
             ],
             __('Contact details', 'sage') => [
-                ['contact_email', __('Email address', 'sage'), 'text', 'matthew.r.hummel@gmail.com'],
+                ['contact_email', __('Email address', 'sage'), 'text', 'matt@ridgesandvalleys.com'],
                 ['contact_phone', __('Phone (leave blank to hide)', 'sage'), 'text', ''],
                 ['contact_hours', __('Hours', 'sage'), 'text', __('Mon–Fri, 9am–5pm · evenings by appointment', 'sage')],
             ],
@@ -1955,7 +1955,10 @@ function page_field_map(): array
                 ['cnt_form_intro', __('Intro under the heading', 'sage'), 'textarea', __('Skip anything you’re not sure about. Required fields are name, email, what you need, and what a win would look like.', 'sage')],
                 ['cnt_form_btn', __('Submit button', 'sage'), 'text', __('Send my request', 'sage')],
                 ['cnt_form_fine', __('Line under the button', 'sage'), 'text', __('No mailing list. A real reply from Matt — usually within a business day.', 'sage')],
-                ['cnt_form_success', __('Success message', 'sage'), 'textarea', __('Thanks — I have it. I’ll reply within a business day, usually with a few questions and a clear next step.', 'sage')],
+                ['cnt_form_success_title', __('Success · heading', 'sage'), 'text', __('Your request was sent', 'sage')],
+                ['cnt_form_success', __('Success · confirmation', 'sage'), 'textarea', __('Thanks — it’s in Matt’s inbox. You’ll get a personal reply from Ridges & Valleys Studio, not a ticket.', 'sage')],
+                ['cnt_form_success_when', __('Success · when you’ll hear back', 'sage'), 'textarea', __('Expect a reply within one business day (Monday–Friday). If you wrote on a weekend or holiday, look for a note Monday morning.', 'sage')],
+                ['cnt_form_success_note', __('Success · extra note', 'sage'), 'textarea', __('Need to add something? Email matt@ridgesandvalleys.com from the address you used on the form.', 'sage')],
             ],
             __('Contact form — fields', 'sage') => [
                 ['cquote_fields', __('Quote form fields', 'sage'), 'repeater', contact_field_defaults(), [
@@ -1984,9 +1987,9 @@ function page_field_map(): array
                 ], 'formbuilder'],
             ],
             __('Contact form — auto-reply', 'sage') => [
-                ['cform_ar_enable', __('Send an automatic reply to the sender', 'sage'), 'checkbox', '0'],
-                ['cform_ar_subject', __('Auto-reply subject', 'sage'), 'text', __('Thanks for reaching out — Ridges & Valleys Studio', 'sage')],
-                ['cform_ar_body', __('Auto-reply message', 'sage'), 'html', "Thanks for getting in touch — I have received your message and will personally reply within one business day.\n\n— Matt, Ridges & Valleys Studio"],
+                ['cform_ar_enable', __('Send an automatic reply to the sender', 'sage'), 'checkbox', '1'],
+                ['cform_ar_subject', __('Auto-reply subject', 'sage'), 'text', __('Your quote request was sent — Ridges & Valleys Studio', 'sage')],
+                ['cform_ar_body', __('Auto-reply message (blank = use the on-page confirmation copy)', 'sage'), 'html', ''],
                 ['cform_ar_copy', __('Include a copy of their message', 'sage'), 'checkbox', '1'],
             ],
             __('Contact form — consent', 'sage') => [

@@ -1071,8 +1071,8 @@ add_action('customize_register', function ($wp_customize) {
 
     /* Contact */
     $wp_customize->add_section('rv_contact', ['title' => __('Contact', 'sage'), 'panel' => 'rv_theme_options']);
-    $wp_customize->add_setting('rv_contact_email', ['default' => get_option('admin_email'), 'sanitize_callback' => 'sanitize_email']);
-    $wp_customize->add_control('rv_contact_email', ['label' => __('Email address', 'sage'), 'description' => __('Shown in the footer contact block and used as the contact-form recipient.', 'sage'), 'section' => 'rv_contact', 'type' => 'email']);
+    $wp_customize->add_setting('rv_contact_email', ['default' => 'matt@ridgesandvalleys.com', 'sanitize_callback' => 'sanitize_email']);
+    $wp_customize->add_control('rv_contact_email', ['label' => __('Email address', 'sage'), 'description' => __('Shown in the footer. Quote requests go to this address when it is @ridgesandvalleys.com; otherwise they go to matt@ridgesandvalleys.com.', 'sage'), 'section' => 'rv_contact', 'type' => 'email']);
 
     $wp_customize->add_setting('rv_contact_phone', ['default' => '223-340-8098', 'sanitize_callback' => 'sanitize_text_field']);
     $wp_customize->add_control('rv_contact_phone', ['label' => __('Phone number', 'sage'), 'description' => __('Shown in the footer. The tel: link is generated automatically.', 'sage'), 'section' => 'rv_contact', 'type' => 'text']);

@@ -61,6 +61,10 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   Card photos share one height and fill the frame (no pine-green letterbox).
 - **Journal TOC heading is “In this article”** (H2, Google’s jump-link
   phrasing), on a closed-by-default toggle that shows **Open** or **Close**.
+- **Contact form delivers to `matt@ridgesandvalleys.com`.** A Customizer
+  address only wins if it is already `@ridgesandvalleys.com`.
+- **Successful quote requests show a confirmation** (sent, when you’ll hear
+  back, what happens next) and email the same note to the sender.
 - **Journal article lists** use a small clay-to-pine diamond marker (with a
   soft halo) instead of default discs — including in-article jump links.
   Jump-link styles are scoped to `aside.rv-tldr` so they still win if

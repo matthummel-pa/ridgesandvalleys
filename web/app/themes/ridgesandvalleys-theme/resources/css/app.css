@@ -552,6 +552,18 @@ body.single-post .rv-prose > ol > li > ol {
 .rv-note { padding: 0.9rem 1.1rem; border-radius: 14px; margin-bottom: 1.5rem; font-weight: 500; }
 .rv-note-ok { background: #E7EDE6; color: var(--color-pine-deep); border-left: 3px solid var(--color-pine); }
 .rv-note-err { background: #f7e4de; color: #7a2e1c; border-left: 3px solid var(--color-clay); }
+.rv-form-sent { background: var(--color-surface); border: 1.5px solid var(--color-line); border-left: 4px solid var(--color-pine); border-radius: 16px; padding: 1.4rem 1.5rem 1.55rem; box-shadow: var(--shadow-soft); }
+.rv-form-sent:focus { outline: none; }
+.rv-form-sent:focus-visible { outline: 2px solid var(--color-clay); outline-offset: 3px; }
+.rv-form-sent-kicker { margin: 0 0 .35rem; font-family: var(--font-mono); font-size: .68rem; letter-spacing: .1em; text-transform: uppercase; color: var(--color-clay); font-weight: 700; }
+.rv-form-sent-title { margin: 0 0 .65rem; font-family: var(--font-display); font-size: clamp(1.45rem, 2.4vw, 1.85rem); line-height: 1.2; color: var(--color-ink); }
+.rv-form-sent-lede, .rv-form-sent-when, .rv-form-sent-note { margin: 0 0 .85rem; font-size: 1.02rem; line-height: 1.62; color: var(--color-ink); }
+.rv-form-sent-when { color: var(--color-body); }
+.rv-form-sent-next { margin: 1.1rem 0 .55rem; font-family: var(--font-display); font-size: 1.08rem; color: var(--color-ink); }
+.rv-form-sent-steps { margin: 0 0 1.1rem; padding: 0; list-style: none; display: grid; gap: .7rem; }
+.rv-form-sent-steps li { position: relative; padding-left: 1.85rem; color: var(--color-body); line-height: 1.5; }
+.rv-form-sent-steps li::before { content: ""; position: absolute; left: .2rem; top: .55em; width: .42rem; height: .42rem; background: linear-gradient(135deg, var(--color-clay), var(--color-pine)); border-radius: 2px; transform: rotate(45deg); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-pine) 12%, transparent); }
+.rv-form-sent-note { margin-bottom: 0; color: var(--color-muted); font-size: .95rem; }
 .rv-searchform { display: flex; gap: 0.5rem; max-width: 480px; }
 .rv-searchform .rv-search-input { flex: 1; }
 

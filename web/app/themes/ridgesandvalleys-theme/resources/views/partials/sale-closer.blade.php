@@ -6,7 +6,7 @@
 @php($blogId = isset($blogId) ? (int) $blogId : (int) get_option('page_for_posts'))
 @php($bid = $blogId ?: null)
 @php($ctaHref = $ctaHref ?? \App\cta_href(get_theme_mod('rv_cta_url', '/contact/')))
-@php($cEmail = 'matthew.r.hummel@gmail.com')
+@php($cEmail = \App\contact_studio_email())
 @php($toolsHref = home_url('/website-grader/'))
 
 <section class="rv-band rv-band-alt rv-closer" aria-labelledby="rv-closer-title">

@@ -4,7 +4,7 @@
 @extends('layouts.app')
 
 @php
-$cEmail = \App\field('contact_email', 'matthew.r.hummel@gmail.com');
+$cEmail = \App\contact_display_email();
 $cPhone = trim((string) \App\field('contact_phone', ''));
 $cPhoneHref = $cPhone ? preg_replace('/[^0-9+]/', '', $cPhone) : '';
 $cHours = \App\field('contact_hours', __('Mon–Fri, 9am–5pm · evenings by appointment', 'sage'));
@@ -98,11 +98,16 @@ $svgClock = '<svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke=
   <section class="rv-shell rv-band rv-contact-main" id="contact-form">
     <div class="rv-contact-grid">
       <div class="rv-contact-formcol">
-        {!! \App\eyebrow(\App\field('cnt_form_eyebrow', __('Quote request', 'sage'))) !!}
-        <h2 class="rv-section-title" style="margin-top:.4rem">{{ \App\field('cnt_form_title', __('A few details.', 'sage')) }} <em class="rv-accent">{{ \App\field('cnt_form_accent', __('That’s enough.', 'sage')) }}</em></h2>
-        <p class="rv-page-intro rv-cnt-form-intro">{{ \App\field('cnt_form_intro', __('Skip anything you’re not sure about. Required fields are name, email, what you need, and what a win would look like.', 'sage')) }}</p>
+        @php($formStatus = isset($_GET['contact']) ? sanitize_key(wp_unslash($_GET['contact'])) : '')
+        @if ($formStatus !== 'success')
+          {!! \App\eyebrow(\App\field('cnt_form_eyebrow', __('Quote request', 'sage'))) !!}
+          <h2 class="rv-section-title" style="margin-top:.4rem">{{ \App\field('cnt_form_title', __('A few details.', 'sage')) }} <em class="rv-accent">{{ \App\field('cnt_form_accent', __('That’s enough.', 'sage')) }}</em></h2>
+          <p class="rv-page-intro rv-cnt-form-intro">{{ \App\field('cnt_form_intro', __('Skip anything you’re not sure about. Required fields are name, email, what you need, and what a win would look like.', 'sage')) }}</p>
+        @endif
         <div class="rv-contact-wrap">@php(\App\contact_form())</div>
-        <p class="rv-cnt-fine">{{ \App\field('cnt_form_fine', __('No mailing list. A real reply from Matt — usually within a business day.', 'sage')) }}</p>
+        @if ($formStatus !== 'success')
+          <p class="rv-cnt-fine">{{ \App\field('cnt_form_fine', __('No mailing list. A real reply from Matt — usually within a business day.', 'sage')) }}</p>
+        @endif
       </div>
 
       <div class="rv-contact-side">

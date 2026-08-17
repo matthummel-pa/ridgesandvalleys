@@ -155,6 +155,93 @@ function contact_fields_normalize(array $rows): array
     return $out;
 }
 
+/** Public studio inbox used for quotes and mailto links. */
+function contact_studio_email(): string
+{
+    return 'matt@ridgesandvalleys.com';
+}
+
+/**
+ * Where quote requests are delivered. Always a @ridgesandvalleys.com address,
+ * defaulting to Matt’s inbox. A Customizer address on that domain still wins.
+ */
+function contact_recipient_email(): string
+{
+    $studio = contact_studio_email();
+    $mod    = strtolower(sanitize_email((string) get_theme_mod('rv_contact_email', $studio)));
+    if (is_email($mod) && str_ends_with($mod, '@ridgesandvalleys.com')) {
+        return $mod;
+    }
+
+    return $studio;
+}
+
+/** Public email shown on the Contact page (never a leftover Gmail default). */
+function contact_display_email(?int $post_id = null): string
+{
+    $studio = contact_studio_email();
+    $saved  = sanitize_email((string) field('contact_email', $studio, $post_id));
+    if (! is_email($saved) || preg_match('/@(gmail|googlemail)\./i', $saved)) {
+        return $studio;
+    }
+
+    return $saved;
+}
+
+/** @return list<array{strong:string,text:string}> */
+function contact_success_steps(?int $post_id = null): array
+{
+    $rows = field_rows('cnt_next', contact_next_defaults(), $post_id);
+
+    return is_array($rows) && $rows !== [] ? $rows : contact_next_defaults();
+}
+
+/** Plain-text confirmation emailed back to the person who submitted the form. */
+function contact_sender_confirmation_body(string $name, array $lines, ?int $post_id = null): string
+{
+    $hello = $name !== ''
+        ? sprintf(__('Hi %s,', 'sage'), $name)
+        : __('Hi,', 'sage');
+
+    $lede = field(
+        'cnt_form_success',
+        __('Your request reached Matt at Ridges & Valleys Studio. This is a confirmation that it was sent — you’ll get a personal reply, not a ticket.', 'sage'),
+        $post_id
+    );
+    $when = field(
+        'cnt_form_success_when',
+        __('Expect a reply within one business day (Monday–Friday). Messages sent on a weekend or holiday get a note Monday morning.', 'sage'),
+        $post_id
+    );
+    $note = field(
+        'cnt_form_success_note',
+        sprintf(__('Need to add something? Email %s from the address you used on the form.', 'sage'), contact_studio_email()),
+        $post_id
+    );
+
+    $parts = [$hello, '', wp_strip_all_tags((string) $lede), '', wp_strip_all_tags((string) $when), ''];
+    $parts[] = __('What happens next', 'sage');
+    foreach (contact_success_steps($post_id) as $step) {
+        $strong = strip_field_markers(trim((string) ($step['strong'] ?? '')));
+        $text   = strip_field_markers(trim((string) ($step['text'] ?? '')));
+        if ($strong === '' && $text === '') {
+            continue;
+        }
+        $parts[] = '• ' . trim($strong . ' ' . $text);
+    }
+    $parts[] = '';
+    $parts[] = wp_strip_all_tags((string) $note);
+    $parts[] = '';
+    $parts[] = __('Here’s a copy of what you sent:', 'sage');
+    $parts[] = implode("\n", $lines);
+    $parts[] = '';
+    $parts[] = __('— Matt', 'sage');
+    $parts[] = __('Ridges & Valleys Studio', 'sage');
+    $parts[] = contact_studio_email();
+
+    return implode("\n", $parts) . "\n";
+}
+
 /** Sanitize one submitted value by its field type (with a sane length cap). */
 function contact_sanitize_value(string $type, $raw): string
 {
@@ -357,7 +444,7 @@ add_action('init', function () {
 
     set_transient($key, 1, 30);
 
-    $to = get_theme_mod('rv_contact_email', get_option('admin_email'));
+    $to = contact_recipient_email();
     /* translators: %s: site name. */
     $subject = sprintf(__('[%s] New quote request', 'sage'), wp_specialchars_decode(get_bloginfo('name')));
     if ($inquiry !== '') {
@@ -373,19 +460,20 @@ add_action('init', function () {
 
     $sent = wp_mail($to, $subject, $body, $headers);
 
-    // Optional auto-reply to the sender (uses the email field they filled in).
-    if ($sent && $reply_email !== '' && field('cform_ar_enable', '0', $page_id) === '1') {
-        $ar_subject = field('cform_ar_subject', __('Thanks for reaching out', 'sage'), $page_id);
-        $ar_body    = wp_strip_all_tags((string) field('cform_ar_body', '', $page_id));
+    if ($sent && $reply_email !== '') {
+        $ar_subject = field(
+            'cform_ar_subject',
+            __('Your quote request was sent — Ridges & Valleys Studio', 'sage'),
+            $page_id
+        );
+        $custom_body = wp_strip_all_tags((string) field('cform_ar_body', '', $page_id));
+        $ar_body     = $custom_body !== ''
+            ? $custom_body . "\n\n" . __('Here’s a copy of what you sent:', 'sage') . "\n" . implode("\n", $lines)
+            : contact_sender_confirmation_body($reply_name, $lines, $page_id);
 
-        if (field('cform_ar_copy', '1', $page_id) === '1') {
-            $ar_body .= "\n\n" . __('Here\'s a copy of what you sent:', 'sage') . "\n" . implode("\n", $lines);
-        }
-
-        $site       = wp_specialchars_decode(get_bloginfo('name'));
         $ar_headers = [
             'Content-Type: text/plain; charset=UTF-8',
-            'Reply-To: ' . $site . ' <' . $to . '>',
+            'Reply-To: Ridges & Valleys Studio <' . $to . '>',
         ];
         wp_mail($reply_email, $ar_subject, trim($ar_body) . "\n", $ar_headers);
     }
@@ -393,6 +481,50 @@ add_action('init', function () {
     wp_safe_redirect(add_query_arg('contact', $sent ? 'success' : 'error', $redirect));
     exit;
 });
+
+/**
+ * Render the contact form (echoes). Called from the Contact Blade template.
+ * Fields and design come from the page's editor settings.
+ */
+function contact_form_success(?int $post_id = null): void
+{
+    $title = field('cnt_form_success_title', __('Your request was sent', 'sage'), $post_id);
+    $lede  = field(
+        'cnt_form_success',
+        __('Thanks — it’s in Matt’s inbox. You’ll get a personal reply from Ridges & Valleys Studio, not a ticket.', 'sage'),
+        $post_id
+    );
+    $when = field(
+        'cnt_form_success_when',
+        __('Expect a reply within one business day (Monday–Friday). If you wrote on a weekend or holiday, look for a note Monday morning.', 'sage'),
+        $post_id
+    );
+    $note = field(
+        'cnt_form_success_note',
+        sprintf(__('Need to add something? Email %s from the address you used on the form.', 'sage'), contact_studio_email()),
+        $post_id
+    );
+
+    echo '<div class="rv-form-sent" id="rv-form-sent" tabindex="-1" role="status">';
+    echo '<p class="rv-form-sent-kicker">' . esc_html__('Confirmation', 'sage') . '</p>';
+    echo '<h2 class="rv-form-sent-title">' . esc_html($title) . '</h2>';
+    echo '<p class="rv-form-sent-lede">' . esc_html($lede) . '</p>';
+    echo '<p class="rv-form-sent-when">' . esc_html($when) . '</p>';
+    echo '<h3 class="rv-form-sent-next">' . esc_html__('What to expect next', 'sage') . '</h3>';
+    echo '<ol class="rv-form-sent-steps">';
+    foreach (contact_success_steps($post_id) as $step) {
+        $strong = strip_field_markers(trim((string) ($step['strong'] ?? '')));
+        $text   = strip_field_markers(trim((string) ($step['text'] ?? '')));
+        if ($strong === '' && $text === '') {
+            continue;
+        }
+        echo '<li><strong>' . esc_html($strong) . '</strong> ' . esc_html($text) . '</li>';
+    }
+    echo '</ol>';
+    echo '<p class="rv-form-sent-note">' . esc_html($note) . '</p>';
+    echo '</div>';
+    echo '<script>requestAnimationFrame(function(){var el=document.getElementById("rv-form-sent");if(!el)return;el.focus({preventScroll:true});el.scrollIntoView({behavior:"smooth",block:"start"});});</script>';
+}
 
 /**
  * Render the contact form (echoes). Called from the Contact Blade template.
@@ -413,7 +545,6 @@ function contact_form(?int $post_id = null): void
     $btn_icon_pos = 'before';
     $label_style = strip_field_markers((string) field('cform_label_style', 'top', $post_id));
     $field_style = strip_field_markers((string) field('cform_field_style', 'box', $post_id));
-    $success_msg = field('cnt_form_success', __('Thanks — I have it. I’ll reply within a business day, usually with a few questions and a clear next step.', 'sage'), $post_id);
 
     $nolabels = ($label_style === 'hidden');
     if (! in_array($field_style, ['box', 'soft', 'underline'], true)) {
@@ -424,8 +555,10 @@ function contact_form(?int $post_id = null): void
     $inquiry = contact_inquiry_package();
 
     if ($status === 'success') {
-        echo '<div class="rv-note rv-note-ok" role="status">' . esc_html($success_msg) . '</div>';
-    } elseif ($status === 'error') {
+        contact_form_success($post_id);
+        return;
+    }
+    if ($status === 'error') {
         echo '<div class="rv-note rv-note-err" role="alert">' . esc_html__('Something went wrong. Please check the fields and try again.', 'sage') . '</div>';
     } elseif ($status === 'spam') {
         echo '<div class="rv-note rv-note-err" role="alert">' . esc_html__('Please wait a moment before sending again.', 'sage') . '</div>';
