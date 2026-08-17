@@ -201,6 +201,55 @@ function initFooterNewsletter(): void {
   });
 }
 
+function initHomeProofFilters(): void {
+  const root = document.querySelector<HTMLElement>('[data-rv-home-proof]');
+  if (!root) return;
+
+  const bar = root.querySelector<HTMLElement>('[data-rv-home-proof-filters]');
+  const grid = root.querySelector<HTMLElement>('[data-rv-home-proof-grid]');
+  if (!bar || !grid) return;
+
+  const cards = Array.from(grid.querySelectorAll<HTMLElement>('.rv-proof-item'));
+  const buttons = Array.from(bar.querySelectorAll<HTMLButtonElement>('.rv-filter'));
+  const countEl = root.querySelector<HTMLElement>('[data-rv-home-proof-count]');
+  const emptyEl = root.querySelector<HTMLElement>('[data-rv-home-proof-empty]');
+  const emptyAll = emptyEl?.querySelector<HTMLButtonElement>('.rv-work-empty-all');
+  const limit = Math.max(1, parseInt(grid.dataset.limit || '3', 10) || 3);
+  if (!cards.length || !buttons.length) return;
+
+  const noun = (n: number): string => (n === 1 ? 'project' : 'projects');
+
+  const apply = (filter: string): void => {
+    let shown = 0;
+    cards.forEach((card) => {
+      const match = filter === 'all' || card.getAttribute('data-cat') === filter;
+      const visible = match && shown < limit;
+      if (match && visible) shown += 1;
+      card.classList.toggle('is-hidden', !visible);
+    });
+    if (countEl) {
+      countEl.textContent = `Showing ${shown} ${noun(shown)}`;
+    }
+    if (emptyEl) emptyEl.hidden = shown !== 0;
+  };
+
+  const run = (btn: HTMLButtonElement): void => {
+    if (btn.getAttribute('aria-pressed') === 'true') return;
+    buttons.forEach((b) => {
+      b.setAttribute('aria-pressed', b === btn ? 'true' : 'false');
+    });
+    apply(btn.getAttribute('data-filter') || 'all');
+  };
+
+  buttons.forEach((btn) => {
+    btn.addEventListener('click', () => run(btn));
+  });
+  emptyAll?.addEventListener('click', () => {
+    const all = bar.querySelector<HTMLButtonElement>('[data-filter="all"]');
+    if (all) run(all);
+  });
+}
+
 function initToolFilters(): void {
   const bar = document.querySelector<HTMLElement>('[data-rv-tool-filters]');
   const hub = document.querySelector<HTMLElement>('[data-rv-toolhub]');
@@ -236,4 +285,5 @@ document.addEventListener('DOMContentLoaded', () => {
   initFooterAccordion();
   initFooterNewsletter();
   initToolFilters();
+  initHomeProofFilters();
 });
