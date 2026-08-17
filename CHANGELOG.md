@@ -50,7 +50,7 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
   built-in tools (not blocks). Hero H1/lede use the full content width, with
   extra space between the eyebrow and the main navigation.
 - **Interior page and post heroes** match that same H1/lede width and top
-  padding (homepage hero is unchanged).
+  padding. The homepage hero now uses the same measure.
 - **Journal and Work category filters** scroll with the page instead of
   sticking under the header.
 - **README expanded** — four new sections: "Editing page copy without a deploy" (the
