@@ -42,21 +42,57 @@
 .rv-ops legend { margin-bottom:1.2rem; color:var(--ops-green); font-size:clamp(1.45rem,3vw,2rem); font-weight:750; line-height:1.1; }
 .rv-ops__hint { margin:-.6rem 0 1.25rem; max-width:65ch; font-size:.94rem; }
 .rv-ops__grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1rem 1.2rem; }
-.rv-ops label { display:grid; gap:.42rem; color:var(--ops-green); font-size:.88rem; font-weight:750; }
-.rv-ops label span { color:var(--ops-accent); }
+/* Match the contact page's form language inside the journal tool. */
+.rv-ops label {
+  display:grid; gap:.4rem; margin:0;
+  color:var(--color-ink, #23201b);
+  font-family:var(--font-display);
+  font-size:.95rem;
+  font-weight:600;
+}
+.rv-ops label span { color:var(--color-clay, #b0553a); }
 .rv-ops__wide { grid-column:1/-1; }
 .rv-ops input, .rv-ops textarea, .rv-ops select {
-  width:100%; margin:0; padding:.82rem .9rem; color:var(--ops-ink); font:inherit; font-weight:450;
-  background:#fff; border:1px solid rgba(23,63,53,.27); border-radius:.55rem;
+  width:100%;
+  margin:0;
+  padding:.8rem .95rem;
+  color:var(--color-ink, #23201b);
+  font-family:var(--font-body);
+  font-size:1rem;
+  line-height:1.65;
+  font-weight:400;
+  background:var(--color-surface, #fcf8f0);
+  border:1.5px solid var(--color-line, #e7dcc8);
+  border-radius:14px;
 }
-.rv-ops input:focus, .rv-ops textarea:focus, .rv-ops select:focus { outline:3px solid rgba(184,95,56,.22); border-color:var(--ops-accent); }
+.rv-ops textarea { resize:vertical; }
+.rv-ops input::placeholder, .rv-ops textarea::placeholder { color:var(--color-muted, #6e6558); opacity:.82; }
+.rv-ops input:focus, .rv-ops textarea:focus, .rv-ops select:focus {
+  outline:none;
+  border-color:var(--color-pine, #2e5245);
+  box-shadow:0 0 0 3px color-mix(in srgb, var(--color-pine, #2e5245) 14%, transparent);
+}
 .rv-ops__nav, .rv-ops__result-actions { display:flex; flex-wrap:wrap; gap:.7rem; margin-top:1.6rem; }
 .rv-ops__button {
-  appearance:none; padding:.78rem 1.05rem; color:#fff; background:var(--ops-green);
-  border:1px solid var(--ops-green); border-radius:999px; font:inherit; font-size:.88rem; font-weight:800; cursor:pointer;
+  appearance:none;
+  padding:.8rem 1.4rem;
+  color:#fff;
+  background:var(--color-pine, #2e5245);
+  border:1.5px solid transparent;
+  border-radius:999px;
+  font-family:var(--font-display);
+  font-size:.98rem;
+  line-height:1;
+  font-weight:700;
+  cursor:pointer;
 }
-.rv-ops__button:hover { transform:translateY(-1px); }
-.rv-ops__button--quiet { color:var(--ops-green); background:transparent; }
+.rv-ops__button:hover { transform:translateY(-2px); background:var(--color-pine-deep, #213d33); }
+.rv-ops__button--quiet {
+  color:var(--color-pine, #2e5245);
+  background:var(--color-surface, #fcf8f0);
+  border-color:var(--color-line, #e7dcc8);
+}
+.rv-ops__button--quiet:hover { color:var(--color-pine-deep, #213d33); border-color:var(--color-pine, #2e5245); background:var(--color-surface, #fcf8f0); }
 .rv-ops__privacy { margin:1.1rem 0 0; font-size:.78rem; opacity:.72; }
 .rv-ops__results-head { display:flex; align-items:flex-end; justify-content:space-between; gap:1.5rem; margin-bottom:1.2rem; color:var(--ops-green); }
 .rv-ops__results-head .rv-ops__eyebrow { color:var(--ops-accent); }
