@@ -59,6 +59,10 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 - **Homepage featured work** is a filterable three-column grid (max three
   projects at a time), with the screenshot on top and the story underneath.
   Card photos share one height and fill the frame (no pine-green letterbox).
+- **Journal posts: “The short version” is a closed toggle** so the summary is
+  one click away instead of always open. Jump links stay visible below it.
+- **Journal article lists** use a small clay-to-pine diamond marker (with a
+  soft halo) instead of default discs — including in-article jump links.
 - **README expanded** — four new sections: "Editing page copy without a deploy" (the
   `\App\field()` / `field_lines()` / `field_rows()` helpers, and why routine copy
   changes should never need a deploy), "Verifying a deploy actually landed" (match the
@@ -76,6 +80,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
 ### Removed
 
+- **“In this article” from the post sidebar.** Jump links live in the article
+  box only; the sidebar starts with the quote CTA.
 - **Gutenberg on the Free Tools template** — the block editor is hidden, and
   leftover block markup is cleared on save so the page cannot drift back to
   editor content.

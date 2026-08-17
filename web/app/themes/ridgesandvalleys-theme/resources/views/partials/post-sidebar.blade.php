@@ -1,12 +1,6 @@
 {{-- Bespoke single-post sidebar: engagement + local-SEO side content. --}}
 <aside class="rv-sidebar rv-post-sidebar" aria-label="{{ __('More resources', 'sage') }}">
 
-  {{-- In this article (auto table of contents, JS-built from the post's H2s) --}}
-  <nav class="rv-side-card rv-side-toc" id="rv-toc" aria-label="{{ __('In this article', 'sage') }}" hidden>
-    <h2 class="rv-side-title">{{ __('In this article', 'sage') }}</h2>
-    <ol class="rv-toc-list"></ol>
-  </nav>
-
   {{-- Quote CTA — same primary as the Journal closer. --}}
   <div class="rv-side-card rv-side-cta">
     <span class="rv-side-eyebrow">{{ __('Fixed price · no pressure', 'sage') }}</span>
@@ -60,28 +54,3 @@
   </div>
 
 </aside>
-
-@verbatim
-<script>
-(function () {
-  var toc = document.getElementById('rv-toc');
-  if (!toc) return;
-  var heads = document.querySelectorAll('.rv-content .rv-prose h2');
-  if (heads.length < 2) return;
-  var ol = toc.querySelector('.rv-toc-list');
-  Array.prototype.forEach.call(heads, function (h, i) {
-    if (!h.id) {
-      var s = (h.textContent || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 40);
-      h.id = 'sec-' + (i + 1) + (s ? '-' + s : '');
-    }
-    var li = document.createElement('li');
-    var a = document.createElement('a');
-    a.href = '#' + h.id;
-    a.textContent = h.textContent;
-    li.appendChild(a);
-    ol.appendChild(li);
-  });
-  toc.hidden = false;
-})();
-</script>
-@endverbatim

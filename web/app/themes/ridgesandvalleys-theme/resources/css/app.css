@@ -465,7 +465,14 @@ body:not(.home) .rv-page-intro { max-width: 48ch; font-size: 1.05rem; line-heigh
 .rv-prose h3 { font-size: 1.5rem; margin-top: 1.75em; }
 .rv-prose a { text-decoration: underline; }
 .rv-prose ul, .rv-prose ol { margin: 0 0 1.15em; padding-left: 1.25rem; }
+.rv-prose ul:not(.rv-tags) { list-style: none; padding-left: 0; }
+.rv-prose ul:not(.rv-tags) > li { position: relative; padding-left: 1.45rem; margin-bottom: 0.55em; }
+.rv-prose ul:not(.rv-tags) > li::before { content: ""; position: absolute; left: 0.12rem; top: 0.62em; width: 0.42rem; height: 0.42rem; background: linear-gradient(135deg, var(--color-clay), var(--color-pine)); border-radius: 2px; transform: rotate(45deg); box-shadow: 0 0 0 3px color-mix(in srgb, var(--color-pine) 12%, transparent); }
+.rv-prose ul:not(.rv-tags) > li > ul { margin: 0.45em 0 0; }
+.rv-prose ol { padding-left: 1.35rem; }
 .rv-prose li { margin-bottom: 0.4em; }
+.rv-prose ul:not(.rv-tags) a { text-decoration: none; border-bottom: 1px solid color-mix(in srgb, var(--color-pine) 28%, transparent); text-underline-offset: 0.15em; }
+.rv-prose ul:not(.rv-tags) a:hover { color: var(--color-pine); border-bottom-color: var(--color-pine); }
 .rv-prose img { border-radius: 14px; margin-block: 1.5rem; }
 .rv-single-tags { margin-top: 2.5rem; }
 .rv-tags { list-style: none; display: flex; flex-wrap: wrap; gap: 0.5rem; padding: 0; margin: 0; }
@@ -1267,12 +1274,6 @@ html[data-theme="dark"] .rv-serp-desc { color: #bdc1c6; }
 .rv-side-nap-line { font-size: 0.9rem; margin: 0.15rem 0; color: var(--color-ink); }
 .rv-side-nap-line a { color: var(--color-pine); text-decoration: none; }
 .rv-side-nap-line a:hover { color: var(--color-clay); }
-/* Table of contents */
-.rv-toc-list { list-style: none; margin: 0; padding: 0; counter-reset: rvtoc; }
-.rv-toc-list li { counter-increment: rvtoc; }
-.rv-toc-list a { display: block; padding: 0.35rem 0 0.35rem 1.7rem; position: relative; color: var(--color-ink); text-decoration: none; font-size: 0.88rem; line-height: 1.35; border-left: 2px solid var(--color-line); }
-.rv-toc-list a::before { content: counter(rvtoc); position: absolute; left: 0.55rem; top: 0.35rem; font-family: var(--font-mono); font-size: 0.7rem; color: var(--color-clay); }
-.rv-toc-list a:hover { color: var(--color-clay); border-left-color: var(--color-clay); }
 
 /* ===================================================== Comment form polish
    #comments-scoped so these win over the Customizer's base comment styles. */

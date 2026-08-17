@@ -28,19 +28,18 @@
     <div class="rv-entry">
       <aside class="rv-tldr" aria-label="{{ __('Article summary and contents', 'sage') }}">
         @if ($rvSummary)
-          <div class="rv-tldr-summary">
-            <span class="rv-tldr-eyebrow">{{ __('The short version', 'sage') }}</span>
+          <details class="rv-tldr-summary">
+            <summary class="rv-tldr-toggle">{{ __('The short version', 'sage') }}</summary>
             <p>{{ $rvSummary }}</p>
-          </div>
+          </details>
         @endif
         @if (count($rvToc['items']) > 1)
-          <nav class="rv-tldr-toc" aria-label="{{ __('In this article', 'sage') }}">
-            <span class="rv-tldr-eyebrow">{{ __('In this article', 'sage') }}</span>
-            <ol class="rv-tldr-list">
+          <nav class="rv-tldr-toc" aria-label="{{ __('Jump to a section', 'sage') }}">
+            <ul class="rv-tldr-list">
               @foreach ($rvToc['items'] as $rvItem)
                 <li><a href="#{{ $rvItem['id'] }}">{{ $rvItem['text'] }}</a></li>
               @endforeach
-            </ol>
+            </ul>
           </nav>
         @endif
       </aside>
