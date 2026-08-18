@@ -429,6 +429,85 @@ function concept_project_seeds(): array
             'seo_desc' => 'Gettysburg licensed guide website concept for small-group battlefield tours — five tours, day and lantern walks, a field map. Open the live demo.',
             'seo_focus' => 'gettysburg licensed guide website',
             'seo_image_alt' => 'Gettysburg licensed guide website concept — Hallowed Ground homepage nav and hero',
+            'seo_content' => <<<'HTML'
+<!-- wp:paragraph -->
+<p>This Gettysburg licensed guide website is a working HTML concept for a small-group battlefield tour company — walking, bus, hike, lantern, and private sunrise tours led by Association of Licensed Battlefield Guides. It's a concept — Hallowed Ground Battlefield Tours isn't a real ticket office — but it's built the way a real Gettysburg operator would need it: a field-dispatch brand, honest demo booking, and a Sage + WooCommerce handoff when the WordPress theme ships.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":{{IMAGE_ID}},"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" class="wp-image-{{IMAGE_ID}}"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">What a Gettysburg licensed guide website has to get right</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Visitors plan Gettysburg tours at night, on their phones. A Gettysburg licensed guide website has to show daylight vs after-dark pathways immediately, name the five tours, and never pretend to charge a card until a real storefront exists. It also has to work for everyone, which is why this concept is written for WCAG-minded type (Archivo Black, Atkinson Hyperlegible, IBM Plex Mono) and follows the accessibility ideas in the <a href="https://www.w3.org/WAI/standards-guidelines/wcag/">W3C Web Accessibility Initiative</a>. Call-to-reserve copy loses those after-hours planners; a fake checkout is worse.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">How the concept came together</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The demo is static HTML — the front-end contract for a later Roots Sage theme with WooCommerce. Home splits historical field walks and lantern walks. The catalog filters all five products. Guides stay licensed roles, not invented personal bios. The Area is an OpenLayers map of the battlefield: OSM streets, Esri satellite, about 800 clickable monuments, and a guest itinerary guests can save as a PDF. Sage comments in the markup mark where Blade templates would take over.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Until that theme ships, booking and contact forms stay demos. They do not charge a card or send production email unless Netlify Forms is on. Parking copy stays generic downtown lots. NAP is labeled fiction: 100 Sample Street, Gettysburg, PA 17325, (717) 555-0100, tours@hallowedground.test. The look is compass, ticket-cut cards, and slate + gold — distinct from the sister food-tour concept.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Why this matters for Adams County tour operators</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Gettysburg runs on visitors who compare tours on a phone before they ever call. A licensed-guide company that only says “leave a voicemail” loses the booking to whoever made times, meeting points, and the after-dark option obvious. This concept proves the pages: dual pathways, a filterable catalog, a map guests can actually use, and a checkout that stays honest until WooCommerce is real.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Built to be found in local search</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Titles, meta, Open Graph, JSON-LD, and Adams County town copy stay in sync on the demo. Canonical tags point at the GitHub Pages origin so SEO has one URL until you choose otherwise. A live WordPress build would keep that same local-search discipline: Google Business Profile, location copy, and structured data — not a second brand that collides with a food-tour sister site.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">What's inside the concept</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Home with historical and after-dark pathways</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Five named tours with catalog filters</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Licensed-guide positioning — roles, not invented bios</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>The Area map (OpenLayers, satellite, itinerary PDF)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Multi-step booking and contact as demos — no card charge</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Make it your Gettysburg licensed guide website</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is a concept, but the pages are real and clickable. Browse the other <a href="/work/">concept sites</a> made for local Gettysburg businesses, then <a href="/contact/">tell me about your tours</a>. You'll get one fixed price agreed up front, a fast and accessible site, and full ownership of everything when it's done.</p>
+<!-- /wp:paragraph -->
+HTML,
         ],
         [
             'folder' => 'tour-first-shot-food-tours', 'repo' => 'tour-first-shot-food-tours-theme', 'title' => 'First Shot Food & History Tours', 'type' => 'Tours',
@@ -530,6 +609,7 @@ function seed_concept_projects(): void
         }
 
         seed_concept_rank_math((int) $post_id, $c);
+        seed_concept_writeup((int) $post_id, $c);
     }
 }
 
@@ -623,6 +703,34 @@ function seed_concept_rank_math(int $post_id, array $c): void
     if ($alt !== '') {
         update_post_meta($thumb, '_wp_attachment_image_alt', $alt);
     }
+}
+
+/**
+ * Gutenberg write-up Rank Math scores in the editor (keyword in first
+ * paragraph, H2, image alt, internal + external links).
+ */
+function seed_concept_writeup(int $post_id, array $c): void
+{
+    $html = (string) ($c['seo_content'] ?? '');
+    if (trim($html) === '') {
+        return;
+    }
+    $thumb = (int) get_post_thumbnail_id($post_id);
+    $url = $thumb ? (string) wp_get_attachment_image_url($thumb, 'large') : '';
+    if ($url === '' && $thumb) {
+        $url = (string) wp_get_attachment_image_url($thumb, 'full');
+    }
+    $alt = trim((string) ($c['seo_image_alt'] ?? ''));
+    $html = str_replace(
+        ['{{IMAGE_ID}}', '{{IMAGE_URL}}', '{{IMAGE_ALT}}'],
+        [(string) $thumb, esc_url($url), esc_attr($alt)],
+        $html
+    );
+    wp_update_post([
+        'ID'           => $post_id,
+        'post_content' => $html,
+        'post_excerpt' => $c['summary'] ?? get_post_field('post_excerpt', $post_id),
+    ]);
 }
 
 /**
