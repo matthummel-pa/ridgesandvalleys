@@ -737,6 +737,7 @@ function seed_concept_writeup(int $post_id, array $c): void
  * Run the concept seed once per version. Bump the version to refresh content
  * or add newly-created concepts. Front-end init (not only wp-admin) so a
  * deploy can refresh live Project posts on the next public request.
+ * v7: Hallowed Ground Rank Math title / description / social image / write-up.
  */
 function maybe_seed_concept_projects(): void
 {
