@@ -415,16 +415,20 @@ function concept_project_seeds(): array
         [
             'folder' => 'tour-hallowed-ground-tours', 'repo' => 'tour-hallowed-ground-tours-theme', 'title' => 'Hallowed Ground Battlefield Tours', 'type' => 'Tours',
             'eyebrow' => 'Concept · Licensed-guide tours', 'industry' => 'Tourism · Guided tours',
-            'summary' => 'A Gettysburg licensed-guide tour concept: historical vs after-dark pathways, five tours, an OpenLayers battlefield map, and a Sage + WooCommerce handoff.',
+            'summary' => 'A Gettysburg licensed guide website concept: historical vs after-dark pathways, five tours, an OpenLayers battlefield map, and a Sage + WooCommerce handoff.',
             'services' => 'Web design, Tour catalog UX, Booking concept, Interactive map, Local SEO',
             'timeline' => 'Static HTML concept · Sage later',
-            'challenge' => "A licensed-guide company selling small-group walking, bus, hike, lantern, and private sunrise tours needs a site that looks like a field dispatch — compass, ticket-cut cards, slate + gold — not a food-tour sibling brand. Call-to-reserve sites lose the people who plan at night on their phones; a checkout that pretends to charge a card is worse.",
+            'challenge' => "A Gettysburg licensed guide website has to sell small-group walking, bus, hike, lantern, and private sunrise tours without looking like a food-tour sibling brand. Call-to-reserve sites lose the people who plan at night on their phones; a checkout that pretends to charge a card is worse.",
             'approach' => "I built the working HTML as the front-end contract for a later Sage + WooCommerce theme. Home splits daylight field walks vs lantern walks; the catalog filters all five tours; guides stay licensed roles, not invented people; The Area is an OpenLayers map (~800 OSM monuments, satellite, guest itinerary PDF). Sage comments in the markup mark the Blade handoff. Until that theme ships, booking and contact stay honest demos — they do not charge a card or send production email unless Netlify Forms is on.",
             'result' => "A clickable GitHub Pages / Netlify demo with a distinct identity from First Shot. NAP is labeled fiction (100 Sample Street, (717) 555-0100, tours@hallowedground.test). Parking copy stays generic downtown lots. When WordPress ships, WooCommerce picks up the same pages.",
             'metrics' => [['5', 'named tours'], ['~800', 'map monuments'], ['Sage + Woo', 'intended stack']],
             'deliverables' => "Home with historical / after-dark pathways\nFive-tour catalog + filters\nLicensed-guide positioning (roles, not invented bios)\nThe Area map (OpenLayers, satellite, itinerary PDF)\nMulti-step booking concept (demo — no card charge)\nContact + FAQ (demo form)\nSage comments for the WordPress handoff",
             'tech' => 'Static HTML, OpenLayers, OSM, Esri World Imagery, Netlify Forms, Sage-ready',
             'set_thumbnail' => true,
+            'seo_title' => 'Gettysburg Licensed Guide Website | Ridges & Valleys',
+            'seo_desc' => 'Gettysburg licensed guide website concept for small-group battlefield tours — five tours, day and lantern walks, a field map. Open the live demo.',
+            'seo_focus' => 'gettysburg licensed guide website',
+            'seo_image_alt' => 'Gettysburg licensed guide website concept — Hallowed Ground homepage nav and hero',
         ],
         [
             'folder' => 'tour-first-shot-food-tours', 'repo' => 'tour-first-shot-food-tours-theme', 'title' => 'First Shot Food & History Tours', 'type' => 'Tours',
@@ -524,6 +528,8 @@ function seed_concept_projects(): void
         if (! empty($c['set_thumbnail'])) {
             seed_concept_thumbnail((int) $post_id, (string) $c['folder']);
         }
+
+        seed_concept_rank_math((int) $post_id, $c);
     }
 }
 
@@ -578,13 +584,55 @@ function seed_concept_thumbnail(int $post_id, string $folder): void
 }
 
 /**
+ * Write Rank Math title, description, focus keyword, and social images.
+ */
+function seed_concept_rank_math(int $post_id, array $c): void
+{
+    $title = trim((string) ($c['seo_title'] ?? ''));
+    $desc  = trim((string) ($c['seo_desc'] ?? ''));
+    $focus = trim((string) ($c['seo_focus'] ?? ''));
+    $alt   = trim((string) ($c['seo_image_alt'] ?? ''));
+    if ($title === '' && $desc === '' && $focus === '') {
+        return;
+    }
+    if ($title !== '') {
+        update_post_meta($post_id, 'rank_math_title', $title);
+        update_post_meta($post_id, 'rank_math_facebook_title', $title);
+    }
+    if ($desc !== '') {
+        update_post_meta($post_id, 'rank_math_description', $desc);
+        update_post_meta($post_id, 'rank_math_facebook_description', $desc);
+    }
+    if ($focus !== '') {
+        update_post_meta($post_id, 'rank_math_focus_keyword', $focus);
+    }
+
+    $thumb = (int) get_post_thumbnail_id($post_id);
+    if ($thumb <= 0) {
+        return;
+    }
+    $url = wp_get_attachment_image_url($thumb, 'full');
+    if (! $url) {
+        return;
+    }
+    update_post_meta($post_id, 'rank_math_facebook_image', $url);
+    update_post_meta($post_id, 'rank_math_facebook_image_id', $thumb);
+    update_post_meta($post_id, 'rank_math_twitter_use_facebook', 'on');
+    update_post_meta($post_id, 'rank_math_twitter_image', $url);
+    update_post_meta($post_id, 'rank_math_twitter_image_id', $thumb);
+    if ($alt !== '') {
+        update_post_meta($thumb, '_wp_attachment_image_alt', $alt);
+    }
+}
+
+/**
  * Run the concept seed once per version. Bump the version to refresh content
  * or add newly-created concepts. Front-end init (not only wp-admin) so a
  * deploy can refresh live Project posts on the next public request.
  */
 function maybe_seed_concept_projects(): void
 {
-    if (get_option('rv_concepts_seed_v') === '6') {
+    if (get_option('rv_concepts_seed_v') === '7') {
         return;
     }
     if (get_transient('rv_concepts_seeding')) {
@@ -592,7 +640,7 @@ function maybe_seed_concept_projects(): void
     }
     set_transient('rv_concepts_seeding', '1', MINUTE_IN_SECONDS);
     seed_concept_projects();
-    update_option('rv_concepts_seed_v', '6');
+    update_option('rv_concepts_seed_v', '7');
     delete_transient('rv_concepts_seeding');
 }
 

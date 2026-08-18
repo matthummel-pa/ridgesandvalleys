@@ -70,6 +70,10 @@
 
       {{-- ===== SHOWCASE (framed, lifted screenshot overlapping the hero) ===== --}}
       @php($shot = has_post_thumbnail() ? get_the_post_thumbnail_url($id, 'rv-hero') : $preview)
+      @php($shotAlt = trim((string) get_post_meta((int) get_post_thumbnail_id($id), '_wp_attachment_image_alt', true)))
+      @if ($shotAlt === '')
+        @php($shotAlt = get_the_title() . ' — ' . ($isConcept ? __('concept homepage design', 'sage') : __('finished website', 'sage')) . ' ' . __('by a Gettysburg web designer', 'sage'))
+      @endif
       @if ($shot)
         <div class="rv-shell rv-cs-shot">
           <figure class="rv-cs-frame">
@@ -79,11 +83,11 @@
             </div>
             @if ($url)
               <a href="{{ esc_url($url) }}" target="_blank" rel="noopener noreferrer" class="rv-cs-frame-link">
-                <img src="{{ esc_url($shot) }}" alt="{{ esc_attr(get_the_title()) }} — {{ $isConcept ? __('concept homepage design', 'sage') : __('finished website', 'sage') }} {{ __('by a Gettysburg web designer', 'sage') }}" loading="eager">
+                <img src="{{ esc_url($shot) }}" alt="{{ esc_attr($shotAlt) }}" loading="eager">
                 <span class="rv-cs-frame-tag">{{ $isConcept ? __('Explore the live concept', 'sage') : __('Visit the live site', 'sage') }} &nearr;</span>
               </a>
             @else
-              <img src="{{ esc_url($shot) }}" alt="{{ esc_attr(get_the_title()) }} — {{ __('website by a Gettysburg web designer', 'sage') }}" loading="eager">
+              <img src="{{ esc_url($shot) }}" alt="{{ esc_attr($shotAlt) }}" loading="eager">
             @endif
           </figure>
           @if ($isConcept)
