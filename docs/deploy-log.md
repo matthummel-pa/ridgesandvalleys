@@ -46,6 +46,17 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-18 — Hallowed Ground concept copy + hero featured image — Run 32100017088 — success — `ff0b0a3`
+
+- **Shipped:** Project 456 (`/work/concept-tour-hallowed-ground-tours/`) now
+  matches the standalone repo README: licensed-guide positioning, dual
+  day/night pathways, five tours, OpenLayers map, demo booking/contact until
+  Sage + WooCommerce. Featured image is the live homepage first viewport
+  (1440×900 nav + hero). Seed version 6.
+- **Verified:** Run `32100017088` green (~1m18s). REST `featured_media` 488,
+  excerpt names OpenLayers / Sage + WooCommerce, page HTML has no five-step
+  Stripe copy. Active theme `ridgesandvalleys-theme`.
+
 ### 2026-08-17 — Guest contact form + dual inbox — Run 32000093431 — success — `26705a1`
 
 - **Shipped:** Guests can send quote requests. From name is the visitor; From
