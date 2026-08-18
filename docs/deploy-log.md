@@ -46,6 +46,11 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-18 — Hallowed Ground Rank Math SEO — Run 32102878733 — success — `1829a5e`
+
+- **Shipped:** Rank Math title, description, focus keyword (`gettysburg licensed guide website`), Facebook/Twitter social image (homepage hero), and a Gutenberg write-up on project 456.
+- **Verified:** Run `32102878733` green after two rsync hangs (`32100534594`, `32101667230`). Live `<title>` is “Gettysburg Licensed Guide Website | Ridges & Valleys”, meta/OG/Twitter match, `og:image` is `tour-hallowed-ground-tours-home-hero.jpg` (1440×900), write-up H2 is on the page.
+
 ### 2026-08-18 — Hallowed Ground concept copy + hero featured image — Run 32100017088 — success — `ff0b0a3`
 
 - **Shipped:** Project 456 (`/work/concept-tour-hallowed-ground-tours/`) now
