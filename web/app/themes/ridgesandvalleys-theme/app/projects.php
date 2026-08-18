@@ -43,6 +43,8 @@ add_action('init', function () {
 add_action('pre_get_posts', function ($query) {
     if (! is_admin() && $query->is_main_query() && is_post_type_archive('project')) {
         $query->set('posts_per_page', 12);
+        $query->set('orderby', 'modified');
+        $query->set('order', 'DESC');
     }
 });
 
@@ -862,6 +864,23 @@ function work_filter_categories(array $posts): array
     return $ordered;
 }
 
+/**
+ * Query args for public Project grids: newest edits first.
+ *
+ * @param array<string, mixed> $extra
+ * @return array<string, mixed>
+ */
+function project_list_query_args(array $extra = []): array
+{
+    return array_merge([
+        'post_type'      => 'project',
+        'post_status'    => 'publish',
+        'orderby'        => 'modified',
+        'order'          => 'DESC',
+        'no_found_rows'  => true,
+    ], $extra);
+}
+
 /** How many project cards the homepage proof grid shows at once. */
 function home_proof_grid_limit(): int
 {
@@ -870,51 +889,17 @@ function home_proof_grid_limit(): int
 
 /**
  * Published projects for the homepage proof grid (filterable, max three shown).
- * Concepts first within each industry; order follows work_industry_defs().
+ * Ordered by last edited, newest first.
  *
  * @return list<\WP_Post>
  */
 function home_proof_type_projects(): array
 {
-    $q = new \WP_Query([
-        'post_type'      => 'project',
-        'post_status'    => 'publish',
+    $q = new \WP_Query(project_list_query_args([
         'posts_per_page' => 24,
-        'no_found_rows'  => true,
-        'orderby'        => 'date',
-        'order'          => 'DESC',
-    ]);
-    $by = [];
-    foreach ($q->posts as $p) {
-        $slug = work_project_category((int) $p->ID)['slug'];
-        if (! isset($by[$slug])) {
-            $by[$slug] = ['concepts' => [], 'rest' => []];
-        }
-        if (get_post_meta($p->ID, '_rv_is_concept', true) === '1') {
-            $by[$slug]['concepts'][] = $p;
-        } else {
-            $by[$slug]['rest'][] = $p;
-        }
-    }
+    ]));
 
-    $picked = [];
-    $seen = [];
-    $slugs = array_map(static fn ($d) => $d['slug'], work_industry_defs());
-    $slugs[] = 'other';
-    foreach ($slugs as $slug) {
-        if (! isset($by[$slug])) {
-            continue;
-        }
-        foreach (array_merge($by[$slug]['concepts'], $by[$slug]['rest']) as $p) {
-            if (isset($seen[$p->ID])) {
-                continue;
-            }
-            $picked[] = $p;
-            $seen[$p->ID] = true;
-        }
-    }
-
-    return $picked;
+    return $q->posts;
 }
 
 /**
