@@ -43,8 +43,10 @@ add_action('init', function () {
 add_action('pre_get_posts', function ($query) {
     if (! is_admin() && $query->is_main_query() && is_post_type_archive('project')) {
         $query->set('posts_per_page', 12);
-        $query->set('orderby', 'modified');
-        $query->set('order', 'DESC');
+        $query->set('orderby', [
+            'modified' => 'DESC',
+            'ID'       => 'DESC',
+        ]);
     }
 });
 
@@ -562,11 +564,15 @@ function seed_concept_projects(): void
 
         if ($existing) {
             $post_id = $existing->ID;
-            wp_update_post([
-                'ID'           => $post_id,
-                'post_title'   => $c['title'],
-                'post_excerpt' => $c['summary'],
-            ]);
+            $have_title = html_entity_decode((string) $existing->post_title, ENT_QUOTES, 'UTF-8');
+            $have_excerpt = html_entity_decode((string) $existing->post_excerpt, ENT_QUOTES, 'UTF-8');
+            if ($have_title !== $c['title'] || $have_excerpt !== $c['summary']) {
+                wp_update_post([
+                    'ID'           => $post_id,
+                    'post_title'   => $c['title'],
+                    'post_excerpt' => $c['summary'],
+                ]);
+            }
         } else {
             $post_id = wp_insert_post([
                 'post_type'    => 'project',
@@ -728,6 +734,9 @@ function seed_concept_writeup(int $post_id, array $c): void
         [(string) $thumb, esc_url($url), esc_attr($alt)],
         $html
     );
+    if (trim($html) === (string) get_post_field('post_content', $post_id)) {
+        return;
+    }
     wp_update_post([
         'ID'           => $post_id,
         'post_content' => $html,
@@ -743,7 +752,7 @@ function seed_concept_writeup(int $post_id, array $c): void
  */
 function maybe_seed_concept_projects(): void
 {
-    if (get_option('rv_concepts_seed_v') === '7') {
+    if (get_option('rv_concepts_seed_v') === '8') {
         return;
     }
     if (get_transient('rv_concepts_seeding')) {
@@ -751,7 +760,11 @@ function maybe_seed_concept_projects(): void
     }
     set_transient('rv_concepts_seeding', '1', MINUTE_IN_SECONDS);
     seed_concept_projects();
-    update_option('rv_concepts_seed_v', '7');
+    $lead = get_page_by_path('concept-tour-hallowed-ground-tours', OBJECT, 'project');
+    if ($lead) {
+        wp_update_post(['ID' => (int) $lead->ID]);
+    }
+    update_option('rv_concepts_seed_v', '8');
     delete_transient('rv_concepts_seeding');
 }
 
@@ -875,8 +888,10 @@ function project_list_query_args(array $extra = []): array
     return array_merge([
         'post_type'      => 'project',
         'post_status'    => 'publish',
-        'orderby'        => 'modified',
-        'order'          => 'DESC',
+        'orderby'        => [
+            'modified' => 'DESC',
+            'ID'       => 'DESC',
+        ],
         'no_found_rows'  => true,
     ], $extra);
 }
