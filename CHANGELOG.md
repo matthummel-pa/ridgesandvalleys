@@ -45,6 +45,11 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
 ### Changed
 
+- **Hallowed Ground Battlefield Tours concept** — Work case study copy now
+  matches the standalone repo (`tour-hallowed-ground-tours-theme`): licensed-guide
+  positioning, dual day/night pathways, five tours, OpenLayers map, and an
+  honest demo booking/contact note until Sage + WooCommerce ships. Featured
+  image is the live homepage first viewport (nav + hero). Seed version 6.
 - **Free Tools page design** — featured Website Grader card, filter chips,
   numbered how-to, proof ribbon in the hero, and on-page calculators kept as
   built-in tools (not blocks). Hero H1/lede use the full content width, with

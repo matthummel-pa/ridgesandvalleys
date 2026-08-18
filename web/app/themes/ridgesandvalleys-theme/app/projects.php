@@ -414,15 +414,17 @@ function concept_project_seeds(): array
         ],
         [
             'folder' => 'tour-hallowed-ground-tours', 'repo' => 'tour-hallowed-ground-tours-theme', 'title' => 'Hallowed Ground Battlefield Tours', 'type' => 'Tours',
-            'eyebrow' => 'Concept · Guided tours', 'industry' => 'Tourism · Guided tours',
-            'summary' => 'A battlefield-tour concept with a five-step, book-and-pay ticketing flow.',
-            'services' => 'Web design, Ticketing, Payments UX',
-            'challenge' => "Tour companies lose bookings to 'call to reserve.' Visitors plan at night, on their phones, and want to pay now — not leave a voicemail and hope someone calls back.",
-            'approach' => "A five-step booking-and-payment flow: pick a tour, pick a time, choose tickets with a live total, and check out — with a clean demo payment UX and an instant confirmation.",
-            'result' => "A concept that captures the booking at the moment of intent, computes the total live, and confirms on the spot — no phone tag, no sales lost after hours.",
-            'metrics' => [['Book + pay', 'online'], ['Live', 'ticket totals'], ['Instant', 'confirmation']],
-            'deliverables' => "Tour catalog\n5-step booking flow\nTicket + payment UX\nGuide bios + FAQ\nMobile-first, accessible build",
-            'tech' => 'WordPress, Sage, Stripe-ready',
+            'eyebrow' => 'Concept · Licensed-guide tours', 'industry' => 'Tourism · Guided tours',
+            'summary' => 'A Gettysburg licensed-guide tour concept: historical vs after-dark pathways, five tours, an OpenLayers battlefield map, and a Sage + WooCommerce handoff.',
+            'services' => 'Web design, Tour catalog UX, Booking concept, Interactive map, Local SEO',
+            'timeline' => 'Static HTML concept · Sage later',
+            'challenge' => "A licensed-guide company selling small-group walking, bus, hike, lantern, and private sunrise tours needs a site that looks like a field dispatch — compass, ticket-cut cards, slate + gold — not a food-tour sibling brand. Call-to-reserve sites lose the people who plan at night on their phones; a checkout that pretends to charge a card is worse.",
+            'approach' => "I built the working HTML as the front-end contract for a later Sage + WooCommerce theme. Home splits daylight field walks vs lantern walks; the catalog filters all five tours; guides stay licensed roles, not invented people; The Area is an OpenLayers map (~800 OSM monuments, satellite, guest itinerary PDF). Sage comments in the markup mark the Blade handoff. Until that theme ships, booking and contact stay honest demos — they do not charge a card or send production email unless Netlify Forms is on.",
+            'result' => "A clickable GitHub Pages / Netlify demo with a distinct identity from First Shot. NAP is labeled fiction (100 Sample Street, (717) 555-0100, tours@hallowedground.test). Parking copy stays generic downtown lots. When WordPress ships, WooCommerce picks up the same pages.",
+            'metrics' => [['5', 'named tours'], ['~800', 'map monuments'], ['Sage + Woo', 'intended stack']],
+            'deliverables' => "Home with historical / after-dark pathways\nFive-tour catalog + filters\nLicensed-guide positioning (roles, not invented bios)\nThe Area map (OpenLayers, satellite, itinerary PDF)\nMulti-step booking concept (demo — no card charge)\nContact + FAQ (demo form)\nSage comments for the WordPress handoff",
+            'tech' => 'Static HTML, OpenLayers, OSM, Esri World Imagery, Netlify Forms, Sage-ready',
+            'set_thumbnail' => true,
         ],
         [
             'folder' => 'tour-first-shot-food-tours', 'repo' => 'tour-first-shot-food-tours-theme', 'title' => 'First Shot Food & History Tours', 'type' => 'Tours',
@@ -475,6 +477,11 @@ function seed_concept_projects(): void
 
         if ($existing) {
             $post_id = $existing->ID;
+            wp_update_post([
+                'ID'           => $post_id,
+                'post_title'   => $c['title'],
+                'post_excerpt' => $c['summary'],
+            ]);
         } else {
             $post_id = wp_insert_post([
                 'post_type'    => 'project',
@@ -493,6 +500,9 @@ function seed_concept_projects(): void
         update_post_meta($post_id, '_rv_summary', $c['summary']);
         update_post_meta($post_id, '_rv_industry', $c['industry']);
         update_post_meta($post_id, '_rv_location', 'Gettysburg, PA');
+        if (! empty($c['timeline'])) {
+            update_post_meta($post_id, '_rv_timeline', $c['timeline']);
+        }
         update_post_meta($post_id, '_rv_services', $c['services']);
         update_post_meta($post_id, '_rv_url', concept_demo_url($c['folder']));
         update_post_meta($post_id, '_rv_preview', concept_preview_uri($c['folder']));
@@ -510,23 +520,84 @@ function seed_concept_projects(): void
         }
 
         wp_set_object_terms($post_id, $c['type'], 'project_type');
+
+        if (! empty($c['set_thumbnail'])) {
+            seed_concept_thumbnail((int) $post_id, (string) $c['folder']);
+        }
+    }
+}
+
+/**
+ * Sideload a concept homepage screenshot as the Project featured image.
+ * Skips when the current thumbnail already matches this theme file.
+ */
+function seed_concept_thumbnail(int $post_id, string $folder): void
+{
+    $folder = sanitize_file_name($folder);
+    $path = get_theme_file_path('assets/concept-previews/' . $folder . '.jpg');
+    if ($folder === '' || ! is_file($path)) {
+        return;
+    }
+    $hash = md5_file($path);
+    if ($hash === false) {
+        return;
+    }
+    $existing = (int) get_post_thumbnail_id($post_id);
+    if ($existing && (string) get_post_meta($post_id, '_rv_thumb_hash', true) === $hash) {
+        return;
+    }
+
+    require_once ABSPATH . 'wp-admin/includes/file.php';
+    require_once ABSPATH . 'wp-admin/includes/media.php';
+    require_once ABSPATH . 'wp-admin/includes/image.php';
+
+    $tmp = wp_tempnam($path);
+    if (! $tmp || ! copy($path, $tmp)) {
+        return;
+    }
+
+    $attach_id = media_handle_sideload([
+        'name'     => $folder . '-home-hero.jpg',
+        'tmp_name' => $tmp,
+    ], $post_id, sprintf(
+        /* translators: %s: project title */
+        __('%s homepage — navigation and hero', 'sage'),
+        get_the_title($post_id)
+    ));
+    if (is_wp_error($attach_id)) {
+        @unlink($tmp);
+
+        return;
+    }
+
+    set_post_thumbnail($post_id, (int) $attach_id);
+    update_post_meta($post_id, '_rv_thumb_hash', $hash);
+    if ($existing && $existing !== (int) $attach_id) {
+        wp_delete_attachment($existing, true);
     }
 }
 
 /**
  * Run the concept seed once per version. Bump the version to refresh content
- * or add newly-created concepts.
+ * or add newly-created concepts. Front-end init (not only wp-admin) so a
+ * deploy can refresh live Project posts on the next public request.
  */
-add_action('admin_init', function () {
-    if (get_option('rv_concepts_seed_v') === '5') {
+function maybe_seed_concept_projects(): void
+{
+    if (get_option('rv_concepts_seed_v') === '6') {
         return;
     }
-    if (! current_user_can('edit_posts')) {
+    if (get_transient('rv_concepts_seeding')) {
         return;
     }
+    set_transient('rv_concepts_seeding', '1', MINUTE_IN_SECONDS);
     seed_concept_projects();
-    update_option('rv_concepts_seed_v', '5');
-});
+    update_option('rv_concepts_seed_v', '6');
+    delete_transient('rv_concepts_seeding');
+}
+
+add_action('init', __NAMESPACE__ . '\\maybe_seed_concept_projects', 30);
+add_action('admin_init', __NAMESPACE__ . '\\maybe_seed_concept_projects');
 
 /**
  * Flush rewrite rules on theme switch so /work/ resolves.
