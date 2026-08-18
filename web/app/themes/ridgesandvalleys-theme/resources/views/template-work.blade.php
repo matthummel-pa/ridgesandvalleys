@@ -62,7 +62,7 @@
     </div>
   </section>
 
-  @php($work = new WP_Query(['post_type' => 'project', 'posts_per_page' => 12, 'no_found_rows' => true]))
+  @php($work = new WP_Query(\App\project_list_query_args(['posts_per_page' => 24])))
   <section class="rv-shell rv-band rv-work-index" id="case-studies" style="scroll-margin-top:6rem">
     @if ($work->have_posts())
       {!! \App\work_itemlist_jsonld($work->posts) !!}

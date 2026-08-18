@@ -45,6 +45,8 @@ Categories: `Added`, `Changed`, `Deprecated`, `Removed`, `Fixed`, `Security`.
 
 ### Changed
 
+- **Work and homepage project grids** list published Projects by last edited
+  (newest first), so a freshly updated case study leads the grid.
 - **Hallowed Ground Battlefield Tours concept** — Work case study copy now
   matches the standalone repo (`tour-hallowed-ground-tours-theme`): licensed-guide
   positioning, dual day/night pathways, five tours, OpenLayers map, and an
