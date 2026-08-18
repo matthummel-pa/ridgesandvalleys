@@ -415,16 +415,99 @@ function concept_project_seeds(): array
         [
             'folder' => 'tour-hallowed-ground-tours', 'repo' => 'tour-hallowed-ground-tours-theme', 'title' => 'Hallowed Ground Battlefield Tours', 'type' => 'Tours',
             'eyebrow' => 'Concept · Licensed-guide tours', 'industry' => 'Tourism · Guided tours',
-            'summary' => 'A Gettysburg licensed-guide tour concept: historical vs after-dark pathways, five tours, an OpenLayers battlefield map, and a Sage + WooCommerce handoff.',
+            'summary' => 'A Gettysburg licensed guide website concept: historical vs after-dark pathways, five tours, an OpenLayers battlefield map, and a Sage + WooCommerce handoff.',
             'services' => 'Web design, Tour catalog UX, Booking concept, Interactive map, Local SEO',
             'timeline' => 'Static HTML concept · Sage later',
-            'challenge' => "A licensed-guide company selling small-group walking, bus, hike, lantern, and private sunrise tours needs a site that looks like a field dispatch — compass, ticket-cut cards, slate + gold — not a food-tour sibling brand. Call-to-reserve sites lose the people who plan at night on their phones; a checkout that pretends to charge a card is worse.",
+            'challenge' => "A Gettysburg licensed guide website has to sell small-group walking, bus, hike, lantern, and private sunrise tours without looking like a food-tour sibling brand. Call-to-reserve sites lose the people who plan at night on their phones; a checkout that pretends to charge a card is worse.",
             'approach' => "I built the working HTML as the front-end contract for a later Sage + WooCommerce theme. Home splits daylight field walks vs lantern walks; the catalog filters all five tours; guides stay licensed roles, not invented people; The Area is an OpenLayers map (~800 OSM monuments, satellite, guest itinerary PDF). Sage comments in the markup mark the Blade handoff. Until that theme ships, booking and contact stay honest demos — they do not charge a card or send production email unless Netlify Forms is on.",
             'result' => "A clickable GitHub Pages / Netlify demo with a distinct identity from First Shot. NAP is labeled fiction (100 Sample Street, (717) 555-0100, tours@hallowedground.test). Parking copy stays generic downtown lots. When WordPress ships, WooCommerce picks up the same pages.",
             'metrics' => [['5', 'named tours'], ['~800', 'map monuments'], ['Sage + Woo', 'intended stack']],
             'deliverables' => "Home with historical / after-dark pathways\nFive-tour catalog + filters\nLicensed-guide positioning (roles, not invented bios)\nThe Area map (OpenLayers, satellite, itinerary PDF)\nMulti-step booking concept (demo — no card charge)\nContact + FAQ (demo form)\nSage comments for the WordPress handoff",
             'tech' => 'Static HTML, OpenLayers, OSM, Esri World Imagery, Netlify Forms, Sage-ready',
             'set_thumbnail' => true,
+            'seo_title' => 'Gettysburg Licensed Guide Website | Ridges & Valleys',
+            'seo_desc' => 'Gettysburg licensed guide website concept for small-group battlefield tours — five tours, day and lantern walks, a field map. Open the live demo.',
+            'seo_focus' => 'gettysburg licensed guide website',
+            'seo_image_alt' => 'Gettysburg licensed guide website concept — Hallowed Ground homepage nav and hero',
+            'seo_content' => <<<'HTML'
+<!-- wp:paragraph -->
+<p>This Gettysburg licensed guide website is a working HTML concept for a small-group battlefield tour company — walking, bus, hike, lantern, and private sunrise tours led by Association of Licensed Battlefield Guides. It's a concept — Hallowed Ground Battlefield Tours isn't a real ticket office — but it's built the way a real Gettysburg operator would need it: a field-dispatch brand, honest demo booking, and a Sage + WooCommerce handoff when the WordPress theme ships.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":{{IMAGE_ID}},"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="{{IMAGE_URL}}" alt="{{IMAGE_ALT}}" class="wp-image-{{IMAGE_ID}}"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">What a Gettysburg licensed guide website has to get right</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Visitors plan Gettysburg tours at night, on their phones. A Gettysburg licensed guide website has to show daylight vs after-dark pathways immediately, name the five tours, and never pretend to charge a card until a real storefront exists. It also has to work for everyone, which is why this concept is written for WCAG-minded type (Archivo Black, Atkinson Hyperlegible, IBM Plex Mono) and follows the accessibility ideas in the <a href="https://www.w3.org/WAI/standards-guidelines/wcag/">W3C Web Accessibility Initiative</a>. Call-to-reserve copy loses those after-hours planners; a fake checkout is worse.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">How the concept came together</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The demo is static HTML — the front-end contract for a later Roots Sage theme with WooCommerce. Home splits historical field walks and lantern walks. The catalog filters all five products. Guides stay licensed roles, not invented personal bios. The Area is an OpenLayers map of the battlefield: OSM streets, Esri satellite, about 800 clickable monuments, and a guest itinerary guests can save as a PDF. Sage comments in the markup mark where Blade templates would take over.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Until that theme ships, booking and contact forms stay demos. They do not charge a card or send production email unless Netlify Forms is on. Parking copy stays generic downtown lots. NAP is labeled fiction: 100 Sample Street, Gettysburg, PA 17325, (717) 555-0100, tours@hallowedground.test. The look is compass, ticket-cut cards, and slate + gold — distinct from the sister food-tour concept.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Why this matters for Adams County tour operators</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Gettysburg runs on visitors who compare tours on a phone before they ever call. A licensed-guide company that only says “leave a voicemail” loses the booking to whoever made times, meeting points, and the after-dark option obvious. This concept proves the pages: dual pathways, a filterable catalog, a map guests can actually use, and a checkout that stays honest until WooCommerce is real.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Built to be found in local search</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Titles, meta, Open Graph, JSON-LD, and Adams County town copy stay in sync on the demo. Canonical tags point at the GitHub Pages origin so SEO has one URL until you choose otherwise. A live WordPress build would keep that same local-search discipline: Google Business Profile, location copy, and structured data — not a second brand that collides with a food-tour sister site.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">What's inside the concept</h2>
+<!-- /wp:heading -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Home with historical and after-dark pathways</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Five named tours with catalog filters</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Licensed-guide positioning — roles, not invented bios</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>The Area map (OpenLayers, satellite, itinerary PDF)</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Multi-step booking and contact as demos — no card charge</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Make it your Gettysburg licensed guide website</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>This is a concept, but the pages are real and clickable. Browse the other <a href="/work/">concept sites</a> made for local Gettysburg businesses, then <a href="/contact/">tell me about your tours</a>. You'll get one fixed price agreed up front, a fast and accessible site, and full ownership of everything when it's done.</p>
+<!-- /wp:paragraph -->
+HTML,
         ],
         [
             'folder' => 'tour-first-shot-food-tours', 'repo' => 'tour-first-shot-food-tours-theme', 'title' => 'First Shot Food & History Tours', 'type' => 'Tours',
@@ -524,6 +607,9 @@ function seed_concept_projects(): void
         if (! empty($c['set_thumbnail'])) {
             seed_concept_thumbnail((int) $post_id, (string) $c['folder']);
         }
+
+        seed_concept_rank_math((int) $post_id, $c);
+        seed_concept_writeup((int) $post_id, $c);
     }
 }
 
@@ -578,13 +664,83 @@ function seed_concept_thumbnail(int $post_id, string $folder): void
 }
 
 /**
+ * Write Rank Math title, description, focus keyword, and social images.
+ */
+function seed_concept_rank_math(int $post_id, array $c): void
+{
+    $title = trim((string) ($c['seo_title'] ?? ''));
+    $desc  = trim((string) ($c['seo_desc'] ?? ''));
+    $focus = trim((string) ($c['seo_focus'] ?? ''));
+    $alt   = trim((string) ($c['seo_image_alt'] ?? ''));
+    if ($title === '' && $desc === '' && $focus === '') {
+        return;
+    }
+    if ($title !== '') {
+        update_post_meta($post_id, 'rank_math_title', $title);
+        update_post_meta($post_id, 'rank_math_facebook_title', $title);
+    }
+    if ($desc !== '') {
+        update_post_meta($post_id, 'rank_math_description', $desc);
+        update_post_meta($post_id, 'rank_math_facebook_description', $desc);
+    }
+    if ($focus !== '') {
+        update_post_meta($post_id, 'rank_math_focus_keyword', $focus);
+    }
+
+    $thumb = (int) get_post_thumbnail_id($post_id);
+    if ($thumb <= 0) {
+        return;
+    }
+    $url = wp_get_attachment_image_url($thumb, 'full');
+    if (! $url) {
+        return;
+    }
+    update_post_meta($post_id, 'rank_math_facebook_image', $url);
+    update_post_meta($post_id, 'rank_math_facebook_image_id', $thumb);
+    update_post_meta($post_id, 'rank_math_twitter_use_facebook', 'on');
+    update_post_meta($post_id, 'rank_math_twitter_image', $url);
+    update_post_meta($post_id, 'rank_math_twitter_image_id', $thumb);
+    if ($alt !== '') {
+        update_post_meta($thumb, '_wp_attachment_image_alt', $alt);
+    }
+}
+
+/**
+ * Gutenberg write-up Rank Math scores in the editor (keyword in first
+ * paragraph, H2, image alt, internal + external links).
+ */
+function seed_concept_writeup(int $post_id, array $c): void
+{
+    $html = (string) ($c['seo_content'] ?? '');
+    if (trim($html) === '') {
+        return;
+    }
+    $thumb = (int) get_post_thumbnail_id($post_id);
+    $url = $thumb ? (string) wp_get_attachment_image_url($thumb, 'large') : '';
+    if ($url === '' && $thumb) {
+        $url = (string) wp_get_attachment_image_url($thumb, 'full');
+    }
+    $alt = trim((string) ($c['seo_image_alt'] ?? ''));
+    $html = str_replace(
+        ['{{IMAGE_ID}}', '{{IMAGE_URL}}', '{{IMAGE_ALT}}'],
+        [(string) $thumb, esc_url($url), esc_attr($alt)],
+        $html
+    );
+    wp_update_post([
+        'ID'           => $post_id,
+        'post_content' => $html,
+        'post_excerpt' => $c['summary'] ?? get_post_field('post_excerpt', $post_id),
+    ]);
+}
+
+/**
  * Run the concept seed once per version. Bump the version to refresh content
  * or add newly-created concepts. Front-end init (not only wp-admin) so a
  * deploy can refresh live Project posts on the next public request.
  */
 function maybe_seed_concept_projects(): void
 {
-    if (get_option('rv_concepts_seed_v') === '6') {
+    if (get_option('rv_concepts_seed_v') === '7') {
         return;
     }
     if (get_transient('rv_concepts_seeding')) {
@@ -592,7 +748,7 @@ function maybe_seed_concept_projects(): void
     }
     set_transient('rv_concepts_seeding', '1', MINUTE_IN_SECONDS);
     seed_concept_projects();
-    update_option('rv_concepts_seed_v', '6');
+    update_option('rv_concepts_seed_v', '7');
     delete_transient('rv_concepts_seeding');
 }
 
