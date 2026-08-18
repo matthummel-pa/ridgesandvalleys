@@ -46,6 +46,11 @@ not `/app/...` — the live install is managed WordPress, not Bedrock.
 
 Newest first. "Run" is the GitHub Actions run ID.
 
+### 2026-08-18 — Project grids by last edited — Run 32106639902 — success — `86aa276`
+
+- **Shipped:** Work and homepage project cards sort by `post_modified` (newest first). Concept seed no longer stamps every Project as edited.
+- **Verified:** Run `32106639902` green (~1m). Live `/work/` lead card is Hallowed Ground Battlefield Tours (id 456, modified 2026-08-18T06:23:31). Homepage proof list leads with the same project.
+
 ### 2026-08-18 — Hallowed Ground Rank Math SEO — Run 32102878733 — success — `1829a5e`
 
 - **Shipped:** Rank Math title, description, focus keyword (`gettysburg licensed guide website`), Facebook/Twitter social image (homepage hero), and a Gutenberg write-up on project 456.
